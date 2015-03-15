@@ -4,7 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -34,7 +35,7 @@ public class ModelCreator extends JFrame {
 	private SpringLayout layout;
 	private Camera camera;
 	public Texture texture;
-	
+
 	public boolean closeRequested = false;
 
 	private JPanel panelSize = new SizePanel(this);
@@ -59,7 +60,7 @@ public class ModelCreator extends JFrame {
 		setLayout(layout);
 
 		initDisplay();
-		
+
 		initComponents();
 		setLayoutConstaints();
 
@@ -85,13 +86,8 @@ public class ModelCreator extends JFrame {
 		} catch (LWJGLException e1) {
 			e1.printStackTrace();
 		}
+		TextureManager.init();
 		
-		try {
-			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/brick.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
 		loop();
 
 		Display.destroy();
@@ -179,6 +175,9 @@ public class ModelCreator extends JFrame {
 		camera = new Camera(60, (float) Display.getWidth()
 				/ (float) Display.getHeight(), 0.3F, 1000);
 
+		Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
+		TrueTypeFont font = new TrueTypeFont(awtFont, true);
+
 		while (!Display.isCloseRequested() && !closeRequested) {
 			handleInput();
 
@@ -193,11 +192,12 @@ public class ModelCreator extends JFrame {
 				glTranslatef(-8, 0, 8);
 				for (int i = 0; i < model.size(); i++) {
 					Cube cube = (Cube) model.getElementAt(i);
-					cube.draw(texture);
+					cube.draw();
 					cube.drawExtras();
 				}
 			}
 			glPopMatrix();
+
 			Display.update();
 		}
 		System.out.println("Hey");
@@ -232,16 +232,33 @@ public class ModelCreator extends JFrame {
 	public void drawGrid() {
 		glPushMatrix();
 		{
-			glLineWidth(1F);
 			glColor3f(0, 0, 0);
+
+			// Bold outside lines
+			glLineWidth(2F);
 			glBegin(GL_LINES);
 			{
-				for (int i = -8; i <= 8; i++) {
+				glVertex3i(-8, 0, -8);
+				glVertex3i(-8, 0, 8);
+				glVertex3i(8, 0, -8);
+				glVertex3i(8, 0, 8);
+				glVertex3i(-8, 0, 8);
+				glVertex3i(8, 0, 8);
+				glVertex3i(-8, 0, -8);
+				glVertex3i(8, 0, -8);
+			}
+			glEnd();
+
+			// Thin inside lines
+			glLineWidth(1F);
+			glBegin(GL_LINES);
+			{
+				for (int i = -7; i <= 7; i++) {
 					glVertex3i(i, 0, -8);
 					glVertex3i(i, 0, 8);
 				}
 
-				for (int i = -8; i <= 8; i++) {
+				for (int i = -7; i <= 7; i++) {
 					glVertex3i(-8, 0, i);
 					glVertex3i(8, 0, i);
 				}
@@ -255,20 +272,20 @@ public class ModelCreator extends JFrame {
 		glPushMatrix();
 		{
 			GL11.glLineWidth(5F);
-			glTranslatef(-8, 0, -8);
+			glTranslatef(-9, 0, -9);
 			glBegin(GL_LINES);
 			{
-				glColor3f(0, 1, 0);
-				glVertex3f(20F, 0.01F, -1F);
-				glVertex3f(-1F, 0.01F, -1F);
+				glColor4f(0, 1, 0, 0.5F);
+				glVertex3f(40F, 0.01F, 0);
+				glVertex3f(0, 0.01F, 0);
 
-				glColor3f(1, 0, 0);
-				glVertex3f(-1F, 0.01F, -1F);
-				glVertex3f(-1F, 20F, -1F);
+				glColor4f(1, 0, 0, 0.5F);
+				glVertex3f(0, 0.01F, 0);
+				glVertex3f(0, 40F, 0);
 
-				glColor3f(0, 0, 1);
-				glVertex3f(-1F, 0.01F, 20F);
-				glVertex3f(-1F, 0.01F, -1F);
+				glColor4f(0, 0, 1, 0.5F);
+				glVertex3f(0, 0.01F, 40F);
+				glVertex3f(0, 0.01F, 0);
 			}
 			glEnd();
 		}

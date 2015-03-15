@@ -3,6 +3,8 @@ package com.mrcrayfish.modelcreator;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.*;
 
+import org.lwjgl.opengl.GL11;
+
 public class Camera
 {
 	private float x;
@@ -39,6 +41,7 @@ public class Camera
 		glLoadIdentity();
 		gluPerspective(fov, aspect, near, far);
 		glMatrixMode(GL_MODELVIEW);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glEnable(GL_DEPTH_TEST);
 	}
 

@@ -1,58 +1,54 @@
 package com.mrcrayfish.modelcreator;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.text.DecimalFormat;
+import java.io.IOException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
+import javax.swing.JSeparator;
 import javax.swing.SpringLayout;
-import javax.swing.SwingUtilities;
+import javax.swing.SwingConstants;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.ResourceLoader;
 
-public class ModelCreator extends JFrame
-{
+public class ModelCreator extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private final Canvas canvas;
 	private SpringLayout layout;
 	private Camera camera;
-
+	public Texture texture;
+	
 	public boolean closeRequested = false;
-	private boolean isShifting = false;
 
+	private JPanel panelSize = new SizePanel(this);
+	private JPanel panelPosition = new PositionPanel(this);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
-	private JButton btnPlusX = new JButton("+");
-	private JButton btnPlusY = new JButton("+");
-	private JButton btnPlusZ = new JButton("+");
-	private JButton btnNegX = new JButton("-");
-	private JButton btnNegY = new JButton("-");
-	private JButton btnNegZ = new JButton("-");
-	private JTextField xSizeField = new JTextField();
-	private JTextField ySizeField = new JTextField();
-	private JTextField zSizeField = new JTextField();
-
-	private JList<Shape> list = new JList<Shape>();
+	private JList<Cube> list = new JList<Cube>();
 	private JScrollPane scrollPane;
 
-	private DefaultListModel<Shape> model = new DefaultListModel<Shape>();
+	private JSeparator divider_1 = new JSeparator(SwingConstants.HORIZONTAL);
 
-	public ModelCreator(String title)
-	{
+	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
+
+	public ModelCreator(String title) {
 		super(title);
 
 		layout = new SpringLayout();
@@ -62,40 +58,40 @@ public class ModelCreator extends JFrame
 		setPreferredSize(new Dimension(1200, 700));
 		setLayout(layout);
 
+		initDisplay();
+		
 		initComponents();
 		setLayoutConstaints();
 
-		addWindowFocusListener(new WindowAdapter()
-		{
+		addWindowFocusListener(new WindowAdapter() {
 			@Override
-			public void windowGainedFocus(WindowEvent e)
-			{
+			public void windowGainedFocus(WindowEvent e) {
 				canvas.requestFocusInWindow();
 			}
 		});
 
-		addWindowListener(new WindowAdapter()
-		{
+		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosing(WindowEvent e)
-			{
+			public void windowClosing(WindowEvent e) {
 				closeRequested = true;
 			}
 		});
 
-		initDisplay();
 		pack();
 		setVisible(true);
-		try
-		{
+
+		try {
 			Display.create();
-		}
-		catch (LWJGLException e1)
-		{
+		} catch (LWJGLException e1) {
 			e1.printStackTrace();
 		}
+		
+		try {
+			texture = TextureLoader.getTexture("PNG", ResourceLoader.getResourceAsStream("res/brick.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		// Program loop
 		loop();
 
 		Display.destroy();
@@ -103,20 +99,17 @@ public class ModelCreator extends JFrame
 		System.exit(0);
 	}
 
-	public void initComponents()
-	{
+	public void initComponents() {
 		canvas.setSize(new Dimension(1000, 700));
 		add(canvas);
 
-		btnAdd.addActionListener(e ->
-		{
-			model.addElement(new Cube(0, 0, 0, 1, 1, 1));
+		btnAdd.addActionListener(e -> {
+			model.addElement(new Cube(1, 1, 1));
 		});
 		btnAdd.setPreferredSize(new Dimension(95, 30));
 		add(btnAdd);
 
-		btnRemove.addActionListener(e ->
-		{
+		btnRemove.addActionListener(e -> {
 			int selected = list.getSelectedIndex();
 			if (selected != -1)
 				model.remove(selected);
@@ -124,92 +117,8 @@ public class ModelCreator extends JFrame
 		btnRemove.setPreferredSize(new Dimension(95, 30));
 		add(btnRemove);
 
-		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
-
-		xSizeField.setPreferredSize(new Dimension(60, 30));
-		xSizeField.setFont(defaultFont);
-		xSizeField.setEditable(false);
-		xSizeField.setHorizontalAlignment(JTextField.CENTER);
-		add(xSizeField);
-
-		ySizeField.setPreferredSize(new Dimension(60, 30));
-		ySizeField.setFont(defaultFont);
-		ySizeField.setEditable(false);
-		ySizeField.setHorizontalAlignment(JTextField.CENTER);
-		add(ySizeField);
-
-		zSizeField.setPreferredSize(new Dimension(60, 30));
-		zSizeField.setFont(defaultFont);
-		zSizeField.setEditable(false);
-		zSizeField.setHorizontalAlignment(JTextField.CENTER);
-		add(zSizeField);
-
-		btnPlusX.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mouseClicked(MouseEvent e)
-			{
-				int selected = list.getSelectedIndex();
-				if (selected != -1)
-				{
-					Cube cube = (Cube) model.getElementAt(selected);
-					if (e.isShiftDown())
-					{
-						cube.addX(0.1F);
-					}
-					else
-					{
-						cube.addX(1.0F);
-					}
-					xSizeField.setText(cube.getMaxX() + "");
-					updateValues(selected);
-				}
-			}
-		});
-		btnPlusX.setPreferredSize(new Dimension(62, 30));
-		add(btnPlusX);
-
-		btnPlusY.addActionListener(e ->
-		{
-			int selected = list.getSelectedIndex();
-			if (selected != -1)
-			{
-				Cube cube = (Cube) model.getElementAt(selected);
-				if (true)
-				{
-					cube.addY(0.1F);
-				}
-				else
-				{
-					cube.addY(1.0F);
-				}
-			}
-		});
-		btnPlusY.setPreferredSize(new Dimension(62, 30));
-		add(btnPlusY);
-		
-		btnPlusZ.addActionListener(e ->
-		{
-			int selected = list.getSelectedIndex();
-			if (selected != -1)
-			{
-				Cube cube = (Cube) model.getElementAt(selected);
-				if (true)
-				{
-					cube.addZ(0.1F);
-				}
-				else
-				{
-					cube.addZ(1.0F);
-				}
-			}
-		});
-		btnPlusZ.setPreferredSize(new Dimension(62, 30));
-		add(btnPlusZ);
-
 		list.setModel(model);
-		list.addListSelectionListener(e ->
-		{
+		list.addListSelectionListener(e -> {
 			int selected = list.getSelectedIndex();
 			updateValues(selected);
 		});
@@ -217,86 +126,88 @@ public class ModelCreator extends JFrame
 		scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(190, 300));
 		add(scrollPane);
+
+		divider_1.setPreferredSize(new Dimension(190, 1));
+		add(divider_1);
+
+		add(panelSize);
+		add(panelPosition);
 	}
 
-	public void setLayoutConstaints()
-	{
-		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 1005, SpringLayout.WEST, this);
+	public void setLayoutConstaints() {
+		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 1005,
+				SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 310, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnAdd, 1003, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, btnAdd, 310,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, btnAdd, 1003,
+				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102,
+				SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, xSizeField, 375, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, xSizeField, 1003, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, ySizeField, 375, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, ySizeField, 1070, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, zSizeField, 375, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, zSizeField, 1137, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, divider_1, 347,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, divider_1, 1003,
+				SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, btnPlusX, 344, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnPlusX, 1003, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnPlusY, 344, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnPlusY, 1069, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnPlusZ, 344, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnPlusZ, 1135, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, panelSize, 350,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, panelSize, 1003,
+				SpringLayout.WEST, this);
+
+		layout.putConstraint(SpringLayout.NORTH, panelPosition, 480,
+				SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, panelPosition, 1003,
+				SpringLayout.WEST, this);
 	}
 
-	public void initDisplay()
-	{
-		try
-		{
+	public void initDisplay() {
+		try {
 			Display.setParent(canvas);
 			Display.setVSyncEnabled(true);
-		}
-		catch (LWJGLException e)
-		{
+			Display.setInitialBackground(0.75F, 0.75F, 0.75F);
+		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void loop()
-	{
-		camera = new Camera(60, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000);
+	private void loop() {
+		camera = new Camera(60, (float) Display.getWidth()
+				/ (float) Display.getHeight(), 0.3F, 1000);
 
-		while (!Display.isCloseRequested() && !closeRequested)
-		{
+		while (!Display.isCloseRequested() && !closeRequested) {
 			handleInput();
 
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glLoadIdentity();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glLoadIdentity();
 			camera.useView();
-
-			GL11.glPushMatrix();
+			glPushMatrix();
 			{
-				GL11.glScalef(0.3F, 0.3F, 0.3F);
-				for (int i = 0; i < model.size(); i++)
-				{
-					Shape shape = model.getElementAt(i);
-					GL11.glBegin(GL11.GL_QUADS);
-					{
-						shape.draw();
-					}
-					GL11.glEnd();
+				glScalef(0.25F, 0.25F, 0.25F);
+				drawGrid();
+				drawAxis();
+				glTranslatef(-8, 0, 8);
+				for (int i = 0; i < model.size(); i++) {
+					Cube cube = (Cube) model.getElementAt(i);
+					cube.draw(texture);
+					cube.drawExtras();
 				}
 			}
-			GL11.glPopMatrix();
+			glPopMatrix();
 			Display.update();
 		}
 		System.out.println("Hey");
 	}
 
-	public void handleInput()
-	{
-		if (Mouse.isButtonDown(0))
-		{
+	public void handleInput() {
+		if (Mouse.isButtonDown(0)) {
 			camera.addX((float) Mouse.getDX() * 0.01F);
 			camera.addY((float) Mouse.getDY() * 0.01F);
-		}
-		else if (Mouse.isButtonDown(1))
-		{
+		} else if (Mouse.isButtonDown(1)) {
 			camera.rotateY((float) Mouse.getDX() * 0.5F);
 			camera.rotateX(-(float) Mouse.getDY() * 0.5F);
 		}
@@ -304,21 +215,70 @@ public class ModelCreator extends JFrame
 		camera.addZ((float) Mouse.getDWheel() / 100F);
 	}
 
-	public void updateValues(int selected)
-	{
-		if (selected != -1)
-		{
-			Cube cube = (Cube) model.getElementAt(selected);
-			DecimalFormat df = new DecimalFormat("#.#");
-			xSizeField.setText(df.format(cube.getMaxX()));
-			ySizeField.setText(df.format(cube.getMaxY()));
-			zSizeField.setText(df.format(cube.getMaxZ()));
+	public void updateValues(int selected) {
+		if (getSelected() != null) {
+			Cube cube = getSelected();
+			// DecimalFormat df = new DecimalFormat("#.#");
+			// xSizeField.setText(df.format(cube.getMaxX()));
+			// ySizeField.setText(df.format(cube.getMaxY()));
+			// zSizeField.setText(df.format(cube.getMaxZ()));
+		} else {
+			// xSizeField.setText("");
+			// ySizeField.setText("");
+			// zSizeField.setText("");
 		}
-		else
+	}
+
+	public void drawGrid() {
+		glPushMatrix();
 		{
-			xSizeField.setText("");
-			ySizeField.setText("");
-			zSizeField.setText("");
+			glLineWidth(1F);
+			glColor3f(0, 0, 0);
+			glBegin(GL_LINES);
+			{
+				for (int i = -8; i <= 8; i++) {
+					glVertex3i(i, 0, -8);
+					glVertex3i(i, 0, 8);
+				}
+
+				for (int i = -8; i <= 8; i++) {
+					glVertex3i(-8, 0, i);
+					glVertex3i(8, 0, i);
+				}
+			}
+			glEnd();
 		}
+		glPopMatrix();
+	}
+
+	public void drawAxis() {
+		glPushMatrix();
+		{
+			GL11.glLineWidth(5F);
+			glTranslatef(-8, 0, -8);
+			glBegin(GL_LINES);
+			{
+				glColor3f(0, 1, 0);
+				glVertex3f(20F, 0.01F, -1F);
+				glVertex3f(-1F, 0.01F, -1F);
+
+				glColor3f(1, 0, 0);
+				glVertex3f(-1F, 0.01F, -1F);
+				glVertex3f(-1F, 20F, -1F);
+
+				glColor3f(0, 0, 1);
+				glVertex3f(-1F, 0.01F, 20F);
+				glVertex3f(-1F, 0.01F, -1F);
+			}
+			glEnd();
+		}
+		glPopMatrix();
+	}
+
+	public Cube getSelected() {
+		int i = list.getSelectedIndex();
+		if (i != -1)
+			return (Cube) model.getElementAt(i);
+		return null;
 	}
 }

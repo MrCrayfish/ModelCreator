@@ -1,15 +1,18 @@
 package com.mrcrayfish.modelcreator;
 
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
 public class Cube
 {
-
 	private double startX, startY, startZ;
 	private double width, height, depth;
 
@@ -34,122 +37,31 @@ public class Cube
 
 	public void draw()
 	{
-		GL11.glColor3f(1.0F, 1.0F, 1.0F);
 		GL11.glEnable(GL_TEXTURE_2D);
-	
-		// Front
-		if (faces[0] != null)
-		{
-			faces[0].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX, startY + height, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX + width, startY + height, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY, -startZ);
-		}
-		GL11.glEnd();
-		
 		GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		// Back
-		if (faces[1] != null)
-		{
-			faces[1].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX + width, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY, -(startZ + depth));
-		}
-		GL11.glEnd();
-
-		if (faces[2] != null)
-		{
-			faces[2].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX, startY + height, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX() + (depth / 16), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (depth / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY, -(startZ + depth));
-		}
-		GL11.glEnd();
-
-		if (faces[3] != null)
-		{
-			faces[3].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX + width, startY + height, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX() + (depth / 16), faces[0].getTextureY() + (height / 16));
-			GL11.glVertex3d(startX + width, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (depth / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY, -(startZ + depth));
-		}
-		GL11.glEnd();
-
-		if (faces[4] != null)
-		{
-			faces[4].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (depth / 16));
-			GL11.glVertex3d(startX, startY, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY() + (depth / 16));
-			GL11.glVertex3d(startX + width, startY, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY, -startZ);
-		}
-		GL11.glEnd();
-
-		if (faces[5] != null)
-		{
-			faces[5].bindTexture();
-		}
-		GL11.glBegin(GL11.GL_QUADS);
-		{
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY());
-			GL11.glVertex3d(startX, startY + height, -startZ);
-			GL11.glTexCoord2d(faces[0].getTextureX(), faces[0].getTextureY() + (depth / 16));
-			GL11.glVertex3d(startX, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY() + (depth / 16));
-			GL11.glVertex3d(startX + width, startY + height, -(startZ + depth));
-			GL11.glTexCoord2d(faces[0].getTextureX() + (width / 16), faces[0].getTextureY());
-			GL11.glVertex3d(startX + width, startY + height, -startZ);
-		}
-		GL11.glEnd();
-		
+		GL11.glColor3f(1,0,0);
+		faces[0].render(startX, startY, -startZ, startX + width, startY + height, -startZ, width, height);
+		GL11.glColor3f(0,1,0);
+		faces[1].render(startX, startY, -(startZ + depth), startX + width, startY + height, -(startZ + depth), width, height);
+		GL11.glColor3f(0,0,1);
+		faces[2].render(startX, startY, -startZ, startX, startY + height, -(startZ + depth), depth, height);
+		GL11.glColor3f(1,1,0);
+		faces[3].render(startX + width, startY, -startZ, startX + width, startY + height, -(startZ + depth), depth, height);
+		GL11.glColor3f(1,0,1);
+		faces[4].render(startX, startY, -startZ, startX + width, startY, -(startZ + depth), width, depth);
+		GL11.glColor3f(0,1,1);
+		faces[5].render(startX, startY + height, -startZ, startX + width, startY + height, -(startZ + depth), width, depth);
 		GL11.glDisable(GL_TEXTURE_2D);
 	}
 
 	public void drawExtras()
 	{
-		GL11.glTranslated(startX, startY, -startZ);
-		sphere.draw(0.2F, 16, 16);
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslated(startX, startY, -startZ);
+			sphere.draw(0.2F, 16, 16);
+		}
+		GL11.glPopMatrix();
 	}
 
 	public void addStartX(double amt)

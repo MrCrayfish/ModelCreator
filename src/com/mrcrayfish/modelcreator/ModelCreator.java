@@ -28,7 +28,8 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class ModelCreator extends JFrame {
+public class ModelCreator extends JFrame
+{
 	private static final long serialVersionUID = 1L;
 
 	private final Canvas canvas;
@@ -49,7 +50,8 @@ public class ModelCreator extends JFrame {
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
 
-	public ModelCreator(String title) {
+	public ModelCreator(String title)
+	{
 		super(title);
 
 		layout = new SpringLayout();
@@ -64,16 +66,20 @@ public class ModelCreator extends JFrame {
 		initComponents();
 		setLayoutConstaints();
 
-		addWindowFocusListener(new WindowAdapter() {
+		addWindowFocusListener(new WindowAdapter()
+		{
 			@Override
-			public void windowGainedFocus(WindowEvent e) {
+			public void windowGainedFocus(WindowEvent e)
+			{
 				canvas.requestFocusInWindow();
 			}
 		});
 
-		addWindowListener(new WindowAdapter() {
+		addWindowListener(new WindowAdapter()
+		{
 			@Override
-			public void windowClosing(WindowEvent e) {
+			public void windowClosing(WindowEvent e)
+			{
 				closeRequested = true;
 			}
 		});
@@ -81,13 +87,16 @@ public class ModelCreator extends JFrame {
 		pack();
 		setVisible(true);
 
-		try {
+		try
+		{
 			Display.create();
-		} catch (LWJGLException e1) {
+		}
+		catch (LWJGLException e1)
+		{
 			e1.printStackTrace();
 		}
 		TextureManager.init();
-		
+
 		loop();
 
 		Display.destroy();
@@ -95,17 +104,20 @@ public class ModelCreator extends JFrame {
 		System.exit(0);
 	}
 
-	public void initComponents() {
+	public void initComponents()
+	{
 		canvas.setSize(new Dimension(1000, 700));
 		add(canvas);
 
-		btnAdd.addActionListener(e -> {
+		btnAdd.addActionListener(e ->
+		{
 			model.addElement(new Cube(1, 1, 1));
 		});
 		btnAdd.setPreferredSize(new Dimension(95, 30));
 		add(btnAdd);
 
-		btnRemove.addActionListener(e -> {
+		btnRemove.addActionListener(e ->
+		{
 			int selected = list.getSelectedIndex();
 			if (selected != -1)
 				model.remove(selected);
@@ -114,7 +126,8 @@ public class ModelCreator extends JFrame {
 		add(btnRemove);
 
 		list.setModel(model);
-		list.addListSelectionListener(e -> {
+		list.addListSelectionListener(e ->
+		{
 			int selected = list.getSelectedIndex();
 			updateValues(selected);
 		});
@@ -130,84 +143,79 @@ public class ModelCreator extends JFrame {
 		add(panelPosition);
 	}
 
-	public void setLayoutConstaints() {
-		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 1005,
-				SpringLayout.WEST, this);
+	public void setLayoutConstaints()
+	{
+		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, scrollPane, 1005, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 310,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnAdd, 1003,
-				SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102,
-				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, btnAdd, 310, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, btnAdd, 1003, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, divider_1, 347,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, divider_1, 1003,
-				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, divider_1, 347, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, divider_1, 1003, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, panelSize, 350,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, panelSize, 1003,
-				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, panelSize, 350, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, panelSize, 1003, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, panelPosition, 480,
-				SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, panelPosition, 1003,
-				SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, panelPosition, 480, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, panelPosition, 1003, SpringLayout.WEST, this);
 	}
 
-	public void initDisplay() {
-		try {
+	public void initDisplay()
+	{
+		try
+		{
 			Display.setParent(canvas);
 			Display.setVSyncEnabled(true);
 			Display.setInitialBackground(0.75F, 0.75F, 0.75F);
-		} catch (LWJGLException e) {
+		}
+		catch (LWJGLException e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	private void loop() {
-		camera = new Camera(60, (float) Display.getWidth()
-				/ (float) Display.getHeight(), 0.3F, 1000);
+	private void loop()
+	{
+		camera = new Camera(60, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000);
 
 		Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
 		TrueTypeFont font = new TrueTypeFont(awtFont, true);
 
-		while (!Display.isCloseRequested() && !closeRequested) {
+		while (!Display.isCloseRequested() && !closeRequested)
+		{
 			handleInput();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			camera.useView();
-			glPushMatrix();
+			glScalef(0.25F, 0.25F, 0.25F);
+			drawGrid();
+			drawAxis();
+			glTranslatef(-8, 0, 8);
+			for (int i = 0; i < model.size(); i++)
 			{
-				glScalef(0.25F, 0.25F, 0.25F);
-				drawGrid();
-				drawAxis();
-				glTranslatef(-8, 0, 8);
-				for (int i = 0; i < model.size(); i++) {
-					Cube cube = (Cube) model.getElementAt(i);
-					cube.draw();
-					cube.drawExtras();
-				}
+				Cube cube = (Cube) model.getElementAt(i);
+				cube.draw();
+				cube.drawExtras();
 			}
-			glPopMatrix();
 
 			Display.update();
 		}
 		System.out.println("Hey");
 	}
 
-	public void handleInput() {
-		if (Mouse.isButtonDown(0)) {
+	public void handleInput()
+	{
+		if (Mouse.isButtonDown(0))
+		{
 			camera.addX((float) Mouse.getDX() * 0.01F);
 			camera.addY((float) Mouse.getDY() * 0.01F);
-		} else if (Mouse.isButtonDown(1)) {
+		}
+		else if (Mouse.isButtonDown(1))
+		{
 			camera.rotateY((float) Mouse.getDX() * 0.5F);
 			camera.rotateX(-(float) Mouse.getDY() * 0.5F);
 		}
@@ -215,21 +223,26 @@ public class ModelCreator extends JFrame {
 		camera.addZ((float) Mouse.getDWheel() / 100F);
 	}
 
-	public void updateValues(int selected) {
-		if (getSelected() != null) {
+	public void updateValues(int selected)
+	{
+		if (getSelected() != null)
+		{
 			Cube cube = getSelected();
 			// DecimalFormat df = new DecimalFormat("#.#");
 			// xSizeField.setText(df.format(cube.getMaxX()));
 			// ySizeField.setText(df.format(cube.getMaxY()));
 			// zSizeField.setText(df.format(cube.getMaxZ()));
-		} else {
+		}
+		else
+		{
 			// xSizeField.setText("");
 			// ySizeField.setText("");
 			// zSizeField.setText("");
 		}
 	}
 
-	public void drawGrid() {
+	public void drawGrid()
+	{
 		glPushMatrix();
 		{
 			glColor3f(0, 0, 0);
@@ -253,12 +266,14 @@ public class ModelCreator extends JFrame {
 			glLineWidth(1F);
 			glBegin(GL_LINES);
 			{
-				for (int i = -7; i <= 7; i++) {
+				for (int i = -7; i <= 7; i++)
+				{
 					glVertex3i(i, 0, -8);
 					glVertex3i(i, 0, 8);
 				}
 
-				for (int i = -7; i <= 7; i++) {
+				for (int i = -7; i <= 7; i++)
+				{
 					glVertex3i(-8, 0, i);
 					glVertex3i(8, 0, i);
 				}
@@ -268,7 +283,8 @@ public class ModelCreator extends JFrame {
 		glPopMatrix();
 	}
 
-	public void drawAxis() {
+	public void drawAxis()
+	{
 		glPushMatrix();
 		{
 			GL11.glLineWidth(5F);
@@ -292,7 +308,8 @@ public class ModelCreator extends JFrame {
 		glPopMatrix();
 	}
 
-	public Cube getSelected() {
+	public Cube getSelected()
+	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
 			return (Cube) model.getElementAt(i);

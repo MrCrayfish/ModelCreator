@@ -19,13 +19,14 @@ import static org.lwjgl.opengl.GL11.glVertex3i;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -39,11 +40,12 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 
 import com.mrcrayfish.modelcreator.panels.PropertiesTabs;
 import com.mrcrayfish.modelcreator.panels.TabPanel;
+import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class ModelCreator extends JFrame
 {
@@ -64,6 +66,8 @@ public class ModelCreator extends JFrame
 	private PropertiesTabs tabbedPane = new PropertiesTabs(this);
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
+
+	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
 
 	public ModelCreator(String title)
 	{
@@ -188,7 +192,7 @@ public class ModelCreator extends JFrame
 		tabbedPane.add("Size", new TabPanel(this, TabPanel.Type.SIZE));
 		tabbedPane.add("Position", new TabPanel(this, TabPanel.Type.POSITION));
 		tabbedPane.add("Faces", new TabPanel(this, TabPanel.Type.TEXTURE));
-		tabbedPane.setPreferredSize(new Dimension(190,300));
+		tabbedPane.setPreferredSize(new Dimension(190, 300));
 		add(tabbedPane);
 	}
 
@@ -227,11 +231,17 @@ public class ModelCreator extends JFrame
 	{
 		camera = new Camera(60, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000);
 
-		Font awtFont = new Font("Times New Roman", Font.PLAIN, 24);
-		TrueTypeFont font = new TrueTypeFont(awtFont, true);
-
 		while (!Display.isCloseRequested() && !closeRequested)
 		{
+			synchronized (this)
+			{
+				for (PendingTexture texture : pendingTextures)
+				{
+					texture.load();
+				}
+				pendingTextures.clear();
+			}
+
 			handleInput();
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -267,24 +277,6 @@ public class ModelCreator extends JFrame
 		}
 
 		camera.addZ((float) Mouse.getDWheel() / 100F);
-	}
-
-	public void updateValues(int selected)
-	{
-		if (getSelectedCube() != null)
-		{
-			Cube cube = getSelectedCube();
-			// DecimalFormat df = new DecimalFormat("#.#");
-			// xSizeField.setText(df.format(cube.getMaxX()));
-			// ySizeField.setText(df.format(cube.getMaxY()));
-			// zSizeField.setText(df.format(cube.getMaxZ()));
-		}
-		else
-		{
-			// xSizeField.setText("");
-			// ySizeField.setText("");
-			// zSizeField.setText("");
-		}
 	}
 
 	public void drawGrid()

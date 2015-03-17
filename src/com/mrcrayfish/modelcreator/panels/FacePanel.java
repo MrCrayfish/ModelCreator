@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
@@ -20,8 +19,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private ModelCreator creator;
 
 	private JComboBox<String> menu;
-	private JButton btnTexture;
-	private TexturePosPanel panel;
+	private UVPanel panelUV;
+	private TexturePanel panelTexture;
 
 	private DefaultComboBoxModel<String> model;
 
@@ -29,6 +28,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 	{
 		this.creator = creator;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setAlignmentX(LEFT_ALIGNMENT);
 		initMenu();
 		initComponents();
 		addComponents();
@@ -49,21 +49,28 @@ public class FacePanel extends JPanel implements IValueUpdater
 	{
 		menu = new JComboBox<String>();
 		menu.setModel(model);
-		btnTexture = new JButton("Select Texture");
-		panel = new TexturePosPanel(creator);
+		menu.setPreferredSize(new Dimension(190, 30));
+		menu.addActionListener(e ->
+		{
+			creator.getSelectedCube().setSelectedFace(menu.getSelectedIndex());
+		});
+		
+		panelTexture = new TexturePanel(creator);
+		panelUV = new UVPanel(creator);
 	}
 
 	public void addComponents()
 	{
 		add(menu);
-		add(Box.createRigidArea(new Dimension(0,5)));
-		add(btnTexture);
-		add(panel);
+		add(Box.createRigidArea(new Dimension(0, 5)));
+		add(panelTexture);
+		add(panelUV);
 	}
 
 	@Override
 	public void updateValues(Cube cube)
 	{
-
+		menu.setSelectedIndex(cube.getSelectedFaceIndex());
+		panelUV.updateValues(cube);
 	}
 }

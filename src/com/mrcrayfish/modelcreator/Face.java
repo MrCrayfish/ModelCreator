@@ -19,13 +19,24 @@ public class Face
 			bindTexture();
 			GL11.glBegin(GL11.GL_QUADS);
 			{
-				if(binded)GL11.glTexCoord2d(fitTexture ? 0 : textureX, fitTexture ? 0 : textureY);
+				// Top Right
+				if (binded)
+					GL11.glTexCoord2d(fitTexture ? 1 : 1 - (textureX / 16), fitTexture ? 1 : 1 - (textureY / 16));
 				GL11.glVertex3d(startX, startY, startZ);
-				if(binded)GL11.glTexCoord2d(fitTexture ? 0 : textureX, fitTexture ? 1 : textureY + (cubeH / 16));
+
+				// Bottom Right
+				if (binded)
+					GL11.glTexCoord2d(fitTexture ? 1 : 1 - (textureX / 16), fitTexture ? 0 : 1 - ((textureY / 16) + (cubeH / 16)));
 				GL11.glVertex3d(startX, startY != endY ? endY : startY, startY != endY ? startZ : endZ);
-				if(binded)GL11.glTexCoord2d(fitTexture ? 1 : textureX + (cubeW / 16), fitTexture ? 1 : textureY + (cubeH / 16));
+
+				// Bottom Left
+				if (binded)
+					GL11.glTexCoord2d(fitTexture ? 0 : 1 - ((textureX / 16) + (cubeW / 16)), fitTexture ? 0 : 1 - ((textureY / 16) + (cubeH / 16)));
 				GL11.glVertex3d(endX, endY, endZ);
-				if(binded)GL11.glTexCoord2d(fitTexture ? 1 : textureX + (cubeW / 16), fitTexture ? 0 : textureY);
+
+				// Top Left
+				if (binded)
+					GL11.glTexCoord2d(fitTexture ? 0 : 1 - ((textureX / 16) + (cubeW / 16)), fitTexture ? 1 : 1 - (textureY / 16));
 				GL11.glVertex3d(endX, startY != endY ? startY : endY, startY != endY ? endZ : startZ);
 			}
 			GL11.glEnd();
@@ -72,6 +83,11 @@ public class Face
 	public double getTextureY()
 	{
 		return textureY;
+	}
+	
+	public Texture getTexture()
+	{
+		return texture;
 	}
 
 	public void fitTexture(boolean fitTexture)

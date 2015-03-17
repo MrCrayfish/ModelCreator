@@ -5,13 +5,17 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import com.mrcrayfish.modelcreator.texture.TextureManager;
+
 public class Cube
 {
 	private double startX, startY, startZ;
 	private double width, height, depth;
 
 	private String name = "Cube";
+	private int selectedFace = 0;
 	private Face[] faces = new Face[6];
+	
 	private Sphere sphere = new Sphere();
 
 	public Cube(double width, double height, double depth)
@@ -29,9 +33,19 @@ public class Cube
 		faces[1].setTexture(TextureManager.dirt);
 	}
 	
+	public void setSelectedFace(int face)
+	{
+		this.selectedFace = face;
+	}
+	
 	public Face getSelectedFace()
 	{
-		return null;
+		return faces[selectedFace];
+	}
+	
+	public int getSelectedFaceIndex()
+	{
+		return selectedFace;
 	}
 
 	public void draw()

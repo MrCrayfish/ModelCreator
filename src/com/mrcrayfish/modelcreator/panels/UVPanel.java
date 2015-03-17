@@ -12,9 +12,10 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Cube;
 import com.mrcrayfish.modelcreator.Face;
+import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
-public class TexturePosPanel extends JPanel
+public class UVPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +27,7 @@ public class TexturePosPanel extends JPanel
 	private JButton btnNegX;
 	private JButton btnNegY;
 
-	public TexturePosPanel(ModelCreator creator)
+	public UVPanel(ModelCreator creator)
 	{
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
@@ -144,5 +145,12 @@ public class TexturePosPanel extends JPanel
 		add(yStartField);
 		add(btnNegX);
 		add(btnNegY);
+	}
+
+	@Override
+	public void updateValues(Cube cube)
+	{
+		xStartField.setText(cube.getSelectedFace().getTextureX() + "");
+		yStartField.setText(cube.getSelectedFace().getTextureY() + "");
 	}
 }

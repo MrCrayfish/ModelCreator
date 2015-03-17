@@ -39,8 +39,8 @@ public class ModelCreator extends JFrame
 
 	public boolean closeRequested = false;
 
-	private JPanel panelSize = new SizePanel(this);
-	private JPanel panelPosition = new PositionPanel(this);
+	private SizePanel panelSize = new SizePanel(this);
+	private PositionPanel panelPosition = new PositionPanel(this);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JList<Cube> list = new JList<Cube>();
@@ -112,6 +112,7 @@ public class ModelCreator extends JFrame
 		btnAdd.addActionListener(e ->
 		{
 			model.addElement(new Cube(1, 1, 1));
+			list.setSelectedIndex(model.size() - 1);
 		});
 		btnAdd.setPreferredSize(new Dimension(95, 30));
 		add(btnAdd);
@@ -128,8 +129,10 @@ public class ModelCreator extends JFrame
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			int selected = list.getSelectedIndex();
-			updateValues(selected);
+			Cube cube = getSelected();
+			if (cube != null)
+				panelSize.updateValues(cube);
+				panelPosition.updateValues(cube);
 		});
 
 		scrollPane = new JScrollPane(list);

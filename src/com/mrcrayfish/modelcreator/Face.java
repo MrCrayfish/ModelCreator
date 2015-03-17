@@ -84,7 +84,7 @@ public class Face
 	{
 		return textureY;
 	}
-	
+
 	public Texture getTexture()
 	{
 		return texture;

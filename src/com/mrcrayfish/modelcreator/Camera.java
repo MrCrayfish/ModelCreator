@@ -1,9 +1,18 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.util.glu.GLU.*;
-
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTexParameterf;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.util.glu.GLU.gluPerspective;
 
 public class Camera
 {
@@ -118,22 +127,22 @@ public class Camera
 		z += amt * Math.sin(Math.toRadians(ry + 90 * dir));
 		x += amt * Math.cos(Math.toRadians(ry + 90 * dir));
 	}
-	
+
 	public void addX(float amt)
 	{
 		x += amt;
 	}
-	
+
 	public void addY(float amt)
 	{
 		y += amt;
 	}
-	
+
 	public void addZ(float amt)
 	{
 		z += amt;
 	}
-	
+
 	public void rotateX(float amt)
 	{
 		rx += amt;

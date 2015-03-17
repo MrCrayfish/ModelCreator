@@ -1,11 +1,9 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;

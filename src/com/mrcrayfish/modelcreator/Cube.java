@@ -1,6 +1,8 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
@@ -15,7 +17,7 @@ public class Cube
 	private String name = "Cube";
 	private int selectedFace = 0;
 	private Face[] faces = new Face[6];
-	
+
 	private Sphere sphere = new Sphere();
 
 	public Cube(double width, double height, double depth)
@@ -32,17 +34,17 @@ public class Cube
 			faces[i] = new Face();
 		faces[1].setTexture(TextureManager.dirt);
 	}
-	
+
 	public void setSelectedFace(int face)
 	{
 		this.selectedFace = face;
 	}
-	
+
 	public Face getSelectedFace()
 	{
 		return faces[selectedFace];
 	}
-	
+
 	public int getSelectedFaceIndex()
 	{
 		return selectedFace;
@@ -52,17 +54,17 @@ public class Cube
 	{
 		GL11.glEnable(GL_TEXTURE_2D);
 		GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		GL11.glColor3f(1,0,0);
+		GL11.glColor3f(1, 0, 0);
 		faces[0].render(startX, startY, -startZ, startX + width, startY + height, -startZ, width, height);
-		GL11.glColor3f(0,1,0);
+		GL11.glColor3f(0, 1, 0);
 		faces[1].render(startX, startY, -(startZ + depth), startX + width, startY + height, -(startZ + depth), width, height);
-		GL11.glColor3f(0,0,1);
+		GL11.glColor3f(0, 0, 1);
 		faces[2].render(startX, startY, -startZ, startX, startY + height, -(startZ + depth), depth, height);
-		GL11.glColor3f(1,1,0);
+		GL11.glColor3f(1, 1, 0);
 		faces[3].render(startX + width, startY, -startZ, startX + width, startY + height, -(startZ + depth), depth, height);
-		GL11.glColor3f(1,0,1);
+		GL11.glColor3f(1, 0, 1);
 		faces[4].render(startX, startY, -startZ, startX + width, startY, -(startZ + depth), width, depth);
-		GL11.glColor3f(0,1,1);
+		GL11.glColor3f(0, 1, 1);
 		faces[5].render(startX, startY + height, -startZ, startX + width, startY + height, -(startZ + depth), width, depth);
 		GL11.glDisable(GL_TEXTURE_2D);
 	}
@@ -136,7 +138,7 @@ public class Cube
 	{
 		this.depth += amt;
 	}
-	
+
 	public void setName(String name)
 	{
 		this.name = name;

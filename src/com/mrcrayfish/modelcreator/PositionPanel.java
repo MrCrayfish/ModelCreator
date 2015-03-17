@@ -34,7 +34,6 @@ public class PositionPanel extends JPanel {
 	public PositionPanel(ModelCreator creator) {
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("Position"));
 		initComponents();
 		initProperties();
 		addComponents();

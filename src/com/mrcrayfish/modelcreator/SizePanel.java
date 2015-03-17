@@ -33,7 +33,6 @@ public class SizePanel extends JPanel {
 	public SizePanel(ModelCreator creator) {
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("Size"));
 		initComponents();
 		initProperties();
 		addComponents();

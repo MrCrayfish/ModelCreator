@@ -1,21 +1,35 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.glVertex3i;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
 import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
@@ -25,8 +39,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 
 public class ModelCreator extends JFrame
 {
@@ -39,14 +51,13 @@ public class ModelCreator extends JFrame
 
 	public boolean closeRequested = false;
 
+	private JTabbedPane tabbedPane = new JTabbedPane();
 	private SizePanel panelSize = new SizePanel(this);
 	private PositionPanel panelPosition = new PositionPanel(this);
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JList<Cube> list = new JList<Cube>();
 	private JScrollPane scrollPane;
-
-	private JSeparator divider_1 = new JSeparator(SwingConstants.HORIZONTAL);
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
 
@@ -58,7 +69,7 @@ public class ModelCreator extends JFrame
 		canvas = new Canvas();
 
 		setResizable(false);
-		setPreferredSize(new Dimension(1200, 700));
+		setPreferredSize(new Dimension(1400, 700));
 		setLayout(layout);
 
 		initDisplay();
@@ -139,11 +150,9 @@ public class ModelCreator extends JFrame
 		scrollPane.setPreferredSize(new Dimension(190, 300));
 		add(scrollPane);
 
-		divider_1.setPreferredSize(new Dimension(190, 1));
-		add(divider_1);
-
-		add(panelSize);
-		add(panelPosition);
+		tabbedPane.add("Size", panelSize);
+		tabbedPane.add("Position", panelPosition);
+		add(tabbedPane);
 	}
 
 	public void setLayoutConstaints()
@@ -156,14 +165,8 @@ public class ModelCreator extends JFrame
 		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, divider_1, 347, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, divider_1, 1003, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, panelSize, 350, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, panelSize, 1003, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, panelPosition, 480, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, panelPosition, 1003, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 341, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, tabbedPane, 1005, SpringLayout.WEST, this);
 	}
 
 	public void initDisplay()

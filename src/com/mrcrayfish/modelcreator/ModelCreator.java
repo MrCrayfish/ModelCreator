@@ -32,7 +32,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
@@ -42,6 +41,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
+
+import com.mrcrayfish.modelcreator.panels.PropertiesTabs;
+import com.mrcrayfish.modelcreator.panels.TabPanel;
 
 public class ModelCreator extends JFrame
 {
@@ -59,9 +61,7 @@ public class ModelCreator extends JFrame
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JTextField name = new JTextField();
-	private JTabbedPane tabbedPane = new JTabbedPane();
-	private SizePanel panelSize = new SizePanel(this);
-	private PositionPanel panelPosition = new PositionPanel(this);
+	private PropertiesTabs tabbedPane = new PropertiesTabs(this);
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
 
@@ -172,11 +172,10 @@ public class ModelCreator extends JFrame
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			Cube cube = getSelected();
+			Cube cube = getSelectedCube();
 			if (cube != null)
 			{
-				panelSize.updateValues(cube);
-				panelPosition.updateValues(cube);
+				tabbedPane.updateValues();
 				name.setEnabled(true);
 				name.setText(cube.toString());
 			}
@@ -186,8 +185,10 @@ public class ModelCreator extends JFrame
 		scrollPane.setPreferredSize(new Dimension(190, 200));
 		add(scrollPane);
 
-		tabbedPane.add("Size", panelSize);
-		tabbedPane.add("Position", panelPosition);
+		tabbedPane.add("Size", new TabPanel(this, TabPanel.Type.SIZE));
+		tabbedPane.add("Position", new TabPanel(this, TabPanel.Type.POSITION));
+		tabbedPane.add("Faces", new TabPanel(this, TabPanel.Type.TEXTURE));
+		tabbedPane.setPreferredSize(new Dimension(190,300));
 		add(tabbedPane);
 	}
 
@@ -270,9 +271,9 @@ public class ModelCreator extends JFrame
 
 	public void updateValues(int selected)
 	{
-		if (getSelected() != null)
+		if (getSelectedCube() != null)
 		{
-			Cube cube = getSelected();
+			Cube cube = getSelectedCube();
 			// DecimalFormat df = new DecimalFormat("#.#");
 			// xSizeField.setText(df.format(cube.getMaxX()));
 			// ySizeField.setText(df.format(cube.getMaxY()));
@@ -353,20 +354,20 @@ public class ModelCreator extends JFrame
 		glPopMatrix();
 	}
 
-	public Cube getSelected()
+	public Cube getSelectedCube()
 	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
 			return (Cube) model.getElementAt(i);
 		return null;
 	}
-	
+
 	public void updateName()
 	{
 		String newName = name.getText();
 		if (newName.isEmpty())
 			newName = "Cuboid";
-		Cube cube = getSelected();
+		Cube cube = getSelectedCube();
 		if (cube != null)
 		{
 			cube.setName(newName);

@@ -28,6 +28,11 @@ public class Cube
 			faces[i] = new Face();
 		faces[1].setTexture(TextureManager.dirt);
 	}
+	
+	public Face getSelectedFace()
+	{
+		return null;
+	}
 
 	public void draw()
 	{

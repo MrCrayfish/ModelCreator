@@ -1,4 +1,4 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -7,13 +7,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SizePanel extends JPanel {
+import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.ModelCreator;
 
+public class SizePanel extends JPanel implements IValueUpdater
+{
 	private static final long serialVersionUID = 1L;
 
 	private ModelCreator creator;
@@ -27,10 +30,12 @@ public class SizePanel extends JPanel {
 	private JButton btnNegX;
 	private JButton btnNegY;
 	private JButton btnNegZ;
-	
+
 	private DecimalFormat df = new DecimalFormat("#.#");
 
-	public SizePanel(ModelCreator creator) {
+	public SizePanel(ModelCreator creator)
+	{
+		super();
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		initComponents();
@@ -38,7 +43,8 @@ public class SizePanel extends JPanel {
 		addComponents();
 	}
 
-	public void initComponents() {
+	public void initComponents()
+	{
 		btnPlusX = new JButton("+");
 		btnPlusY = new JButton("+");
 		btnPlusZ = new JButton("+");
@@ -50,7 +56,8 @@ public class SizePanel extends JPanel {
 		btnNegZ = new JButton("-");
 	}
 
-	public void initProperties() {
+	public void initProperties()
+	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xSizeField.setSize(new Dimension(62, 30));
 		xSizeField.setFont(defaultFont);
@@ -67,17 +74,23 @@ public class SizePanel extends JPanel {
 		zSizeField.setEditable(false);
 		zSizeField.setHorizontalAlignment(JTextField.CENTER);
 
-		btnPlusX.addMouseListener(new MouseAdapter() {
+		btnPlusX.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addWidth(0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addWidth(1.0F);
 					}
 					xSizeField.setText(cube.getWidth() + "");
@@ -86,17 +99,23 @@ public class SizePanel extends JPanel {
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
 
-		btnPlusY.addMouseListener(new MouseAdapter() {
+		btnPlusY.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addHeight(0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addHeight(1.0F);
 					}
 					ySizeField.setText(cube.getHeight() + "");
@@ -105,17 +124,23 @@ public class SizePanel extends JPanel {
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 
-		btnPlusZ.addMouseListener(new MouseAdapter() {
+		btnPlusZ.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addDepth(0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addDepth(1.0F);
 					}
 					zSizeField.setText(cube.getDepth() + "");
@@ -124,17 +149,23 @@ public class SizePanel extends JPanel {
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
 
-		btnNegX.addMouseListener(new MouseAdapter() {
+		btnNegX.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addWidth(-0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addWidth(-1.0F);
 					}
 					xSizeField.setText(cube.getWidth() + "");
@@ -143,17 +174,23 @@ public class SizePanel extends JPanel {
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
 
-		btnNegY.addMouseListener(new MouseAdapter() {
+		btnNegY.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addHeight(-0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addHeight(-1.0F);
 					}
 					ySizeField.setText(cube.getHeight() + "");
@@ -162,17 +199,23 @@ public class SizePanel extends JPanel {
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
 
-		btnNegZ.addMouseListener(new MouseAdapter() {
+		btnNegZ.addMouseListener(new MouseAdapter()
+		{
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent e)
+			{
 				if (e.getButton() != 1)
 					return;
 
-				if (creator.getSelected() != null) {
-					Cube cube = creator.getSelected();
-					if (e.isShiftDown()) {
+				if (creator.getSelectedCube() != null)
+				{
+					Cube cube = creator.getSelectedCube();
+					if (e.isShiftDown())
+					{
 						cube.addDepth(-0.1F);
-					} else {
+					}
+					else
+					{
 						cube.addDepth(-1.0F);
 					}
 					zSizeField.setText(cube.getDepth() + "");
@@ -182,7 +225,8 @@ public class SizePanel extends JPanel {
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
 	}
 
-	public void addComponents() {
+	public void addComponents()
+	{
 		add(btnPlusX);
 		add(btnPlusY);
 		add(btnPlusZ);
@@ -193,14 +237,18 @@ public class SizePanel extends JPanel {
 		add(btnNegY);
 		add(btnNegZ);
 	}
-	
+
+	@Override
 	public void updateValues(Cube cube)
 	{
-		if (cube != null) {
+		if (cube != null)
+		{
 			xSizeField.setText(df.format(cube.getWidth()));
 			ySizeField.setText(df.format(cube.getHeight()));
 			zSizeField.setText(df.format(cube.getDepth()));
-		} else {
+		}
+		else
+		{
 			xSizeField.setText("");
 			ySizeField.setText("");
 			zSizeField.setText("");

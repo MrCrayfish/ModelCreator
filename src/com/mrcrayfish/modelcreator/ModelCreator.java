@@ -20,6 +20,10 @@ import static org.lwjgl.opengl.GL11.glVertex3i;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -28,10 +32,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
@@ -51,13 +54,14 @@ public class ModelCreator extends JFrame
 
 	public boolean closeRequested = false;
 
+	private JList<Cube> list = new JList<Cube>();
+	private JScrollPane scrollPane;
+	private JButton btnAdd = new JButton("Add");
+	private JButton btnRemove = new JButton("Remove");
+	private JTextField name = new JTextField();
 	private JTabbedPane tabbedPane = new JTabbedPane();
 	private SizePanel panelSize = new SizePanel(this);
 	private PositionPanel panelPosition = new PositionPanel(this);
-	private JButton btnAdd = new JButton("Add");
-	private JButton btnRemove = new JButton("Remove");
-	private JList<Cube> list = new JList<Cube>();
-	private JScrollPane scrollPane;
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
 
@@ -69,7 +73,7 @@ public class ModelCreator extends JFrame
 		canvas = new Canvas();
 
 		setResizable(false);
-		setPreferredSize(new Dimension(1400, 700));
+		setPreferredSize(new Dimension(1200, 700));
 		setLayout(layout);
 
 		initDisplay();
@@ -132,22 +136,54 @@ public class ModelCreator extends JFrame
 		{
 			int selected = list.getSelectedIndex();
 			if (selected != -1)
+			{
 				model.remove(selected);
+				name.setText("");
+				name.setEnabled(false);
+			}
 		});
 		btnRemove.setPreferredSize(new Dimension(95, 30));
 		add(btnRemove);
+
+		name.setPreferredSize(new Dimension(190, 30));
+		name.setToolTipText("Placeholder");
+		name.setEnabled(false);
+		name.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					updateName();
+				}
+			}
+		});
+		name.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				updateName();
+			}
+		});
+		add(name);
 
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
 			Cube cube = getSelected();
 			if (cube != null)
+			{
 				panelSize.updateValues(cube);
 				panelPosition.updateValues(cube);
+				name.setEnabled(true);
+				name.setText(cube.toString());
+			}
 		});
 
 		scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new Dimension(190, 300));
+		scrollPane.setPreferredSize(new Dimension(190, 200));
 		add(scrollPane);
 
 		tabbedPane.add("Size", panelSize);
@@ -157,15 +193,18 @@ public class ModelCreator extends JFrame
 
 	public void setLayoutConstaints()
 	{
+		layout.putConstraint(SpringLayout.NORTH, name, 245, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, name, 1005, SpringLayout.WEST, this);
+
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, scrollPane, 1005, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 310, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnAdd, 210, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, btnAdd, 1003, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 310, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnRemove, 210, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, btnRemove, 1102, SpringLayout.WEST, this);
 
-		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 341, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 281, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.WEST, tabbedPane, 1005, SpringLayout.WEST, this);
 	}
 
@@ -320,5 +359,19 @@ public class ModelCreator extends JFrame
 		if (i != -1)
 			return (Cube) model.getElementAt(i);
 		return null;
+	}
+	
+	public void updateName()
+	{
+		String newName = name.getText();
+		if (newName.isEmpty())
+			newName = "Cuboid";
+		Cube cube = getSelected();
+		if (cube != null)
+		{
+			cube.setName(newName);
+			name.setText(newName);
+			list.updateUI();
+		}
 	}
 }

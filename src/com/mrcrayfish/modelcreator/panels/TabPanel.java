@@ -9,7 +9,7 @@ import com.mrcrayfish.modelcreator.ModelCreator;
 public class TabPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	public JPanel panel;
 
 	public TabPanel(ModelCreator creator, Type type)
@@ -22,11 +22,8 @@ public class TabPanel extends JPanel
 	{
 		switch (type)
 		{
-		case SIZE:
-			panel = new SizePanel(creator);
-			break;
-		case POSITION:
-			panel = new PositionPanel(creator);
+		case PROPERTIES:
+			panel = new PropertiesPanel(creator);
 			break;
 		case TEXTURE:
 			panel = new FacePanel(creator);
@@ -34,7 +31,7 @@ public class TabPanel extends JPanel
 		}
 		add(panel);
 	}
-	
+
 	public JPanel getPanel()
 	{
 		return panel;
@@ -42,6 +39,6 @@ public class TabPanel extends JPanel
 
 	public static enum Type
 	{
-		SIZE, POSITION, TEXTURE;
+		PROPERTIES, TEXTURE;
 	}
 }

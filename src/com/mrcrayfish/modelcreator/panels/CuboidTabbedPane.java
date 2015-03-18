@@ -9,13 +9,13 @@ import com.mrcrayfish.modelcreator.Cube;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
-public class PropertiesTabs extends JTabbedPane
+public class CuboidTabbedPane extends JTabbedPane
 {
 	private static final long serialVersionUID = 1L;
 
 	private ModelCreator creator;
 
-	public PropertiesTabs(ModelCreator creator)
+	public CuboidTabbedPane(ModelCreator creator)
 	{
 		this.creator = creator;
 	}

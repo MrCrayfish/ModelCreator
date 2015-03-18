@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
+import org.newdawn.slick.opengl.Texture;
 
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 
@@ -48,6 +49,22 @@ public class Cube
 	public int getSelectedFaceIndex()
 	{
 		return selectedFace;
+	}
+	
+	public void clearAllTextures()
+	{
+		for(Face face : faces)
+		{
+			face.setTexture(null);
+		}
+	}
+	
+	public void setAllTextures(Texture texture)
+	{
+		for(Face face : faces)
+		{
+			face.setTexture(texture);
+		}
 	}
 
 	public void draw()

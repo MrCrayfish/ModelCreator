@@ -26,11 +26,13 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 	private JButton btnClear;
 	private JButton btnCopy;
 	private JButton btnPaste;
+	private JButton btnClearAll;
+	private JButton btnPasteAll;
 
 	public TexturePanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(2, 2));
+		setLayout(new GridLayout(3, 2));
 		setBorder(BorderFactory.createTitledBorder("Texture"));
 		initComponents();
 		addComponents();
@@ -81,6 +83,20 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 				creator.getSelectedCube().getSelectedFace().setTexture(texture);
 			}
 		});
+		
+		btnClearAll = new JButton("Clear All");
+		btnClearAll.addActionListener(e ->{
+			creator.getSelectedCube().clearAllTextures();
+		});
+		
+		btnPasteAll = new JButton("Paste All");
+		btnPasteAll.addActionListener(e ->{
+			Texture texture = Clipboard.getTexture();
+			if (texture != null)
+			{
+				creator.getSelectedCube().setAllTextures(texture);
+			}
+		});
 	}
 
 	public void addComponents()
@@ -89,6 +105,8 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		add(btnClear);
 		add(btnCopy);
 		add(btnPaste);
+		add(btnClearAll);
+		add(btnPasteAll);
 	}
 
 	@Override

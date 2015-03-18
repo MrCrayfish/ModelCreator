@@ -42,7 +42,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
-import com.mrcrayfish.modelcreator.panels.PropertiesTabs;
+import com.mrcrayfish.modelcreator.panels.CuboidTabbedPane;
 import com.mrcrayfish.modelcreator.panels.TabPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
@@ -63,7 +63,7 @@ public class ModelCreator extends JFrame
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JTextField name = new JTextField();
-	private PropertiesTabs tabbedPane = new PropertiesTabs(this);
+	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
 	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
 
@@ -77,7 +77,7 @@ public class ModelCreator extends JFrame
 		canvas = new Canvas();
 
 		setResizable(false);
-		setPreferredSize(new Dimension(1200, 700));
+		setPreferredSize(new Dimension(1200, 800));
 		setLayout(layout);
 
 		initDisplay();
@@ -125,7 +125,7 @@ public class ModelCreator extends JFrame
 
 	public void initComponents()
 	{
-		canvas.setSize(new Dimension(1000, 700));
+		canvas.setSize(new Dimension(1000, 800));
 		add(canvas);
 
 		btnAdd.addActionListener(e ->
@@ -189,10 +189,9 @@ public class ModelCreator extends JFrame
 		scrollPane.setPreferredSize(new Dimension(190, 200));
 		add(scrollPane);
 
-		tabbedPane.add("Size", new TabPanel(this, TabPanel.Type.SIZE));
-		tabbedPane.add("Position", new TabPanel(this, TabPanel.Type.POSITION));
+		tabbedPane.add("Properties", new TabPanel(this, TabPanel.Type.PROPERTIES));
 		tabbedPane.add("Faces", new TabPanel(this, TabPanel.Type.TEXTURE));
-		tabbedPane.setPreferredSize(new Dimension(190, 300));
+		tabbedPane.setPreferredSize(new Dimension(190, 350));
 		add(tabbedPane);
 	}
 

@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -35,6 +36,7 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 	public PositionPanel(ModelCreator creator) {
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
+		setBorder(BorderFactory.createTitledBorder("Position"));
 		initComponents();
 		initProperties();
 		addComponents();

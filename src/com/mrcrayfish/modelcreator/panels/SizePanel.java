@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -38,6 +39,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		super();
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
+		setBorder(BorderFactory.createTitledBorder("Size"));
 		initComponents();
 		initProperties();
 		addComponents();

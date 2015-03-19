@@ -269,9 +269,11 @@ public class ModelCreator extends JFrame
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			camera.useView();
+			
 			glScalef(0.25F, 0.25F, 0.25F);
 			drawGrid();
 			drawAxis();
+			
 			glTranslatef(-8, 0, 8);
 			for (int i = 0; i < model.size(); i++)
 			{
@@ -282,7 +284,6 @@ public class ModelCreator extends JFrame
 
 			Display.update();
 		}
-		System.out.println("Hey");
 	}
 
 	public void handleInput()

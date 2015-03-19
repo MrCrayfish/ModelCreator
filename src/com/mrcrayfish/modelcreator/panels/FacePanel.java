@@ -37,12 +37,12 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
-		model.addElement("Front");
-		model.addElement("Back");
-		model.addElement("Left");
-		model.addElement("Right");
-		model.addElement("Bottom");
-		model.addElement("Top");
+		model.addElement("North");
+		model.addElement("East");
+		model.addElement("South");
+		model.addElement("West");
+		model.addElement("Down");
+		model.addElement("Up");
 	}
 
 	public void initComponents()

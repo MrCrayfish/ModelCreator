@@ -31,7 +31,7 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 	public TexturePanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(3, 2));
+		setLayout(new GridLayout(2, 2));
 		setBorder(BorderFactory.createTitledBorder("Texture"));
 		initComponents();
 		addComponents();

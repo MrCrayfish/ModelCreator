@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,8 +27,6 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 	private JButton btnClear;
 	private JButton btnCopy;
 	private JButton btnPaste;
-	private JButton btnClearAll;
-	private JButton btnPasteAll;
 
 	public TexturePanel(ModelCreator creator)
 	{
@@ -64,37 +63,46 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(e ->
 		{
-			creator.getSelectedCube().getSelectedFace().setTexture(null);
+			if (creator.getSelectedCube() != null)
+			{
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
+					creator.getSelectedCube().setAllTextures(null);
+				}
+				else
+				{
+					creator.getSelectedCube().getSelectedFace().setTexture(null);
+				}
+			}
 		});
 
 		btnCopy = new JButton("Copy");
 		btnCopy.addActionListener(e ->
 		{
-			Texture texture = creator.getSelectedCube().getSelectedFace().getTexture();
-			Clipboard.copyTexture(texture);
+			if (creator.getSelectedCube() != null)
+			{
+				Texture texture = creator.getSelectedCube().getSelectedFace().getTexture();
+				Clipboard.copyTexture(texture);
+			}
 		});
 
 		btnPaste = new JButton("Paste");
 		btnPaste.addActionListener(e ->
 		{
-			Texture texture = Clipboard.getTexture();
-			if (texture != null)
+			if (creator.getSelectedCube() != null)
 			{
-				creator.getSelectedCube().getSelectedFace().setTexture(texture);
-			}
-		});
-		
-		btnClearAll = new JButton("Clear All");
-		btnClearAll.addActionListener(e ->{
-			creator.getSelectedCube().clearAllTextures();
-		});
-		
-		btnPasteAll = new JButton("Paste All");
-		btnPasteAll.addActionListener(e ->{
-			Texture texture = Clipboard.getTexture();
-			if (texture != null)
-			{
-				creator.getSelectedCube().setAllTextures(texture);
+				Texture texture = Clipboard.getTexture();
+				if (texture != null)
+				{
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						creator.getSelectedCube().setAllTextures(texture);
+					}
+					else
+					{
+						creator.getSelectedCube().getSelectedFace().setTexture(texture);
+					}
+				}
 			}
 		});
 	}
@@ -105,13 +113,14 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		add(btnClear);
 		add(btnCopy);
 		add(btnPaste);
-		add(btnClearAll);
-		add(btnPasteAll);
 	}
 
 	@Override
 	public void callback(Texture texture)
 	{
-		creator.getSelectedCube().getSelectedFace().setTexture(texture);
+		if (creator.getSelectedCube() != null)
+		{
+			creator.getSelectedCube().getSelectedFace().setTexture(texture);
+		}
 	}
 }

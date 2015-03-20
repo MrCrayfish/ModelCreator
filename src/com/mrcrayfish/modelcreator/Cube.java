@@ -12,12 +12,20 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Cube
 {
-	private double startX, startY, startZ;
-	private double width, height, depth;
-
 	private String name = "Cube";
+	
+	//Face Variables
 	private int selectedFace = 0;
 	private Face[] faces = new Face[6];
+
+	//Element Variables
+	private double startX, startY, startZ;
+	private double width, height, depth;
+	
+	//Rotation Variables
+	private double originX, originY, originZ;
+	private double rotation;
+	private int prevAxis = 0;
 
 	private Sphere sphere = new Sphere();
 
@@ -154,6 +162,56 @@ public class Cube
 	public void addDepth(double amt)
 	{
 		this.depth += amt;
+	}
+
+	public double getOriginX()
+	{
+		return originX;
+	}
+
+	public void addOriginX(double amt)
+	{
+		this.originX += amt;
+	}
+
+	public double getOriginY()
+	{
+		return originY;
+	}
+
+	public void addOriginY(double amt)
+	{
+		this.originY += amt;
+	}
+
+	public double getOriginZ()
+	{
+		return originZ;
+	}
+
+	public void addOriginZ(double amt)
+	{
+		this.originZ += amt;
+	}
+
+	public double getRotation()
+	{
+		return rotation;
+	}
+
+	public void setRotation(double rotation)
+	{
+		this.rotation = rotation;
+	}
+
+	public int getPrevAxis()
+	{
+		return prevAxis;
+	}
+
+	public void setPrevAxis(int prevAxis)
+	{
+		this.prevAxis = prevAxis;
 	}
 
 	public void setName(String name)

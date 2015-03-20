@@ -22,8 +22,11 @@ public class TabPanel extends JPanel
 	{
 		switch (type)
 		{
-		case PROPERTIES:
+		case ELEMENT:
 			panel = new PropertiesPanel(creator);
+			break;
+		case ROTATION:
+			panel = new RotationPanel(creator);
 			break;
 		case TEXTURE:
 			panel = new FacePanel(creator);
@@ -39,6 +42,6 @@ public class TabPanel extends JPanel
 
 	public static enum Type
 	{
-		PROPERTIES, TEXTURE;
+		ELEMENT, ROTATION, TEXTURE;
 	}
 }

@@ -40,6 +40,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		setBorder(BorderFactory.createTitledBorder("Size"));
+		setMaximumSize(new Dimension(186, 500));
 		initComponents();
 		initProperties();
 		addComponents();

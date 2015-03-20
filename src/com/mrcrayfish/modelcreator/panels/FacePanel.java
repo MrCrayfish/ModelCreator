@@ -21,6 +21,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private JComboBox<String> menu;
 	private UVPanel panelUV;
 	private TexturePanel panelTexture;
+	private FacePropertiesPanel panelProperties;
 
 	private DefaultComboBoxModel<String> model;
 
@@ -57,6 +58,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		
 		panelTexture = new TexturePanel(creator);
 		panelUV = new UVPanel(creator);
+		panelProperties = new FacePropertiesPanel(creator);
 	}
 
 	public void addComponents()
@@ -65,6 +67,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		add(Box.createRigidArea(new Dimension(0, 5)));
 		add(panelTexture);
 		add(panelUV);
+		add(panelProperties);
 	}
 
 	@Override

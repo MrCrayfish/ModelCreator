@@ -86,8 +86,6 @@ public class ModelCreator extends JFrame
 		setPreferredSize(new Dimension(1200, 800));
 		setLayout(layout);
 
-		initDisplay();
-
 		initComponents();
 		setLayoutConstaints();
 
@@ -109,6 +107,7 @@ public class ModelCreator extends JFrame
 			}
 		});
 
+		initDisplay();
 		pack();
 		setVisible(true);
 
@@ -120,6 +119,7 @@ public class ModelCreator extends JFrame
 		{
 			e1.printStackTrace();
 		}
+
 		TextureManager.init();
 
 		loop();
@@ -132,22 +132,24 @@ public class ModelCreator extends JFrame
 	public void initComponents()
 	{
 		JMenu file = new JMenu("File");
-        file.setMnemonic(KeyEvent.VK_F);
+		file.setMnemonic(KeyEvent.VK_F);
 
-        JMenuItem eMenuItem = new JMenuItem("Exit");
-        eMenuItem.setMnemonic(KeyEvent.VK_E);
-        eMenuItem.setToolTipText("Exit application");
-        eMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                System.exit(0);
-            }
-        });
+		JMenuItem eMenuItem = new JMenuItem("Exit");
+		eMenuItem.setMnemonic(KeyEvent.VK_E);
+		eMenuItem.setToolTipText("Exit application");
+		eMenuItem.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent event)
+			{
+				System.exit(0);
+			}
+		});
 
-        file.add(eMenuItem);
-        menuBar.add(file);
+		file.add(eMenuItem);
+		menuBar.add(file);
 		setJMenuBar(menuBar);
-		
+
 		canvas.setSize(new Dimension(1000, 800));
 		add(canvas);
 
@@ -269,11 +271,11 @@ public class ModelCreator extends JFrame
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			camera.useView();
-			
+
 			glScalef(0.25F, 0.25F, 0.25F);
 			drawGrid();
 			drawAxis();
-			
+
 			glTranslatef(-8, 0, 8);
 			for (int i = 0; i < model.size(); i++)
 			{

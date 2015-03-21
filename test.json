@@ -2,33 +2,9 @@
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "elements": [
         {
-            "from": [ 0.0, 0.0, 0.0 ], 
-            "to": [ 1.0, 1.0, 1.0 ], 
-            "faces": {
-                "north": { "texture": "#placeholder" },
-                "east": { "texture": "#placeholder" },
-                "south": { "texture": "#placeholder" },
-                "west": { "texture": "#placeholder" },
-                "down": { "texture": "#placeholder" },
-                "up": { "texture": "#placeholder" }
-            }
-        },
-        {
-            "from": [ 0.0, 0.0, 3.0 ], 
-            "to": [ 1.0, 1.0, 4.0 ], 
-            "faces": {
-                "north": { "texture": "#placeholder" },
-                "east": { "texture": "#placeholder" },
-                "south": { "texture": "#placeholder" },
-                "west": { "texture": "#placeholder" },
-                "down": { "texture": "#placeholder" },
-                "up": { "texture": "#placeholder" }
-            }
-        },
-        {
-            "from": [ 0.0, 0.0, 6.0 ], 
-            "to": [ 1.0, 1.0, 7.0 ], 
-            "rotation": { "origin": [ 0.0, 0.0, 0.0 ], "axis": "x", "angle": 135.0 },
+            "from": [ 7.500000007450581, 0.0, 7.500000007450581 ], 
+            "to": [ 8.50000000745058, 1.0, 8.50000000745058 ], 
+            "rotation": { "origin": [ 8.0, 0.0, 8.0 ], "axis": "x", "angle": 45.0 },
             "faces": {
                 "north": { "texture": "#placeholder" },
                 "east": { "texture": "#placeholder" },

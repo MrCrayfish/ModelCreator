@@ -82,13 +82,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartX(0.1F);
+					cube.addOriginX(0.1F);
 				}
 				else
 				{
-					cube.addStartX(1.0F);
+					cube.addOriginX(1.0F);
 				}
-				xOriginField.setText(cube.getStartX() + "");
+				xOriginField.setText(cube.getOriginX() + "");
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -100,13 +100,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartY(0.1F);
+					cube.addOriginY(0.1F);
 				}
 				else
 				{
-					cube.addStartY(1.0F);
+					cube.addOriginY(1.0F);
 				}
-				yOriginField.setText(cube.getStartY() + "");
+				yOriginField.setText(cube.getOriginY() + "");
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -118,13 +118,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartZ(0.1F);
+					cube.addOriginZ(0.1F);
 				}
 				else
 				{
-					cube.addStartZ(1.0F);
+					cube.addOriginZ(1.0F);
 				}
-				zOriginField.setText(cube.getStartZ() + "");
+				zOriginField.setText(cube.getOriginZ() + "");
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -136,13 +136,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartX(-0.1F);
+					cube.addOriginX(-0.1F);
 				}
 				else
 				{
-					cube.addStartX(-1.0F);
+					cube.addOriginX(-1.0F);
 				}
-				xOriginField.setText(cube.getStartX() + "");
+				xOriginField.setText(cube.getOriginX() + "");
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -154,13 +154,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartY(-0.1F);
+					cube.addOriginY(-0.1F);
 				}
 				else
 				{
-					cube.addStartY(-1.0F);
+					cube.addOriginY(-1.0F);
 				}
-				yOriginField.setText(cube.getStartY() + "");
+				yOriginField.setText(cube.getOriginY() + "");
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -172,13 +172,13 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartZ(-0.1F);
+					cube.addOriginZ(-0.1F);
 				}
 				else
 				{
-					cube.addStartZ(-1.0F);
+					cube.addOriginZ(-1.0F);
 				}
-				zOriginField.setText(cube.getStartZ() + "");
+				zOriginField.setText(cube.getOriginZ() + "");
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

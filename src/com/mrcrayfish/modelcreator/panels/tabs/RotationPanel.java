@@ -87,6 +87,10 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		extraPanel.setBorder(BorderFactory.createTitledBorder("Extras"));
 		btnRescale = new JRadioButton("Rescale");
 		btnRescale.setToolTipText("<html>Should scale faces across whole block<br>Default: Off<html>");
+		btnRescale.addActionListener(e ->
+		{
+			creator.getSelectedCuboid().setRescale(btnRescale.isSelected());
+		});
 		extraPanel.setMaximumSize(new Dimension(186, 40));
 		extraPanel.add(btnRescale);
 	}
@@ -108,5 +112,6 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		panelOrigin.updateValues(cube);
 		axisList.setSelectedIndex(cube.getPrevAxis());
 		rotation.setValue((int) (cube.getRotation() / 22.5));
+		btnRescale.setSelected(cube.shouldRescale());
 	}
 }

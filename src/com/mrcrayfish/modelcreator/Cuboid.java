@@ -23,7 +23,7 @@ public class Cuboid
 	private double width, height, depth;
 
 	// Rotation Variables
-	private double originX, originY, originZ;
+	private double originX = 8, originY = 8, originZ = 8;
 	private double rotation;
 	private int axis = 0;
 	private boolean rescale = false;
@@ -124,9 +124,9 @@ public class Cuboid
 		{
 			GL11.glEnable(GL_TEXTURE_2D);
 			GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			GL11.glTranslated(8, 8, -8);
+			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			GL11.glRotated(getRotation(), 0, 1, 0);
-			GL11.glTranslated(-8, -8, 8);
+			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
 			GL11.glColor3f(1, 0, 0);
 			faces[0].render(startX, startY, -startZ, startX + width, startY + height, -startZ, width, height);
 			GL11.glColor3f(0, 1, 0);
@@ -148,9 +148,8 @@ public class Cuboid
 	{
 		GL11.glPushMatrix();
 		{
-			GL11.glTranslated(8, 8, -8);
+			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			sphere.draw(0.2F, 16, 16);
-			GL11.glTranslated(8, 8, -8);
 		}
 		GL11.glPopMatrix();
 	}
@@ -263,6 +262,11 @@ public class Cuboid
 	public void setPrevAxis(int prevAxis)
 	{
 		this.axis = prevAxis;
+	}
+	
+	public void setRescale(boolean rescale)
+	{
+		this.rescale = rescale;
 	}
 
 	public boolean shouldRescale()

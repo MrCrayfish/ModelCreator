@@ -60,6 +60,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		menuList.addActionListener(e ->
 		{
 			creator.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
+			updateValues(creator.getSelectedCuboid());
 		});
 		menuPanel.setMaximumSize(new Dimension(186, 500));
 		menuPanel.add(menuList);
@@ -85,5 +86,6 @@ public class FacePanel extends JPanel implements IValueUpdater
 	{
 		menuList.setSelectedIndex(cube.getSelectedFaceIndex());
 		panelUV.updateValues(cube);
+		panelProperties.updateValues(cube);
 	}
 }

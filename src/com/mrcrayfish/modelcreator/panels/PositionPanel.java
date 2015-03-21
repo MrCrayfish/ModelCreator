@@ -37,7 +37,7 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		setBorder(BorderFactory.createTitledBorder("Position"));
-		setMaximumSize(new Dimension(186, 500));
+		setMaximumSize(new Dimension(186,124));
 		initComponents();
 		initProperties();
 		addComponents();

@@ -32,6 +32,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		setBorder(BorderFactory.createTitledBorder("UV"));
+		setMaximumSize(new Dimension(186,124));
 		initComponents();
 		initProperties();
 		addComponents();

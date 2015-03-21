@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
@@ -33,6 +34,7 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		this.creator = creator;
 		setLayout(new GridLayout(2, 2));
 		setBorder(BorderFactory.createTitledBorder("Texture"));
+		setMaximumSize(new Dimension(186, 500));
 		initComponents();
 		addComponents();
 	}

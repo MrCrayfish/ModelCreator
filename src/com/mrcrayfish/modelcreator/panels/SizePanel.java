@@ -3,8 +3,7 @@ package com.mrcrayfish.modelcreator.panels;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -36,11 +35,10 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 	public SizePanel(ModelCreator creator)
 	{
-		super();
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		setBorder(BorderFactory.createTitledBorder("Size"));
-		setMaximumSize(new Dimension(186, 500));
+		setMaximumSize(new Dimension(186,124));
 		initComponents();
 		initProperties();
 		addComponents();
@@ -77,152 +75,110 @@ public class SizePanel extends JPanel implements IValueUpdater
 		zSizeField.setEditable(false);
 		zSizeField.setHorizontalAlignment(JTextField.CENTER);
 
-		btnPlusX.addMouseListener(new MouseAdapter()
+		btnPlusX.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addWidth(0.1F);
-					}
-					else
-					{
-						cube.addWidth(1.0F);
-					}
-					xSizeField.setText(cube.getWidth() + "");
+					cube.addWidth(0.1F);
 				}
+				else
+				{
+					cube.addWidth(1.0F);
+				}
+				xSizeField.setText(cube.getWidth() + "");
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
 
-		btnPlusY.addMouseListener(new MouseAdapter()
+		btnPlusY.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addHeight(0.1F);
-					}
-					else
-					{
-						cube.addHeight(1.0F);
-					}
-					ySizeField.setText(cube.getHeight() + "");
+					cube.addHeight(0.1F);
 				}
+				else
+				{
+					cube.addHeight(1.0F);
+				}
+				ySizeField.setText(cube.getHeight() + "");
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 
-		btnPlusZ.addMouseListener(new MouseAdapter()
+		btnPlusZ.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addDepth(0.1F);
-					}
-					else
-					{
-						cube.addDepth(1.0F);
-					}
-					zSizeField.setText(cube.getDepth() + "");
+					cube.addDepth(0.1F);
 				}
+				else
+				{
+					cube.addDepth(1.0F);
+				}
+				zSizeField.setText(cube.getDepth() + "");
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
 
-		btnNegX.addMouseListener(new MouseAdapter()
+		btnNegX.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addWidth(-0.1F);
-					}
-					else
-					{
-						cube.addWidth(-1.0F);
-					}
-					xSizeField.setText(cube.getWidth() + "");
+					cube.addWidth(-0.1F);
 				}
+				else
+				{
+					cube.addWidth(-1.0F);
+				}
+				xSizeField.setText(cube.getWidth() + "");
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
 
-		btnNegY.addMouseListener(new MouseAdapter()
+		btnNegY.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addHeight(-0.1F);
-					}
-					else
-					{
-						cube.addHeight(-1.0F);
-					}
-					ySizeField.setText(cube.getHeight() + "");
+					cube.addHeight(-0.1F);
 				}
+				else
+				{
+					cube.addHeight(-1.0F);
+				}
+				ySizeField.setText(cube.getHeight() + "");
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
 
-		btnNegZ.addMouseListener(new MouseAdapter()
+		btnNegZ.addActionListener(e ->
 		{
-			@Override
-			public void mouseClicked(MouseEvent e)
+			if (creator.getSelectedCube() != null)
 			{
-				if (e.getButton() != 1)
-					return;
-
-				if (creator.getSelectedCube() != null)
+				Cube cube = creator.getSelectedCube();
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					Cube cube = creator.getSelectedCube();
-					if (e.isShiftDown())
-					{
-						cube.addDepth(-0.1F);
-					}
-					else
-					{
-						cube.addDepth(-1.0F);
-					}
-					zSizeField.setText(cube.getDepth() + "");
+					cube.addDepth(-0.1F);
 				}
+				else
+				{
+					cube.addDepth(-1.0F);
+				}
+				zSizeField.setText(cube.getDepth() + "");
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

@@ -1,4 +1,4 @@
-package com.mrcrayfish.modelcreator.panels;
+package com.mrcrayfish.modelcreator.panels.tabs;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -16,6 +16,7 @@ import javax.swing.JSlider;
 import com.mrcrayfish.modelcreator.Cube;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.panels.OriginPanel;
 
 public class RotationPanel extends JPanel implements IValueUpdater
 {
@@ -38,7 +39,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	public RotationPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		initComponents();
 		addComponents();
 	}
@@ -46,7 +47,6 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	public void initComponents()
 	{
 		panelOrigin = new OriginPanel(creator);
-		panelOrigin.setMaximumSize(new Dimension(186, 50));
 
 		axisPanel = new JPanel(new GridLayout(1, 1));
 		axisPanel.setBorder(BorderFactory.createTitledBorder("Axis"));
@@ -59,7 +59,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		{
 			creator.getSelectedCube().setPrevAxis(axisList.getSelectedIndex());
 		});
-		axisPanel.setMaximumSize(new Dimension(186, 500));
+		axisPanel.setMaximumSize(new Dimension(186, 50));
 		axisPanel.add(axisList);
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
@@ -80,14 +80,14 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		{
 			creator.getSelectedCube().setRotation(rotation.getValue() * 22.5D);
 		});
-		sliderPanel.setMaximumSize(new Dimension(186, 500));
+		sliderPanel.setMaximumSize(new Dimension(186, 70));
 		sliderPanel.add(rotation);
 
 		extraPanel = new JPanel(new GridLayout(1, 1));
 		extraPanel.setBorder(BorderFactory.createTitledBorder("Extras"));
 		btnRescale = new JRadioButton("Rescale");
 		btnRescale.setToolTipText("<html>Should scale faces across whole block<br>Default: Off<html>");
-		extraPanel.setMaximumSize(new Dimension(186, 500));
+		extraPanel.setMaximumSize(new Dimension(186, 40));
 		extraPanel.add(btnRescale);
 	}
 

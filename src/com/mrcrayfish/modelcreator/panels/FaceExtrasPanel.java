@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
@@ -26,6 +27,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		this.creator = creator;
 		setLayout(new GridLayout(5, 2));
 		setBorder(BorderFactory.createTitledBorder("Extras"));
+		setMaximumSize(new Dimension(186, 500));
 		initComponents();
 		addComponents();
 	}

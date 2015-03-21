@@ -1,13 +1,16 @@
-package com.mrcrayfish.modelcreator.panels;
+package com.mrcrayfish.modelcreator.panels.tabs;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import com.mrcrayfish.modelcreator.Cube;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.panels.PositionPanel;
+import com.mrcrayfish.modelcreator.panels.SizePanel;
 
-public class PropertiesPanel extends JPanel implements IValueUpdater
+public class ElementPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -16,10 +19,10 @@ public class PropertiesPanel extends JPanel implements IValueUpdater
 	private SizePanel panelSize;
 	private PositionPanel panelPosition;
 
-	public PropertiesPanel(ModelCreator creator)
+	public ElementPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		initComponents();
 		addComponents();
 	}
@@ -33,6 +36,7 @@ public class PropertiesPanel extends JPanel implements IValueUpdater
 	public void addComponents()
 	{
 		add(panelSize);
+		add(Box.createVerticalStrut(5));
 		add(panelPosition);
 	}
 

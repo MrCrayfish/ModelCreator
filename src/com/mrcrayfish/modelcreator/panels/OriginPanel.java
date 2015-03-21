@@ -38,6 +38,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3));
 		setBorder(BorderFactory.createTitledBorder("Origin"));
+		setMaximumSize(new Dimension(186,124));
 		initComponents();
 		initProperties();
 		addComponents();
@@ -76,7 +77,6 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			System.out.println("Hey");
 			if (creator.getSelectedCube() != null)
 			{
 				Cube cube = creator.getSelectedCube();

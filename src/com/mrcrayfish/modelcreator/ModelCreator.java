@@ -48,7 +48,9 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 
 import com.mrcrayfish.modelcreator.panels.CuboidTabbedPane;
-import com.mrcrayfish.modelcreator.panels.TabPanel;
+import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
+import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
+import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 
@@ -214,10 +216,10 @@ public class ModelCreator extends JFrame
 		scrollPane.setPreferredSize(new Dimension(190, 200));
 		add(scrollPane);
 
-		tabbedPane.add("<html><div width=120><center>Element</center></div></html>", new TabPanel(this, TabPanel.Type.ELEMENT));
-		tabbedPane.add("<html><div width=120><center>Rotation</center></div></html>", new TabPanel(this, TabPanel.Type.ROTATION));
-		tabbedPane.add("<html><div width=120><center>Faces</center></div></html>", new TabPanel(this, TabPanel.Type.TEXTURE));
-		tabbedPane.setPreferredSize(new Dimension(190, 350));
+		tabbedPane.add("<html><div width=120><center>Element</center></div></html>", new ElementPanel(this));
+		tabbedPane.add("<html><div width=120><center>Rotation</center></div></html>", new RotationPanel(this));
+		tabbedPane.add("<html><div width=120><center>Faces</center></div></html>", new FacePanel(this));
+		tabbedPane.setPreferredSize(new Dimension(190, 400));
 		add(tabbedPane);
 	}
 

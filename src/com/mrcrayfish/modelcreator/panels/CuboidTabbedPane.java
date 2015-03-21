@@ -2,7 +2,6 @@ package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Component;
 
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import com.mrcrayfish.modelcreator.Cube;
@@ -27,18 +26,13 @@ public class CuboidTabbedPane extends JTabbedPane
 			Component component = getComponentAt(i);
 			if (component != null)
 			{
-				if (component instanceof TabPanel)
+				if (component instanceof IValueUpdater)
 				{
-					TabPanel tab = (TabPanel) component;
-					JPanel panel = tab.getPanel();
-					if (panel instanceof IValueUpdater)
+					IValueUpdater updater = (IValueUpdater) component;
+					Cube cube = creator.getSelectedCube();
+					if (cube != null)
 					{
-						IValueUpdater updater = (IValueUpdater) panel;
-						Cube cube = creator.getSelectedCube();
-						if (cube != null)
-						{
-							updater.updateValues(cube);
-						}
+						updater.updateValues(cube);
 					}
 				}
 			}

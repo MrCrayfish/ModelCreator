@@ -94,8 +94,7 @@ public class Exporter
 		{
 			writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 			writer.write("\"texture\": \"#placeholder\" ");
-			if (face.getStartU() > 0 && face.getStartV() > 0)
-				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ] ");
+			writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ] ");
 			if (face.isCullfaced())
 				writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\" ");
 			writer.write("}");

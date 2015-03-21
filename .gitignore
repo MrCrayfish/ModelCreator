@@ -47,3 +47,4 @@ Temporary Items
 .classpath
 *.classpath
 .classpath
+test.json

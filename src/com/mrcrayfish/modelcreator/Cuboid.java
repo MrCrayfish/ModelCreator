@@ -125,7 +125,7 @@ public class Cuboid
 			GL11.glEnable(GL_TEXTURE_2D);
 			GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
-			GL11.glRotated(getRotation(), 0, 1, 0);
+			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
 			if (faces[0].isEnabled())
 			{
@@ -311,6 +311,22 @@ public class Cuboid
 	public String toString()
 	{
 		return name;
+	}
+
+	public void rotateAxis()
+	{
+		switch (axis)
+		{
+		case 0:
+			GL11.glRotated(getRotation(), 1, 0, 0);
+			break;
+		case 1:
+			GL11.glRotated(getRotation(), 0, 1, 0);
+			break;
+		case 2:
+			GL11.glRotated(getRotation(), 0, 0, 1);
+			break;
+		}
 	}
 
 	public static String parseAxis(int axis)

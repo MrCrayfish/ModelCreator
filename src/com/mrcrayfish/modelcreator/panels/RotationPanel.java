@@ -55,17 +55,18 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.addItem("Y");
 		axisList.addItem("Z");
 		axisList.setToolTipText("The axis the element will rotate around");
-		axisList.addActionListener(e ->{
+		axisList.addActionListener(e ->
+		{
 			creator.getSelectedCube().setPrevAxis(axisList.getSelectedIndex());
 		});
 		axisPanel.setMaximumSize(new Dimension(186, 500));
 		axisPanel.add(axisList);
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer(0), new JLabel("0°"));
-		labelTable.put(new Integer(4), new JLabel("90°"));
-		labelTable.put(new Integer(8), new JLabel("180°"));
-		labelTable.put(new Integer(12), new JLabel("270°"));
+		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
+		labelTable.put(new Integer(4), new JLabel("90\u00b0"));
+		labelTable.put(new Integer(8), new JLabel("180\u00b0"));
+		labelTable.put(new Integer(12), new JLabel("270\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
 		sliderPanel.setBorder(BorderFactory.createTitledBorder("Rotation"));
@@ -81,7 +82,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		});
 		sliderPanel.setMaximumSize(new Dimension(186, 500));
 		sliderPanel.add(rotation);
-		
+
 		extraPanel = new JPanel(new GridLayout(1, 1));
 		extraPanel.setBorder(BorderFactory.createTitledBorder("Extras"));
 		btnRescale = new JRadioButton("Rescale");
@@ -106,6 +107,6 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	{
 		panelOrigin.updateValues(cube);
 		axisList.setSelectedIndex(cube.getPrevAxis());
-		rotation.setValue((int)(cube.getRotation() / 22.5));
+		rotation.setValue((int) (cube.getRotation() / 22.5));
 	}
 }

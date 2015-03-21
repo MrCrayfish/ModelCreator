@@ -214,9 +214,9 @@ public class ModelCreator extends JFrame
 		scrollPane.setPreferredSize(new Dimension(190, 200));
 		add(scrollPane);
 
-		tabbedPane.add("Element", new TabPanel(this, TabPanel.Type.ELEMENT));
-		tabbedPane.add("Rotation", new TabPanel(this, TabPanel.Type.ROTATION));
-		tabbedPane.add("Faces", new TabPanel(this, TabPanel.Type.TEXTURE));
+		tabbedPane.add("<html><div width=120><center>Element</center></div></html>", new TabPanel(this, TabPanel.Type.ELEMENT));
+		tabbedPane.add("<html><div width=120><center>Rotation</center></div></html>", new TabPanel(this, TabPanel.Type.ROTATION));
+		tabbedPane.add("<html><div width=120><center>Faces</center></div></html>", new TabPanel(this, TabPanel.Type.TEXTURE));
 		tabbedPane.setPreferredSize(new Dimension(190, 350));
 		add(tabbedPane);
 	}

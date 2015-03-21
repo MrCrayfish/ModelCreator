@@ -7,7 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
@@ -49,7 +49,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
 		
 	}

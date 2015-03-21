@@ -28,6 +28,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -39,6 +40,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 import javax.swing.SpringLayout;
 
 import org.lwjgl.LWJGLException;
@@ -66,14 +68,14 @@ public class ModelCreator extends JFrame
 	public boolean closeRequested = false;
 
 	private JMenuBar menuBar = new JMenuBar();
-	private JList<Cube> list = new JList<Cube>();
+	private JList<Cuboid> list = new JList<Cuboid>();
 	private JScrollPane scrollPane;
 	private JButton btnAdd = new JButton("Add");
 	private JButton btnRemove = new JButton("Remove");
 	private JTextField name = new JTextField();
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
-	private DefaultListModel<Cube> model = new DefaultListModel<Cube>();
+	private DefaultListModel<Cuboid> model = new DefaultListModel<Cuboid>();
 
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
 
@@ -136,19 +138,24 @@ public class ModelCreator extends JFrame
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 
-		JMenuItem eMenuItem = new JMenuItem("Exit");
-		eMenuItem.setMnemonic(KeyEvent.VK_E);
-		eMenuItem.setToolTipText("Exit application");
-		eMenuItem.addActionListener(new ActionListener()
+		JMenuItem menuItemExit = new JMenuItem("Exit");
+		menuItemExit.setMnemonic(KeyEvent.VK_E);
+		menuItemExit.setToolTipText("Exit application");
+		menuItemExit.addActionListener(e ->
 		{
-			@Override
-			public void actionPerformed(ActionEvent event)
-			{
-				System.exit(0);
-			}
+			System.exit(0);
 		});
 
-		file.add(eMenuItem);
+		JMenuItem menuItemExport = new JMenuItem("Export");
+		menuItemExport.setMnemonic(KeyEvent.VK_E);
+		menuItemExport.setToolTipText("Export model to JSON");
+		menuItemExport.addActionListener(e ->
+		{
+			Exporter.export(this, "test");
+		});
+
+		file.add(menuItemExport);
+		file.add(menuItemExit);
 		menuBar.add(file);
 		setJMenuBar(menuBar);
 
@@ -157,7 +164,7 @@ public class ModelCreator extends JFrame
 
 		btnAdd.addActionListener(e ->
 		{
-			model.addElement(new Cube(1, 1, 1));
+			model.addElement(new Cuboid(1, 1, 1));
 			list.setSelectedIndex(model.size() - 1);
 		});
 		btnAdd.setPreferredSize(new Dimension(95, 30));
@@ -203,7 +210,7 @@ public class ModelCreator extends JFrame
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			Cube cube = getSelectedCube();
+			Cuboid cube = getSelectedCuboid();
 			if (cube != null)
 			{
 				tabbedPane.updateValues();
@@ -282,7 +289,7 @@ public class ModelCreator extends JFrame
 			glTranslatef(-8, 0, 8);
 			for (int i = 0; i < model.size(); i++)
 			{
-				Cube cube = (Cube) model.getElementAt(i);
+				Cuboid cube = (Cuboid) model.getElementAt(i);
 				cube.draw();
 				cube.drawExtras();
 			}
@@ -374,12 +381,32 @@ public class ModelCreator extends JFrame
 		glPopMatrix();
 	}
 
-	public Cube getSelectedCube()
+	public Cuboid getSelectedCuboid()
 	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
-			return (Cube) model.getElementAt(i);
+			return (Cuboid) model.getElementAt(i);
 		return null;
+	}
+
+	public List<Cuboid> getAllCuboids()
+	{
+		List<Cuboid> list = new ArrayList<Cuboid>();
+		for (int i = 0; i < model.size(); i++)
+		{
+			list.add(model.getElementAt(i));
+		}
+		return list;
+	}
+	
+	public Cuboid getCuboid(int index)
+	{
+		return model.getElementAt(index);
+	}
+	
+	public int getCuboidCount()
+	{
+		return model.size();
 	}
 
 	public void updateName()
@@ -387,7 +414,7 @@ public class ModelCreator extends JFrame
 		String newName = name.getText();
 		if (newName.isEmpty())
 			newName = "Cuboid";
-		Cube cube = getSelectedCube();
+		Cuboid cube = getSelectedCuboid();
 		if (cube != null)
 		{
 			cube.setName(newName);

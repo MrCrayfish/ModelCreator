@@ -10,7 +10,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
@@ -59,7 +59,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		menuList.setModel(model);
 		menuList.addActionListener(e ->
 		{
-			creator.getSelectedCube().setSelectedFace(menuList.getSelectedIndex());
+			creator.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
 		});
 		menuPanel.setMaximumSize(new Dimension(186, 500));
 		menuPanel.add(menuList);
@@ -81,7 +81,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
 		menuList.setSelectedIndex(cube.getSelectedFaceIndex());
 		panelUV.updateValues(cube);

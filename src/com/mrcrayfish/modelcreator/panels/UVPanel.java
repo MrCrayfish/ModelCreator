@@ -10,7 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
@@ -63,9 +63,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -75,16 +75,16 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(1.0);
 				}
-				xStartField.setText(face.getTextureX() + "");
+				xStartField.setText(face.getStartU() + "");
 			}
 		});
 		btnPlusX.setSize(new Dimension(62, 30));
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -94,16 +94,16 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(1.0);
 				}
-				yStartField.setText(face.getTextureY() + "");
+				yStartField.setText(face.getStartV() + "");
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 
 		btnNegX.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -113,16 +113,16 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(-1.0);
 				}
-				xStartField.setText(face.getTextureX() + "");
+				xStartField.setText(face.getStartU() + "");
 			}
 		});
 		btnNegX.setSize(new Dimension(62, 30));
 
 		btnNegY.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -132,7 +132,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(-1.0);
 				}
-				yStartField.setText(face.getTextureY() + "");
+				yStartField.setText(face.getStartV() + "");
 			}
 		});
 		btnNegY.setSize(new Dimension(62, 30));
@@ -149,9 +149,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
-		xStartField.setText(cube.getSelectedFace().getTextureX() + "");
-		yStartField.setText(cube.getSelectedFace().getTextureY() + "");
+		xStartField.setText(cube.getSelectedFace().getStartU() + "");
+		yStartField.setText(cube.getSelectedFace().getStartV() + "");
 	}
 }

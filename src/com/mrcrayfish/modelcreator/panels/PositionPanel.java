@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
@@ -74,8 +74,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 
 		btnPlusX.addActionListener(e -> {
 			System.out.println("Hey");
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartX(0.1F);
 				} else {
@@ -87,8 +87,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
 
 		btnPlusY.addActionListener(e -> {
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartY(0.1F);
 				} else {
@@ -100,8 +100,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 
 		btnPlusZ.addActionListener(e -> {
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartZ(0.1F);
 				} else {
@@ -113,8 +113,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
 
 		btnNegX.addActionListener(e -> {
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartX(-0.1F);
 				} else {
@@ -126,8 +126,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegX.setPreferredSize(new Dimension(62, 30));
 
 		btnNegY.addActionListener(e -> {
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartY(-0.1F);
 				} else {
@@ -139,8 +139,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegY.setPreferredSize(new Dimension(62, 30));
 
 		btnNegZ.addActionListener(e -> {
-			if (creator.getSelectedCube() != null) {
-				Cube cube = creator.getSelectedCube();
+			if (creator.getSelectedCuboid() != null) {
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
 					cube.addStartZ(-0.1F);
 				} else {
@@ -165,7 +165,7 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 	}
 
 	@Override
-	public void updateValues(Cube cube) {
+	public void updateValues(Cuboid cube) {
 		if (cube != null) {
 			xPositionField.setText(df.format(cube.getStartX()));
 			yPositionField.setText(df.format(cube.getStartY()));

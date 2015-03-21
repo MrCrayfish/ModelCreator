@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
@@ -77,9 +77,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartX(0.1F);
@@ -95,9 +95,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartY(0.1F);
@@ -113,9 +113,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartZ(0.1F);
@@ -131,9 +131,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartX(-0.1F);
@@ -149,9 +149,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartY(-0.1F);
@@ -167,9 +167,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Cube cube = creator.getSelectedCube();
+				Cuboid cube = creator.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartZ(-0.1F);
@@ -198,7 +198,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
 		if (cube != null)
 		{

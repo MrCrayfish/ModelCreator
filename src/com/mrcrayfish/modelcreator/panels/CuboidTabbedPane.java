@@ -4,7 +4,7 @@ import java.awt.Component;
 
 import javax.swing.JTabbedPane;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
@@ -29,7 +29,7 @@ public class CuboidTabbedPane extends JTabbedPane
 				if (component instanceof IValueUpdater)
 				{
 					IValueUpdater updater = (IValueUpdater) component;
-					Cube cube = creator.getSelectedCube();
+					Cuboid cube = creator.getSelectedCuboid();
 					if (cube != null)
 					{
 						updater.updateValues(cube);

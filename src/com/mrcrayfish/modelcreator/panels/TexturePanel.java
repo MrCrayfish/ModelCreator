@@ -65,15 +65,15 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					creator.getSelectedCube().setAllTextures(null);
+					creator.getSelectedCuboid().setAllTextures(null);
 				}
 				else
 				{
-					creator.getSelectedCube().getSelectedFace().setTexture(null);
+					creator.getSelectedCuboid().getSelectedFace().setTexture(null);
 				}
 			}
 		});
@@ -81,9 +81,9 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		btnCopy = new JButton("Copy");
 		btnCopy.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
-				Texture texture = creator.getSelectedCube().getSelectedFace().getTexture();
+				Texture texture = creator.getSelectedCuboid().getSelectedFace().getTexture();
 				Clipboard.copyTexture(texture);
 			}
 		});
@@ -91,18 +91,18 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 		btnPaste = new JButton("Paste");
 		btnPaste.addActionListener(e ->
 		{
-			if (creator.getSelectedCube() != null)
+			if (creator.getSelectedCuboid() != null)
 			{
 				Texture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
-						creator.getSelectedCube().setAllTextures(texture);
+						creator.getSelectedCuboid().setAllTextures(texture);
 					}
 					else
 					{
-						creator.getSelectedCube().getSelectedFace().setTexture(texture);
+						creator.getSelectedCuboid().getSelectedFace().setTexture(texture);
 					}
 				}
 			}
@@ -120,9 +120,9 @@ public class TexturePanel extends JPanel implements TextureLoaderCallback
 	@Override
 	public void callback(Texture texture)
 	{
-		if (creator.getSelectedCube() != null)
+		if (creator.getSelectedCuboid() != null)
 		{
-			creator.getSelectedCube().getSelectedFace().setTexture(texture);
+			creator.getSelectedCuboid().getSelectedFace().setTexture(texture);
 		}
 	}
 }

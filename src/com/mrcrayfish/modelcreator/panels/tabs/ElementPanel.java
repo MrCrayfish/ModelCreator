@@ -4,7 +4,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.PositionPanel;
@@ -41,7 +41,7 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
 		panelSize.updateValues(cube);
 		panelPosition.updateValues(cube);

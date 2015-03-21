@@ -11,6 +11,17 @@ public class Face
 	private double textureY = 0;
 	private boolean fitTexture = false;
 	private boolean binded = false;
+	private boolean cullface = false;
+	private boolean enabled = true;
+
+	private Cuboid cuboid;
+	private int side;
+
+	public Face(Cuboid cuboid, int side)
+	{
+		this.cuboid = cuboid;
+		this.side = side;
+	}
 
 	public void render(double startX, double startY, double startZ, double endX, double endY, double endZ, double cubeW, double cubeH)
 	{
@@ -23,7 +34,6 @@ public class Face
 				if (binded)
 					GL11.glTexCoord2d(fitTexture ? 1 : 1 - (textureX / 16), fitTexture ? 1 : 1 - (textureY / 16));
 				GL11.glVertex3d(startX, startY, startZ);
-
 				// Bottom Right
 				if (binded)
 					GL11.glTexCoord2d(fitTexture ? 1 : 1 - (textureX / 16), fitTexture ? 0 : 1 - ((textureY / 16) + (cubeH / 16)));
@@ -75,14 +85,24 @@ public class Face
 		this.textureY += amt;
 	}
 
-	public double getTextureX()
+	public double getStartU()
 	{
 		return textureX;
 	}
 
-	public double getTextureY()
+	public double getStartV()
 	{
 		return textureY;
+	}
+
+	public double getEndU()
+	{
+		return textureX + cuboid.getFaceDimension(side).getWidth();
+	}
+
+	public double getEndV()
+	{
+		return textureY + cuboid.getFaceDimension(side).getHeight();
 	}
 
 	public Texture getTexture()
@@ -98,5 +118,50 @@ public class Face
 	public boolean shouldFitTexture()
 	{
 		return fitTexture;
+	}
+
+	public int getSide()
+	{
+		return side;
+	}
+	
+	public boolean isCullfaced()
+	{
+		return cullface;
+	}
+
+	public void setCullface(boolean cullface)
+	{
+		this.cullface = cullface;
+	}
+
+	public boolean isEnabled()
+	{
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled)
+	{
+		this.enabled = enabled;
+	}
+
+	public static String getFaceName(int face)
+	{
+		switch(face)
+		{
+		case 0:
+			return "north";
+		case 1:
+			return "east";
+		case 2:
+			return "south";
+		case 3:
+			return "west";
+		case 4:
+			return "down";
+		case 5:
+			return "up";
+		}
+		return null;
 	}
 }

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
-import com.mrcrayfish.modelcreator.Cube;
+import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
@@ -57,7 +57,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			creator.getSelectedCube().setPrevAxis(axisList.getSelectedIndex());
+			creator.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
 		});
 		axisPanel.setMaximumSize(new Dimension(186, 50));
 		axisPanel.add(axisList);
@@ -78,7 +78,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			creator.getSelectedCube().setRotation(rotation.getValue() * 22.5D);
+			creator.getSelectedCuboid().setRotation(rotation.getValue() * 22.5D);
 		});
 		sliderPanel.setMaximumSize(new Dimension(186, 70));
 		sliderPanel.add(rotation);
@@ -103,7 +103,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cube cube)
+	public void updateValues(Cuboid cube)
 	{
 		panelOrigin.updateValues(cube);
 		axisList.setSelectedIndex(cube.getPrevAxis());

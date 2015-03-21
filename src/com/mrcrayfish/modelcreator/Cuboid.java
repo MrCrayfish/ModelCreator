@@ -127,18 +127,36 @@ public class Cuboid
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			GL11.glRotated(getRotation(), 0, 1, 0);
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
-			GL11.glColor3f(1, 0, 0);
-			faces[0].render(startX, startY, -startZ, startX + width, startY + height, -startZ, width, height);
-			GL11.glColor3f(0, 1, 0);
-			faces[1].render(startX, startY, -(startZ + depth), startX + width, startY + height, -(startZ + depth), width, height);
-			GL11.glColor3f(0, 0, 1);
-			faces[2].render(startX, startY, -startZ, startX, startY + height, -(startZ + depth), depth, height);
-			GL11.glColor3f(1, 1, 0);
-			faces[3].render(startX + width, startY, -startZ, startX + width, startY + height, -(startZ + depth), depth, height);
-			GL11.glColor3f(1, 0, 1);
-			faces[4].render(startX, startY, -startZ, startX + width, startY, -(startZ + depth), width, depth);
-			GL11.glColor3f(0, 1, 1);
-			faces[5].render(startX, startY + height, -startZ, startX + width, startY + height, -(startZ + depth), width, depth);
+			if (faces[0].isEnabled())
+			{
+				GL11.glColor3f(1, 0, 0);
+				faces[0].render(startX, startY, -startZ, startX + width, startY + height, -startZ, width, height);
+			}
+			if (faces[1].isEnabled())
+			{
+				GL11.glColor3f(0, 1, 0);
+				faces[1].render(startX, startY, -(startZ + depth), startX + width, startY + height, -(startZ + depth), width, height);
+			}
+			if (faces[2].isEnabled())
+			{
+				GL11.glColor3f(0, 0, 1);
+				faces[2].render(startX, startY, -startZ, startX, startY + height, -(startZ + depth), depth, height);
+			}
+			if (faces[3].isEnabled())
+			{
+				GL11.glColor3f(1, 1, 0);
+				faces[3].render(startX + width, startY, -startZ, startX + width, startY + height, -(startZ + depth), depth, height);
+			}
+			if (faces[4].isEnabled())
+			{
+				GL11.glColor3f(1, 0, 1);
+				faces[4].render(startX, startY, -startZ, startX + width, startY, -(startZ + depth), width, depth);
+			}
+			if (faces[5].isEnabled())
+			{
+				GL11.glColor3f(0, 1, 1);
+				faces[5].render(startX, startY + height, -startZ, startX + width, startY + height, -(startZ + depth), width, depth);
+			}
 			GL11.glDisable(GL_TEXTURE_2D);
 		}
 		GL11.glPopMatrix();
@@ -263,7 +281,7 @@ public class Cuboid
 	{
 		this.axis = prevAxis;
 	}
-	
+
 	public void setRescale(boolean rescale)
 	{
 		this.rescale = rescale;

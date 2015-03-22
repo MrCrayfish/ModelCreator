@@ -12,14 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 
 public class OriginPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private JButton btnPlusX;
 	private JButton btnPlusY;
@@ -33,9 +33,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 	private DecimalFormat df = new DecimalFormat("#.#");
 
-	public OriginPanel(ModelCreator creator)
+	public OriginPanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new GridLayout(3, 3, 4, 4));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Origin"));
 		setMaximumSize(new Dimension(186, 124));
@@ -77,9 +77,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginX(0.1F);
@@ -96,9 +96,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginY(0.1F);
@@ -115,9 +115,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginZ(0.1F);
@@ -134,9 +134,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginX(-0.1F);
@@ -153,9 +153,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginY(-0.1F);
@@ -172,9 +172,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = creator.getSelectedCuboid();
+				Cuboid cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginZ(-0.1F);

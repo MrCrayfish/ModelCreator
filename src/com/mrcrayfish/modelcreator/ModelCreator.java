@@ -17,41 +17,33 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL11.glVertex3i;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.opengl.Texture;
 
-import com.mrcrayfish.modelcreator.panels.CuboidTabbedPane;
-import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
-import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
-import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
+import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 
@@ -59,8 +51,10 @@ public class ModelCreator extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
+	// Canvas Variables
+	private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
 	private final Canvas canvas;
-	private SpringLayout layout;
+
 	private Camera camera;
 	public Texture texture;
 
@@ -68,14 +62,7 @@ public class ModelCreator extends JFrame
 
 	// Swing Components
 	private JMenuBar menuBar = new JMenuBar();
-	private JList<Cuboid> list = new JList<Cuboid>();
-	private JScrollPane scrollPane;
-	private JButton btnAdd = new JButton("Add");
-	private JButton btnRemove = new JButton("Remove");
-	private JTextField name = new JTextField();
-	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
-
-	private DefaultListModel<Cuboid> model = new DefaultListModel<Cuboid>();
+	private CuboidManager manager;
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
@@ -84,15 +71,19 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 
-		layout = new SpringLayout();
-		canvas = new Canvas();
-
-		setResizable(false);
 		setPreferredSize(new Dimension(1200, 800));
-		setLayout(layout);
+		setLayout(new BorderLayout());
 
+		canvas = new Canvas();
 		initComponents();
-		setLayoutConstaints();
+		canvas.addComponentListener(new ComponentAdapter()
+		{
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				newCanvasSize.set(canvas.getSize());
+			}
+		});
 
 		addWindowFocusListener(new WindowAdapter()
 		{
@@ -111,8 +102,9 @@ public class ModelCreator extends JFrame
 				closeRequested = true;
 			}
 		});
-		
-		tabbedPane.updateValues();
+
+		manager.updateValues();
+
 		pack();
 		setVisible(true);
 		setLocationRelativeTo(null);
@@ -146,9 +138,9 @@ public class ModelCreator extends JFrame
 	}
 
 	public void initComponents()
-	{
+	{	
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-		
+
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 
@@ -165,8 +157,8 @@ public class ModelCreator extends JFrame
 		menuItemExport.setToolTipText("Export model to JSON");
 		menuItemExport.addActionListener(e ->
 		{
-			//Exporter.export(this, "test");
-		});
+			// Exporter.export(this, "test");
+			});
 
 		file.add(menuItemExport);
 		file.add(menuItemExit);
@@ -174,100 +166,14 @@ public class ModelCreator extends JFrame
 		setJMenuBar(menuBar);
 
 		canvas.setSize(new Dimension(990, 800));
-		add(canvas);
+		add(canvas, BorderLayout.CENTER);
 
 		canvas.setFocusable(true);
 		canvas.setVisible(true);
 		canvas.requestFocus();
-		
-		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
-		btnAdd.addActionListener(e ->
-		{
-			model.addElement(new Cuboid(1, 1, 1));
-			list.setSelectedIndex(model.size() - 1);
-		});
-		btnAdd.setPreferredSize(new Dimension(90, 30));
-		btnAdd.setFont(defaultFont);
-		add(btnAdd);
 
-		btnRemove.addActionListener(e ->
-		{
-			int selected = list.getSelectedIndex();
-			if (selected != -1)
-			{
-				model.remove(selected);
-				name.setText("");
-				name.setEnabled(false);
-				tabbedPane.updateValues();
-			}
-		});
-		btnRemove.setFont(defaultFont);
-		btnRemove.setPreferredSize(new Dimension(90, 30));
-		add(btnRemove);
-
-		name.setPreferredSize(new Dimension(190, 30));
-		name.setToolTipText("Placeholder");
-		name.setEnabled(false);
-		name.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-				{
-					updateName();
-				}
-			}
-		});
-		name.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				updateName();
-			}
-		});
-		add(name);
-
-		list.setModel(model);
-		list.addListSelectionListener(e ->
-		{
-			Cuboid cube = getSelectedCuboid();
-			if (cube != null)
-			{
-				tabbedPane.updateValues();
-				name.setEnabled(true);
-				name.setText(cube.toString());
-			}
-		});
-
-		scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new Dimension(190, 200));
-		add(scrollPane);
-
-		tabbedPane.add("Element", new ElementPanel(this));
-		tabbedPane.add("Rotation", new RotationPanel(this));
-		tabbedPane.add("Faces", new FacePanel(this));
-		tabbedPane.setPreferredSize(new Dimension(190, 385));
-		tabbedPane.setTabPlacement(JTabbedPane.TOP);
-		add(tabbedPane);
-	}
-
-	public void setLayoutConstaints()
-	{
-		layout.putConstraint(SpringLayout.NORTH, name, 245, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, name, 998, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 998, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnAdd, 998, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnRemove, 1097, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 281, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, tabbedPane, 998, SpringLayout.WEST, this);
+		manager = new SidebarPanel();
+		add((JPanel) manager, BorderLayout.EAST);
 	}
 
 	public void initDisplay()
@@ -286,8 +192,11 @@ public class ModelCreator extends JFrame
 
 	private void loop()
 	{
-		camera = new Camera(60, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000);
-
+		camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
+		
+		Dimension newDim;
+        float counter = 0;
+        
 		while (!Display.isCloseRequested() && !closeRequested)
 		{
 			synchronized (this)
@@ -298,6 +207,19 @@ public class ModelCreator extends JFrame
 				}
 				pendingTextures.clear();
 			}
+			
+			newDim = newCanvasSize.getAndSet(null);
+
+            if (newDim != null)
+            {
+                GL11.glViewport(0, 0, newDim.width, newDim.height);
+                GL11.glMatrixMode(GL11.GL_PROJECTION);
+                GL11.glLoadIdentity();
+                GLU.gluPerspective(60F, (float) newDim.width / (float) newDim.height, 0.3F, 1000F);
+                GL11.glMatrixMode(GL11.GL_MODELVIEW);
+                GL11.glLoadIdentity();
+            }
+            
 
 			handleInput();
 
@@ -310,9 +232,9 @@ public class ModelCreator extends JFrame
 			drawAxis();
 
 			glTranslatef(-8, 0, 8);
-			for (int i = 0; i < model.size(); i++)
+			for (int i = 0; i < manager.getCuboidCount(); i++)
 			{
-				Cuboid cube = (Cuboid) model.getElementAt(i);
+				Cuboid cube = manager.getCuboid(i);
 				cube.draw();
 				cube.drawExtras();
 			}
@@ -402,47 +324,5 @@ public class ModelCreator extends JFrame
 			glEnd();
 		}
 		glPopMatrix();
-	}
-
-	public Cuboid getSelectedCuboid()
-	{
-		int i = list.getSelectedIndex();
-		if (i != -1)
-			return (Cuboid) model.getElementAt(i);
-		return null;
-	}
-
-	public List<Cuboid> getAllCuboids()
-	{
-		List<Cuboid> list = new ArrayList<Cuboid>();
-		for (int i = 0; i < model.size(); i++)
-		{
-			list.add(model.getElementAt(i));
-		}
-		return list;
-	}
-
-	public Cuboid getCuboid(int index)
-	{
-		return model.getElementAt(index);
-	}
-
-	public int getCuboidCount()
-	{
-		return model.size();
-	}
-
-	public void updateName()
-	{
-		String newName = name.getText();
-		if (newName.isEmpty())
-			newName = "Cuboid";
-		Cuboid cube = getSelectedCuboid();
-		if (cube != null)
-		{
-			cube.setName(newName);
-			name.setText(newName);
-			list.updateUI();
-		}
 	}
 }

@@ -8,20 +8,20 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 
 public class ElementExtraPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private JRadioButton btnShade;
 
-	public ElementExtraPanel(ModelCreator creator)
+	public ElementExtraPanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new GridLayout(1, 2));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
 		setMaximumSize(new Dimension(186, 50));
@@ -34,7 +34,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 		btnShade = new JRadioButton("Shade");
 		btnShade.addActionListener(e ->
 		{
-			creator.getSelectedCuboid().setShade(btnShade.isSelected());
+			manager.getSelectedCuboid().setShade(btnShade.isSelected());
 		});
 	}
 

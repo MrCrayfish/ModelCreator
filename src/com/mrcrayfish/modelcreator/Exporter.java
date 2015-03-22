@@ -18,15 +18,15 @@ public class Exporter
 	private String outputPath;
 	
 	// Model Variables
-	private ModelCreator creator;
+	private CuboidManager manager;
 	private String modelName;
 	
 	// Child Variables
 	private String childName;
 	
-	public Exporter(ModelCreator creator, String outputPath, String outputName)
+	public Exporter(CuboidManager manager, String outputPath, String outputName)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		this.modelName = outputName;
 		this.outputPath = outputPath;
 	}
@@ -41,13 +41,13 @@ public class Exporter
 		this.modid = modid;
 	}
 	
-	public void export(ModelCreator creator, String name)
+	public void export(CuboidManager manager, String name)
 	{
 		try
 		{
 			FileWriter fw = new FileWriter(new File(name + ".json"));
 			BufferedWriter writer = new BufferedWriter(fw);
-			writeComponents(writer, creator);
+			writeComponents(writer, manager);
 			writer.close();
 			fw.close();
 		}
@@ -57,9 +57,9 @@ public class Exporter
 		}
 	}
 	
-	private void compileTextureList(ModelCreator creator)
+	private void compileTextureList(CuboidManager manager)
 	{
-		for(Cuboid cuboid : creator.getAllCuboids())
+		for(Cuboid cuboid : manager.getAllCuboids())
 		{
 			for(Face face : cuboid.getAllFaces())
 			{
@@ -68,22 +68,22 @@ public class Exporter
 		}
 	}
 	
-	private void writeComponents(BufferedWriter writer, ModelCreator creator) throws IOException
+	private void writeComponents(BufferedWriter writer, CuboidManager manager) throws IOException
 	{
 		writer.write("{");
 		writer.newLine();
-		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
+		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model manager (http://mrcrayfish.com/modelmanager/)\",");
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");
-		for (int i = 0; i < creator.getCuboidCount(); i++)
+		for (int i = 0; i < manager.getCuboidCount(); i++)
 		{
 			writer.newLine();
 			writer.write(space(2) + "{");
 			writer.newLine();
-			writeElement(writer, creator.getCuboid(i));
+			writeElement(writer, manager.getCuboid(i));
 			writer.newLine();
 			writer.write(space(2) + "}");
-			if (i != creator.getCuboidCount() - 1)
+			if (i != manager.getCuboidCount() - 1)
 				writer.write(",");
 		}
 		writer.newLine();

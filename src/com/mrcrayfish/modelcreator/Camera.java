@@ -44,7 +44,7 @@ public class Camera
 		initProjection();
 	}
 
-	private void initProjection()
+	public void initProjection()
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

@@ -11,8 +11,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
 import com.mrcrayfish.modelcreator.panels.TexturePanel;
 import com.mrcrayfish.modelcreator.panels.UVPanel;
@@ -21,7 +21,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private JPanel menuPanel;
 	private JComboBox<String> menuList;
@@ -31,9 +31,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 
 	private DefaultComboBoxModel<String> model;
 
-	public FacePanel(ModelCreator creator)
+	public FacePanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		initMenu();
 		initComponents();
@@ -59,18 +59,18 @@ public class FacePanel extends JPanel implements IValueUpdater
 		menuList.setModel(model);
 		menuList.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				creator.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
-				updateValues(creator.getSelectedCuboid());
+				manager.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
+				updateValues(manager.getSelectedCuboid());
 			}
 		});
 		menuPanel.setMaximumSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 
-		panelTexture = new TexturePanel(creator);
-		panelUV = new UVPanel(creator);
-		panelProperties = new FaceExtrasPanel(creator);
+		panelTexture = new TexturePanel(manager);
+		panelUV = new UVPanel(manager);
+		panelProperties = new FaceExtrasPanel(manager);
 	}
 
 	public void addComponents()

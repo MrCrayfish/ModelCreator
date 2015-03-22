@@ -15,15 +15,15 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
 
 public class RotationPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private OriginPanel panelOrigin;
 	private JPanel axisPanel;
@@ -39,9 +39,9 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	private final int ROTATION_MAX = 15;
 	private final int ROTATION_INIT = 0;
 
-	public RotationPanel(ModelCreator creator)
+	public RotationPanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		initMenu();
 		initComponents();
@@ -58,7 +58,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		panelOrigin = new OriginPanel(creator);
+		panelOrigin = new OriginPanel(manager);
 
 		axisPanel = new JPanel(new GridLayout(1, 1));
 		axisPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Axis"));
@@ -67,8 +67,8 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
-				creator.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
+			if (manager.getSelectedCuboid() != null)
+				manager.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
 		});
 		axisPanel.setMaximumSize(new Dimension(186, 50));
 		axisPanel.add(axisList);
@@ -89,7 +89,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			creator.getSelectedCuboid().setRotation(rotation.getValue() * 22.5D);
+			manager.getSelectedCuboid().setRotation(rotation.getValue() * 22.5D);
 		});
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
@@ -100,7 +100,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		btnRescale.setToolTipText("<html>Should scale faces across whole block<br>Default: Off<html>");
 		btnRescale.addActionListener(e ->
 		{
-			creator.getSelectedCuboid().setRescale(btnRescale.isSelected());
+			manager.getSelectedCuboid().setRescale(btnRescale.isSelected());
 		});
 		extraPanel.setMaximumSize(new Dimension(186, 50));
 		extraPanel.add(btnRescale);

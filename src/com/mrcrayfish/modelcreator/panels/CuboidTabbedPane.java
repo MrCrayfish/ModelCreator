@@ -5,18 +5,18 @@ import java.awt.Component;
 import javax.swing.JTabbedPane;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 
 public class CuboidTabbedPane extends JTabbedPane
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
-	public CuboidTabbedPane(ModelCreator creator)
+	public CuboidTabbedPane(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 	}
 
 	public void updateValues()
@@ -29,7 +29,7 @@ public class CuboidTabbedPane extends JTabbedPane
 				if (component instanceof IValueUpdater)
 				{
 					IValueUpdater updater = (IValueUpdater) component;
-					Cuboid cube = creator.getSelectedCuboid();
+					Cuboid cube = manager.getSelectedCuboid();
 					updater.updateValues(cube);
 				}
 			}

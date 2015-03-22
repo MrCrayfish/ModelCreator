@@ -12,8 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.Face;
-import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
@@ -23,16 +23,16 @@ public class TexturePanel extends JPanel implements TextureCallback
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private JButton btnSelect;
 	private JButton btnClear;
 	private JButton btnCopy;
 	private JButton btnPaste;
 
-	public TexturePanel(ModelCreator creator)
+	public TexturePanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new GridLayout(2, 2, 4, 4));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Texture"));
 		setMaximumSize(new Dimension(186, 90));
@@ -48,7 +48,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
 				JFileChooser chooser = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
@@ -58,7 +58,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 				{
 					try
 					{
-						creator.pendingTextures.add(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), this));
+						manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), this));
 					}
 					catch (Exception e1)
 					{
@@ -72,15 +72,15 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					creator.getSelectedCuboid().setAllTextures(null);
+					manager.getSelectedCuboid().setAllTextures(null);
 				}
 				else
 				{
-					creator.getSelectedCuboid().getSelectedFace().setTexture(null);
+					manager.getSelectedCuboid().getSelectedFace().setTexture(null);
 				}
 			}
 		});
@@ -89,9 +89,9 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnCopy = new JButton("Copy");
 		btnCopy.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
-				String texture = creator.getSelectedCuboid().getSelectedFace().getTextureName();
+				String texture = manager.getSelectedCuboid().getSelectedFace().getTextureName();
 				Clipboard.copyTexture(texture);
 			}
 		});
@@ -100,18 +100,18 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnPaste = new JButton("Paste");
 		btnPaste.addActionListener(e ->
 		{
-			if (creator.getSelectedCuboid() != null)
+			if (manager.getSelectedCuboid() != null)
 			{
 				ClipboardTexture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
-						creator.getSelectedCuboid().setAllTextures(texture.getTexture());
+						manager.getSelectedCuboid().setAllTextures(texture.getTexture());
 					}
 					else
 					{
-						Face face = creator.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setTexture(texture.getTexture());
 						face.setTextureModId(texture.getModid());
 						
@@ -133,9 +133,9 @@ public class TexturePanel extends JPanel implements TextureCallback
 	@Override
 	public void callback(String texture)
 	{
-		if (creator.getSelectedCuboid() != null)
+		if (manager.getSelectedCuboid() != null)
 		{
-			creator.getSelectedCuboid().getSelectedFace().setTexture(texture);
+			manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
 		}
 	}
 }

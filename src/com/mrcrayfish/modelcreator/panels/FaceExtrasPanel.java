@@ -15,14 +15,14 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Cuboid;
+import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
-import com.mrcrayfish.modelcreator.ModelCreator;
 
 public class FaceExtrasPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private ModelCreator creator;
+	private CuboidManager manager;
 
 	private JPanel horizontalBox;
 	private JRadioButton boxCullFace;
@@ -32,9 +32,9 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	private JLabel modidLabel;
 	private JTextField modidField;
 
-	public FaceExtrasPanel(ModelCreator creator)
+	public FaceExtrasPanel(CuboidManager manager)
 	{
-		this.creator = creator;
+		this.manager = manager;
 		setLayout(new GridLayout(2, 1));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
 		setMaximumSize(new Dimension(186, 50));
@@ -49,13 +49,13 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
 		{
-			creator.getSelectedCuboid().getSelectedFace().setCullface(boxCullFace.isSelected());
+			manager.getSelectedCuboid().getSelectedFace().setCullface(boxCullFace.isSelected());
 		});
 		boxEnabled = new JRadioButton("Enable");
 		boxEnabled.setToolTipText("<html>Determines if face should be included<br>Default: On</html>");
 		boxEnabled.addActionListener(e ->
 		{
-			creator.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
+			manager.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
 		horizontalBox.add(boxCullFace);
 		horizontalBox.add(boxEnabled);
@@ -71,9 +71,9 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(creator.getSelectedCuboid() != null)
+					if(manager.getSelectedCuboid() != null)
 					{
-						creator.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
+						manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
 					}
 				}
 			}
@@ -83,9 +83,9 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(creator.getSelectedCuboid() != null)
+				if(manager.getSelectedCuboid() != null)
 				{
-					creator.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
+					manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
 				}
 			}
 		});

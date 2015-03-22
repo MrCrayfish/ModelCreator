@@ -9,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -35,16 +36,16 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	public FaceExtrasPanel(CuboidManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(2, 1));
+		setLayout(new BorderLayout(0, 5));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
-		setMaximumSize(new Dimension(186, 50));
+		setMaximumSize(new Dimension(186, 70));
 		initComponents();
 		addComponents();
 	}
 
 	public void initComponents()
 	{
-		horizontalBox = new JPanel(new GridLayout(1, 1));
+		horizontalBox = new JPanel(new GridLayout(1, 2));
 		boxCullFace = new JRadioButton("Cullface");
 		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
@@ -63,7 +64,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		panelModId = new JPanel(new BorderLayout());
 		modidLabel = new JLabel("Mod ID: ");
 		modidField = new JTextField();
-		modidField.setPreferredSize(new Dimension(190, 50));
+		modidField.setPreferredSize(new Dimension(190, 60));
 		modidField.addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -95,8 +96,9 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(horizontalBox);
-		add(panelModId);
+		add(horizontalBox, BorderLayout.NORTH);
+		add(Box.createRigidArea(new Dimension(192, 5)));
+		add(panelModId, BorderLayout.CENTER);
 	}
 
 	@Override

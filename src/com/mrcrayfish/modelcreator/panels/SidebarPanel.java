@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -31,14 +33,16 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	private static final long serialVersionUID = 1L;
 
 	private ModelCreator creator;
-	
+
 	// Swing Variables
 	private SpringLayout layout;
 	private DefaultListModel<Cuboid> model = new DefaultListModel<Cuboid>();
 	private JList<Cuboid> list = new JList<Cuboid>();
 	private JScrollPane scrollPane;
-	private JButton btnAdd = new JButton("Add");
-	private JButton btnRemove = new JButton("Remove");
+	private JPanel btnContainer;
+	private JButton btnAdd = new JButton();
+	private JButton btnRemove = new JButton();
+	private JButton btnDuplicate = new JButton();
 	private JTextField name = new JTextField();
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
@@ -54,14 +58,36 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	public void initComponents()
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
+
+		btnContainer = new JPanel(new GridLayout(1, 3, 4, 0));
+		btnContainer.setPreferredSize(new Dimension(190, 30));
+		try
+		{
+			btnAdd.setIcon(new ImageIcon("res/add.png"));
+			btnAdd.setRolloverIcon(new ImageIcon("res/add_rollover.png"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		btnAdd.addActionListener(e ->
 		{
 			model.addElement(new Cuboid(1, 1, 1));
 			list.setSelectedIndex(model.size() - 1);
 		});
-		btnAdd.setPreferredSize(new Dimension(90, 30));
-		btnAdd.setFont(defaultFont);
-		add(btnAdd);
+		btnAdd.setPreferredSize(new Dimension(30, 30));
+		btnContainer.add(btnAdd);
+
+		try
+		{
+			btnRemove.setIcon(new ImageIcon("res/remove.png"));
+			btnRemove.setRolloverIcon(new ImageIcon("res/remove_rollover.png"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		btnRemove.addActionListener(e ->
 		{
@@ -72,11 +98,35 @@ public class SidebarPanel extends JPanel implements CuboidManager
 				name.setText("");
 				name.setEnabled(false);
 				tabbedPane.updateValues();
+				list.setSelectedIndex(selected);
 			}
 		});
-		btnRemove.setFont(defaultFont);
-		btnRemove.setPreferredSize(new Dimension(90, 30));
-		add(btnRemove);
+		btnRemove.setPreferredSize(new Dimension(30, 30));
+		btnContainer.add(btnRemove);
+
+		try
+		{
+			btnDuplicate.setIcon(new ImageIcon("res/duplicate.png"));
+			btnDuplicate.setRolloverIcon(new ImageIcon("res/duplicate_rollover.png"));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		btnDuplicate.addActionListener(e ->
+		{
+			int selected = list.getSelectedIndex();
+			if (selected != -1)
+			{
+				model.addElement(new Cuboid(model.getElementAt(selected)));
+				list.setSelectedIndex(model.getSize() - 1);
+			}
+		});
+		btnDuplicate.setFont(defaultFont);
+		btnDuplicate.setPreferredSize(new Dimension(30, 30));
+		btnContainer.add(btnDuplicate);
+		add(btnContainer);
 
 		name.setPreferredSize(new Dimension(190, 30));
 		name.setToolTipText("Placeholder");
@@ -129,10 +179,8 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	public void setLayoutConstaints()
 	{
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, name, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 246, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 246, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnRemove, 100, SpringLayout.WEST, this);
+		layout.putConstraint(SpringLayout.NORTH, name, 246, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnContainer, 210, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 281, SpringLayout.NORTH, this);
 	}
 

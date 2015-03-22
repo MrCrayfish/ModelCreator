@@ -39,11 +39,40 @@ public class Cuboid
 		initFaces();
 	}
 
+	public Cuboid(Cuboid cuboid)
+	{
+		this.width = cuboid.getWidth();
+		this.height = cuboid.getHeight();
+		this.depth = cuboid.getDepth();
+		this.startX = cuboid.getStartX();
+		this.startY = cuboid.getStartY();
+		this.startZ = cuboid.getStartZ();
+		this.originX = cuboid.getOriginX();
+		this.originY = cuboid.getOriginY();
+		this.originZ = cuboid.getOriginZ();
+		this.rotation = cuboid.getRotation();
+		this.axis = cuboid.getPrevAxis();
+		this.rescale = cuboid.shouldRescale();
+		this.shade = cuboid.isShaded();
+		this.selectedFace = cuboid.getSelectedFaceIndex();
+		initFaces();
+		for(int i = 0; i < faces.length; i++)
+		{
+			Face oldFace = cuboid.getAllFaces()[i];
+			faces[i].fitTexture(oldFace.shouldFitTexture());
+			faces[i].setTexture(oldFace.getTextureName());
+			faces[i].setTextureModId(oldFace.getTextureModId());
+			faces[i].addTextureX(oldFace.getStartU());
+			faces[i].addTextureY(oldFace.getStartV());
+			faces[i].setCullface(oldFace.isCullfaced());
+			faces[i].setEnabled(oldFace.isEnabled());
+		}
+	}
+
 	public void initFaces()
 	{
 		for (int i = 0; i < faces.length; i++)
 			faces[i] = new Face(this, i);
-		faces[1].setTexture("brick");
 	}
 
 	public void setSelectedFace(int face)
@@ -338,5 +367,10 @@ public class Cuboid
 			return "z";
 		}
 		return "x";
+	}
+
+	public Cuboid copy()
+	{
+		return new Cuboid(getWidth(), getHeight(), getDepth());
 	}
 }

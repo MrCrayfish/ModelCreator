@@ -1,8 +1,11 @@
 package com.mrcrayfish.modelcreator;
 
 import java.io.File;
+import java.util.Properties;
 
 import javax.swing.UIManager;
+
+import com.jtattoo.plaf.fast.FastLookAndFeel;
 
 public class Start
 {
@@ -10,9 +13,21 @@ public class Start
 	{
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.librarypath", new File("natives/windows").getAbsolutePath());
+
 		try
 		{
-			UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			Properties props = new Properties();
+			props.put("logoString", "");
+			props.put("centerWindowTitle", "on");
+			props.put("buttonBackgroundColor", "127 132 145");
+			props.put("buttonForegroundColor", "255 255 255");
+			props.put("windowTitleBackgroundColor", "97 102 115");
+			props.put("backgroundColor", "221 221 228");
+			props.put("menuBackgroundColor", "221 221 228");
+			props.put("controlForegroundColor", "120 120 120");
+			props.put("windowBorderColor", "97 102 110");
+			FastLookAndFeel.setTheme(props);
+			UIManager.setLookAndFeel("com.jtattoo.plaf.fast.FastLookAndFeel");
 		}
 		catch (Exception e)
 		{

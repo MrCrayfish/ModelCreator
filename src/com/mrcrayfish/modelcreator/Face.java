@@ -4,9 +4,11 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 
+import com.mrcrayfish.modelcreator.texture.TextureManager;
+
 public class Face
 {
-	private Texture texture = null;
+	private String texture = null;
 	private double textureX = 0;
 	private double textureY = 0;
 	private boolean fitTexture = false;
@@ -54,7 +56,7 @@ public class Face
 		GL11.glPopMatrix();
 	}
 
-	public void setTexture(Texture texture)
+	public void setTexture(String texture)
 	{
 		this.texture = texture;
 	}
@@ -65,14 +67,9 @@ public class Face
 		if (texture != null)
 		{
 			GL11.glColor3f(1.0F, 1.0F, 1.0F);
-			texture.bind();
+			TextureManager.getTexture(texture).bind();
 			binded = true;
 		}
-	}
-
-	public void releaseTexture()
-	{
-		texture.release();
 	}
 
 	public void addTextureX(double amt)
@@ -105,9 +102,14 @@ public class Face
 		return textureY + cuboid.getFaceDimension(side).getHeight();
 	}
 
-	public Texture getTexture()
+	public String getTextureName()
 	{
 		return texture;
+	}
+	
+	public Texture getTexture()
+	{
+		return TextureManager.getTexture(texture);
 	}
 
 	public void fitTexture(boolean fitTexture)

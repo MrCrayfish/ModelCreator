@@ -19,8 +19,8 @@ public class Cuboid
 	private Face[] faces = new Face[6];
 
 	// Element Variables
-	private double startX, startY, startZ;
-	private double width, height, depth;
+	private double startX = 0.0, startY = 0.0, startZ = 0.0;
+	private double width = 1.0, height = 1.0, depth = 1.0;
 
 	// Rotation Variables
 	private double originX = 8, originY = 8, originZ = 8;
@@ -46,7 +46,7 @@ public class Cuboid
 	{
 		for (int i = 0; i < faces.length; i++)
 			faces[i] = new Face(this, i);
-		faces[1].setTexture(TextureManager.dirt);
+		faces[1].setTexture("brick");
 	}
 
 	public void setSelectedFace(int face)
@@ -110,7 +110,7 @@ public class Cuboid
 		}
 	}
 
-	public void setAllTextures(Texture texture)
+	public void setAllTextures(String texture)
 	{
 		for (Face face : faces)
 		{

@@ -30,8 +30,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 	public UVPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("UV"));
+		setLayout(new GridLayout(3, 3, 4, 4));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "UV"));
 		setMaximumSize(new Dimension(186,124));
 		initComponents();
 		initProperties();
@@ -79,7 +79,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnPlusX.setSize(new Dimension(62, 30));
-
+		btnPlusX.setFont(defaultFont);
+		
 		btnPlusY.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -98,7 +99,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusY.setFont(defaultFont);
+		
 		btnNegX.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -117,6 +119,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnNegX.setSize(new Dimension(62, 30));
+		btnNegX.setFont(defaultFont);
 
 		btnNegY.addActionListener(e ->
 		{
@@ -136,6 +139,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnNegY.setSize(new Dimension(62, 30));
+		btnNegY.setFont(defaultFont);
 	}
 
 	public void addComponents()

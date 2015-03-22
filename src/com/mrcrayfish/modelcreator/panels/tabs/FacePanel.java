@@ -43,18 +43,18 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
-		model.addElement("North");
-		model.addElement("East");
-		model.addElement("South");
-		model.addElement("West");
-		model.addElement("Down");
-		model.addElement("Up");
+		model.addElement("<html><div style='padding:5px;'>North</html>");
+		model.addElement("<html><div style='padding:5px;'>East</html>");
+		model.addElement("<html><div style='padding:5px;'>South</html>");
+		model.addElement("<html><div style='padding:5px;'>West</html>");
+		model.addElement("<html><div style='padding:5px;'>Down</html>");
+		model.addElement("<html><div style='padding:5px;'>Up</html>");
 	}
 
 	public void initComponents()
 	{
 		menuPanel = new JPanel(new GridLayout(1, 1));
-		menuPanel.setBorder(BorderFactory.createTitledBorder("Side"));
+		menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Side"));
 		menuList = new JComboBox<String>();
 		menuList.setModel(model);
 		menuList.addActionListener(e ->
@@ -62,7 +62,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 			creator.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
 			updateValues(creator.getSelectedCuboid());
 		});
-		menuPanel.setMaximumSize(new Dimension(186, 500));
+		menuPanel.setMaximumSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 		
 		panelTexture = new TexturePanel(creator);
@@ -72,12 +72,13 @@ public class FacePanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
+		add(Box.createRigidArea(new Dimension(192,5)));
 		add(menuPanel);
-		add(Box.createVerticalStrut(5));
+		add(Box.createRigidArea(new Dimension(192,5)));
 		add(panelTexture);
-		add(Box.createVerticalStrut(5));
+		add(Box.createRigidArea(new Dimension(192,5)));
 		add(panelUV);
-		add(Box.createVerticalStrut(5));
+		add(Box.createRigidArea(new Dimension(192,5)));
 		add(panelProperties);
 	}
 

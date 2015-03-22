@@ -13,34 +13,49 @@ public class Exporter
 		{
 			FileWriter fw = new FileWriter(new File(name + ".json"));
 			BufferedWriter writer = new BufferedWriter(fw);
-
-			writer.write("{");
-			writer.newLine();
-			writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
-			writer.newLine();
-			writer.write(space(1) + "\"elements\": [");
-			for (int i = 0; i < creator.getCuboidCount(); i++)
-			{
-				writer.newLine();
-				writer.write(space(2) + "{");
-				writer.newLine();
-				writeElement(writer, creator.getCuboid(i));
-				writer.newLine();
-				writer.write(space(2) + "}");
-				if (i != creator.getCuboidCount() - 1)
-					writer.write(",");
-			}
-			writer.newLine();
-			writer.write(space(1) + "]");
-			writer.newLine();
-			writer.write("}");
-
+			writeComponents(writer, creator);
 			writer.close();
+			fw.close();
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	private static void compileTextureList(ModelCreator creator)
+	{
+		for(Cuboid cuboid : creator.getAllCuboids())
+		{
+			for(Face face : cuboid.getAllFaces())
+			{
+				//face.get
+			}
+		}
+	}
+	
+	private static void writeComponents(BufferedWriter writer, ModelCreator creator) throws IOException
+	{
+		writer.write("{");
+		writer.newLine();
+		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
+		writer.newLine();
+		writer.write(space(1) + "\"elements\": [");
+		for (int i = 0; i < creator.getCuboidCount(); i++)
+		{
+			writer.newLine();
+			writer.write(space(2) + "{");
+			writer.newLine();
+			writeElement(writer, creator.getCuboid(i));
+			writer.newLine();
+			writer.write(space(2) + "}");
+			if (i != creator.getCuboidCount() - 1)
+				writer.write(",");
+		}
+		writer.newLine();
+		writer.write(space(1) + "]");
+		writer.newLine();
+		writer.write("}");
 	}
 
 	private static void writeElement(BufferedWriter writer, Cuboid cuboid) throws IOException

@@ -35,9 +35,10 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 
 	public PositionPanel(ModelCreator creator) {
 		this.creator = creator;
-		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("Position"));
+		setLayout(new GridLayout(3, 3, 4, 4));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Position"));
 		setMaximumSize(new Dimension(186,124));
+		setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		initComponents();
 		initProperties();
 		addComponents();
@@ -81,10 +82,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartX(1.0F);
 				}
-				xPositionField.setText(cube.getStartX() + "");
+				xPositionField.setText(df.format(cube.getStartX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
+		btnPlusX.setFont(defaultFont);
 
 		btnPlusY.addActionListener(e -> {
 			if (creator.getSelectedCuboid() != null) {
@@ -94,10 +96,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartY(1.0F);
 				}
-				yPositionField.setText(cube.getStartY() + "");
+				yPositionField.setText(df.format(cube.getStartY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
+		btnPlusY.setFont(defaultFont);
 
 		btnPlusZ.addActionListener(e -> {
 			if (creator.getSelectedCuboid() != null) {
@@ -107,10 +110,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartZ(1.0F);
 				}
-				zPositionField.setText(cube.getStartZ() + "");
+				zPositionField.setText(df.format(cube.getStartZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
+		btnPlusZ.setFont(defaultFont);
 
 		btnNegX.addActionListener(e -> {
 			if (creator.getSelectedCuboid() != null) {
@@ -120,10 +124,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartX(-1.0F);
 				}
-				xPositionField.setText(cube.getStartX() + "");
+				xPositionField.setText(df.format(cube.getStartX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
+		btnNegX.setFont(defaultFont);
 
 		btnNegY.addActionListener(e -> {
 			if (creator.getSelectedCuboid() != null) {
@@ -133,10 +138,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartY(-1.0F);
 				}
-				yPositionField.setText(cube.getStartY() + "");
+				yPositionField.setText(df.format(cube.getStartY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
+		btnNegY.setFont(defaultFont);
 
 		btnNegZ.addActionListener(e -> {
 			if (creator.getSelectedCuboid() != null) {
@@ -146,10 +152,11 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 				} else {
 					cube.addStartZ(-1.0F);
 				}
-				zPositionField.setText(cube.getStartZ() + "");
+				zPositionField.setText(df.format(cube.getStartZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
+		btnNegZ.setFont(defaultFont);
 	}
 
 	public void addComponents() {

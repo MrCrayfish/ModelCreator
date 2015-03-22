@@ -36,9 +36,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 	public SizePanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("Size"));
-		setMaximumSize(new Dimension(186,124));
+		setLayout(new GridLayout(3, 3, 4, 4));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Size"));
+		setMaximumSize(new Dimension(186, 124));
 		initComponents();
 		initProperties();
 		addComponents();
@@ -88,10 +88,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(1.0F);
 				}
-				xSizeField.setText(cube.getWidth() + "");
+				xSizeField.setText(df.format(cube.getWidth()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
+		btnPlusX.setFont(defaultFont);
 
 		btnPlusY.addActionListener(e ->
 		{
@@ -106,11 +107,12 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(1.0F);
 				}
-				ySizeField.setText(cube.getHeight() + "");
+				ySizeField.setText(df.format(cube.getHeight()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusY.setFont(defaultFont);
+		
 		btnPlusZ.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -124,11 +126,12 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(1.0F);
 				}
-				zSizeField.setText(cube.getDepth() + "");
+				zSizeField.setText(df.format(cube.getDepth()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusZ.setFont(defaultFont);
+		
 		btnNegX.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -142,11 +145,12 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(-1.0F);
 				}
-				xSizeField.setText(cube.getWidth() + "");
+				xSizeField.setText(df.format(cube.getWidth()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
-
+		btnNegX.setFont(defaultFont);
+		
 		btnNegY.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -160,11 +164,12 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(-1.0F);
 				}
-				ySizeField.setText(cube.getHeight() + "");
+				ySizeField.setText(df.format(cube.getHeight()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
-
+		btnNegY.setFont(defaultFont);
+		
 		btnNegZ.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -178,10 +183,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(-1.0F);
 				}
-				zSizeField.setText(cube.getDepth() + "");
+				zSizeField.setText(df.format(cube.getDepth()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
+		btnNegZ.setFont(defaultFont);
 	}
 
 	public void addComponents()

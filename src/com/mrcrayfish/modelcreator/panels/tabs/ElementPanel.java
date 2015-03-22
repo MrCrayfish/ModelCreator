@@ -1,5 +1,7 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import java.awt.Dimension;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -7,6 +9,7 @@ import javax.swing.JPanel;
 import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.panels.ElementExtraPanel;
 import com.mrcrayfish.modelcreator.panels.PositionPanel;
 import com.mrcrayfish.modelcreator.panels.SizePanel;
 
@@ -18,6 +21,7 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	
 	private SizePanel panelSize;
 	private PositionPanel panelPosition;
+	private ElementExtraPanel panelExtras;
 
 	public ElementPanel(ModelCreator creator)
 	{
@@ -31,13 +35,17 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	{
 		panelSize = new SizePanel(creator);
 		panelPosition = new PositionPanel(creator);
+		panelExtras = new ElementExtraPanel(creator);
 	}
 	
 	public void addComponents()
 	{
+		add(Box.createRigidArea(new Dimension(188,5)));
 		add(panelSize);
-		add(Box.createVerticalStrut(5));
+		add(Box.createRigidArea(new Dimension(188,5)));
 		add(panelPosition);
+		add(Box.createRigidArea(new Dimension(188,5)));
+		add(panelExtras);
 	}
 
 	@Override
@@ -45,5 +53,6 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	{
 		panelSize.updateValues(cube);
 		panelPosition.updateValues(cube);
+		panelExtras.updateValues(cube);
 	}
 }

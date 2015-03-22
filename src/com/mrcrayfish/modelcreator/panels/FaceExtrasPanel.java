@@ -24,16 +24,16 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	public FaceExtrasPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(5, 2));
-		setBorder(BorderFactory.createTitledBorder("Extras"));
-		setMaximumSize(new Dimension(186, 500));
+		setLayout(new GridLayout(1, 2));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
+		setMaximumSize(new Dimension(186, 50));
 		initComponents();
 		addComponents();
 	}
 
 	public void initComponents()
 	{
-		horizontalBox = new JPanel(new GridLayout(2, 1));
+		horizontalBox = new JPanel(new GridLayout(1, 1));
 		boxCullFace = new JRadioButton("Cullface");
 		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->

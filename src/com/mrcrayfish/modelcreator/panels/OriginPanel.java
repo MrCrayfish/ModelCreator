@@ -36,9 +36,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 	public OriginPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(new GridLayout(3, 3));
-		setBorder(BorderFactory.createTitledBorder("Origin"));
-		setMaximumSize(new Dimension(186,124));
+		setLayout(new GridLayout(3, 3, 4, 4));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Origin"));
+		setMaximumSize(new Dimension(186, 124));
 		initComponents();
 		initProperties();
 		addComponents();
@@ -92,7 +92,8 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusX.setFont(defaultFont);
+		
 		btnPlusY.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -110,7 +111,8 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusY.setFont(defaultFont);
+		
 		btnPlusZ.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -128,7 +130,8 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
-
+		btnPlusZ.setFont(defaultFont);
+		
 		btnNegX.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -146,7 +149,8 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
-
+		btnNegX.setFont(defaultFont);
+		
 		btnNegY.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -164,7 +168,8 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
-
+		btnNegY.setFont(defaultFont);
+		
 		btnNegZ.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -182,6 +187,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
+		btnNegZ.setFont(defaultFont);
 	}
 
 	public void addComponents()

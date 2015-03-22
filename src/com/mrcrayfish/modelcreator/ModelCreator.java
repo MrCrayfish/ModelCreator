@@ -1,21 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glScalef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-import static org.lwjgl.opengl.GL11.glVertex3i;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -227,6 +212,7 @@ public class ModelCreator extends JFrame
 			glLoadIdentity();
 			camera.useView();
 
+			glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
 			glScalef(0.25F, 0.25F, 0.25F);
 			drawGrid();
 			drawAxis();

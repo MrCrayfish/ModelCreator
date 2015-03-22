@@ -253,8 +253,10 @@ public class ModelCreator extends JFrame
 		}
 		else if (Mouse.isButtonDown(1))
 		{
-			camera.rotateY((float) Mouse.getDX() * 0.5F);
 			camera.rotateX(-(float) Mouse.getDY() * 0.5F);
+
+			final float rxAbs = Math.abs(camera.getRX());
+			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) Mouse.getDX() * 0.5F);
 		}
 
 		camera.addZ((float) Mouse.getDWheel() / 100F);

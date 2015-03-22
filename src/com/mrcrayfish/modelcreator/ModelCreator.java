@@ -165,7 +165,7 @@ public class ModelCreator extends JFrame
 		menuItemExport.setToolTipText("Export model to JSON");
 		menuItemExport.addActionListener(e ->
 		{
-			Exporter.export(this, "test");
+			//Exporter.export(this, "test");
 		});
 
 		file.add(menuItemExport);
@@ -248,7 +248,7 @@ public class ModelCreator extends JFrame
 		tabbedPane.add("Element", new ElementPanel(this));
 		tabbedPane.add("Rotation", new RotationPanel(this));
 		tabbedPane.add("Faces", new FacePanel(this));
-		tabbedPane.setPreferredSize(new Dimension(190, 360));
+		tabbedPane.setPreferredSize(new Dimension(190, 385));
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
 		add(tabbedPane);
 	}

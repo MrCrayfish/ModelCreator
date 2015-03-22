@@ -127,12 +127,15 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			axisList.setSelectedIndex(cube.getPrevAxis());
 			rotation.setEnabled(true);
 			rotation.setValue((int) (cube.getRotation() / 22.5));
+			btnRescale.setEnabled(true);
 			btnRescale.setSelected(cube.shouldRescale());
 		}
 		else
 		{
 			rotation.setValue(0);
 			rotation.setEnabled(false);
+			btnRescale.setSelected(false);
+			btnRescale.setEnabled(false);
 		}
 	}
 }

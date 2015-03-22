@@ -33,7 +33,6 @@ public class TextureManager
 		FileInputStream is = new FileInputStream(new File("res/" + name + ".png"));
 		Texture texture = TextureLoader.getTexture("PNG", is);
 		textureCache.put(name, texture);
-		is.close();
 		return texture;
 	}
 	
@@ -41,7 +40,7 @@ public class TextureManager
 	{
 		textureCache.put(name, texture);
 	}
-
+	
 	public static synchronized Texture getTexture(String name)
 	{
 		return textureCache.get(name);

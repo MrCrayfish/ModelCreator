@@ -12,7 +12,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
 import com.mrcrayfish.modelcreator.util.Clipboard;
@@ -100,16 +102,19 @@ public class TexturePanel extends JPanel implements TextureCallback
 		{
 			if (creator.getSelectedCuboid() != null)
 			{
-				String texture = Clipboard.getTexture();
+				ClipboardTexture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
-						creator.getSelectedCuboid().setAllTextures(texture);
+						creator.getSelectedCuboid().setAllTextures(texture.getTexture());
 					}
 					else
 					{
-						creator.getSelectedCuboid().getSelectedFace().setTexture(texture);
+						Face face = creator.getSelectedCuboid().getSelectedFace();
+						face.setTexture(texture.getTexture());
+						face.setTextureModId(texture.getModid());
+						
 					}
 				}
 			}

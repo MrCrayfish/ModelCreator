@@ -9,6 +9,7 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 public class Face
 {
 	private String texture = null;
+	private String textureModId = null;
 	private double textureX = 0;
 	private double textureY = 0;
 	private boolean fitTexture = false;
@@ -110,6 +111,16 @@ public class Face
 	public Texture getTexture()
 	{
 		return TextureManager.getTexture(texture);
+	}
+
+	public String getTextureModId()
+	{
+		return textureModId;
+	}
+
+	public void setTextureModId(String textureModId)
+	{
+		this.textureModId = textureModId;
 	}
 
 	public void fitTexture(boolean fitTexture)

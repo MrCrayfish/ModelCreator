@@ -4,10 +4,44 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Exporter
 {
-	public static void export(ModelCreator creator, String name)
+	private List<String> textureList = new ArrayList<String>();
+	
+	// If for mod, can include modid
+	private String modid;
+	
+	// Output Directory
+	private String outputPath;
+	
+	// Model Variables
+	private ModelCreator creator;
+	private String modelName;
+	
+	// Child Variables
+	private String childName;
+	
+	public Exporter(ModelCreator creator, String outputPath, String outputName)
+	{
+		this.creator = creator;
+		this.modelName = outputName;
+		this.outputPath = outputPath;
+	}
+	
+	public void assignChild(String childName)
+	{
+		this.childName = childName;
+	}
+	
+	public void setModId(String modid)
+	{
+		this.modid = modid;
+	}
+	
+	public void export(ModelCreator creator, String name)
 	{
 		try
 		{
@@ -23,7 +57,7 @@ public class Exporter
 		}
 	}
 	
-	private static void compileTextureList(ModelCreator creator)
+	private void compileTextureList(ModelCreator creator)
 	{
 		for(Cuboid cuboid : creator.getAllCuboids())
 		{
@@ -34,7 +68,7 @@ public class Exporter
 		}
 	}
 	
-	private static void writeComponents(BufferedWriter writer, ModelCreator creator) throws IOException
+	private void writeComponents(BufferedWriter writer, ModelCreator creator) throws IOException
 	{
 		writer.write("{");
 		writer.newLine();
@@ -58,7 +92,7 @@ public class Exporter
 		writer.write("}");
 	}
 
-	private static void writeElement(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeElement(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
 		writeBounds(writer, cuboid);
 		writer.newLine();
@@ -76,19 +110,19 @@ public class Exporter
 
 	}
 
-	private static void writeBounds(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeBounds(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + cuboid.getStartZ() + " ], ");
 		writer.newLine();
 		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
 	}
 
-	private static void writeShade(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeShade(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"shade\": " + cuboid.isShaded() + ",");
 	}
 
-	private static void writeRotation(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeRotation(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"rotation\": { ");
 		writer.write("\"origin\": [ " + cuboid.getOriginX() + ", " + cuboid.getOriginY() + ", " + cuboid.getOriginZ() + " ], ");
@@ -101,7 +135,7 @@ public class Exporter
 		writer.write(" },");
 	}
 
-	private static void writeFaces(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeFaces(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"faces\": {");
 		writer.newLine();
@@ -123,7 +157,7 @@ public class Exporter
 		writer.write(space(3) + "}");
 	}
 
-	private static String space(int size)
+	private String space(int size)
 	{
 		String space = "";
 		for (int i = 0; i < size; i++)

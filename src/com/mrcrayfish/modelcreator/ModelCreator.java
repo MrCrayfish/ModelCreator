@@ -1,6 +1,22 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glColor4f;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL11.glVertex3i;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -57,7 +73,7 @@ public class ModelCreator extends JFrame
 		super(title);
 
 		setPreferredSize(new Dimension(1200, 800));
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(10, 0));
 
 		canvas = new Canvas();
 		initComponents();
@@ -157,7 +173,7 @@ public class ModelCreator extends JFrame
 		canvas.setVisible(true);
 		canvas.requestFocus();
 
-		manager = new SidebarPanel();
+		manager = new SidebarPanel(this);
 		add((JPanel) manager, BorderLayout.EAST);
 	}
 
@@ -180,7 +196,6 @@ public class ModelCreator extends JFrame
 		camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
 		
 		Dimension newDim;
-        float counter = 0;
         
 		while (!Display.isCloseRequested() && !closeRequested)
 		{

@@ -20,6 +20,7 @@ import javax.swing.SpringLayout;
 
 import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
@@ -29,8 +30,10 @@ public class SidebarPanel extends JPanel implements CuboidManager
 {
 	private static final long serialVersionUID = 1L;
 
+	private ModelCreator creator;
+	
+	// Swing Variables
 	private SpringLayout layout;
-
 	private DefaultListModel<Cuboid> model = new DefaultListModel<Cuboid>();
 	private JList<Cuboid> list = new JList<Cuboid>();
 	private JScrollPane scrollPane;
@@ -39,17 +42,17 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	private JTextField name = new JTextField();
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
-	public SidebarPanel()
+	public SidebarPanel(ModelCreator creator)
 	{
+		this.creator = creator;
 		setLayout(layout = new SpringLayout());
 		setPreferredSize(new Dimension(200, 800));
 		initComponents();
+		setLayoutConstaints();
 	}
 
 	public void initComponents()
 	{
-		layout = new SpringLayout();
-
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
 		btnAdd.addActionListener(e ->
 		{
@@ -118,26 +121,19 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		tabbedPane.add("Element", new ElementPanel(this));
 		tabbedPane.add("Rotation", new RotationPanel(this));
 		tabbedPane.add("Faces", new FacePanel(this));
-		tabbedPane.setPreferredSize(new Dimension(190, 385));
+		tabbedPane.setPreferredSize(new Dimension(190, 455));
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
 		add(tabbedPane);
 	}
 
 	public void setLayoutConstaints()
 	{
-		layout.putConstraint(SpringLayout.NORTH, name, 245, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, name, 998, SpringLayout.WEST, this);
-
 		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, scrollPane, 998, SpringLayout.WEST, this);
-
-		layout.putConstraint(SpringLayout.NORTH, btnAdd, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnAdd, 998, SpringLayout.WEST, this);
-		layout.putConstraint(SpringLayout.NORTH, btnRemove, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, btnRemove, 1097, SpringLayout.WEST, this);
-
+		layout.putConstraint(SpringLayout.NORTH, name, 210, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnAdd, 246, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnRemove, 246, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.WEST, btnRemove, 100, SpringLayout.WEST, this);
 		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 281, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.WEST, tabbedPane, 998, SpringLayout.WEST, this);
 	}
 
 	@Override
@@ -196,7 +192,6 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	@Override
 	public void addPendingTexture(PendingTexture texture)
 	{
-		// TODO Auto-generated method stub
-
+		creator.pendingTextures.add(texture);
 	}
 }

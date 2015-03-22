@@ -64,7 +64,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		});
 		menuPanel.setMaximumSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
-		
+
 		panelTexture = new TexturePanel(creator);
 		panelUV = new UVPanel(creator);
 		panelProperties = new FaceExtrasPanel(creator);
@@ -72,20 +72,23 @@ public class FacePanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(Box.createRigidArea(new Dimension(192,5)));
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(menuPanel);
-		add(Box.createRigidArea(new Dimension(192,5)));
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelTexture);
-		add(Box.createRigidArea(new Dimension(192,5)));
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelUV);
-		add(Box.createRigidArea(new Dimension(192,5)));
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelProperties);
 	}
 
 	@Override
 	public void updateValues(Cuboid cube)
 	{
-		menuList.setSelectedIndex(cube.getSelectedFaceIndex());
+		if (cube != null)
+		{
+			menuList.setSelectedIndex(cube.getSelectedFaceIndex());
+		}
 		panelUV.updateValues(cube);
 		panelProperties.updateValues(cube);
 	}

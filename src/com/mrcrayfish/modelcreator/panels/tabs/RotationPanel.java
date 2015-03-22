@@ -32,7 +32,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	private JSlider rotation;
 	private JPanel extraPanel;
 	private JRadioButton btnRescale;
-	
+
 	private DefaultComboBoxModel<String> model;
 
 	private final int ROTATION_MIN = 0;
@@ -47,7 +47,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		initComponents();
 		addComponents();
 	}
-	
+
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
@@ -67,7 +67,8 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			creator.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
+			if (creator.getSelectedCuboid() != null)
+				creator.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
 		});
 		axisPanel.setMaximumSize(new Dimension(186, 50));
 		axisPanel.add(axisList);
@@ -107,13 +108,13 @@ public class RotationPanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelOrigin);
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(axisPanel);
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(sliderPanel);
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(extraPanel);
 	}
 
@@ -121,8 +122,17 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	public void updateValues(Cuboid cube)
 	{
 		panelOrigin.updateValues(cube);
-		axisList.setSelectedIndex(cube.getPrevAxis());
-		rotation.setValue((int) (cube.getRotation() / 22.5));
-		btnRescale.setSelected(cube.shouldRescale());
+		if (cube != null)
+		{
+			axisList.setSelectedIndex(cube.getPrevAxis());
+			rotation.setEnabled(true);
+			rotation.setValue((int) (cube.getRotation() / 22.5));
+			btnRescale.setSelected(cube.shouldRescale());
+		}
+		else
+		{
+			rotation.setValue(0);
+			rotation.setEnabled(false);
+		}
 	}
 }

@@ -24,8 +24,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -113,7 +111,8 @@ public class ModelCreator extends JFrame
 				closeRequested = true;
 			}
 		});
-
+		
+		tabbedPane.updateValues();
 		pack();
 		setVisible(true);
 		setLocationRelativeTo(null);
@@ -199,6 +198,7 @@ public class ModelCreator extends JFrame
 				model.remove(selected);
 				name.setText("");
 				name.setEnabled(false);
+				tabbedPane.updateValues();
 			}
 		});
 		btnRemove.setFont(defaultFont);

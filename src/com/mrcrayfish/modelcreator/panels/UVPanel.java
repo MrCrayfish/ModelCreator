@@ -32,7 +32,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3, 4, 4));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "UV"));
-		setMaximumSize(new Dimension(186,124));
+		setMaximumSize(new Dimension(186, 124));
 		initComponents();
 		initProperties();
 		addComponents();
@@ -80,7 +80,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		});
 		btnPlusX.setSize(new Dimension(62, 30));
 		btnPlusX.setFont(defaultFont);
-		
+
 		btnPlusY.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -100,7 +100,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 		btnPlusY.setFont(defaultFont);
-		
+
 		btnNegX.addActionListener(e ->
 		{
 			if (creator.getSelectedCuboid() != null)
@@ -155,7 +155,15 @@ public class UVPanel extends JPanel implements IValueUpdater
 	@Override
 	public void updateValues(Cuboid cube)
 	{
-		xStartField.setText(cube.getSelectedFace().getStartU() + "");
-		yStartField.setText(cube.getSelectedFace().getStartV() + "");
+		if (cube != null)
+		{
+			xStartField.setText(cube.getSelectedFace().getStartU() + "");
+			yStartField.setText(cube.getSelectedFace().getStartV() + "");
+		}
+		else
+		{
+			xStartField.setText("");
+			yStartField.setText("");
+		}
 	}
 }

@@ -30,10 +30,7 @@ public class CuboidTabbedPane extends JTabbedPane
 				{
 					IValueUpdater updater = (IValueUpdater) component;
 					Cuboid cube = creator.getSelectedCuboid();
-					if (cube != null)
-					{
-						updater.updateValues(cube);
-					}
+					updater.updateValues(cube);
 				}
 			}
 		}

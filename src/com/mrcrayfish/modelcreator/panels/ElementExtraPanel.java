@@ -46,6 +46,15 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 	@Override
 	public void updateValues(Cuboid cube)
 	{
-		btnShade.setSelected(cube.isShaded());
+		if (cube != null)
+		{
+			btnShade.setEnabled(true);
+			btnShade.setSelected(cube.isShaded());
+		}
+		else
+		{
+			btnShade.setEnabled(false);
+			btnShade.setSelected(false);
+		}
 	}
 }

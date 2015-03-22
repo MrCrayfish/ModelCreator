@@ -41,24 +41,27 @@ public class TexturePanel extends JPanel implements TextureCallback
 	public void initComponents()
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
-		
+
 		btnSelect = new JButton("Import");
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
-			JFileChooser chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
-			chooser.setFileFilter(filter);
-			int returnVal = chooser.showOpenDialog(this);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
+			if (creator.getSelectedCuboid() != null)
 			{
-				try
+				JFileChooser chooser = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
+				chooser.setFileFilter(filter);
+				int returnVal = chooser.showOpenDialog(this);
+				if (returnVal == JFileChooser.APPROVE_OPTION)
 				{
-					creator.pendingTextures.add(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), this));
-				}
-				catch (Exception e1)
-				{
-					e1.printStackTrace();
+					try
+					{
+						creator.pendingTextures.add(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), this));
+					}
+					catch (Exception e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 			}
 		});

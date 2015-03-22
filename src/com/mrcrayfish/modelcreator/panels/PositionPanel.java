@@ -15,7 +15,8 @@ import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.ModelCreator;
 
-public class PositionPanel extends JPanel implements IValueUpdater {
+public class PositionPanel extends JPanel implements IValueUpdater
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,18 +34,20 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 
 	private DecimalFormat df = new DecimalFormat("#.#");
 
-	public PositionPanel(ModelCreator creator) {
+	public PositionPanel(ModelCreator creator)
+	{
 		this.creator = creator;
 		setLayout(new GridLayout(3, 3, 4, 4));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Position"));
-		setMaximumSize(new Dimension(186,124));
+		setMaximumSize(new Dimension(186, 124));
 		setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		initComponents();
 		initProperties();
 		addComponents();
 	}
 
-	public void initComponents() {
+	public void initComponents()
+	{
 		btnPlusX = new JButton("+");
 		btnPlusY = new JButton("+");
 		btnPlusZ = new JButton("+");
@@ -56,7 +59,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegZ = new JButton("-");
 	}
 
-	public void initProperties() {
+	public void initProperties()
+	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xPositionField.setSize(new Dimension(62, 30));
 		xPositionField.setFont(defaultFont);
@@ -73,13 +77,18 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		zPositionField.setEditable(false);
 		zPositionField.setHorizontalAlignment(JTextField.CENTER);
 
-		btnPlusX.addActionListener(e -> {
+		btnPlusX.addActionListener(e ->
+		{
 			System.out.println("Hey");
-			if (creator.getSelectedCuboid() != null) {
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartX(0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartX(1.0F);
 				}
 				xPositionField.setText(df.format(cube.getStartX()));
@@ -88,12 +97,17 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
 		btnPlusX.setFont(defaultFont);
 
-		btnPlusY.addActionListener(e -> {
-			if (creator.getSelectedCuboid() != null) {
+		btnPlusY.addActionListener(e ->
+		{
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartY(0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartY(1.0F);
 				}
 				yPositionField.setText(df.format(cube.getStartY()));
@@ -102,12 +116,17 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 		btnPlusY.setFont(defaultFont);
 
-		btnPlusZ.addActionListener(e -> {
-			if (creator.getSelectedCuboid() != null) {
+		btnPlusZ.addActionListener(e ->
+		{
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartZ(0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartZ(1.0F);
 				}
 				zPositionField.setText(df.format(cube.getStartZ()));
@@ -116,12 +135,17 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
 		btnPlusZ.setFont(defaultFont);
 
-		btnNegX.addActionListener(e -> {
-			if (creator.getSelectedCuboid() != null) {
+		btnNegX.addActionListener(e ->
+		{
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartX(-0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartX(-1.0F);
 				}
 				xPositionField.setText(df.format(cube.getStartX()));
@@ -130,12 +154,17 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegX.setPreferredSize(new Dimension(62, 30));
 		btnNegX.setFont(defaultFont);
 
-		btnNegY.addActionListener(e -> {
-			if (creator.getSelectedCuboid() != null) {
+		btnNegY.addActionListener(e ->
+		{
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartY(-0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartY(-1.0F);
 				}
 				yPositionField.setText(df.format(cube.getStartY()));
@@ -144,12 +173,17 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegY.setPreferredSize(new Dimension(62, 30));
 		btnNegY.setFont(defaultFont);
 
-		btnNegZ.addActionListener(e -> {
-			if (creator.getSelectedCuboid() != null) {
+		btnNegZ.addActionListener(e ->
+		{
+			if (creator.getSelectedCuboid() != null)
+			{
 				Cuboid cube = creator.getSelectedCuboid();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1) {
+				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				{
 					cube.addStartZ(-0.1F);
-				} else {
+				}
+				else
+				{
 					cube.addStartZ(-1.0F);
 				}
 				zPositionField.setText(df.format(cube.getStartZ()));
@@ -159,7 +193,8 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 		btnNegZ.setFont(defaultFont);
 	}
 
-	public void addComponents() {
+	public void addComponents()
+	{
 		add(btnPlusX);
 		add(btnPlusY);
 		add(btnPlusZ);
@@ -172,12 +207,16 @@ public class PositionPanel extends JPanel implements IValueUpdater {
 	}
 
 	@Override
-	public void updateValues(Cuboid cube) {
-		if (cube != null) {
+	public void updateValues(Cuboid cube)
+	{
+		if (cube != null)
+		{
 			xPositionField.setText(df.format(cube.getStartX()));
 			yPositionField.setText(df.format(cube.getStartY()));
 			zPositionField.setText(df.format(cube.getStartZ()));
-		} else {
+		}
+		else
+		{
 			xPositionField.setText("");
 			yPositionField.setText("");
 			zPositionField.setText("");

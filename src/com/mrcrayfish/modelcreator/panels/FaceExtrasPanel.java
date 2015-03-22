@@ -58,8 +58,19 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	@Override
 	public void updateValues(Cuboid cube)
 	{
-		boxCullFace.setSelected(cube.getSelectedFace().isCullfaced());
-		boxEnabled.setSelected(cube.getSelectedFace().isEnabled());
+		if (cube != null)
+		{
+			boxCullFace.setEnabled(true);
+			boxCullFace.setSelected(cube.getSelectedFace().isCullfaced());
+			boxCullFace.setEnabled(true);
+			boxEnabled.setSelected(cube.getSelectedFace().isEnabled());
+		}
+		else
+		{
+			boxCullFace.setEnabled(false);
+			boxCullFace.setSelected(false);
+			boxEnabled.setEnabled(false);
+			boxEnabled.setSelected(false);
+		}
 	}
-
 }

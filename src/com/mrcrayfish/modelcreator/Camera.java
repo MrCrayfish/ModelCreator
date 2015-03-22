@@ -145,11 +145,11 @@ public class Camera
 
 	public void rotateX(float amt)
 	{
-		rx += amt;
+		rx = ((rx + amt) % 360);
 	}
 
 	public void rotateY(float amt)
 	{
-		ry += amt;
+		ry = ((ry + amt) % 360);
 	}
 }

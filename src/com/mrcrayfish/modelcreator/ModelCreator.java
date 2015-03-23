@@ -227,11 +227,9 @@ public class ModelCreator extends JFrame
 			camera.useView();
 
 			glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
-			glScalef(0.25F, 0.25F, 0.25F);
 			drawGrid();
 			drawAxis();
 
-			glTranslatef(-8, 0, 8);
 			for (int i = 0; i < manager.getCuboidCount(); i++)
 			{
 				Cuboid cube = manager.getCuboid(i);
@@ -291,14 +289,14 @@ public class ModelCreator extends JFrame
 			glLineWidth(2F);
 			glBegin(GL_LINES);
 			{
-				glVertex3i(-8, 0, -8);
-				glVertex3i(-8, 0, 8);
-				glVertex3i(8, 0, -8);
-				glVertex3i(8, 0, 8);
-				glVertex3i(-8, 0, 8);
-				glVertex3i(8, 0, 8);
-				glVertex3i(-8, 0, -8);
-				glVertex3i(8, 0, -8);
+				glVertex3i(0, 0, 0);
+				glVertex3i(0, 0, 16);
+				glVertex3i(16, 0, 0);
+				glVertex3i(16, 0, 16);
+				glVertex3i(0, 0, 16);
+				glVertex3i(16, 0, 16);
+				glVertex3i(0, 0, 0);
+				glVertex3i(16, 0, 0);
 			}
 			glEnd();
 
@@ -306,16 +304,16 @@ public class ModelCreator extends JFrame
 			glLineWidth(1F);
 			glBegin(GL_LINES);
 			{
-				for (int i = -7; i <= 7; i++)
+				for (int i = 1; i <= 16; i++)
 				{
-					glVertex3i(i, 0, -8);
-					glVertex3i(i, 0, 8);
+					glVertex3i(i, 0, 0);
+					glVertex3i(i, 0, 16);
 				}
 
-				for (int i = -7; i <= 7; i++)
+				for (int i = 1; i <= 16; i++)
 				{
-					glVertex3i(-8, 0, i);
-					glVertex3i(8, 0, i);
+					glVertex3i(0, 0, i);
+					glVertex3i(16, 0, i);
 				}
 			}
 			glEnd();
@@ -328,19 +326,19 @@ public class ModelCreator extends JFrame
 		glPushMatrix();
 		{
 			GL11.glLineWidth(5F);
-			glTranslatef(-9, 0, -9);
+			glTranslatef(-1, 0, -1);
 			glBegin(GL_LINES);
 			{
-				glColor4f(0, 1, 0, 0.5F);
-				glVertex3f(40F, 0.01F, 0);
+				glColor4f(1, 0, 0, 0.5F);
+				glVertex3f(32F, 0.01F, 0);
 				glVertex3f(0, 0.01F, 0);
 
-				glColor4f(1, 0, 0, 0.5F);
+				glColor4f(0, 1, 0, 0.5F);
 				glVertex3f(0, 0.01F, 0);
-				glVertex3f(0, 40F, 0);
+				glVertex3f(0, 32F, 0);
 
 				glColor4f(0, 0, 1, 0.5F);
-				glVertex3f(0, 0.01F, 40F);
+				glVertex3f(0, 0.01F, 32F);
 				glVertex3f(0, 0.01F, 0);
 			}
 			glEnd();

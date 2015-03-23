@@ -139,7 +139,7 @@ public class ModelCreator extends JFrame
 	}
 
 	public void initComponents()
-	{	
+	{
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 		JMenu file = new JMenu("File");
@@ -194,9 +194,9 @@ public class ModelCreator extends JFrame
 	private void loop()
 	{
 		camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
-		
+
 		Dimension newDim;
-        
+
 		while (!Display.isCloseRequested() && !closeRequested)
 		{
 			synchronized (this)
@@ -207,19 +207,18 @@ public class ModelCreator extends JFrame
 				}
 				pendingTextures.clear();
 			}
-			
+
 			newDim = newCanvasSize.getAndSet(null);
 
-            if (newDim != null)
-            {
-                GL11.glViewport(0, 0, newDim.width, newDim.height);
-                GL11.glMatrixMode(GL11.GL_PROJECTION);
-                GL11.glLoadIdentity();
-                GLU.gluPerspective(60F, (float) newDim.width / (float) newDim.height, 0.3F, 1000F);
-                GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                GL11.glLoadIdentity();
-            }
-            
+			if (newDim != null)
+			{
+				GL11.glViewport(0, 0, newDim.width, newDim.height);
+				GL11.glMatrixMode(GL11.GL_PROJECTION);
+				GL11.glLoadIdentity();
+				GLU.gluPerspective(60F, (float) newDim.width / (float) newDim.height, 0.3F, 1000F);
+				GL11.glMatrixMode(GL11.GL_MODELVIEW);
+				GL11.glLoadIdentity();
+			}
 
 			handleInput();
 
@@ -247,26 +246,39 @@ public class ModelCreator extends JFrame
 	public void handleInput()
 	{
 		final float cameraMod = Math.abs(camera.getZ());
-
+		
 		if (Mouse.isButtonDown(0))
 		{
-			final float modifier = 0.01F * (cameraMod * 0.075f);
-			camera.addX((float) Mouse.getDX() * modifier);
-			camera.addY((float) Mouse.getDY() * modifier);
+			final float modifier = (cameraMod * 0.05f);
+			camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
+			camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
 		}
 		else if (Mouse.isButtonDown(1))
 		{
-			final float modifier = 0.5F * (cameraMod * 0.02f);
-			camera.rotateX(-(float) Mouse.getDY() * modifier);
-
+			final float modifier = applyLimit(cameraMod * 0.1f);
+			camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
 			final float rxAbs = Math.abs(camera.getRX());
-			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) Mouse.getDX() * modifier);
+			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
 		}
 
 		final float wheel = Mouse.getDWheel();
-		if (wheel != 0) {
-			camera.addZ(wheel * (cameraMod / 15000F));
+		if (wheel != 0)
+		{
+			camera.addZ(wheel * (cameraMod / 5000F));
 		}
+	}
+
+	public float applyLimit(float value)
+	{
+		if (value > 0.4F)
+		{
+			value = 0.4F;
+		}
+		else if (value < 0.15F)
+		{
+			value = 0.15F;
+		}
+		return value;
 	}
 
 	public void drawGrid()

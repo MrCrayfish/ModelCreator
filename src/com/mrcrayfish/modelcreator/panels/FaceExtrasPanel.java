@@ -27,6 +27,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 
 	private JPanel horizontalBox;
 	private JRadioButton boxCullFace;
+	private JRadioButton boxFill;
 	private JRadioButton boxEnabled;
 
 	private JPanel panelModId;
@@ -38,19 +39,25 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		this.manager = manager;
 		setLayout(new BorderLayout(0, 5));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
-		setMaximumSize(new Dimension(186, 70));
+		setMaximumSize(new Dimension(186, 100));
 		initComponents();
 		addComponents();
 	}
 
 	public void initComponents()
 	{
-		horizontalBox = new JPanel(new GridLayout(1, 2));
+		horizontalBox = new JPanel(new GridLayout(2, 2));
 		boxCullFace = new JRadioButton("Cullface");
 		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
 		{
 			manager.getSelectedCuboid().getSelectedFace().setCullface(boxCullFace.isSelected());
+		});
+		boxFill = new JRadioButton("Fill");
+		boxFill.setToolTipText("<html>Makes the texture fill the face<br>Default: Off</html>");
+		boxFill.addActionListener(e ->
+		{
+			manager.getSelectedCuboid().getSelectedFace().fitTexture(boxFill.isSelected());
 		});
 		boxEnabled = new JRadioButton("Enable");
 		boxEnabled.setToolTipText("<html>Determines if face should be included<br>Default: On</html>");
@@ -59,6 +66,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			manager.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
 		horizontalBox.add(boxCullFace);
+		horizontalBox.add(boxFill);
 		horizontalBox.add(boxEnabled);
 
 		panelModId = new JPanel(new BorderLayout());
@@ -108,6 +116,8 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		{
 			boxCullFace.setEnabled(true);
 			boxCullFace.setSelected(cube.getSelectedFace().isCullfaced());
+			boxFill.setEnabled(true);
+			boxFill.setSelected(cube.getSelectedFace().shouldFitTexture());
 			boxEnabled.setEnabled(true);
 			boxEnabled.setSelected(cube.getSelectedFace().isEnabled());
 			modidField.setEnabled(true);
@@ -117,6 +127,8 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		{
 			boxCullFace.setEnabled(false);
 			boxCullFace.setSelected(false);
+			boxFill.setEnabled(false);
+			boxFill.setSelected(false);
 			boxEnabled.setEnabled(false);
 			boxEnabled.setSelected(false);
 			modidField.setEnabled(false);

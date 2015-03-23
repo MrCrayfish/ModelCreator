@@ -242,4 +242,16 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	{
 		creator.pendingTextures.add(texture);
 	}
+
+	public ModelCreator getCreator()
+	{
+		return creator;
+	}
+
+	@Override
+	public void callback(String texture)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

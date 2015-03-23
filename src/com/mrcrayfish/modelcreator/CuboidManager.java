@@ -3,8 +3,9 @@ package com.mrcrayfish.modelcreator;
 import java.util.List;
 
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureCallback;
 
-public interface CuboidManager 
+public interface CuboidManager extends TextureCallback
 {
 	public Cuboid getSelectedCuboid();
 

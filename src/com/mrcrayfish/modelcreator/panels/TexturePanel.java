@@ -8,15 +8,13 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
+import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.Clipboard;
 
 public class TexturePanel extends JPanel implements TextureCallback
@@ -44,28 +42,24 @@ public class TexturePanel extends JPanel implements TextureCallback
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
 
+		//textureManager = new TextureManagerDialog(((SidebarPanel) manager).getCreator());
+		
 		btnSelect = new JButton("Import");
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
-			{
-				JFileChooser chooser = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
-				chooser.setFileFilter(filter);
-				int returnVal = chooser.showOpenDialog(this);
-				if (returnVal == JFileChooser.APPROVE_OPTION)
-				{
-					try
-					{
-						manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), this));
-					}
-					catch (Exception e1)
-					{
-						e1.printStackTrace();
-					}
-				}
-			}
+			TextureManager.display(manager);
+			/*
+			 * if (manager.getSelectedCuboid() != null) { JFileChooser chooser =
+			 * new JFileChooser(); FileNameExtensionFilter filter = new
+			 * FileNameExtensionFilter("PNG Images", "png");
+			 * chooser.setFileFilter(filter); int returnVal =
+			 * chooser.showOpenDialog(this); if (returnVal ==
+			 * JFileChooser.APPROVE_OPTION) { try {
+			 * manager.addPendingTexture(new
+			 * PendingTexture(chooser.getSelectedFile().getAbsolutePath(),
+			 * this)); } catch (Exception e1) { e1.printStackTrace(); } } }
+			 */
 		});
 		btnSelect.setFont(defaultFont);
 
@@ -114,7 +108,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setTexture(texture.getTexture());
 						face.setTextureModId(texture.getModid());
-						
+
 					}
 				}
 			}

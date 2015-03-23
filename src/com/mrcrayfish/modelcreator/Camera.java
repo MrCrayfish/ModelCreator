@@ -31,10 +31,10 @@ public class Camera
 	public Camera(float fov, float aspect, float near, float far)
 	{
 		x = 0;
-		y = 0;
-		z = -5;
-		rx = 45F;
-		ry = 0;
+		y = -2;
+		z = -32;
+		rx = 22.1F;
+		ry = 45F;
 		rz = 0;
 
 		this.fov = fov;
@@ -60,6 +60,7 @@ public class Camera
 		glRotatef(rx, 1, 0, 0);
 		glRotatef(ry, 0, 1, 0);
 		glRotatef(rz, 0, 0, 1);
+		glTranslatef(-8, 0, -8);
 	}
 
 	public float getX()

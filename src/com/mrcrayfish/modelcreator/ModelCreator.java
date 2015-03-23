@@ -246,20 +246,27 @@ public class ModelCreator extends JFrame
 
 	public void handleInput()
 	{
+		final float cameraMod = Math.abs(camera.getZ());
+
 		if (Mouse.isButtonDown(0))
 		{
-			camera.addX((float) Mouse.getDX() * 0.01F);
-			camera.addY((float) Mouse.getDY() * 0.01F);
+			final float modifier = 0.01F * (cameraMod * 0.075f);
+			camera.addX((float) Mouse.getDX() * modifier);
+			camera.addY((float) Mouse.getDY() * modifier);
 		}
 		else if (Mouse.isButtonDown(1))
 		{
-			camera.rotateX(-(float) Mouse.getDY() * 0.5F);
+			final float modifier = 0.5F * (cameraMod * 0.02f);
+			camera.rotateX(-(float) Mouse.getDY() * modifier);
 
 			final float rxAbs = Math.abs(camera.getRX());
-			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) Mouse.getDX() * 0.5F);
+			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) Mouse.getDX() * modifier);
 		}
 
-		camera.addZ((float) Mouse.getDWheel() / 100F);
+		final float wheel = Mouse.getDWheel();
+		if (wheel != 0) {
+			camera.addZ(wheel * (cameraMod / 15000F));
+		}
 	}
 
 	public void drawGrid()

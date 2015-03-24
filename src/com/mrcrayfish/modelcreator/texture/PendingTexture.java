@@ -23,16 +23,18 @@ public class PendingTexture
 	{
 		try
 		{
+			boolean result = true;
 			String fileName = Paths.get(name).getFileName().toString();
 			Texture texture = TextureManager.getTexture(fileName);
 			if (texture == null)
 			{
 				FileInputStream is = new FileInputStream(new File(name));
 				texture = TextureLoader.getTexture("PNG", is);
-				TextureManager.loadTexture(Paths.get(name).getParent().toString(), fileName);
+				result = TextureManager.loadTexture(Paths.get(name).getParent().toString(), fileName);
 				is.close();
 			}
-			callback.callback(fileName.replace(".png", ""));
+			if (result)
+				callback.callback(fileName.replace(".png", ""));
 		}
 		catch (IOException e)
 		{

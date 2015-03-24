@@ -55,14 +55,21 @@ public class TextureManager
 		loadTexture("res", name + ".png");
 	}
 
-	public static void loadTexture(String path, String name) throws IOException
+	public static boolean loadTexture(String path, String name) throws IOException
 	{
 		System.out.println(path + " " + name);
 		FileInputStream is = new FileInputStream(new File(path + "/" + name));
 		Texture texture = TextureLoader.getTexture("PNG", is);
+		if(texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
+		{
+			texture.release();
+			System.out.println("Texture has to be a multiple of 16");
+			return false;
+		}
 		ImageIcon icon = upscale(new ImageIcon(path + "/" + name));
 		System.out.println(name.replace(".png", ""));
 		textureCache.add(new TextureEntry(name.replace(".png", ""), texture, icon));
+		return true;
 	}
 
 	public static ImageIcon upscale(ImageIcon source)

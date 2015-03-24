@@ -28,6 +28,9 @@ public class Face
 
 	public void render(double startX, double startY, double startZ, double endX, double endY, double endZ, double cubeW, double cubeH)
 	{
+		startZ = -startZ;
+		endZ = -endZ;
+		
 		GL11.glPushMatrix();
 		{
 			bindTexture();

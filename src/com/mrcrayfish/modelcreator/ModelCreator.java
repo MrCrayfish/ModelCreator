@@ -227,7 +227,6 @@ public class ModelCreator extends JFrame
 			camera.useView();
 
 			glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
-			glScalef(0.25F, 0.25F, 0.25F);
 			drawGrid();
 			drawAxis();
 
@@ -246,7 +245,7 @@ public class ModelCreator extends JFrame
 	public void handleInput()
 	{
 		final float cameraMod = Math.abs(camera.getZ());
-		
+
 		if (Mouse.isButtonDown(0))
 		{
 			final float modifier = (cameraMod * 0.05f);
@@ -331,11 +330,11 @@ public class ModelCreator extends JFrame
 			glTranslatef(-9, 0, -9);
 			glBegin(GL_LINES);
 			{
-				glColor4f(0, 1, 0, 0.5F);
+				glColor4f(1, 0, 0, 0.5F);
 				glVertex3f(40F, 0.01F, 0);
 				glVertex3f(0, 0.01F, 0);
 
-				glColor4f(1, 0, 0, 0.5F);
+				glColor4f(0, 1, 0, 0.5F);
 				glVertex3f(0, 0.01F, 0);
 				glVertex3f(0, 40F, 0);
 

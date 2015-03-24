@@ -32,9 +32,9 @@ public class Camera
 	{
 		x = 0;
 		y = 0;
-		z = -5;
-		rx = 45F;
-		ry = 0;
+		z = -20;
+		rx = 25F;
+		ry = -45F;
 		rz = 0;
 
 		this.fov = fov;

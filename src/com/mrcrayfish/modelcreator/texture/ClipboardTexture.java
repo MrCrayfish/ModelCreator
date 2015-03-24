@@ -4,7 +4,7 @@ public class ClipboardTexture
 {
 	private String modid;
 	private String texture;
-	
+
 	public ClipboardTexture(String texture, String modid)
 	{
 		this.texture = texture;
@@ -15,7 +15,7 @@ public class ClipboardTexture
 	{
 		return modid;
 	}
-	
+
 	public String getTexture()
 	{
 		return texture;

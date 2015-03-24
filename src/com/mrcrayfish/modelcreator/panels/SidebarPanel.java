@@ -252,6 +252,6 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	public void callback(String texture)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -27,7 +27,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 	private JTextField yStartField;
 	private JButton btnNegX;
 	private JButton btnNegY;
-	
+
 	private DecimalFormat df = new DecimalFormat("#.#");
 
 	public UVPanel(CuboidManager manager)

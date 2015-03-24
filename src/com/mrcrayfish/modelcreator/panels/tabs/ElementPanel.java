@@ -16,9 +16,9 @@ import com.mrcrayfish.modelcreator.panels.SizePanel;
 public class ElementPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private CuboidManager manager;
-	
+
 	private SizePanel panelSize;
 	private PositionPanel panelPosition;
 	private ElementExtraPanel panelExtras;
@@ -30,21 +30,21 @@ public class ElementPanel extends JPanel implements IValueUpdater
 		initComponents();
 		addComponents();
 	}
-	
+
 	public void initComponents()
 	{
 		panelSize = new SizePanel(manager);
 		panelPosition = new PositionPanel(manager);
 		panelExtras = new ElementExtraPanel(manager);
 	}
-	
+
 	public void addComponents()
 	{
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelSize);
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelPosition);
-		add(Box.createRigidArea(new Dimension(188,5)));
+		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelExtras);
 	}
 

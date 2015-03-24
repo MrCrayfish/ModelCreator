@@ -61,7 +61,7 @@ public class TextureManager
 		System.out.println(path + " " + name);
 		FileInputStream is = new FileInputStream(new File(path + "/" + name));
 		Texture texture = TextureLoader.getTexture("PNG", is);
-		if(texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
+		if (texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
 		{
 			texture.release();
 			System.out.println("Texture has to be a multiple of 16");
@@ -109,7 +109,7 @@ public class TextureManager
 	public static String display(CuboidManager manager)
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 18);
-		
+
 		DefaultListModel<String> model = generate();
 		JList<String> list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

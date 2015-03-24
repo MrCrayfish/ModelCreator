@@ -16,8 +16,8 @@ public interface CuboidManager extends TextureCallback
 	public int getCuboidCount();
 
 	public void updateName();
-	
+
 	public void updateValues();
-	
+
 	public void addPendingTexture(PendingTexture texture);
 }

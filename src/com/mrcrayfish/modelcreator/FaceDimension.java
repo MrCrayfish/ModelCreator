@@ -3,7 +3,7 @@ package com.mrcrayfish.modelcreator;
 public class FaceDimension
 {
 	private double width, height;
-	
+
 	public FaceDimension(double width, double height)
 	{
 		this.width = width;

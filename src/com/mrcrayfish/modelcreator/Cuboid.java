@@ -56,7 +56,7 @@ public class Cuboid
 		this.shade = cuboid.isShaded();
 		this.selectedFace = cuboid.getSelectedFaceIndex();
 		initFaces();
-		for(int i = 0; i < faces.length; i++)
+		for (int i = 0; i < faces.length; i++)
 		{
 			Face oldFace = cuboid.getAllFaces()[i];
 			faces[i].fitTexture(oldFace.shouldFitTexture());

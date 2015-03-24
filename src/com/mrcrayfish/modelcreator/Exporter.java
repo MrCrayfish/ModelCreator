@@ -10,37 +10,37 @@ import java.util.List;
 public class Exporter
 {
 	private List<String> textureList = new ArrayList<String>();
-	
+
 	// If for mod, can include modid
 	private String modid;
-	
+
 	// Output Directory
 	private String outputPath;
-	
+
 	// Model Variables
 	private CuboidManager manager;
 	private String modelName;
-	
+
 	// Child Variables
 	private String childName;
-	
+
 	public Exporter(CuboidManager manager, String outputPath, String outputName)
 	{
 		this.manager = manager;
 		this.modelName = outputName;
 		this.outputPath = outputPath;
 	}
-	
+
 	public void assignChild(String childName)
 	{
 		this.childName = childName;
 	}
-	
+
 	public void setModId(String modid)
 	{
 		this.modid = modid;
 	}
-	
+
 	public void export(CuboidManager manager, String name)
 	{
 		try
@@ -56,18 +56,18 @@ public class Exporter
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void compileTextureList(CuboidManager manager)
 	{
-		for(Cuboid cuboid : manager.getAllCuboids())
+		for (Cuboid cuboid : manager.getAllCuboids())
 		{
-			for(Face face : cuboid.getAllFaces())
+			for (Face face : cuboid.getAllFaces())
 			{
-				//face.get
+				// face.get
 			}
 		}
 	}
-	
+
 	private void writeComponents(BufferedWriter writer, CuboidManager manager) throws IOException
 	{
 		writer.write("{");

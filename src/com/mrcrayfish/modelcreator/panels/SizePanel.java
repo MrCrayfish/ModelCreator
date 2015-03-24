@@ -112,7 +112,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
 		btnPlusY.setFont(defaultFont);
-		
+
 		btnPlusZ.addActionListener(e ->
 		{
 			if (manager.getSelectedCuboid() != null)
@@ -131,7 +131,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
 		btnPlusZ.setFont(defaultFont);
-		
+
 		btnNegX.addActionListener(e ->
 		{
 			if (manager.getSelectedCuboid() != null)
@@ -150,7 +150,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
 		btnNegX.setFont(defaultFont);
-		
+
 		btnNegY.addActionListener(e ->
 		{
 			if (manager.getSelectedCuboid() != null)
@@ -169,7 +169,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
 		btnNegY.setFont(defaultFont);
-		
+
 		btnNegZ.addActionListener(e ->
 		{
 			if (manager.getSelectedCuboid() != null)

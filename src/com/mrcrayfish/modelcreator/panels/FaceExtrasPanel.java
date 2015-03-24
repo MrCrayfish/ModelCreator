@@ -80,7 +80,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(manager.getSelectedCuboid() != null)
+					if (manager.getSelectedCuboid() != null)
 					{
 						manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
 					}
@@ -92,7 +92,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(manager.getSelectedCuboid() != null)
+				if (manager.getSelectedCuboid() != null)
 				{
 					manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
 				}

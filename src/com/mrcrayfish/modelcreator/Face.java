@@ -30,7 +30,7 @@ public class Face
 	{
 		startZ = -startZ;
 		endZ = -endZ;
-		
+
 		GL11.glPushMatrix();
 		{
 			bindTexture();
@@ -110,7 +110,7 @@ public class Face
 	{
 		return texture;
 	}
-	
+
 	public Texture getTexture()
 	{
 		return TextureManager.getTexture(texture);
@@ -140,7 +140,7 @@ public class Face
 	{
 		return side;
 	}
-	
+
 	public boolean isCullfaced()
 	{
 		return cullface;
@@ -163,7 +163,7 @@ public class Face
 
 	public static String getFaceName(int face)
 	{
-		switch(face)
+		switch (face)
 		{
 		case 0:
 			return "north";

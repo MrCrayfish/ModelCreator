@@ -10,6 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.newdawn.slick.opengl.Texture;
+
 import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
@@ -42,24 +44,21 @@ public class TexturePanel extends JPanel implements TextureCallback
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
 
-		//textureManager = new TextureManagerDialog(((SidebarPanel) manager).getCreator());
-		
-		btnSelect = new JButton("Import");
+		// textureManager = new TextureManagerDialog(((SidebarPanel)
+		// manager).getCreator());
+
+		btnSelect = new JButton("Select...");
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
-			TextureManager.display(manager);
-			/*
-			 * if (manager.getSelectedCuboid() != null) { JFileChooser chooser =
-			 * new JFileChooser(); FileNameExtensionFilter filter = new
-			 * FileNameExtensionFilter("PNG Images", "png");
-			 * chooser.setFileFilter(filter); int returnVal =
-			 * chooser.showOpenDialog(this); if (returnVal ==
-			 * JFileChooser.APPROVE_OPTION) { try {
-			 * manager.addPendingTexture(new
-			 * PendingTexture(chooser.getSelectedFile().getAbsolutePath(),
-			 * this)); } catch (Exception e1) { e1.printStackTrace(); } } }
-			 */
+			if (manager.getSelectedCuboid() != null)
+			{
+				String texture = TextureManager.display(manager);
+				if (texture != null)
+				{
+					manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
+				}
+			}
 		});
 		btnSelect.setFont(defaultFont);
 

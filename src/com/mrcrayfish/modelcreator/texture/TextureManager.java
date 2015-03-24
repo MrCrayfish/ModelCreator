@@ -1,17 +1,26 @@
 package com.mrcrayfish.modelcreator.texture;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -23,7 +32,7 @@ import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 
 public class TextureManager
 {
-	private static Map<String, Texture> textureCache = new HashMap<String, Texture>();
+	private static List<TextureEntry> textureCache = new ArrayList<TextureEntry>();
 
 	public static Texture cobblestone;
 	public static Texture dirt;
@@ -33,6 +42,7 @@ public class TextureManager
 		try
 		{
 			loadTexture("brick");
+			loadTexture("dirt");
 		}
 		catch (IOException e)
 		{
@@ -40,34 +50,81 @@ public class TextureManager
 		}
 	}
 
-	private static Texture loadTexture(String name) throws IOException
+	private static void loadTexture(String name) throws IOException
 	{
-		FileInputStream is = new FileInputStream(new File("res/" + name + ".png"));
-		Texture texture = TextureLoader.getTexture("PNG", is);
-		textureCache.put(name, texture);
-		return texture;
+		loadTexture("res", name + ".png");
 	}
 
-	public static synchronized void putTexture(String name, Texture texture)
+	public static void loadTexture(String path, String name) throws IOException
 	{
-		textureCache.put(name, texture);
+		System.out.println(path + " " + name);
+		FileInputStream is = new FileInputStream(new File(path + "/" + name));
+		Texture texture = TextureLoader.getTexture("PNG", is);
+		ImageIcon icon = upscale(new ImageIcon(path + "/" + name));
+		System.out.println(name.replace(".png", ""));
+		textureCache.add(new TextureEntry(name.replace(".png", ""), texture, icon));
+	}
+
+	public static ImageIcon upscale(ImageIcon source)
+	{
+		Image img = source.getImage();
+		Image newimg = img.getScaledInstance(256, 256, java.awt.Image.SCALE_FAST);
+		return new ImageIcon(newimg);
 	}
 
 	public static synchronized Texture getTexture(String name)
 	{
-		return textureCache.get(name);
+		for (TextureEntry entry : textureCache)
+		{
+			if (entry.getName().equalsIgnoreCase(name))
+			{
+				return entry.getTexture();
+			}
+		}
+		return null;
 	}
 
-	public static final int SELECT = 0;
-	public static final int BROWSE = 1;
-	public static final int DELETE = 2;
-	public static final int CLOSE = 3;
-
-	private static int option = CLOSE;
-
-	public static int display(CuboidManager manager)
+	public static synchronized ImageIcon getIcon(String name)
 	{
+		for (TextureEntry entry : textureCache)
+		{
+			if (entry.getName().equalsIgnoreCase(name))
+			{
+				return entry.getImage();
+			}
+		}
+		return null;
+	}
+
+	private static String texture = null;
+
+	public static String display(CuboidManager manager)
+	{
+		DefaultListModel<String> model = generate();
+		JList<String> list = new JList<String>();
+		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setCellRenderer(new TextureCellRenderer());
+		list.setVisibleRowCount(-1);
+		list.setModel(model);
+		list.setFixedCellHeight(256);
+		list.setFixedCellWidth(256);
+		list.setBackground(new Color(221, 221, 228));
+		JScrollPane scroll = new JScrollPane(list);
+		scroll.getVerticalScrollBar().setVisible(false);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+		JPanel panel = new JPanel(new GridLayout(1, 3));
 		JButton btnSelect = new JButton("Select");
+		btnSelect.addActionListener(a ->
+		{
+			if (list.getSelectedValue() != null)
+			{
+				texture = list.getSelectedValue();
+				SwingUtilities.getWindowAncestor(btnSelect).dispose();
+			}
+		});
+		panel.add(btnSelect);
 
 		JButton btnImport = new JButton("Browse");
 		btnImport.addActionListener(a ->
@@ -80,7 +137,14 @@ public class TextureManager
 			{
 				try
 				{
-					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), manager));
+					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), new TextureCallback()
+					{
+						@Override
+						public void callback(String texture)
+						{
+							model.insertElementAt(texture, 0);
+						}
+					}));
 				}
 				catch (Exception e1)
 				{
@@ -88,24 +152,37 @@ public class TextureManager
 				}
 			}
 		});
+		panel.add(btnImport);
 
 		JButton btnClose = new JButton("Close");
-		btnClose.addActionListener(a ->{
-			option = CLOSE;
+		btnClose.addActionListener(a ->
+		{
+			texture = null;
 			SwingUtilities.getWindowAncestor(btnClose).dispose();
 		});
+		panel.add(btnClose);
 
 		JDialog dialog = new JDialog(((SidebarPanel) manager).getCreator(), "Texture Manager", false);
 		dialog.setLayout(new BorderLayout());
+		dialog.setResizable(false);
 		dialog.setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
-		dialog.setPreferredSize(new Dimension(640, 480));
-		dialog.add(btnSelect, BorderLayout.WEST);
-		dialog.add(btnImport, BorderLayout.CENTER);
-		dialog.add(btnClose, BorderLayout.EAST);
+		dialog.setPreferredSize(new Dimension(540, 480));
+		dialog.add(scroll, BorderLayout.CENTER);
+		dialog.add(panel, BorderLayout.SOUTH);
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
 
-		return option;
+		return texture;
+	}
+
+	private static DefaultListModel<String> generate()
+	{
+		DefaultListModel<String> model = new DefaultListModel<String>();
+		for (TextureEntry entry : textureCache)
+		{
+			model.addElement(entry.getName());
+		}
+		return model;
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.File;
@@ -107,6 +108,8 @@ public class TextureManager
 
 	public static String display(CuboidManager manager)
 	{
+		Font defaultFont = new Font("SansSerif", Font.BOLD, 18);
+		
 		DefaultListModel<String> model = generate();
 		JList<String> list = new JList<String>();
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -122,6 +125,7 @@ public class TextureManager
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 		JPanel panel = new JPanel(new GridLayout(1, 3));
+		panel.setPreferredSize(new Dimension(1000, 40));
 		JButton btnSelect = new JButton("Select");
 		btnSelect.addActionListener(a ->
 		{
@@ -131,6 +135,7 @@ public class TextureManager
 				SwingUtilities.getWindowAncestor(btnSelect).dispose();
 			}
 		});
+		btnSelect.setFont(defaultFont);
 		panel.add(btnSelect);
 
 		JButton btnImport = new JButton("Browse");
@@ -159,6 +164,7 @@ public class TextureManager
 				}
 			}
 		});
+		btnImport.setFont(defaultFont);
 		panel.add(btnImport);
 
 		JButton btnClose = new JButton("Close");
@@ -167,6 +173,7 @@ public class TextureManager
 			texture = null;
 			SwingUtilities.getWindowAncestor(btnClose).dispose();
 		});
+		btnClose.setFont(defaultFont);
 		panel.add(btnClose);
 
 		JDialog dialog = new JDialog(((SidebarPanel) manager).getCreator(), "Texture Manager", false);

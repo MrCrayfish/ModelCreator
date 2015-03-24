@@ -22,6 +22,7 @@ public class Start
 			props.put("buttonBackgroundColor", "127 132 145");
 			props.put("buttonForegroundColor", "255 255 255");
 			props.put("windowTitleBackgroundColor", "97 102 115");
+			props.put("windowTitleForegroundColor", "255 255 255");
 			props.put("backgroundColor", "221 221 228");
 			props.put("menuBackgroundColor", "221 221 228");
 			props.put("controlForegroundColor", "120 120 120");

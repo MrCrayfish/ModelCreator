@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,6 +27,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 	private JTextField yStartField;
 	private JButton btnNegX;
 	private JButton btnNegY;
+	
+	private DecimalFormat df = new DecimalFormat("#.#");
 
 	public UVPanel(CuboidManager manager)
 	{
@@ -75,7 +78,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(1.0);
 				}
-				xStartField.setText(face.getStartU() + "");
+				xStartField.setText(df.format(face.getStartU()));
 			}
 		});
 		btnPlusX.setSize(new Dimension(62, 30));
@@ -95,7 +98,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(1.0);
 				}
-				yStartField.setText(face.getStartV() + "");
+				yStartField.setText(df.format(face.getStartV()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -115,7 +118,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(-1.0);
 				}
-				xStartField.setText(face.getStartU() + "");
+				xStartField.setText(df.format(face.getStartU()));
 			}
 		});
 		btnNegX.setSize(new Dimension(62, 30));
@@ -135,7 +138,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(-1.0);
 				}
-				yStartField.setText(face.getStartV() + "");
+				yStartField.setText(df.format(face.getStartV()));
 			}
 		});
 		btnNegY.setSize(new Dimension(62, 30));
@@ -157,8 +160,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 	{
 		if (cube != null)
 		{
-			xStartField.setText(cube.getSelectedFace().getStartU() + "");
-			yStartField.setText(cube.getSelectedFace().getStartV() + "");
+			xStartField.setText(df.format(cube.getSelectedFace().getStartU()));
+			yStartField.setText(df.format(cube.getSelectedFace().getStartV()));
 		}
 		else
 		{

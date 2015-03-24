@@ -10,8 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.newdawn.slick.opengl.Texture;
-
 import com.mrcrayfish.modelcreator.CuboidManager;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
@@ -43,9 +41,6 @@ public class TexturePanel extends JPanel implements TextureCallback
 	public void initComponents()
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
-
-		// textureManager = new TextureManagerDialog(((SidebarPanel)
-		// manager).getCreator());
 
 		btnSelect = new JButton("Select...");
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);

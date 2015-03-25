@@ -16,6 +16,7 @@ public class Face
 	private boolean binded = false;
 	private boolean cullface = false;
 	private boolean enabled = true;
+	private double rotation;
 
 	private Cuboid cuboid;
 	private int side;
@@ -179,5 +180,15 @@ public class Face
 			return "up";
 		}
 		return null;
+	}
+
+	public double getRotation()
+	{
+		return rotation;
+	}
+
+	public void setRotation(double rotation)
+	{
+		this.rotation = rotation;
 	}
 }

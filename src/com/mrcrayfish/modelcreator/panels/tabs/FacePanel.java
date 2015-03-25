@@ -2,13 +2,16 @@ package com.mrcrayfish.modelcreator.panels.tabs;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 
 import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.CuboidManager;
@@ -26,8 +29,14 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private JPanel menuPanel;
 	private JComboBox<String> menuList;
 	private UVPanel panelUV;
+	private JPanel sliderPanel;
+	private JSlider rotation;
 	private TexturePanel panelTexture;
 	private FaceExtrasPanel panelProperties;
+	
+	private final int ROTATION_MIN = 0;
+	private final int ROTATION_MAX = 3;
+	private final int ROTATION_INIT = 0;
 
 	private DefaultComboBoxModel<String> model;
 
@@ -71,6 +80,26 @@ public class FacePanel extends JPanel implements IValueUpdater
 		panelTexture = new TexturePanel(manager);
 		panelUV = new UVPanel(manager);
 		panelProperties = new FaceExtrasPanel(manager);
+		
+		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
+		labelTable.put(new Integer(1), new JLabel("90\u00b0"));
+		labelTable.put(new Integer(2), new JLabel("180\u00b0"));
+		labelTable.put(new Integer(3), new JLabel("270\u00b0"));
+		
+		sliderPanel = new JPanel(new GridLayout(1, 1));
+		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
+		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
+		rotation.setMajorTickSpacing(4);
+		rotation.setPaintTicks(true);
+		rotation.setPaintLabels(true);
+		rotation.setLabelTable(labelTable);
+		rotation.addChangeListener(e ->
+		{
+			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue() * 90D);
+		});
+		sliderPanel.setMaximumSize(new Dimension(190, 80));
+		sliderPanel.add(rotation);
 	}
 
 	public void addComponents()
@@ -81,6 +110,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 		add(panelTexture);
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelUV);
+		add(Box.createRigidArea(new Dimension(192, 5)));
+		add(sliderPanel);
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelProperties);
 	}

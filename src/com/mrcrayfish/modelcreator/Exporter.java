@@ -44,17 +44,29 @@ public class Exporter
 
 	public void export()
 	{
-		try
+		File path = new File(outputPath);
+		if (path.exists() && path.isDirectory())
 		{
-			FileWriter fw = new FileWriter(new File(modelName + ".json"));
-			BufferedWriter writer = new BufferedWriter(fw);
-			writeComponents(writer, manager);
-			writer.close();
-			fw.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
+			FileWriter fw;
+			BufferedWriter writer;
+			try
+			{
+				fw = new FileWriter(new File(path, modelName + "_model.json"));
+				writer = new BufferedWriter(fw);
+				writeComponents(writer, manager);
+				writer.close();
+				fw.close();
+
+				/*fw = new FileWriter(new File(path, modelName + ".json"));
+				writer = new BufferedWriter(fw);
+				writeChild(writer);
+				writer.close();
+				fw.close();*/
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -181,6 +193,27 @@ public class Exporter
 		}
 		writer.newLine();
 		writer.write(space(3) + "}");
+	}
+	
+	private void writeChild(BufferedWriter writer) throws IOException
+	{
+		writer.write("{");
+		writer.newLine();
+		writer.write(space(1) + "\"parent\": \"block/" + modelName + "\",");
+		writer.newLine();
+		writer.write(space(1) + "\"textures\": {");
+		writer.newLine();
+		for (int i = 0; i < textureList.size(); i++)
+		{
+			writer.write(space(2) + "\"" + i + "\": \"block/" + textureList.get(i) + "\"");
+			if (i != textureList.size() - 1)
+			{
+				writer.write(",");
+			}
+			writer.newLine();
+		}
+		writer.write(space(1) + "}");
+		writer.write("}");
 	}
 
 	private String space(int size)

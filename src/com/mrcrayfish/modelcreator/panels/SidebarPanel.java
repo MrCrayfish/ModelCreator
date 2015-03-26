@@ -165,7 +165,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		});
 
 		scrollPane = new JScrollPane(list);
-		scrollPane.setPreferredSize(new Dimension(190, 200));
+		scrollPane.setPreferredSize(new Dimension(190, 170));
 		add(scrollPane);
 
 		tabbedPane.add("Element", new ElementPanel(this));
@@ -178,10 +178,9 @@ public class SidebarPanel extends JPanel implements CuboidManager
 
 	public void setLayoutConstaints()
 	{
-		layout.putConstraint(SpringLayout.NORTH, scrollPane, 5, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, name, 246, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, btnContainer, 210, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 281, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, name, 212, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, btnContainer, 176, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 250, SpringLayout.NORTH, this);
 	}
 
 	@Override

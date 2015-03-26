@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -157,7 +158,15 @@ public class ModelCreator extends JFrame
 		menuItemExport.setToolTipText("Export model to JSON");
 		menuItemExport.addActionListener(e ->
 		{
-			new Exporter(manager, "", "test").export();
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Output Directory");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				Exporter exporter = new Exporter(manager, chooser.getSelectedFile().getAbsolutePath(), "test");
+				exporter.export();
+			}
 		});
 
 		file.add(menuItemExport);
@@ -227,14 +236,13 @@ public class ModelCreator extends JFrame
 
 			glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
 			drawGrid();
-			drawAxis();
 
 			glTranslatef(-8, 0, 8);
 			for (int i = 0; i < manager.getCuboidCount(); i++)
 			{
 				Cuboid cube = manager.getCuboid(i);
 				cube.draw();
-				cube.drawExtras();
+				cube.drawExtras(manager);
 			}
 
 			Display.update();
@@ -315,31 +323,6 @@ public class ModelCreator extends JFrame
 					glVertex3i(-8, 0, i);
 					glVertex3i(8, 0, i);
 				}
-			}
-			glEnd();
-		}
-		glPopMatrix();
-	}
-
-	public void drawAxis()
-	{
-		glPushMatrix();
-		{
-			GL11.glLineWidth(5F);
-			glTranslatef(-9, 0, -9);
-			glBegin(GL_LINES);
-			{
-				glColor4f(1, 0, 0, 0.5F);
-				glVertex3f(40F, 0.01F, 0);
-				glVertex3f(0, 0.01F, 0);
-
-				glColor4f(0, 1, 0, 0.5F);
-				glVertex3f(0, 0.01F, 0);
-				glVertex3f(0, 40F, 0);
-
-				glColor4f(0, 0, 1, 0.5F);
-				glVertex3f(0, 0.01F, 40F);
-				glVertex3f(0, 0.01F, 0);
 			}
 			glEnd();
 		}

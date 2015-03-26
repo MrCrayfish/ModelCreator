@@ -5,6 +5,8 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import com.mrcrayfish.modelcreator.util.Circle;
+
 public class Cuboid
 {
 	private String name = "Cube";
@@ -152,25 +154,24 @@ public class Cuboid
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
-			
-			
-			//North
+
+			// North
 			if (faces[0].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 0);
 				GL11.glCullFace(GL_BACK);
 				faces[0].render(startX, startY, (startZ + depth), startX + width, startY + height, (startZ + depth), width, height);
 			}
-			
-			//East
+
+			// East
 			if (faces[1].isEnabled())
 			{
 				GL11.glColor3f(0, 0, 1);
 				GL11.glCullFace(GL_BACK);
 				faces[1].render(startX, startY, startZ, startX, startY + height, (startZ + depth), depth, height);
 			}
-			
-			//South
+
+			// South
 			if (faces[2].isEnabled())
 			{
 				GL11.glColor3f(1, 0, 0);
@@ -178,23 +179,23 @@ public class Cuboid
 				faces[2].render(startX, startY, startZ, startX + width, startY + height, startZ, width, height);
 			}
 
-			//West
+			// West
 			if (faces[3].isEnabled())
 			{
 				GL11.glColor3f(1, 1, 0);
 				GL11.glCullFace(GL_FRONT);
 				faces[3].render(startX + width, startY, startZ, startX + width, startY + height, (startZ + depth), depth, height);
 			}
-			
-			//Top
+
+			// Top
 			if (faces[4].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 1);
 				GL11.glCullFace(GL_FRONT);
 				faces[4].render(startX, startY + height, startZ, startX + width, startY + height, (startZ + depth), width, depth);
 			}
-			
-			//Bottom
+
+			// Bottom
 			if (faces[5].isEnabled())
 			{
 				GL11.glColor3f(1, 0, 1);
@@ -207,15 +208,33 @@ public class Cuboid
 		GL11.glPopMatrix();
 	}
 
-	public void drawExtras()
+	public void drawExtras(CuboidManager manager)
 	{
-		GL11.glPushMatrix();
+		if (manager.getSelectedCuboid() == this)
 		{
-			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
-			GL11.glColor3f(0.25F, 0.25F, 0.25F);
-			sphere.draw(0.2F, 16, 16);
+			GL11.glPushMatrix();
+			{
+				GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
+				GL11.glColor3f(0.25F, 0.25F, 0.25F);
+				sphere.draw(0.2F, 16, 16);
+				rotateAxis();
+				GL11.glLineWidth(2F);
+				GL11.glBegin(GL_LINES);
+				{
+					GL11.glColor3f(1, 0, 0);
+					GL11.glVertex3i(-4, 0, 0);
+					GL11.glVertex3i(4, 0, 0);
+					GL11.glColor3f(0, 1, 0);
+					GL11.glVertex3i(0, -4, 0);
+					GL11.glVertex3i(0, 4, 0);
+					GL11.glColor3f(0, 0, 1);
+					GL11.glVertex3i(0, 0, -4);
+					GL11.glVertex3i(0, 0, 4);
+				}
+				GL11.glEnd();
+			}
+			GL11.glPopMatrix();
 		}
-		GL11.glPopMatrix();
 	}
 
 	public void addStartX(double amt)

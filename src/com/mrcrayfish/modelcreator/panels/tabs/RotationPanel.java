@@ -51,9 +51,9 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
-		model.addElement("<html><div style='padding:5px;'>X</html>");
-		model.addElement("<html><div style='padding:5px;'>Y</html>");
-		model.addElement("<html><div style='padding:5px;'>Z</html>");
+		model.addElement("<html><div style='padding:5px;color:red;'><b>X</b></html>");
+		model.addElement("<html><div style='padding:5px;color:green;'><b>Y</b></html>");
+		model.addElement("<html><div style='padding:5px;color:blue;'><b>Z</b></html>");
 	}
 
 	public void initComponents()

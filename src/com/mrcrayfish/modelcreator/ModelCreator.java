@@ -1,30 +1,17 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glColor4f;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-import static org.lwjgl.opengl.GL11.glVertex3i;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,7 +29,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.util.ResourceLoader;
 
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
@@ -55,6 +45,7 @@ public class ModelCreator extends JFrame
 	// Canvas Variables
 	private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
 	private final Canvas canvas;
+	private int width = 990, height = 800;
 
 	private Camera camera;
 	public Texture texture;
@@ -67,6 +58,9 @@ public class ModelCreator extends JFrame
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
+	
+	private TrueTypeFont font;
+	private TrueTypeFont fontBebasNeue;
 
 	public ModelCreator(String title)
 	{
@@ -76,7 +70,9 @@ public class ModelCreator extends JFrame
 		setLayout(new BorderLayout(10, 0));
 
 		canvas = new Canvas();
+
 		initComponents();
+
 		canvas.addComponentListener(new ComponentAdapter()
 		{
 			@Override
@@ -120,19 +116,20 @@ public class ModelCreator extends JFrame
 				try
 				{
 					Display.create();
+
+					initFonts();
+					TextureManager.init();
+
+					loop();
+
+					Display.destroy();
+					dispose();
+					System.exit(0);
 				}
 				catch (LWJGLException e1)
 				{
 					e1.printStackTrace();
 				}
-
-				TextureManager.init();
-
-				loop();
-
-				Display.destroy();
-				dispose();
-				System.exit(0);
 			}
 		});
 		gameThread.start();
@@ -199,7 +196,24 @@ public class ModelCreator extends JFrame
 		}
 	}
 
-	private void loop()
+	public void initFonts()
+	{
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 20);
+		font = new TrueTypeFont(awtFont, false);
+
+		try
+		{
+			InputStream inputStream = ResourceLoader.getResourceAsStream("res/bebas_neue.otf");
+			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
+			fontBebasNeue = new TrueTypeFont(customFont, false);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private void loop() throws LWJGLException
 	{
 		camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
 
@@ -220,33 +234,117 @@ public class ModelCreator extends JFrame
 
 			if (newDim != null)
 			{
-				GL11.glViewport(0, 0, newDim.width, newDim.height);
-				GL11.glMatrixMode(GL11.GL_PROJECTION);
-				GL11.glLoadIdentity();
-				GLU.gluPerspective(60F, (float) newDim.width / (float) newDim.height, 0.3F, 1000F);
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glLoadIdentity();
+				width = newDim.width;
+				height = newDim.height;
 			}
 
 			handleInput();
+
+			glViewport(0, 0, width, height);
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			GLU.gluPerspective(60F, (float) width / (float) height, 0.3F, 1000F);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+			glEnable(GL_DEPTH_TEST);
 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glLoadIdentity();
 			camera.useView();
 
-			glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
-			drawGrid();
+			drawPerspective();
 
-			glTranslatef(-8, 0, 8);
-			for (int i = 0; i < manager.getCuboidCount(); i++)
-			{
-				Cuboid cube = manager.getCuboid(i);
-				cube.draw();
-				cube.drawExtras(manager);
-			}
+			glDisable(GL_DEPTH_TEST);
+			glDisable(GL_CULL_FACE);
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_LIGHTING);
+
+			glViewport(0, 0, width, height);
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			GLU.gluOrtho2D(0, width, height, 0);
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+
+			drawOverlay();
 
 			Display.update();
 		}
+	}
+
+	public void drawPerspective()
+	{
+		glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
+		drawGrid();
+
+		glTranslatef(-8, 0, 8);
+		for (int i = 0; i < manager.getCuboidCount(); i++)
+		{
+			Cuboid cube = manager.getCuboid(i);
+			cube.draw();
+			cube.drawExtras(manager);
+		}
+
+		GL11.glPushMatrix();
+		{
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+			GL11.glScaled(0.02, 0.02, 0.02);
+			GL11.glRotated(90, 1, 0, 0);
+			fontBebasNeue.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.55F));
+
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glShadeModel(GL11.GL_SMOOTH);
+			GL11.glDisable(GL11.GL_BLEND);
+		}
+		GL11.glPopMatrix();
+	}
+
+	public void drawOverlay()
+	{
+		glTranslatef(width - 80, height - 80, 0);
+		glLineWidth(2F);
+		glRotated(-camera.getRY(), 0, 0, 1);
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		font.drawString(-7, -75, "N", new Color(1, 1, 1));
+		GL11.glDisable(GL11.GL_BLEND);
+
+		glColor3d(0.6, 0.6, 0.6);
+		glBegin(GL_LINES);
+		{
+			glVertex2i(0, -50);
+			glVertex2i(0, 50);
+			glVertex2i(-50, 0);
+			glVertex2i(50, 0);
+		}
+		glEnd();
+
+		glColor3d(0.3, 0.3, 0.6);
+		glBegin(GL_TRIANGLES);
+		{
+			glVertex2i(-5, -45);
+			glVertex2i(0, -50);
+			glVertex2i(5, -45);
+
+			glVertex2i(-5, 45);
+			glVertex2i(0, 50);
+			glVertex2i(5, 45);
+
+			glVertex2i(-45, -5);
+			glVertex2i(-50, 0);
+			glVertex2i(-45, 5);
+
+			glVertex2i(45, -5);
+			glVertex2i(50, 0);
+			glVertex2i(45, 5);
+		}
+		glEnd();
+
 	}
 
 	public void handleInput()

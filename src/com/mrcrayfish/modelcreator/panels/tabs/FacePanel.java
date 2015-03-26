@@ -61,10 +61,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
-		model.addElement("<html><div style='padding:5px;color:green;'><b>North</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(0,255,0);'><b>North</b></html>");
 		model.addElement("<html><div style='padding:5px;color:rgb(255,187,0);'><b>East</b></html>");
-		model.addElement("<html><div style='padding:5px;color:red;'><b>South</b></html>");
-		model.addElement("<html><div style='padding:5px;color:blue;'><b>West</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(255,0,0);'><b>South</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(0,0,255);'><b>West</b></html>");
 		model.addElement("<html><div style='padding:5px;color:rgb(0,255,255);'><b>Up</b></html>");
 		model.addElement("<html><div style='padding:5px;color:rgb(255,0,255);'><b>Down</b></html>");
 	}

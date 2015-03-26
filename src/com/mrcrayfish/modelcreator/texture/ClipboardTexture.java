@@ -2,18 +2,18 @@ package com.mrcrayfish.modelcreator.texture;
 
 public class ClipboardTexture
 {
-	private String modid;
+	private String location;
 	private String texture;
 
-	public ClipboardTexture(String texture, String modid)
+	public ClipboardTexture(String texture, String location)
 	{
 		this.texture = texture;
-		this.modid = modid;
+		this.location = location;
 	}
 
-	public String getModid()
+	public String getLocation()
 	{
-		return modid;
+		return location;
 	}
 
 	public String getTexture()

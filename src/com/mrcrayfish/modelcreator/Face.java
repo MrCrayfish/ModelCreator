@@ -9,7 +9,7 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 public class Face
 {
 	private String texture = null;
-	private String textureModId = null;
+	private String textureLocation = "blocks/";
 	private double textureX = 0;
 	private double textureY = 0;
 	private boolean fitTexture = false;
@@ -35,6 +35,10 @@ public class Face
 		GL11.glPushMatrix();
 		{
 			bindTexture();
+			GL11.glMatrixMode(GL11.GL_TEXTURE);
+			GL11.glLoadIdentity();
+			GL11.glRotated(getRotation(), 0, 0, 1);
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				// Top Right
@@ -117,14 +121,14 @@ public class Face
 		return TextureManager.getTexture(texture);
 	}
 
-	public String getTextureModId()
+	public String getTextureLocation()
 	{
-		return textureModId;
+		return textureLocation;
 	}
 
-	public void setTextureModId(String textureModId)
+	public void setTextureLocation(String textureLocation)
 	{
-		this.textureModId = textureModId;
+		this.textureLocation = textureLocation;
 	}
 
 	public void fitTexture(boolean fitTexture)
@@ -175,9 +179,9 @@ public class Face
 		case 3:
 			return "west";
 		case 4:
-			return "down";
-		case 5:
 			return "up";
+		case 5:
+			return "down";
 		}
 		return null;
 	}

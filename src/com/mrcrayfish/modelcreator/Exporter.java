@@ -29,6 +29,7 @@ public class Exporter
 		this.manager = manager;
 		this.modelName = outputName;
 		this.outputPath = outputPath;
+		compileTextureList();
 	}
 
 	public void assignChild(String childName)
@@ -41,11 +42,11 @@ public class Exporter
 		this.modid = modid;
 	}
 
-	public void export(CuboidManager manager, String name)
+	public void export()
 	{
 		try
 		{
-			FileWriter fw = new FileWriter(new File(name + ".json"));
+			FileWriter fw = new FileWriter(new File(modelName + ".json"));
 			BufferedWriter writer = new BufferedWriter(fw);
 			writeComponents(writer, manager);
 			writer.close();
@@ -57,13 +58,16 @@ public class Exporter
 		}
 	}
 
-	private void compileTextureList(CuboidManager manager)
+	private void compileTextureList()
 	{
 		for (Cuboid cuboid : manager.getAllCuboids())
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
-				// face.get
+				if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
+				{
+					textureList.add(face.getTextureLocation() + face.getTextureName());
+				}
 			}
 		}
 	}
@@ -72,7 +76,9 @@ public class Exporter
 	{
 		writer.write("{");
 		writer.newLine();
-		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model manager (http://mrcrayfish.com/modelmanager/)\",");
+		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
+		writer.newLine();
+		writeTextures(writer);
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");
 		for (int i = 0; i < manager.getCuboidCount(); i++)
@@ -92,8 +98,26 @@ public class Exporter
 		writer.write("}");
 	}
 
+	private void writeTextures(BufferedWriter writer) throws IOException
+	{
+		writer.write(space(1) + "\"textures\": {");
+		writer.newLine();
+		for (String texture : textureList)
+		{
+			writer.write(space(2) + "\"" + textureList.indexOf(texture) + "\": \"" + texture + "\"");
+			if (textureList.indexOf(texture) != textureList.size() - 1)
+			{
+				writer.write(",");
+			}
+			writer.newLine();
+		}
+		writer.write(space(1) + "},");
+	}
+
 	private void writeElement(BufferedWriter writer, Cuboid cuboid) throws IOException
 	{
+		writer.write(space(3) + "\"name\": \"" + cuboid.toString() + "\",");
+		writer.newLine();
 		writeBounds(writer, cuboid);
 		writer.newLine();
 		if (!cuboid.isShaded())
@@ -142,11 +166,13 @@ public class Exporter
 		for (Face face : cuboid.getAllFaces())
 		{
 			writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
-			writer.write("\"texture\": \"#placeholder\" ");
-			writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ] ");
+			writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
+			writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
+			if (face.getRotation() > 0)
+				writer.write(", \"rotation\": " + (int) face.getRotation());
 			if (face.isCullfaced())
-				writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\" ");
-			writer.write("}");
+				writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
+			writer.write(" }");
 			if (face.getSide() != cuboid.getLastValidFace())
 			{
 				writer.write(",");

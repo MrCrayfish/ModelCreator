@@ -101,8 +101,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 					{
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setTexture(texture.getTexture());
-						face.setTextureModId(texture.getModid());
-
+						face.setTextureLocation(texture.getLocation());
 					}
 				}
 			}

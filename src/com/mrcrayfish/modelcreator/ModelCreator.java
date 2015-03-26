@@ -71,7 +71,7 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 
-		setPreferredSize(new Dimension(1200, 800));
+		setPreferredSize(new Dimension(1200, 850));
 		setLayout(new BorderLayout(10, 0));
 
 		canvas = new Canvas();
@@ -157,8 +157,8 @@ public class ModelCreator extends JFrame
 		menuItemExport.setToolTipText("Export model to JSON");
 		menuItemExport.addActionListener(e ->
 		{
-			// Exporter.export(this, "test");
-			});
+			new Exporter(manager, "", "test").export();
+		});
 
 		file.add(menuItemExport);
 		file.add(menuItemExit);

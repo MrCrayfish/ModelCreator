@@ -50,7 +50,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	{
 		this.creator = creator;
 		setLayout(layout = new SpringLayout());
-		setPreferredSize(new Dimension(200, 800));
+		setPreferredSize(new Dimension(200, 850));
 		initComponents();
 		setLayoutConstaints();
 	}
@@ -171,7 +171,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		tabbedPane.add("Element", new ElementPanel(this));
 		tabbedPane.add("Rotation", new RotationPanel(this));
 		tabbedPane.add("Faces", new FacePanel(this));
-		tabbedPane.setPreferredSize(new Dimension(190, 455));
+		tabbedPane.setPreferredSize(new Dimension(190, 500));
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
 		add(tabbedPane);
 	}

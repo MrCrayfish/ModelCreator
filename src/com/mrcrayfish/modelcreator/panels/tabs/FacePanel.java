@@ -1,7 +1,12 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -12,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Cuboid;
 import com.mrcrayfish.modelcreator.CuboidManager;
@@ -33,7 +39,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private JSlider rotation;
 	private TexturePanel panelTexture;
 	private FaceExtrasPanel panelProperties;
-	
+
+	private JPanel panelModId;
+	private JTextField modidField;
+
 	private final int ROTATION_MIN = 0;
 	private final int ROTATION_MAX = 3;
 	private final int ROTATION_INIT = 0;
@@ -56,8 +65,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 		model.addElement("<html><div style='padding:5px;'>East</html>");
 		model.addElement("<html><div style='padding:5px;'>South</html>");
 		model.addElement("<html><div style='padding:5px;'>West</html>");
-		model.addElement("<html><div style='padding:5px;'>Down</html>");
 		model.addElement("<html><div style='padding:5px;'>Up</html>");
+		model.addElement("<html><div style='padding:5px;'>Down</html>");
 	}
 
 	public void initComponents()
@@ -80,13 +89,13 @@ public class FacePanel extends JPanel implements IValueUpdater
 		panelTexture = new TexturePanel(manager);
 		panelUV = new UVPanel(manager);
 		panelProperties = new FaceExtrasPanel(manager);
-		
+
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
 		labelTable.put(new Integer(1), new JLabel("90\u00b0"));
 		labelTable.put(new Integer(2), new JLabel("180\u00b0"));
 		labelTable.put(new Integer(3), new JLabel("270\u00b0"));
-		
+
 		sliderPanel = new JPanel(new GridLayout(1, 1));
 		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
 		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
@@ -100,6 +109,40 @@ public class FacePanel extends JPanel implements IValueUpdater
 		});
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
+
+		panelModId = new JPanel(new GridLayout(1, 1));
+		panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Location:"));
+		modidField = new JTextField();
+		modidField.setPreferredSize(new Dimension(190, 40));
+		modidField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					if (manager.getSelectedCuboid() != null)
+					{
+						manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+					}
+				}
+			}
+		});
+		modidField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if (manager.getSelectedCuboid() != null)
+				{
+					manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+				}
+			}
+		});
+		modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>"
+				                + "texture in a sub folder, write the custom directory<br>"
+				                + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
+		panelModId.add(modidField);
 	}
 
 	public void addComponents()
@@ -113,6 +156,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(sliderPanel);
 		add(Box.createRigidArea(new Dimension(192, 5)));
+		add(panelModId);
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelProperties);
 	}
 
@@ -122,6 +167,13 @@ public class FacePanel extends JPanel implements IValueUpdater
 		if (cube != null)
 		{
 			menuList.setSelectedIndex(cube.getSelectedFaceIndex());
+			modidField.setEnabled(true);
+			modidField.setText(cube.getSelectedFace().getTextureLocation());
+		}
+		else
+		{
+			modidField.setEnabled(false);
+			modidField.setText("");
 		}
 		panelUV.updateValues(cube);
 		panelProperties.updateValues(cube);

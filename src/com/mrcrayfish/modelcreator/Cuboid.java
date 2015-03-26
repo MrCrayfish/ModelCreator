@@ -59,7 +59,7 @@ public class Cuboid
 			Face oldFace = cuboid.getAllFaces()[i];
 			faces[i].fitTexture(oldFace.shouldFitTexture());
 			faces[i].setTexture(oldFace.getTextureName());
-			faces[i].setTextureModId(oldFace.getTextureModId());
+			faces[i].setTextureLocation(oldFace.getTextureLocation());
 			faces[i].addTextureX(oldFace.getStartU());
 			faces[i].addTextureY(oldFace.getStartV());
 			faces[i].setCullface(oldFace.isCullfaced());
@@ -152,42 +152,56 @@ public class Cuboid
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
+			
+			
+			//North
 			if (faces[0].isEnabled())
-			{
-				GL11.glColor3f(1, 0, 0);
-				GL11.glCullFace(GL_FRONT);
-				faces[0].render(startX, startY, startZ, startX + width, startY + height, startZ, width, height);
-			}
-			if (faces[1].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 0);
 				GL11.glCullFace(GL_BACK);
-				faces[1].render(startX, startY, (startZ + depth), startX + width, startY + height, (startZ + depth), width, height);
+				faces[0].render(startX, startY, (startZ + depth), startX + width, startY + height, (startZ + depth), width, height);
 			}
-			if (faces[2].isEnabled())
+			
+			//East
+			if (faces[1].isEnabled())
 			{
 				GL11.glColor3f(0, 0, 1);
 				GL11.glCullFace(GL_BACK);
-				faces[2].render(startX, startY, startZ, startX, startY + height, (startZ + depth), depth, height);
+				faces[1].render(startX, startY, startZ, startX, startY + height, (startZ + depth), depth, height);
 			}
+			
+			//South
+			if (faces[2].isEnabled())
+			{
+				GL11.glColor3f(1, 0, 0);
+				GL11.glCullFace(GL_FRONT);
+				faces[2].render(startX, startY, startZ, startX + width, startY + height, startZ, width, height);
+			}
+
+			//West
 			if (faces[3].isEnabled())
 			{
 				GL11.glColor3f(1, 1, 0);
 				GL11.glCullFace(GL_FRONT);
 				faces[3].render(startX + width, startY, startZ, startX + width, startY + height, (startZ + depth), depth, height);
 			}
+			
+			//Top
 			if (faces[4].isEnabled())
-			{
-				GL11.glColor3f(1, 0, 1);
-				GL11.glCullFace(GL_BACK);
-				faces[4].render(startX, startY, startZ, startX + width, startY, (startZ + depth), width, depth);
-			}
-			if (faces[5].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 1);
 				GL11.glCullFace(GL_FRONT);
-				faces[5].render(startX, startY + height, startZ, startX + width, startY + height, (startZ + depth), width, depth);
+				faces[4].render(startX, startY + height, startZ, startX + width, startY + height, (startZ + depth), width, depth);
 			}
+			
+			//Bottom
+			if (faces[5].isEnabled())
+			{
+				GL11.glColor3f(1, 0, 1);
+				GL11.glCullFace(GL_BACK);
+				faces[5].render(startX, startY, startZ, startX + width, startY, (startZ + depth), width, depth);
+			}
+
 			GL11.glDisable(GL_TEXTURE_2D);
 		}
 		GL11.glPopMatrix();

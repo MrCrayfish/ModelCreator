@@ -30,10 +30,6 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	private JRadioButton boxFill;
 	private JRadioButton boxEnabled;
 
-	private JPanel panelModId;
-	private JLabel modidLabel;
-	private JTextField modidField;
-
 	public FaceExtrasPanel(CuboidManager manager)
 	{
 		this.manager = manager;
@@ -69,44 +65,12 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		horizontalBox.add(boxFill);
 		horizontalBox.add(boxEnabled);
 
-		panelModId = new JPanel(new BorderLayout());
-		modidLabel = new JLabel("Mod ID: ");
-		modidField = new JTextField();
-		modidField.setPreferredSize(new Dimension(190, 60));
-		modidField.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-				{
-					if (manager.getSelectedCuboid() != null)
-					{
-						manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
-					}
-				}
-			}
-		});
-		modidField.addFocusListener(new FocusAdapter()
-		{
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-				if (manager.getSelectedCuboid() != null)
-				{
-					manager.getSelectedCuboid().getSelectedFace().setTextureModId(modidField.getText());
-				}
-			}
-		});
-		panelModId.add(modidLabel, BorderLayout.WEST);
-		panelModId.add(modidField, BorderLayout.CENTER);
+		
 	}
 
 	public void addComponents()
 	{
 		add(horizontalBox, BorderLayout.NORTH);
-		add(Box.createRigidArea(new Dimension(192, 5)));
-		add(panelModId, BorderLayout.CENTER);
 	}
 
 	@Override
@@ -120,8 +84,6 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			boxFill.setSelected(cube.getSelectedFace().shouldFitTexture());
 			boxEnabled.setEnabled(true);
 			boxEnabled.setSelected(cube.getSelectedFace().isEnabled());
-			modidField.setEnabled(true);
-			modidField.setText(cube.getSelectedFace().getTextureModId());
 		}
 		else
 		{
@@ -131,8 +93,6 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			boxFill.setSelected(false);
 			boxEnabled.setEnabled(false);
 			boxEnabled.setSelected(false);
-			modidField.setEnabled(false);
-			modidField.setText("");
 		}
 	}
 }

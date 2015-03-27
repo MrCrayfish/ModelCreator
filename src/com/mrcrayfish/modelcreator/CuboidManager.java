@@ -5,7 +5,7 @@ import java.util.List;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
 
-public interface CuboidManager extends TextureCallback
+public interface CuboidManager
 {
 	public Cuboid getSelectedCuboid();
 
@@ -20,4 +20,6 @@ public interface CuboidManager extends TextureCallback
 	public void updateValues();
 
 	public void addPendingTexture(PendingTexture texture);
+	
+	public boolean getAmbientOcc();
 }

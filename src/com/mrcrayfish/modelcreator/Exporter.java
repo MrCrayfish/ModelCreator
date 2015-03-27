@@ -90,6 +90,11 @@ public class Exporter
 		writer.newLine();
 		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
 		writer.newLine();
+		if (!manager.getAmbientOcc())
+		{
+			writer.write("\"ambientocclusion\": " + manager.getAmbientOcc() + ",");
+			writer.newLine();
+		}
 		writeTextures(writer);
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");

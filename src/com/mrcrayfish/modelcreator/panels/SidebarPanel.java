@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -45,6 +46,9 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	private JButton btnDuplicate = new JButton();
 	private JTextField name = new JTextField();
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
+	private JRadioButton boxAmbient;
+	
+	private boolean ambientOcc = true;
 
 	public SidebarPanel(ModelCreator creator)
 	{
@@ -175,6 +179,11 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		tabbedPane.setPreferredSize(new Dimension(190, 500));
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
 		add(tabbedPane);
+		
+		boxAmbient = new JRadioButton("Ambient Occulusion");
+		boxAmbient.setSelected(true);
+		boxAmbient.addActionListener(a -> ambientOcc = boxAmbient.isSelected());
+		add(boxAmbient);
 	}
 
 	public void setLayoutConstaints()
@@ -182,6 +191,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		layout.putConstraint(SpringLayout.NORTH, name, 212, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.NORTH, btnContainer, 176, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 250, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, boxAmbient, 755, SpringLayout.NORTH, this);
 	}
 
 	@Override
@@ -249,9 +259,8 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	}
 
 	@Override
-	public void callback(String texture)
+	public boolean getAmbientOcc()
 	{
-		// TODO Auto-generated method stub
-
+		return ambientOcc;
 	}
 }

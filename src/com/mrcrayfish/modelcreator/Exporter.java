@@ -57,11 +57,11 @@ public class Exporter
 				writer.close();
 				fw.close();
 
-				/*fw = new FileWriter(new File(path, modelName + ".json"));
-				writer = new BufferedWriter(fw);
-				writeChild(writer);
-				writer.close();
-				fw.close();*/
+				/*
+				 * fw = new FileWriter(new File(path, modelName + ".json"));
+				 * writer = new BufferedWriter(fw); writeChild(writer);
+				 * writer.close(); fw.close();
+				 */
 			}
 			catch (IOException e)
 			{
@@ -179,7 +179,7 @@ public class Exporter
 		{
 			writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 			writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-			writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
+			writer.write(", \"uv\": [ " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + ", " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + face.getEndU()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + face.getEndV()) + " ]");
 			if (face.getRotation() > 0)
 				writer.write(", \"rotation\": " + (int) face.getRotation());
 			if (face.isCullfaced())
@@ -194,7 +194,7 @@ public class Exporter
 		writer.newLine();
 		writer.write(space(3) + "}");
 	}
-	
+
 	private void writeChild(BufferedWriter writer) throws IOException
 	{
 		writer.write("{");

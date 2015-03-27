@@ -17,7 +17,7 @@ public class Cuboid
 
 	// Element Variables
 	private double startX = 0.0, startY = 0.0, startZ = 0.0;
-	private double width = 1.0, height = 1.0, depth = 1.0;
+	private double width = 16.0, height = 1.0, depth = 1.0;
 
 	// Rotation Variables
 	private double originX = 8, originY = 8, originZ = 8;
@@ -148,9 +148,7 @@ public class Cuboid
 	{
 		GL11.glPushMatrix();
 		{
-			GL11.glEnable(GL_TEXTURE_2D);
 			GL11.glEnable(GL_CULL_FACE);
-			GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
@@ -159,51 +157,43 @@ public class Cuboid
 			if (faces[0].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 0);
-				GL11.glCullFace(GL_BACK);
-				faces[0].render(startX, startY, (startZ + depth), startX + width, startY + height, (startZ + depth), width, height);
+				faces[0].renderNorth();
 			}
 
 			// East
 			if (faces[1].isEnabled())
 			{
 				GL11.glColor3f(0, 0, 1);
-				GL11.glCullFace(GL_BACK);
-				faces[1].render(startX, startY, startZ, startX, startY + height, (startZ + depth), depth, height);
+				faces[1].renderEast();
 			}
 
 			// South
 			if (faces[2].isEnabled())
 			{
 				GL11.glColor3f(1, 0, 0);
-				GL11.glCullFace(GL_FRONT);
-				faces[2].render(startX, startY, startZ, startX + width, startY + height, startZ, width, height);
+				faces[2].renderSouth();
 			}
 
 			// West
 			if (faces[3].isEnabled())
 			{
 				GL11.glColor3f(1, 1, 0);
-				GL11.glCullFace(GL_FRONT);
-				faces[3].render(startX + width, startY, startZ, startX + width, startY + height, (startZ + depth), depth, height);
+				faces[3].renderWest();
 			}
 
 			// Top
 			if (faces[4].isEnabled())
 			{
 				GL11.glColor3f(0, 1, 1);
-				GL11.glCullFace(GL_FRONT);
-				faces[4].render(startX, startY + height, startZ, startX + width, startY + height, (startZ + depth), width, depth);
+				faces[4].renderUp();
 			}
 
 			// Bottom
 			if (faces[5].isEnabled())
 			{
 				GL11.glColor3f(1, 0, 1);
-				GL11.glCullFace(GL_BACK);
-				faces[5].render(startX, startY, startZ, startX + width, startY, (startZ + depth), width, depth);
+				faces[5].renderDown();
 			}
-
-			GL11.glDisable(GL_TEXTURE_2D);
 		}
 		GL11.glPopMatrix();
 	}

@@ -163,6 +163,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 				name.setText(cube.toString());
 			}
 		});
+		model.addElement(new Cuboid(8, 8, 8));
 
 		scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(190, 170));

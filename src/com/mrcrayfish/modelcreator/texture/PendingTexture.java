@@ -23,7 +23,7 @@ public class PendingTexture
 	{
 		try
 		{
-			boolean result = true;
+			boolean result = false;
 			String fileName = Paths.get(name).getFileName().toString();
 			Texture texture = TextureManager.getTexture(fileName);
 			if (texture == null)

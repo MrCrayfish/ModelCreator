@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
@@ -64,11 +65,10 @@ public class TextureManager
 		if (texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
 		{
 			texture.release();
-			System.out.println("Texture has to be a multiple of 16");
+			JOptionPane.showMessageDialog(null, "Texture must be a multiple of 16");
 			return false;
 		}
 		ImageIcon icon = upscale(new ImageIcon(path + "/" + name));
-		System.out.println(name.replace(".png", ""));
 		textureCache.add(new TextureEntry(name.replace(".png", ""), texture, icon));
 		return true;
 	}
@@ -154,6 +154,7 @@ public class TextureManager
 						@Override
 						public void callback(String texture)
 						{
+							JOptionPane.showMessageDialog(null, "Texture successfully loaded");
 							model.insertElementAt(texture, 0);
 						}
 					}));

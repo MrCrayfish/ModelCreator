@@ -21,15 +21,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 
-public class SidebarPanel extends JPanel implements CuboidManager
+public class SidebarPanel extends JPanel implements ElementManager
 {
 	private static final long serialVersionUID = 1L;
 
@@ -37,8 +37,8 @@ public class SidebarPanel extends JPanel implements CuboidManager
 
 	// Swing Variables
 	private SpringLayout layout;
-	private DefaultListModel<Cuboid> model = new DefaultListModel<Cuboid>();
-	private JList<Cuboid> list = new JList<Cuboid>();
+	private DefaultListModel<Element> model = new DefaultListModel<Element>();
+	private JList<Element> list = new JList<Element>();
 	private JScrollPane scrollPane;
 	private JPanel btnContainer;
 	private JButton btnAdd = new JButton();
@@ -77,7 +77,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 
 		btnAdd.addActionListener(e ->
 		{
-			model.addElement(new Cuboid(1, 1, 1));
+			model.addElement(new Element(1, 1, 1));
 			list.setSelectedIndex(model.size() - 1);
 		});
 		btnAdd.setPreferredSize(new Dimension(30, 30));
@@ -123,7 +123,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 			int selected = list.getSelectedIndex();
 			if (selected != -1)
 			{
-				model.addElement(new Cuboid(model.getElementAt(selected)));
+				model.addElement(new Element(model.getElementAt(selected)));
 				list.setSelectedIndex(model.getSize() - 1);
 			}
 		});
@@ -159,7 +159,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			Cuboid cube = getSelectedCuboid();
+			Element cube = getSelectedCuboid();
 			if (cube != null)
 			{
 				tabbedPane.updateValues();
@@ -167,7 +167,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 				name.setText(cube.toString());
 			}
 		});
-		model.addElement(new Cuboid(8, 8, 8));
+		model.addElement(new Element(8, 8, 8));
 
 		scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(190, 170));
@@ -195,18 +195,18 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	}
 
 	@Override
-	public Cuboid getSelectedCuboid()
+	public Element getSelectedCuboid()
 	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
-			return (Cuboid) model.getElementAt(i);
+			return (Element) model.getElementAt(i);
 		return null;
 	}
 
 	@Override
-	public List<Cuboid> getAllCuboids()
+	public List<Element> getAllCuboids()
 	{
-		List<Cuboid> list = new ArrayList<Cuboid>();
+		List<Element> list = new ArrayList<Element>();
 		for (int i = 0; i < model.size(); i++)
 		{
 			list.add(model.getElementAt(i));
@@ -215,7 +215,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 	}
 
 	@Override
-	public Cuboid getCuboid(int index)
+	public Element getCuboid(int index)
 	{
 		return model.getElementAt(index);
 	}
@@ -232,7 +232,7 @@ public class SidebarPanel extends JPanel implements CuboidManager
 		String newName = name.getText();
 		if (newName.isEmpty())
 			newName = "Cuboid";
-		Cuboid cube = getSelectedCuboid();
+		Element cube = getSelectedCuboid();
 		if (cube != null)
 		{
 			cube.setName(newName);

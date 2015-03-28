@@ -22,10 +22,10 @@ public class Face
 	private boolean enabled = true;
 	private double rotation;
 
-	private Cuboid cuboid;
+	private Element cuboid;
 	private int side;
 
-	public Face(Cuboid cuboid, int side)
+	public Face(Element cuboid, int side)
 	{
 		this.cuboid = cuboid;
 		this.side = side;

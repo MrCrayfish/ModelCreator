@@ -1,6 +1,33 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glColor3d;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotated;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2i;
+import static org.lwjgl.opengl.GL11.glVertex3i;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -54,7 +81,7 @@ public class ModelCreator extends JFrame
 
 	// Swing Components
 	private JMenuBar menuBar = new JMenuBar();
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
@@ -66,7 +93,8 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 
-		setPreferredSize(new Dimension(1200, 850));
+		setPreferredSize(new Dimension(1200, 840));
+		setMinimumSize(new Dimension(1200, 840));
 		setLayout(new BorderLayout(10, 0));
 
 		canvas = new Canvas();
@@ -171,7 +199,7 @@ public class ModelCreator extends JFrame
 		menuBar.add(file);
 		setJMenuBar(menuBar);
 
-		canvas.setSize(new Dimension(990, 800));
+		canvas.setSize(new Dimension(990, 790));
 		add(canvas, BorderLayout.CENTER);
 
 		canvas.setFocusable(true);
@@ -280,7 +308,7 @@ public class ModelCreator extends JFrame
 		glTranslatef(-8, 0, 8);
 		for (int i = 0; i < manager.getCuboidCount(); i++)
 		{
-			Cuboid cube = manager.getCuboid(i);
+			Element cube = manager.getCuboid(i);
 			cube.draw();
 			cube.drawExtras(manager);
 		}

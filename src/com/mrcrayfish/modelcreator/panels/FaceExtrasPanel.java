@@ -3,34 +3,27 @@ package com.mrcrayfish.modelcreator.panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 
 public class FaceExtrasPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private JPanel horizontalBox;
 	private JRadioButton boxCullFace;
 	private JRadioButton boxFill;
 	private JRadioButton boxEnabled;
 
-	public FaceExtrasPanel(CuboidManager manager)
+	public FaceExtrasPanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new BorderLayout(0, 5));
@@ -74,7 +67,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		if (cube != null)
 		{

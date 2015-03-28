@@ -7,19 +7,19 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 
 public class ElementExtraPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private JRadioButton btnShade;
 
-	public ElementExtraPanel(CuboidManager manager)
+	public ElementExtraPanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(1, 2));
@@ -44,7 +44,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		if (cube != null)
 		{

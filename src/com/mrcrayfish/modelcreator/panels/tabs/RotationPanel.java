@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
 
@@ -23,7 +23,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private OriginPanel panelOrigin;
 	private JPanel axisPanel;
@@ -39,7 +39,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	private final int ROTATION_MAX = 15;
 	private final int ROTATION_INIT = 0;
 
-	public RotationPanel(CuboidManager manager)
+	public RotationPanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -119,7 +119,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		panelOrigin.updateValues(cube);
 		if (cube != null)

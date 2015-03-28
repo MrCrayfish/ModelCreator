@@ -3,15 +3,14 @@ package com.mrcrayfish.modelcreator;
 import java.util.List;
 
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
-import com.mrcrayfish.modelcreator.texture.TextureCallback;
 
-public interface CuboidManager
+public interface ElementManager
 {
-	public Cuboid getSelectedCuboid();
+	public Element getSelectedCuboid();
 
-	public List<Cuboid> getAllCuboids();
+	public List<Element> getAllCuboids();
 
-	public Cuboid getCuboid(int index);
+	public Element getCuboid(int index);
 
 	public int getCuboidCount();
 

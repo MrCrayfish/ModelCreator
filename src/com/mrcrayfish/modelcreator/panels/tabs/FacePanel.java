@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
@@ -19,8 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
 import com.mrcrayfish.modelcreator.panels.TexturePanel;
@@ -30,7 +29,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private JPanel menuPanel;
 	private JComboBox<String> menuList;
@@ -49,7 +48,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 
 	private DefaultComboBoxModel<String> model;
 
-	public FacePanel(CuboidManager manager)
+	public FacePanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -162,7 +161,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		if (cube != null)
 		{

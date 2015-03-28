@@ -29,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 
 public class TextureManager
@@ -106,7 +106,7 @@ public class TextureManager
 
 	private static String texture = null;
 
-	public static String display(CuboidManager manager)
+	public static String display(ElementManager manager)
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 18);
 

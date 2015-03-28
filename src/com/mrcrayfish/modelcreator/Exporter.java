@@ -11,35 +11,19 @@ public class Exporter
 {
 	private List<String> textureList = new ArrayList<String>();
 
-	// If for mod, can include modid
-	private String modid;
-
 	// Output Directory
 	private String outputPath;
 
 	// Model Variables
-	private CuboidManager manager;
+	private ElementManager manager;
 	private String modelName;
 
-	// Child Variables
-	private String childName;
-
-	public Exporter(CuboidManager manager, String outputPath, String outputName)
+	public Exporter(ElementManager manager, String outputPath, String outputName)
 	{
 		this.manager = manager;
 		this.modelName = outputName;
 		this.outputPath = outputPath;
 		compileTextureList();
-	}
-
-	public void assignChild(String childName)
-	{
-		this.childName = childName;
-	}
-
-	public void setModId(String modid)
-	{
-		this.modid = modid;
 	}
 
 	public void export()
@@ -72,7 +56,7 @@ public class Exporter
 
 	private void compileTextureList()
 	{
-		for (Cuboid cuboid : manager.getAllCuboids())
+		for (Element cuboid : manager.getAllCuboids())
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
@@ -84,7 +68,7 @@ public class Exporter
 		}
 	}
 
-	private void writeComponents(BufferedWriter writer, CuboidManager manager) throws IOException
+	private void writeComponents(BufferedWriter writer, ElementManager manager) throws IOException
 	{
 		writer.write("{");
 		writer.newLine();
@@ -131,7 +115,7 @@ public class Exporter
 		writer.write(space(1) + "},");
 	}
 
-	private void writeElement(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeElement(BufferedWriter writer, Element cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"name\": \"" + cuboid.toString() + "\",");
 		writer.newLine();
@@ -151,23 +135,23 @@ public class Exporter
 
 	}
 
-	private void writeBounds(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + (16.0 - (cuboid.getStartZ() + cuboid.getDepth())) + " ], ");
 		writer.newLine();
 		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (16.0 - cuboid.getStartZ()) + " ], ");
 	}
 
-	private void writeShade(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeShade(BufferedWriter writer, Element cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"shade\": " + cuboid.isShaded() + ",");
 	}
 
-	private void writeRotation(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeRotation(BufferedWriter writer, Element cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"rotation\": { ");
 		writer.write("\"origin\": [ " + cuboid.getOriginX() + ", " + cuboid.getOriginY() + ", " + cuboid.getOriginZ() + " ], ");
-		writer.write("\"axis\": \"" + Cuboid.parseAxis(cuboid.getPrevAxis()) + "\", ");
+		writer.write("\"axis\": \"" + Element.parseAxis(cuboid.getPrevAxis()) + "\", ");
 		writer.write("\"angle\": " + cuboid.getRotation());
 		if (cuboid.shouldRescale())
 		{
@@ -176,7 +160,7 @@ public class Exporter
 		writer.write(" },");
 	}
 
-	private void writeFaces(BufferedWriter writer, Cuboid cuboid) throws IOException
+	private void writeFaces(BufferedWriter writer, Element cuboid) throws IOException
 	{
 		writer.write(space(3) + "\"faces\": {");
 		writer.newLine();
@@ -200,7 +184,7 @@ public class Exporter
 		writer.write(space(3) + "}");
 	}
 
-	private void writeChild(BufferedWriter writer) throws IOException
+	/*private void writeChild(BufferedWriter writer) throws IOException
 	{
 		writer.write("{");
 		writer.newLine();
@@ -219,7 +203,7 @@ public class Exporter
 		}
 		writer.write(space(1) + "}");
 		writer.write("}");
-	}
+	}*/
 
 	private String space(int size)
 	{

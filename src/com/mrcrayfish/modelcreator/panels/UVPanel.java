@@ -11,8 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 
@@ -20,7 +20,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 	private JButton btnPlusX;
 	private JButton btnPlusY;
 	private JTextField xStartField;
@@ -30,7 +30,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 	private DecimalFormat df = new DecimalFormat("#.#");
 
-	public UVPanel(CuboidManager manager)
+	public UVPanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(3, 3, 4, 4));
@@ -68,7 +68,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -88,7 +88,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -108,7 +108,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -128,7 +128,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -156,7 +156,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		if (cube != null)
 		{

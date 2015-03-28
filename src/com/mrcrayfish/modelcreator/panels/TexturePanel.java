@@ -10,7 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
@@ -21,14 +21,14 @@ public class TexturePanel extends JPanel implements TextureCallback
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private JButton btnSelect;
 	private JButton btnClear;
 	private JButton btnCopy;
 	private JButton btnPaste;
 
-	public TexturePanel(CuboidManager manager)
+	public TexturePanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(2, 2, 4, 4));

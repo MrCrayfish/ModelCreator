@@ -6,8 +6,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.ElementExtraPanel;
 import com.mrcrayfish.modelcreator.panels.PositionPanel;
@@ -17,13 +17,13 @@ public class ElementPanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private SizePanel panelSize;
 	private PositionPanel panelPosition;
 	private ElementExtraPanel panelExtras;
 
-	public ElementPanel(CuboidManager manager)
+	public ElementPanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -49,7 +49,7 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		panelSize.updateValues(cube);
 		panelPosition.updateValues(cube);

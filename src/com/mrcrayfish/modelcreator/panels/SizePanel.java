@@ -11,15 +11,15 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Cuboid;
-import com.mrcrayfish.modelcreator.CuboidManager;
+import com.mrcrayfish.modelcreator.Element;
+import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.IValueUpdater;
 
 public class SizePanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
 
-	private CuboidManager manager;
+	private ElementManager manager;
 
 	private JButton btnPlusX;
 	private JButton btnPlusY;
@@ -33,7 +33,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 	private DecimalFormat df = new DecimalFormat("#.#");
 
-	public SizePanel(CuboidManager manager)
+	public SizePanel(ElementManager manager)
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(3, 3, 4, 4));
@@ -79,7 +79,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addWidth(0.1F);
@@ -98,7 +98,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addHeight(0.1F);
@@ -117,7 +117,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addDepth(0.1F);
@@ -136,7 +136,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addWidth(-0.1F);
@@ -155,7 +155,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addHeight(-0.1F);
@@ -174,7 +174,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				Cuboid cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedCuboid();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addDepth(-0.1F);
@@ -204,7 +204,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 	}
 
 	@Override
-	public void updateValues(Cuboid cube)
+	public void updateValues(Element cube)
 	{
 		if (cube != null)
 		{

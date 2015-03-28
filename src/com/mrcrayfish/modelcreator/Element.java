@@ -1,13 +1,12 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
-import com.mrcrayfish.modelcreator.util.Circle;
-
-public class Cuboid
+public class Element
 {
 	private String name = "Cube";
 
@@ -31,7 +30,7 @@ public class Cuboid
 	// Rotation Point Indicator
 	private Sphere sphere = new Sphere();
 
-	public Cuboid(double width, double height, double depth)
+	public Element(double width, double height, double depth)
 	{
 		this.width = width;
 		this.height = height;
@@ -39,7 +38,7 @@ public class Cuboid
 		initFaces();
 	}
 
-	public Cuboid(Cuboid cuboid)
+	public Element(Element cuboid)
 	{
 		this.width = cuboid.getWidth();
 		this.height = cuboid.getHeight();
@@ -198,7 +197,7 @@ public class Cuboid
 		GL11.glPopMatrix();
 	}
 
-	public void drawExtras(CuboidManager manager)
+	public void drawExtras(ElementManager manager)
 	{
 		if (manager.getSelectedCuboid() == this)
 		{
@@ -398,8 +397,8 @@ public class Cuboid
 		return "x";
 	}
 
-	public Cuboid copy()
+	public Element copy()
 	{
-		return new Cuboid(getWidth(), getHeight(), getDepth());
+		return new Element(getWidth(), getHeight(), getDepth());
 	}
 }

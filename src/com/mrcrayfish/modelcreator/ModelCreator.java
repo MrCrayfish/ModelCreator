@@ -161,6 +161,8 @@ public class ModelCreator extends JFrame
 			}
 		});
 		gameThread.start();
+		
+		WelcomeDialog.show(this);
 	}
 
 	public void initComponents()

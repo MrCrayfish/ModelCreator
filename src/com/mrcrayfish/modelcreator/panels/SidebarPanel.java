@@ -263,4 +263,10 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		return ambientOcc;
 	}
+
+	@Override
+	public void clearElements()
+	{
+		model.clear();
+	}
 }

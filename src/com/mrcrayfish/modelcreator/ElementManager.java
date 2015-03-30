@@ -13,6 +13,8 @@ public interface ElementManager
 	public Element getCuboid(int index);
 
 	public int getCuboidCount();
+	
+	public void clearElements();
 
 	public void updateName();
 

@@ -48,6 +48,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
@@ -85,7 +86,7 @@ public class ModelCreator extends JFrame
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
-	
+
 	private TrueTypeFont font;
 	private TrueTypeFont fontBebasNeue;
 
@@ -161,7 +162,7 @@ public class ModelCreator extends JFrame
 			}
 		});
 		gameThread.start();
-		
+
 		WelcomeDialog.show(this);
 	}
 
@@ -172,12 +173,17 @@ public class ModelCreator extends JFrame
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
 
-		JMenuItem menuItemExit = new JMenuItem("Exit");
-		menuItemExit.setMnemonic(KeyEvent.VK_E);
-		menuItemExit.setToolTipText("Exit application");
-		menuItemExit.addActionListener(e ->
+		JMenuItem menuItemNew = new JMenuItem("New");
+		menuItemNew.setMnemonic(KeyEvent.VK_N);
+		menuItemNew.setToolTipText("New Model");
+		menuItemNew.addActionListener(a ->
 		{
-			System.exit(0);
+			int returnVal = JOptionPane.showConfirmDialog(this, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
+			if(returnVal == JOptionPane.YES_OPTION)
+			{
+				manager.clearElements();
+				manager.updateValues();
+			}
 		});
 
 		JMenuItem menuItemExport = new JMenuItem("Export");
@@ -196,6 +202,15 @@ public class ModelCreator extends JFrame
 			}
 		});
 
+		JMenuItem menuItemExit = new JMenuItem("Exit");
+		menuItemExit.setMnemonic(KeyEvent.VK_E);
+		menuItemExit.setToolTipText("Exit application");
+		menuItemExit.addActionListener(e ->
+		{
+			System.exit(0);
+		});
+
+		file.add(menuItemNew);
 		file.add(menuItemExport);
 		file.add(menuItemExit);
 		menuBar.add(file);

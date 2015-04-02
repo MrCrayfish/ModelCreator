@@ -39,12 +39,14 @@ public class TextureManager
 	public static Texture cobblestone;
 	public static Texture dirt;
 
+	public static File lastLocation = null;
+
 	public static void init()
 	{
 		try
 		{
-			loadInternalTexture("brick.png");
-			loadInternalTexture("dirt.png");
+			loadInternalTexture("brick");
+			loadInternalTexture("dirt");
 		}
 		catch (IOException e)
 		{
@@ -54,14 +56,15 @@ public class TextureManager
 
 	private static boolean loadInternalTexture(String file) throws IOException
 	{
-		Texture texture = TextureLoader.getTexture("PNG", TextureManager.class.getClassLoader().getResourceAsStream(file));
-		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon(file)));
+		Texture texture = TextureLoader.getTexture("PNG", TextureManager.class.getClassLoader().getResourceAsStream(file + ".png"));
+		ImageIcon image = upscale(new ImageIcon(TextureManager.class.getClassLoader().getResource(file + ".png")));
+		textureCache.add(new TextureEntry(file, texture, image));
 		return true;
 	}
 
-	public static boolean loadExternalTexture(String file) throws IOException
+	public static boolean loadExternalTexture(String path, String file) throws IOException
 	{
-		FileInputStream is = new FileInputStream(new File(file));
+		FileInputStream is = new FileInputStream(new File(path + "/" + file));
 		Texture texture = TextureLoader.getTexture("PNG", is);
 		is.close();
 		if (texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
@@ -69,13 +72,9 @@ public class TextureManager
 			texture.release();
 			return false;
 		}
-		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon(file)));
+		ImageIcon image = upscale(new ImageIcon(path + "/" + file));
+		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, image));
 		return true;
-	}
-
-	private static ImageIcon loadIcon(String file)
-	{
-		return upscale(new ImageIcon(file));
 	}
 
 	public static ImageIcon upscale(ImageIcon source)
@@ -147,11 +146,14 @@ public class TextureManager
 		btnImport.addActionListener(a ->
 		{
 			JFileChooser chooser = new JFileChooser();
+			if (lastLocation != null)
+				chooser.setCurrentDirectory(lastLocation);
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
 			chooser.setFileFilter(filter);
-			int returnVal = chooser.showOpenDialog((SidebarPanel) manager);
+			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
+				lastLocation = chooser.getSelectedFile().getParentFile();
 				try
 				{
 					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), new TextureCallback()
@@ -161,7 +163,7 @@ public class TextureManager
 						{
 							if (success)
 							{
-								model.insertElementAt(texture, 0);
+								model.insertElementAt(texture.replace(".png", ""), 0);
 							}
 							else
 							{

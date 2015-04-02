@@ -61,7 +61,7 @@ public class WelcomeDialog
 		JButton btnDonate = new JButton("Donate");
 		btnDonate.addActionListener(a ->
 		{
-			openUrl("");
+			openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2");
 		});
 		btnGrid.add(btnDonate);
 
@@ -94,7 +94,7 @@ public class WelcomeDialog
 		// container.add(header, BorderLayout.NORTH);
 		container.add(btnGrid, BorderLayout.SOUTH);
 
-		JDialog dialog = new JDialog(parent, "Welcome", true);
+		JDialog dialog = new JDialog(parent, "Welcome", false);
 		// dialog.setLayout(new BorderLayout());
 		dialog.setResizable(false);
 		dialog.setPreferredSize(new Dimension(500, 290));
@@ -102,6 +102,7 @@ public class WelcomeDialog
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
+		dialog.requestFocusInWindow();
 	}
 	
 	private static void openUrl(String url)

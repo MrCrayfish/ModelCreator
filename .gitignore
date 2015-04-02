@@ -48,3 +48,4 @@ Temporary Items
 *.classpath
 .classpath
 test.json
+/bin1/

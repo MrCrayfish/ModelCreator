@@ -93,7 +93,7 @@ public class ModelCreator extends JFrame
 	public ModelCreator(String title)
 	{
 		super(title);
-
+		
 		setPreferredSize(new Dimension(1200, 840));
 		setMinimumSize(new Dimension(1200, 840));
 		setLayout(new BorderLayout(10, 0));
@@ -135,7 +135,7 @@ public class ModelCreator extends JFrame
 		setVisible(true);
 		setLocationRelativeTo(null);
 
-		Thread gameThread = new Thread(new Runnable()
+		Thread loopThread = new Thread(new Runnable()
 		{
 			@Override
 			public void run()
@@ -145,6 +145,8 @@ public class ModelCreator extends JFrame
 				try
 				{
 					Display.create();
+					
+					WelcomeDialog.show(ModelCreator.this);
 
 					initFonts();
 					TextureManager.init();
@@ -161,9 +163,7 @@ public class ModelCreator extends JFrame
 				}
 			}
 		});
-		gameThread.start();
-
-		WelcomeDialog.show(this);
+		loopThread.start();
 	}
 
 	public void initComponents()
@@ -179,7 +179,7 @@ public class ModelCreator extends JFrame
 		menuItemNew.addActionListener(a ->
 		{
 			int returnVal = JOptionPane.showConfirmDialog(this, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
-			if(returnVal == JOptionPane.YES_OPTION)
+			if (returnVal == JOptionPane.YES_OPTION)
 			{
 				manager.clearElements();
 				manager.updateValues();
@@ -264,7 +264,7 @@ public class ModelCreator extends JFrame
 
 		Dimension newDim;
 
-		while (!Display.isCloseRequested() && !closeRequested)
+		while (!Display.isCloseRequested() && !getCloseRequested())
 		{
 			synchronized (this)
 			{
@@ -337,7 +337,7 @@ public class ModelCreator extends JFrame
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-			GL11.glScaled(0.02, 0.02, 0.02);
+			GL11.glScaled(0.032, 0.032, 0.032);
 			GL11.glRotated(90, 1, 0, 0);
 			fontBebasNeue.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.55F));
 
@@ -470,5 +470,10 @@ public class ModelCreator extends JFrame
 			glEnd();
 		}
 		glPopMatrix();
+	}
+
+	public synchronized boolean getCloseRequested()
+	{
+		return closeRequested;
 	}
 }

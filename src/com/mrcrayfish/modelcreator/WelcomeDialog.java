@@ -107,7 +107,7 @@ public class WelcomeDialog
 	private static void openUrl(String url)
 	{
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-		if (desktop != null)
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE))
 		{
 			try
 			{

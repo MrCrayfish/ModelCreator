@@ -10,8 +10,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.Face;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
@@ -118,11 +118,12 @@ public class TexturePanel extends JPanel implements TextureCallback
 	}
 
 	@Override
-	public void callback(String texture)
+	public void callback(boolean success, String texture)
 	{
-		if (manager.getSelectedCuboid() != null)
-		{
-			manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
-		}
+		if (success)
+			if (manager.getSelectedCuboid() != null)
+			{
+				manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
+			}
 	}
 }

@@ -6,10 +6,10 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.ElementExtraPanel;
+import com.mrcrayfish.modelcreator.panels.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.PositionPanel;
 import com.mrcrayfish.modelcreator.panels.SizePanel;
 

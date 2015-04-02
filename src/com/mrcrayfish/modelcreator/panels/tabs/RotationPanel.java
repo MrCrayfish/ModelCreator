@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.panels.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
 
 public class RotationPanel extends JPanel implements IValueUpdater

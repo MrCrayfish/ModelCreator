@@ -1,33 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glColor3d;
-import static org.lwjgl.opengl.GL11.glColor3f;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glLineWidth;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotated;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-import static org.lwjgl.opengl.GL11.glVertex2i;
-import static org.lwjgl.opengl.GL11.glVertex3i;
-import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -62,6 +35,9 @@ import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 
+import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
@@ -94,7 +70,7 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 		
-		setPreferredSize(new Dimension(1200, 840));
+		setPreferredSize(new Dimension(1493, 840));
 		setMinimumSize(new Dimension(1200, 840));
 		setLayout(new BorderLayout(10, 0));
 
@@ -249,7 +225,7 @@ public class ModelCreator extends JFrame
 		try
 		{
 			InputStream inputStream = ResourceLoader.getResourceAsStream("res/bebas_neue.otf");
-			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
+			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(50f);
 			fontBebasNeue = new TrueTypeFont(customFont, false);
 		}
 		catch (Exception e)
@@ -337,9 +313,9 @@ public class ModelCreator extends JFrame
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-			GL11.glScaled(0.032, 0.032, 0.032);
+			GL11.glScaled(0.018, 0.018, 0.018);
 			GL11.glRotated(90, 1, 0, 0);
-			fontBebasNeue.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.55F));
+			fontBebasNeue.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.6F));
 
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glShadeModel(GL11.GL_SMOOTH);

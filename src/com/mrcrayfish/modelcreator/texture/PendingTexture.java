@@ -30,11 +30,10 @@ public class PendingTexture
 			{
 				FileInputStream is = new FileInputStream(new File(name));
 				texture = TextureLoader.getTexture("PNG", is);
-				result = TextureManager.loadTexture(Paths.get(name).getParent().toString(), fileName);
+				result = TextureManager.loadExternalTexture(Paths.get(name).getParent().toString() + "/" + fileName);
 				is.close();
 			}
-			if (result)
-				callback.callback(fileName.replace(".png", ""));
+			callback.callback(result, fileName.replace(".png", ""));
 		}
 		catch (IOException e)
 		{

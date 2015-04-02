@@ -11,10 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.Face;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
 
 public class UVPanel extends JPanel implements IValueUpdater
 {

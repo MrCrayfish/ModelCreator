@@ -21,9 +21,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
@@ -167,7 +167,6 @@ public class SidebarPanel extends JPanel implements ElementManager
 				name.setText(cube.toString());
 			}
 		});
-		model.addElement(new Element(8, 8, 8));
 
 		scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(190, 170));

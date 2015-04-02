@@ -1,10 +1,12 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.element;
 
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
+
+import com.mrcrayfish.modelcreator.util.FaceDimension;
 
 public class Element
 {

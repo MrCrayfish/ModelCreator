@@ -1,4 +1,4 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Desktop;

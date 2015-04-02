@@ -29,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
-import com.mrcrayfish.modelcreator.ElementManager;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 
 public class TextureManager
@@ -43,8 +43,8 @@ public class TextureManager
 	{
 		try
 		{
-			loadTexture("brick");
-			loadTexture("dirt");
+			loadInternalTexture("brick.png");
+			loadInternalTexture("dirt.png");
 		}
 		catch (IOException e)
 		{
@@ -52,25 +52,30 @@ public class TextureManager
 		}
 	}
 
-	private static void loadTexture(String name) throws IOException
+	private static boolean loadInternalTexture(String file) throws IOException
 	{
-		loadTexture("res", name + ".png");
+		Texture texture = TextureLoader.getTexture("PNG", TextureManager.class.getClassLoader().getResourceAsStream(file));
+		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon("res/" + file)));
+		return true;
 	}
 
-	public static boolean loadTexture(String path, String name) throws IOException
+	public static boolean loadExternalTexture(String file) throws IOException
 	{
-		System.out.println(path + " " + name);
-		FileInputStream is = new FileInputStream(new File(path + "/" + name));
+		FileInputStream is = new FileInputStream(new File(file));
 		Texture texture = TextureLoader.getTexture("PNG", is);
+		is.close();
 		if (texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
 		{
 			texture.release();
-			JOptionPane.showMessageDialog(null, "Texture must be a multiple of 16");
 			return false;
 		}
-		ImageIcon icon = upscale(new ImageIcon(path + "/" + name));
-		textureCache.add(new TextureEntry(name.replace(".png", ""), texture, icon));
+		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon(file)));
 		return true;
+	}
+
+	private static ImageIcon loadIcon(String file)
+	{
+		return upscale(new ImageIcon(file));
 	}
 
 	public static ImageIcon upscale(ImageIcon source)
@@ -152,10 +157,21 @@ public class TextureManager
 					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), new TextureCallback()
 					{
 						@Override
-						public void callback(String texture)
+						public void callback(boolean success, String texture)
 						{
-							JOptionPane.showMessageDialog(null, "Texture successfully loaded");
-							model.insertElementAt(texture, 0);
+							if (success)
+							{
+								model.insertElementAt(texture, 0);
+							}
+							else
+							{
+								JOptionPane error = new JOptionPane();
+								error.setMessage("Width and height must be a multiple of 16.");
+								JDialog dialog = error.createDialog(btnImport, "Texture Error");
+								dialog.setLocationRelativeTo(null);
+								dialog.setModal(false);
+								dialog.setVisible(true);
+							}
 						}
 					}));
 				}

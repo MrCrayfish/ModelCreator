@@ -1,4 +1,4 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.util;
 
 public class FaceDimension
 {

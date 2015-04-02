@@ -1,4 +1,4 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.element;
 
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -12,7 +12,7 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Face
 {
-	private String texture = "brick";
+	private String texture = null;
 	private String textureLocation = "blocks/";
 	private double textureX = 0;
 	private double textureY = 0;

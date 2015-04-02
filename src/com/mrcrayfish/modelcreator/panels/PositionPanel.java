@@ -11,9 +11,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 
 public class PositionPanel extends JPanel implements IValueUpdater
 {

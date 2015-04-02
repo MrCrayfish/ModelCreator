@@ -7,9 +7,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 
 public class ElementExtraPanel extends JPanel implements IValueUpdater
 {

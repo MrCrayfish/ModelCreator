@@ -4,9 +4,8 @@ import java.awt.Component;
 
 import javax.swing.JTabbedPane;
 
-import com.mrcrayfish.modelcreator.Element;
-import com.mrcrayfish.modelcreator.ElementManager;
-import com.mrcrayfish.modelcreator.IValueUpdater;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 
 public class CuboidTabbedPane extends JTabbedPane
 {

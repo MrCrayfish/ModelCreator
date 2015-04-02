@@ -67,8 +67,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 		btnContainer.setPreferredSize(new Dimension(190, 30));
 		try
 		{
-			btnAdd.setIcon(new ImageIcon("res/add.png"));
-			btnAdd.setRolloverIcon(new ImageIcon("res/add_rollover.png"));
+			btnAdd.setIcon(new ImageIcon(getClass().getClassLoader().getResource("add.png")));
+			btnAdd.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("add_rollover.png")));
 		}
 		catch (Exception e)
 		{
@@ -85,8 +85,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 		try
 		{
-			btnRemove.setIcon(new ImageIcon("res/remove.png"));
-			btnRemove.setRolloverIcon(new ImageIcon("res/remove_rollover.png"));
+			btnRemove.setIcon(new ImageIcon(getClass().getClassLoader().getResource("remove.png")));
+			btnRemove.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("remove_rollover.png")));
 		}
 		catch (Exception e)
 		{
@@ -110,8 +110,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 		try
 		{
-			btnDuplicate.setIcon(new ImageIcon("res/duplicate.png"));
-			btnDuplicate.setRolloverIcon(new ImageIcon("res/duplicate_rollover.png"));
+			btnDuplicate.setIcon(new ImageIcon(getClass().getClassLoader().getResource("duplicate.png")));
+			btnDuplicate.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("duplicate_rollover.png")));
 		}
 		catch (Exception e)
 		{

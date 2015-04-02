@@ -224,7 +224,7 @@ public class ModelCreator extends JFrame
 
 		try
 		{
-			InputStream inputStream = ResourceLoader.getResourceAsStream("res/bebas_neue.otf");
+			InputStream inputStream = ModelCreator.class.getClassLoader().getResourceAsStream("bebas_neue.otf");
 			Font customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(50f);
 			fontBebasNeue = new TrueTypeFont(customFont, false);
 		}

@@ -55,7 +55,7 @@ public class TextureManager
 	private static boolean loadInternalTexture(String file) throws IOException
 	{
 		Texture texture = TextureLoader.getTexture("PNG", TextureManager.class.getClassLoader().getResourceAsStream(file));
-		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon("res/" + file)));
+		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, loadIcon(file)));
 		return true;
 	}
 

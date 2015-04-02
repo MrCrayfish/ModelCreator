@@ -27,7 +27,7 @@ public class WelcomeDialog
 {
 	public static void show(JFrame parent)
 	{
-		InputStream inputStream = ResourceLoader.getResourceAsStream("res/bebas_neue.otf");
+		InputStream inputStream = WelcomeDialog.class.getClassLoader().getResourceAsStream("bebas_neue.otf");
 		Font customFont = null;
 		try
 		{

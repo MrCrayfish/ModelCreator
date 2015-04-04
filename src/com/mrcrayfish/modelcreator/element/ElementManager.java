@@ -23,4 +23,6 @@ public interface ElementManager
 	public void addPendingTexture(PendingTexture texture);
 	
 	public boolean getAmbientOcc();
+	
+	public void addElement(Element e);
 }

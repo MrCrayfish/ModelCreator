@@ -177,6 +177,22 @@ public class ModelCreator extends JFrame
 				exporter.export();
 			}
 		});
+		
+		JMenuItem menuItemImport = new JMenuItem("Import");
+		menuItemImport.setMnemonic(KeyEvent.VK_I);
+		menuItemImport.setToolTipText("Import model from JSON");
+		menuItemImport.addActionListener(e ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Input File");
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				Importer importer = new Importer(manager, chooser.getSelectedFile().getAbsolutePath());
+				importer.importFromJSON();
+			}
+		});
 
 		JMenuItem menuItemExit = new JMenuItem("Exit");
 		menuItemExit.setMnemonic(KeyEvent.VK_E);
@@ -188,6 +204,7 @@ public class ModelCreator extends JFrame
 
 		file.add(menuItemNew);
 		file.add(menuItemExport);
+		file.add(menuItemImport);
 		file.add(menuItemExit);
 		menuBar.add(file);
 		setJMenuBar(menuBar);

@@ -273,6 +273,16 @@ public class Face
 	{
 		return textureY + cuboid.getFaceDimension(side).getHeight();
 	}
+	
+	public void setStartU(double u)
+	{
+		textureX = u;
+	}
+
+	public void setStartV(double v)
+	{
+		textureY = v;
+	}
 
 	public String getTextureName()
 	{
@@ -347,6 +357,26 @@ public class Face
 			return "down";
 		}
 		return null;
+	}
+	
+	public static int getFaceSide(String name)
+	{
+		switch (name)
+		{
+		case "north":
+			return 0;
+		case "east":
+			return 1;
+		case "south":
+			return 2;
+		case "west":
+			return 3;
+		case "up":
+			return 4;
+		case "down":
+			return 5;
+		}
+		return -1;
 	}
 
 	public double getRotation()

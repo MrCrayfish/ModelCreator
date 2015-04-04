@@ -268,4 +268,10 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		model.clear();
 	}
+
+	@Override
+	public void addElement(Element e)
+	{
+		model.addElement(e);
+	}
 }

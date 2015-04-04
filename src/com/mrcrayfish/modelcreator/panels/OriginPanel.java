@@ -87,7 +87,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginX(1.0F);
 				}
-				xOriginField.setText(cube.getOriginX() + "");
+				xOriginField.setText(df.format(cube.getOriginX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -106,7 +106,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginY(1.0F);
 				}
-				yOriginField.setText(cube.getOriginY() + "");
+				yOriginField.setText(df.format(cube.getOriginY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -125,7 +125,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginZ(1.0F);
 				}
-				zOriginField.setText(cube.getOriginZ() + "");
+				zOriginField.setText(df.format(cube.getOriginZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -144,7 +144,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginX(-1.0F);
 				}
-				xOriginField.setText(cube.getOriginX() + "");
+				xOriginField.setText(df.format(cube.getOriginX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -163,7 +163,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginY(-1.0F);
 				}
-				yOriginField.setText(cube.getOriginY() + "");
+				yOriginField.setText(df.format(cube.getOriginY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -182,7 +182,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginZ(-1.0F);
 				}
-				zOriginField.setText(cube.getOriginZ() + "");
+				zOriginField.setText(df.format(cube.getOriginZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

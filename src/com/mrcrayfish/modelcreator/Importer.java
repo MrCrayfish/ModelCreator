@@ -17,6 +17,9 @@ import com.google.gson.JsonParser;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureCallback;
+import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Importer
 {
@@ -68,15 +71,20 @@ public class Importer
 		if(read.isJsonObject()) {
 			JsonObject obj = read.getAsJsonObject();
 			
-			//TODO read textures
 			if(obj.has("textures") && obj.get("textures").isJsonObject()) {
 				JsonObject textures = obj.get("textures").getAsJsonObject();
 				
 				for(Entry<String, JsonElement> entry : textures.entrySet()) {
 					if(entry.getValue().isJsonPrimitive()) {
 						String texture = entry.getValue().getAsString();
-						
 						textureMap.put(entry.getKey(), texture);
+						
+						if(new File(ModelCreator.texturePath+File.separator+texture+".png").exists()) {
+							ModelCreator.instance.addPendingTexure(new PendingTexture(ModelCreator.texturePath+File.separator+texture+".png", new TextureCallback(){
+								@Override
+								public void callback(boolean success, String texture) {}
+							}));
+						}
 					}
 				}
 			}
@@ -195,9 +203,6 @@ public class Importer
 					String tloc = textureMap.get(loc);
 					String location = tloc.substring(0, tloc.lastIndexOf('/')+1);
 					String tname = tloc.replace(location, "");
-					
-					System.out.println(location);
-					System.out.println(tname);
 					
 					face.setTextureLocation(location);
 					face.setTexture(tname);

@@ -45,6 +45,10 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 public class ModelCreator extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+	
+	//TODO remove static instance
+	public static ModelCreator instance;
+	public static String texturePath = ".";
 
 	// Canvas Variables
 	private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
@@ -69,6 +73,8 @@ public class ModelCreator extends JFrame
 	public ModelCreator(String title)
 	{
 		super(title);
+		
+		instance = this;
 		
 		setPreferredSize(new Dimension(1493, 840));
 		setMinimumSize(new Dimension(1200, 840));
@@ -177,6 +183,14 @@ public class ModelCreator extends JFrame
 				exporter.export();
 			}
 		});
+
+		JMenuItem menuItemExit = new JMenuItem("Exit");
+		menuItemExit.setMnemonic(KeyEvent.VK_E);
+		menuItemExit.setToolTipText("Exit application");
+		menuItemExit.addActionListener(e ->
+		{
+			System.exit(0);
+		});
 		
 		JMenuItem menuItemImport = new JMenuItem("Import");
 		menuItemImport.setMnemonic(KeyEvent.VK_I);
@@ -193,18 +207,26 @@ public class ModelCreator extends JFrame
 				importer.importFromJSON();
 			}
 		});
-
-		JMenuItem menuItemExit = new JMenuItem("Exit");
-		menuItemExit.setMnemonic(KeyEvent.VK_E);
-		menuItemExit.setToolTipText("Exit application");
-		menuItemExit.addActionListener(e ->
+		
+		JMenuItem menuItemTexturePath = new JMenuItem("Set Texture path");
+		menuItemTexturePath.setMnemonic(KeyEvent.VK_S);
+		menuItemTexturePath.setToolTipText("Set the base path from where to look for textures");
+		menuItemTexturePath.addActionListener(e ->
 		{
-			System.exit(0);
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Texture path");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				texturePath = chooser.getSelectedFile().getAbsolutePath();
+			}
 		});
 
 		file.add(menuItemNew);
 		file.add(menuItemExport);
 		file.add(menuItemImport);
+		file.add(menuItemTexturePath);
 		file.add(menuItemExit);
 		menuBar.add(file);
 		setJMenuBar(menuBar);
@@ -463,6 +485,13 @@ public class ModelCreator extends JFrame
 			glEnd();
 		}
 		glPopMatrix();
+	}
+	
+	public void addPendingTexure(PendingTexture tex) {
+		synchronized (this)
+		{
+			pendingTextures.add(tex);
+		}
 	}
 
 	public synchronized boolean getCloseRequested()

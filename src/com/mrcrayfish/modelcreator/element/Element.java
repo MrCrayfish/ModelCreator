@@ -154,6 +154,9 @@ public class Element
 			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
 			
+			//TODO - this is quite a hacky way of fixing the z coordinate, but it is the best I could come up
+			GL11.glTranslated(0, 0, -16+getStartZ()*2+getDepth());
+			
 			// North
 			if (faces[0].isEnabled())
 			{

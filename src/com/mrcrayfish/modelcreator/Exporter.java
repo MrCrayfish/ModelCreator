@@ -173,7 +173,7 @@ public class Exporter
 			if(face.isEnabled()) {
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-				writer.write(", \"uv\": [ " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + ", " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + face.getEndU()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + face.getEndV()) + " ]");
+				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
 				if (face.getRotation() > 0)
 					writer.write(", \"rotation\": " + (int) face.getRotation());
 				if (face.isCullfaced())

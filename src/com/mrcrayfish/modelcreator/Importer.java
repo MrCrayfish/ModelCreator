@@ -200,7 +200,8 @@ public class Importer
 				
 				face.setStartU(uStart);
 				face.setStartV(vStart);
-				//TODO - enable changing of uv end? Right now it just assumes it to be the width/height of the face
+				face.setEndU(uEnd);
+				face.setEndV(vEnd);
 			}
 			
 			if(obj.has("texture") && obj.get("texture").isJsonPrimitive()) {

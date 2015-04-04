@@ -170,18 +170,20 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
-			writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-			writer.write(", \"uv\": [ " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + ", " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + face.getEndU()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + face.getEndV()) + " ]");
-			if (face.getRotation() > 0)
-				writer.write(", \"rotation\": " + (int) face.getRotation());
-			if (face.isCullfaced())
-				writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
-			writer.write(" }");
-			if (face.getSide() != cuboid.getLastValidFace())
-			{
-				writer.write(",");
-				writer.newLine();
+			if(face.isEnabled()) {
+				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
+				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
+				writer.write(", \"uv\": [ " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + ", " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + face.getEndU()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + face.getEndV()) + " ]");
+				if (face.getRotation() > 0)
+					writer.write(", \"rotation\": " + (int) face.getRotation());
+				if (face.isCullfaced())
+					writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
+				writer.write(" }");
+				if (face.getSide() != cuboid.getLastValidFace())
+				{
+					writer.write(",");
+					writer.newLine();
+				}
 			}
 		}
 		writer.newLine();

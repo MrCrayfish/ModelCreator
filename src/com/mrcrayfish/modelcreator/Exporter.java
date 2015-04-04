@@ -141,9 +141,9 @@ public class Exporter
 
 	private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + (16.0 - (cuboid.getStartZ() + cuboid.getDepth())) + " ], ");
+		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + cuboid.getStartZ() + " ], ");
 		writer.newLine();
-		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (16.0 - cuboid.getStartZ()) + " ], ");
+		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
 	}
 
 	private void writeShade(BufferedWriter writer, Element cuboid) throws IOException

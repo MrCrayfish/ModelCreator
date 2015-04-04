@@ -130,7 +130,7 @@ public class Exporter
 			writeShade(writer, cuboid);
 			writer.newLine();
 		}
-		if (cuboid.getRotation() > 0)
+		if (cuboid.getRotation() != 0)
 		{
 			writeRotation(writer, cuboid);
 			writer.newLine();

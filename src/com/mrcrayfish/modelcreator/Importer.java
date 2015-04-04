@@ -1,13 +1,14 @@
 package com.mrcrayfish.modelcreator;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,7 +20,7 @@ import com.mrcrayfish.modelcreator.element.Face;
 
 public class Importer
 {
-	private List<String> textureList = new ArrayList<String>();
+	private Map<String, String> textureMap = new HashMap<String, String>();
 	private String[] faceNames = {"north","east","south","west","up","down"};
 
 	// Input File
@@ -68,6 +69,17 @@ public class Importer
 			JsonObject obj = read.getAsJsonObject();
 			
 			//TODO read textures
+			if(obj.has("textures") && obj.get("textures").isJsonObject()) {
+				JsonObject textures = obj.get("textures").getAsJsonObject();
+				
+				for(Entry<String, JsonElement> entry : textures.entrySet()) {
+					if(entry.getValue().isJsonPrimitive()) {
+						String texture = entry.getValue().getAsString();
+						
+						textureMap.put(entry.getKey(), texture);
+					}
+				}
+			}
 			
 			if(obj.has("elements") && obj.get("elements").isJsonArray()) {
 				JsonArray elements = obj.get("elements").getAsJsonArray();
@@ -162,7 +174,7 @@ public class Importer
 		if(face!=null) {
 			face.setEnabled(true);
 			
-			//TODO texture,shade,....
+			//TODO texture,shade,cullface,....
 			if(obj.has("uv") && obj.get("uv").isJsonArray()) {
 				JsonArray uv = obj.get("uv").getAsJsonArray();
 				
@@ -174,6 +186,22 @@ public class Importer
 				face.setStartU(uStart);
 				face.setStartV(vStart);
 				//TODO - enable changing of uv end? Right now it just assumes it to be the width/height of the face
+			}
+			
+			if(obj.has("texture") && obj.get("texture").isJsonPrimitive()) {
+				String loc = obj.get("texture").getAsString().replace("#", "");
+				
+				if(textureMap.containsKey(loc)) {
+					String tloc = textureMap.get(loc);
+					String location = tloc.substring(0, tloc.lastIndexOf('/')+1);
+					String tname = tloc.replace(location, "");
+					
+					System.out.println(location);
+					System.out.println(tname);
+					
+					face.setTextureLocation(location);
+					face.setTexture(tname);
+				}
 			}
 		}
 	}

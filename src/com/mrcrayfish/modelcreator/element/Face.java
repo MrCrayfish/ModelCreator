@@ -238,9 +238,11 @@ public class Face
 		TextureImpl.bindNone();
 		if (texture != null)
 		{
-			GL11.glColor3f(1.0F, 1.0F, 1.0F);
-			TextureManager.getTexture(texture).bind();
-			binded = true;
+			if(TextureManager.getTexture(texture)!=null) {
+				GL11.glColor3f(1.0F, 1.0F, 1.0F);
+				TextureManager.getTexture(texture).bind();
+				binded = true;
+			}
 		}
 	}
 

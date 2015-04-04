@@ -24,5 +24,7 @@ public interface ElementManager
 	
 	public boolean getAmbientOcc();
 	
+	public void setAmbientOcc(boolean occ);
+	
 	public void addElement(Element e);
 }

@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,7 +17,6 @@ import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Importer
 {
@@ -36,7 +33,6 @@ public class Importer
 	{
 		this.manager = manager;
 		this.inputPath = outputPath;
-		//compileTextureList();
 	}
 
 	public void importFromJSON()
@@ -66,11 +62,11 @@ public class Importer
 		
 		JsonParser parser = new JsonParser();
 		JsonElement read = parser.parse(reader);
-		System.out.println(read);
 		
 		if(read.isJsonObject()) {
 			JsonObject obj = read.getAsJsonObject();
 			
+			//load textures
 			if(obj.has("textures") && obj.get("textures").isJsonObject()) {
 				JsonObject textures = obj.get("textures").getAsJsonObject();
 				
@@ -80,7 +76,7 @@ public class Importer
 						textureMap.put(entry.getKey(), texture);
 						
 						if(new File(ModelCreator.texturePath+File.separator+texture+".png").exists()) {
-							ModelCreator.instance.addPendingTexure(new PendingTexture(ModelCreator.texturePath+File.separator+texture+".png", new TextureCallback(){
+							manager.addPendingTexture(new PendingTexture(ModelCreator.texturePath+File.separator+texture+".png", new TextureCallback(){
 								@Override
 								public void callback(boolean success, String texture) {}
 							}));
@@ -89,6 +85,7 @@ public class Importer
 				}
 			}
 			
+			//load elements
 			if(obj.has("elements") && obj.get("elements").isJsonArray()) {
 				JsonArray elements = obj.get("elements").getAsJsonArray();
 				
@@ -97,6 +94,11 @@ public class Importer
 						readElement(elements.get(i).getAsJsonObject(), manager);
 					}
 				}
+			}
+			
+			manager.setAmbientOcc(true);
+			if(obj.has("ambientocclusion") && obj.get("ambientocclusion").isJsonPrimitive()) {
+				manager.setAmbientOcc(obj.get("ambientocclusion").getAsBoolean());
 			}
 		}
 	}
@@ -153,6 +155,11 @@ public class Importer
 				}
 			}
 			
+			element.setShade(true);
+			if(obj.has("shade") && obj.get("shade").isJsonPrimitive()) {
+				element.setShade(obj.get("shade").getAsBoolean());
+			}
+			
 			for(Face face : element.getAllFaces()) {
 				face.setEnabled(false);
 			}
@@ -182,7 +189,7 @@ public class Importer
 		if(face!=null) {
 			face.setEnabled(true);
 			
-			//TODO texture,shade,cullface,....
+			//TODO cullface,rotation,tintindex
 			if(obj.has("uv") && obj.get("uv").isJsonArray()) {
 				JsonArray uv = obj.get("uv").getAsJsonArray();
 				
@@ -207,6 +214,10 @@ public class Importer
 					face.setTextureLocation(location);
 					face.setTexture(tname);
 				}
+			}
+			
+			if(obj.has("rotation") && obj.get("rotation").isJsonPrimitive()) {
+				face.setRotation(obj.get("rotation").getAsDouble());
 			}
 		}
 	}

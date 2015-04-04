@@ -262,6 +262,12 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		return ambientOcc;
 	}
+	
+	@Override
+	public void setAmbientOcc(boolean occ)
+	{
+		ambientOcc = occ;
+	}
 
 	@Override
 	public void clearElements()

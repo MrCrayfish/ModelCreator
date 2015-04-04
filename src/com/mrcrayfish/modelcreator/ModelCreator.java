@@ -47,7 +47,6 @@ public class ModelCreator extends JFrame
 	private static final long serialVersionUID = 1L;
 	
 	//TODO remove static instance
-	public static ModelCreator instance;
 	public static String texturePath = ".";
 
 	// Canvas Variables
@@ -73,8 +72,6 @@ public class ModelCreator extends JFrame
 	public ModelCreator(String title)
 	{
 		super(title);
-		
-		instance = this;
 		
 		setPreferredSize(new Dimension(1493, 840));
 		setMinimumSize(new Dimension(1200, 840));
@@ -485,13 +482,6 @@ public class ModelCreator extends JFrame
 			glEnd();
 		}
 		glPopMatrix();
-	}
-	
-	public void addPendingTexure(PendingTexture tex) {
-		synchronized (this)
-		{
-			pendingTextures.add(tex);
-		}
 	}
 
 	public synchronized boolean getCloseRequested()

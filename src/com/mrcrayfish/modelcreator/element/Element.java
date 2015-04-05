@@ -63,11 +63,15 @@ public class Element
 			faces[i].fitTexture(oldFace.shouldFitTexture());
 			faces[i].setTexture(oldFace.getTextureName());
 			faces[i].setTextureLocation(oldFace.getTextureLocation());
-			faces[i].addTextureX(oldFace.getStartU());
-			faces[i].addTextureY(oldFace.getStartV());
+			faces[i].setStartU(oldFace.getStartU());
+			faces[i].setStartV(oldFace.getStartV());
+			faces[i].setEndU(oldFace.getEndU());
+			faces[i].setEndV(oldFace.getEndV());
 			faces[i].setCullface(oldFace.isCullfaced());
 			faces[i].setEnabled(oldFace.isEnabled());
+			faces[i].setAutoUVEnabled(oldFace.isAutoUVEnabled());
 		}
+		updateUV();
 	}
 
 	public void initFaces()

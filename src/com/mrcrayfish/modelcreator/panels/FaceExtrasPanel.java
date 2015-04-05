@@ -21,6 +21,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	private JRadioButton boxCullFace;
 	private JRadioButton boxFill;
 	private JRadioButton boxEnabled;
+	private JRadioButton boxAutoUV;
 
 	public FaceExtrasPanel(ElementManager manager)
 	{
@@ -53,10 +54,18 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		{
 			manager.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
+		boxAutoUV = new JRadioButton("Auto UV");
+		boxAutoUV.setToolTipText("<html>Determines if uv end coordinates should be set based on element size<br>Default: On</html>");
+		boxAutoUV.addActionListener(e ->
+		{
+			manager.getSelectedCuboid().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
+			manager.getSelectedCuboid().getSelectedFace().updateUV();
+			manager.updateValues();
+		});
 		horizontalBox.add(boxCullFace);
 		horizontalBox.add(boxFill);
 		horizontalBox.add(boxEnabled);
-
+		horizontalBox.add(boxAutoUV);
 		
 	}
 
@@ -76,6 +85,8 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			boxFill.setSelected(cube.getSelectedFace().shouldFitTexture());
 			boxEnabled.setEnabled(true);
 			boxEnabled.setSelected(cube.getSelectedFace().isEnabled());
+			boxAutoUV.setEnabled(true);
+			boxAutoUV.setSelected(cube.getSelectedFace().isAutoUVEnabled());
 		}
 		else
 		{
@@ -85,6 +96,8 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			boxFill.setSelected(false);
 			boxEnabled.setEnabled(false);
 			boxEnabled.setSelected(false);
+			boxAutoUV.setEnabled(false);
+			boxAutoUV.setSelected(false);
 		}
 	}
 }

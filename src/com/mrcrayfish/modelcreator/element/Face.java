@@ -16,8 +16,8 @@ public class Face
 	private String textureLocation = "blocks/";
 	private double textureU = 0;
 	private double textureV = 0;
-	private double textureUEnd = 1;
-	private double textureVEnd = 1;
+	private double textureUEnd = 16;
+	private double textureVEnd = 16;
 	private boolean fitTexture = false;
 	private boolean binded = false;
 	private boolean cullface = false;

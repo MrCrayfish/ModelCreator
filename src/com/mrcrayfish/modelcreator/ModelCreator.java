@@ -45,6 +45,9 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 public class ModelCreator extends JFrame
 {
 	private static final long serialVersionUID = 1L;
+	
+	//TODO remove static instance
+	public static String texturePath = ".";
 
 	// Canvas Variables
 	private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
@@ -185,9 +188,42 @@ public class ModelCreator extends JFrame
 		{
 			System.exit(0);
 		});
+		
+		JMenuItem menuItemImport = new JMenuItem("Import");
+		menuItemImport.setMnemonic(KeyEvent.VK_I);
+		menuItemImport.setToolTipText("Import model from JSON");
+		menuItemImport.addActionListener(e ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Input File");
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				Importer importer = new Importer(manager, chooser.getSelectedFile().getAbsolutePath());
+				importer.importFromJSON();
+			}
+		});
+		
+		JMenuItem menuItemTexturePath = new JMenuItem("Set Texture path");
+		menuItemTexturePath.setMnemonic(KeyEvent.VK_S);
+		menuItemTexturePath.setToolTipText("Set the base path from where to look for textures");
+		menuItemTexturePath.addActionListener(e ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Texture path");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				texturePath = chooser.getSelectedFile().getAbsolutePath();
+			}
+		});
 
 		file.add(menuItemNew);
 		file.add(menuItemExport);
+		file.add(menuItemImport);
+		file.add(menuItemTexturePath);
 		file.add(menuItemExit);
 		menuBar.add(file);
 		setJMenuBar(menuBar);

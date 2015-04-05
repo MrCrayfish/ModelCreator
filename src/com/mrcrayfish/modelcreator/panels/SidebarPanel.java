@@ -262,10 +262,23 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		return ambientOcc;
 	}
+	
+	@Override
+	public void setAmbientOcc(boolean occ)
+	{
+		ambientOcc = occ;
+		boxAmbient.setSelected(occ);
+	}
 
 	@Override
 	public void clearElements()
 	{
 		model.clear();
+	}
+
+	@Override
+	public void addElement(Element e)
+	{
+		model.addElement(e);
 	}
 }

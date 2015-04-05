@@ -130,7 +130,7 @@ public class Exporter
 			writeShade(writer, cuboid);
 			writer.newLine();
 		}
-		if (cuboid.getRotation() > 0)
+		if (cuboid.getRotation() != 0)
 		{
 			writeRotation(writer, cuboid);
 			writer.newLine();
@@ -141,9 +141,9 @@ public class Exporter
 
 	private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + (16.0 - (cuboid.getStartZ() + cuboid.getDepth())) + " ], ");
+		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + cuboid.getStartZ() + " ], ");
 		writer.newLine();
-		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (16.0 - cuboid.getStartZ()) + " ], ");
+		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
 	}
 
 	private void writeShade(BufferedWriter writer, Element cuboid) throws IOException
@@ -173,7 +173,7 @@ public class Exporter
 			if(face.isEnabled()) {
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-				writer.write(", \"uv\": [ " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + ", " + ((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getWidth()) - face.getStartU()) + face.getEndU()) + ", " + (((16.0 - cuboid.getFaceDimension(face.getSide()).getHeight()) - face.getStartV()) + face.getEndV()) + " ]");
+				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
 				if (face.getRotation() > 0)
 					writer.write(", \"rotation\": " + (int) face.getRotation());
 				if (face.isCullfaced())

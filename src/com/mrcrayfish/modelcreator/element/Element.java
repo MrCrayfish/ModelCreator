@@ -153,7 +153,10 @@ public class Element
 			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
 			rotateAxis();
 			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
-
+			
+			//TODO - this is quite a hacky way of fixing the z coordinate, but it is the best I could come up
+			GL11.glTranslated(0, 0, -16+getStartZ()*2+getDepth());
+			
 			// North
 			if (faces[0].isEnabled())
 			{
@@ -257,6 +260,21 @@ public class Element
 	{
 		return startZ;
 	}
+	
+	public void setStartX(double amt)
+	{
+		this.startX = amt;
+	}
+
+	public void setStartY(double amt)
+	{
+		this.startY = amt;
+	}
+
+	public void setStartZ(double amt)
+	{
+		this.startZ = amt;
+	}
 
 	public double getWidth()
 	{
@@ -293,24 +311,24 @@ public class Element
 		return originX;
 	}
 
-	public void addOriginX(double amt)
-	{
-		this.originX += amt;
-	}
-
 	public double getOriginY()
 	{
 		return originY;
 	}
 
-	public void addOriginY(double amt)
-	{
-		this.originY += amt;
-	}
-
 	public double getOriginZ()
 	{
 		return originZ;
+	}
+	
+	public void addOriginX(double amt)
+	{
+		this.originX += amt;
+	}
+	
+	public void addOriginY(double amt)
+	{
+		this.originY += amt;
 	}
 
 	public void addOriginZ(double amt)
@@ -318,6 +336,21 @@ public class Element
 		this.originZ += amt;
 	}
 
+	public void setOriginX(double amt)
+	{
+		this.originX = amt;
+	}
+	
+	public void setOriginY(double amt)
+	{
+		this.originY = amt;
+	}
+
+	public void setOriginZ(double amt)
+	{
+		this.originZ = amt;
+	}
+	
 	public double getRotation()
 	{
 		return rotation;
@@ -397,6 +430,20 @@ public class Element
 			return "z";
 		}
 		return "x";
+	}
+	
+	public static int parseAxisString(String axis)
+	{
+		switch (axis)
+		{
+		case "x":
+			return 0;
+		case "y":
+			return 1;
+		case "z":
+			return 2;
+		}
+		return 0;
 	}
 
 	public Element copy()

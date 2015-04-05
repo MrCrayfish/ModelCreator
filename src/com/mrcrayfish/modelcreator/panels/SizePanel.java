@@ -87,7 +87,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(1.0F);
 				}
-				xSizeField.setText(df.format(cube.getWidth()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -106,7 +107,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(1.0F);
 				}
-				ySizeField.setText(df.format(cube.getHeight()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -125,7 +127,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(1.0F);
 				}
-				zSizeField.setText(df.format(cube.getDepth()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -144,7 +147,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(-1.0F);
 				}
-				xSizeField.setText(df.format(cube.getWidth()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -163,7 +167,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(-1.0F);
 				}
-				ySizeField.setText(df.format(cube.getHeight()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -182,7 +187,8 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(-1.0F);
 				}
-				zSizeField.setText(df.format(cube.getDepth()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

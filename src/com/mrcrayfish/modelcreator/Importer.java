@@ -179,6 +179,7 @@ public class Importer
 			for (Face face : element.getAllFaces())
 			{
 				face.setEnabled(false);
+				face.setAutoUVEnabled(false);
 			}
 
 			if (obj.has("faces") && obj.get("faces").isJsonObject())

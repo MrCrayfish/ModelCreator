@@ -22,6 +22,7 @@ public class Face
 	private boolean binded = false;
 	private boolean cullface = false;
 	private boolean enabled = true;
+	private boolean autoUV = true;
 	private double rotation;
 
 	private Element cuboid;
@@ -361,6 +362,23 @@ public class Face
 	public void setEnabled(boolean enabled)
 	{
 		this.enabled = enabled;
+	}
+	
+	public boolean isAutoUVEnabled()
+	{
+		return autoUV;
+	}
+
+	public void setAutoUVEnabled(boolean enabled)
+	{
+		this.autoUV = enabled;
+	}
+	
+	public void updateUV() {
+		if(autoUV) {
+			textureUEnd = textureU + cuboid.getFaceDimension(side).getWidth();
+			textureVEnd = textureV + cuboid.getFaceDimension(side).getHeight();
+		}
 	}
 
 	public static String getFaceName(int face)

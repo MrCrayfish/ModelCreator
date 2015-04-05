@@ -39,7 +39,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 	public UVPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(3, 3, 4, 4));
+		setLayout(new GridLayout(3, 4, 4, 4));
 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "UV"));
 		setMaximumSize(new Dimension(186, 124));
 		initComponents();
@@ -101,7 +101,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(1.0);
 				}
-				xStartField.setText(df.format(face.getStartU()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnPlusX.setSize(new Dimension(62, 30));
@@ -121,7 +122,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(1.0);
 				}
-				yStartField.setText(df.format(face.getStartV()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -141,7 +143,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(-1.0);
 				}
-				xStartField.setText(df.format(face.getStartU()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnNegX.setSize(new Dimension(62, 30));
@@ -161,7 +164,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(-1.0);
 				}
-				yStartField.setText(df.format(face.getStartV()));
+				cube.updateUV();
+				manager.updateValues();
 			}
 		});
 		btnNegY.setSize(new Dimension(62, 30));
@@ -181,7 +185,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureXEnd(1.0);
 				}
-				xEndField.setText(df.format(face.getEndU()));
+				face.setAutoUVEnabled(false);
+				manager.updateValues();
 			}
 		});
 		btnPlusXEnd.setSize(new Dimension(62, 30));
@@ -201,7 +206,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureYEnd(1.0);
 				}
-				yEndField.setText(df.format(face.getEndV()));
+				face.setAutoUVEnabled(false);
+				manager.updateValues();
 			}
 		});
 		btnPlusYEnd.setPreferredSize(new Dimension(62, 30));
@@ -221,7 +227,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureXEnd(-1.0);
 				}
-				xEndField.setText(df.format(face.getEndU()));
+				face.setAutoUVEnabled(false);
+				manager.updateValues();
 			}
 		});
 		btnNegXEnd.setSize(new Dimension(62, 30));
@@ -241,7 +248,8 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureYEnd(-1.0);
 				}
-				yEndField.setText(df.format(face.getEndV()));
+				face.setAutoUVEnabled(false);
+				manager.updateValues();
 			}
 		});
 		btnNegYEnd.setSize(new Dimension(62, 30));

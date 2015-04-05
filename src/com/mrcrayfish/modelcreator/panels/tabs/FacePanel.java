@@ -15,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
@@ -34,6 +35,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private JPanel menuPanel;
 	private JComboBox<String> menuList;
 	private UVPanel panelUV;
+	private JRadioButton boxAutoUV;
 	private JPanel sliderPanel;
 	private JSlider rotation;
 	private TexturePanel panelTexture;
@@ -88,6 +90,15 @@ public class FacePanel extends JPanel implements IValueUpdater
 		panelTexture = new TexturePanel(manager);
 		panelUV = new UVPanel(manager);
 		panelProperties = new FaceExtrasPanel(manager);
+		
+		boxAutoUV = new JRadioButton("Auto UV");
+		boxAutoUV.setToolTipText("<html>Determines if uv end coordinates should be set based on element size<br>Default: On</html>");
+		boxAutoUV.addActionListener(e ->
+		{
+			manager.getSelectedCuboid().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
+			manager.getSelectedCuboid().getSelectedFace().updateUV();
+			manager.updateValues();
+		});
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
 		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
@@ -153,6 +164,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelUV);
 		add(Box.createRigidArea(new Dimension(192, 5)));
+		add(boxAutoUV);
+		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(sliderPanel);
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelModId);
@@ -168,11 +181,14 @@ public class FacePanel extends JPanel implements IValueUpdater
 			menuList.setSelectedIndex(cube.getSelectedFaceIndex());
 			modidField.setEnabled(true);
 			modidField.setText(cube.getSelectedFace().getTextureLocation());
+			boxAutoUV.setEnabled(true);
+			boxAutoUV.setSelected(manager.getSelectedCuboid().getSelectedFace().isAutoUVEnabled());
 		}
 		else
 		{
 			modidField.setEnabled(false);
 			modidField.setText("");
+			boxAutoUV.setEnabled(false);
 		}
 		panelUV.updateValues(cube);
 		panelProperties.updateValues(cube);

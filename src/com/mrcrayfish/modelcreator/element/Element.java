@@ -401,6 +401,12 @@ public class Element
 	{
 		return name;
 	}
+	
+	public void updateUV() {
+		for(Face face : faces) {
+			face.updateUV();
+		}
+	}
 
 	public void rotateAxis()
 	{

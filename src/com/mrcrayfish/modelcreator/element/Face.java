@@ -16,8 +16,8 @@ public class Face
 	private String textureLocation = "blocks/";
 	private double textureU = 0;
 	private double textureV = 0;
-	private double textureUEnd = 1;
-	private double textureVEnd = 1;
+	private double textureUEnd = 16;
+	private double textureVEnd = 16;
 	private boolean fitTexture = false;
 	private boolean binded = false;
 	private boolean cullface = false;
@@ -43,20 +43,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
 			}
 			GL11.glEnd();
 
@@ -74,17 +74,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
 			}
 			GL11.glEnd();
 
@@ -102,17 +105,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
+
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
 			}
 			GL11.glEnd();
 
@@ -130,20 +136,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
 			}
 			GL11.glEnd();
 
@@ -161,20 +167,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ() + cuboid.getDepth());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY() + cuboid.getHeight(), cuboid.getStartZ());
 			}
 			GL11.glEnd();
 
@@ -192,20 +198,20 @@ public class Face
 			GL11.glBegin(GL11.GL_QUADS);
 			{
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureVEnd / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -(cuboid.getStartZ() + cuboid.getDepth()));
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureVEnd / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 1 : (textureUEnd / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX() + cuboid.getWidth(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
 
 				if (binded)
-					GL11.glTexCoord2d(fitTexture ? 1 : (textureU / 16), fitTexture ? 1 : (textureV / 16));
-				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), -cuboid.getStartZ());
+					GL11.glTexCoord2d(fitTexture ? 0 : (textureU / 16), fitTexture ? 0 : (textureV / 16));
+				GL11.glVertex3d(cuboid.getStartX(), cuboid.getStartY(), cuboid.getStartZ() + cuboid.getDepth());
 			}
 			GL11.glEnd();
 
@@ -241,7 +247,8 @@ public class Face
 		TextureImpl.bindNone();
 		if (texture != null)
 		{
-			if(TextureManager.getTexture(texture)!=null) {
+			if (TextureManager.getTexture(texture) != null)
+			{
 				GL11.glColor3f(1.0F, 1.0F, 1.0F);
 				TextureManager.getTexture(texture).bind();
 				binded = true;
@@ -258,7 +265,7 @@ public class Face
 	{
 		this.textureV += amt;
 	}
-	
+
 	public void addTextureXEnd(double amt)
 	{
 		this.textureUEnd += amt;
@@ -288,7 +295,7 @@ public class Face
 	{
 		return textureVEnd;
 	}
-	
+
 	public void setStartU(double u)
 	{
 		textureU = u;
@@ -298,7 +305,7 @@ public class Face
 	{
 		textureV = v;
 	}
-	
+
 	public void setEndU(double ue)
 	{
 		textureUEnd = ue;
@@ -363,7 +370,7 @@ public class Face
 	{
 		this.enabled = enabled;
 	}
-	
+
 	public boolean isAutoUVEnabled()
 	{
 		return autoUV;
@@ -373,9 +380,16 @@ public class Face
 	{
 		this.autoUV = enabled;
 	}
-	
-	public void updateUV() {
-		if(autoUV) {
+
+	public boolean isBinded()
+	{
+		return binded;
+	}
+
+	public void updateUV()
+	{
+		if (autoUV)
+		{
 			textureUEnd = textureU + cuboid.getFaceDimension(side).getWidth();
 			textureVEnd = textureV + cuboid.getFaceDimension(side).getHeight();
 		}
@@ -400,7 +414,7 @@ public class Face
 		}
 		return null;
 	}
-	
+
 	public static int getFaceSide(String name)
 	{
 		switch (name)

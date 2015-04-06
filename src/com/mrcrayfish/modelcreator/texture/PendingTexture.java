@@ -33,7 +33,8 @@ public class PendingTexture
 				result = TextureManager.loadExternalTexture(Paths.get(name).getParent().toString(), fileName);
 				is.close();
 			}
-			callback.callback(result, fileName);
+			if (callback != null)
+				callback.callback(result, fileName);
 		}
 		catch (IOException e)
 		{

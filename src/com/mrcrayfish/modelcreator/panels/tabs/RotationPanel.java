@@ -35,8 +35,8 @@ public class RotationPanel extends JPanel implements IValueUpdater
 
 	private DefaultComboBoxModel<String> model;
 
-	private final int ROTATION_MIN = -16;
-	private final int ROTATION_MAX = 16;
+	private final int ROTATION_MIN = -2;
+	private final int ROTATION_MAX = 2;
 	private final int ROTATION_INIT = 0;
 
 	public RotationPanel(ElementManager manager)
@@ -74,21 +74,16 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisPanel.add(axisList);
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer(-16), new JLabel("-360\u00b0"));
-		//labelTable.put(new Integer(-12), new JLabel("-270\u00b0"));
-		//labelTable.put(new Integer(-8), new JLabel("-180\u00b0"));
-		//labelTable.put(new Integer(-4), new JLabel("-90\u00b0"));
+		labelTable.put(new Integer(-2), new JLabel("-45\u00b0"));
+		labelTable.put(new Integer(-1), new JLabel("-22.5\u00b0"));
 		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
-		//labelTable.put(new Integer(4), new JLabel("90\u00b0"));
-		//labelTable.put(new Integer(8), new JLabel("180\u00b0"));
-		//labelTable.put(new Integer(12), new JLabel("270\u00b0"));
-		labelTable.put(new Integer(16), new JLabel("360\u00b0"));
+		labelTable.put(new Integer(1), new JLabel("22.5\u00b0"));
+		labelTable.put(new Integer(2), new JLabel("45\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
 		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
 		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
-		rotation.setMajorTickSpacing(4);
-		rotation.setMinorTickSpacing(1);
+		rotation.setMajorTickSpacing(1);
 		rotation.setPaintTicks(true);
 		rotation.setPaintLabels(true);
 		rotation.setLabelTable(labelTable);

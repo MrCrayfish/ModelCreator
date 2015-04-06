@@ -1,6 +1,33 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glColor3d;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotated;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2i;
+import static org.lwjgl.opengl.GL11.glVertex3i;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -26,6 +53,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -33,7 +61,6 @@ import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.util.ResourceLoader;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.element.Element;
@@ -45,8 +72,8 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 public class ModelCreator extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-	
-	//TODO remove static instance
+
+	// TODO remove static instance
 	public static String texturePath = ".";
 
 	// Canvas Variables
@@ -72,7 +99,7 @@ public class ModelCreator extends JFrame
 	public ModelCreator(String title)
 	{
 		super(title);
-		
+
 		setPreferredSize(new Dimension(1493, 840));
 		setMinimumSize(new Dimension(1200, 840));
 		setLayout(new BorderLayout(10, 0));
@@ -124,7 +151,7 @@ public class ModelCreator extends JFrame
 				try
 				{
 					Display.create();
-					
+
 					WelcomeDialog.show(ModelCreator.this);
 
 					initFonts();
@@ -165,6 +192,22 @@ public class ModelCreator extends JFrame
 			}
 		});
 
+		JMenuItem menuItemImport = new JMenuItem("Import");
+		menuItemImport.setMnemonic(KeyEvent.VK_I);
+		menuItemImport.setToolTipText("Import model from JSON");
+		menuItemImport.addActionListener(e ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Input File");
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				Importer importer = new Importer(manager, chooser.getSelectedFile().getAbsolutePath());
+				importer.importFromJSON();
+			}
+		});
+
 		JMenuItem menuItemExport = new JMenuItem("Export");
 		menuItemExport.setMnemonic(KeyEvent.VK_E);
 		menuItemExport.setToolTipText("Export model to JSON");
@@ -188,23 +231,8 @@ public class ModelCreator extends JFrame
 		{
 			System.exit(0);
 		});
-		
-		JMenuItem menuItemImport = new JMenuItem("Import");
-		menuItemImport.setMnemonic(KeyEvent.VK_I);
-		menuItemImport.setToolTipText("Import model from JSON");
-		menuItemImport.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Input File");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				Importer importer = new Importer(manager, chooser.getSelectedFile().getAbsolutePath());
-				importer.importFromJSON();
-			}
-		});
-		
+
+		// Going to change this to be integrated into the import option
 		JMenuItem menuItemTexturePath = new JMenuItem("Set Texture path");
 		menuItemTexturePath.setMnemonic(KeyEvent.VK_S);
 		menuItemTexturePath.setToolTipText("Set the base path from where to look for textures");
@@ -221,8 +249,8 @@ public class ModelCreator extends JFrame
 		});
 
 		file.add(menuItemNew);
-		file.add(menuItemExport);
 		file.add(menuItemImport);
+		file.add(menuItemExport);
 		file.add(menuItemTexturePath);
 		file.add(menuItemExit);
 		menuBar.add(file);
@@ -334,7 +362,7 @@ public class ModelCreator extends JFrame
 		glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
 		drawGrid();
 
-		glTranslatef(-8, 0, 8);
+		glTranslatef(-8, 0, -8);
 		for (int i = 0; i < manager.getCuboidCount(); i++)
 		{
 			Element cube = manager.getCuboid(i);
@@ -347,8 +375,10 @@ public class ModelCreator extends JFrame
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glShadeModel(GL11.GL_SMOOTH);
 			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glDisable(GL11.GL_CULL_FACE);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
+			GL11.glTranslated(0, 0, 16);
 			GL11.glScaled(0.018, 0.018, 0.018);
 			GL11.glRotated(90, 1, 0, 0);
 			fontBebasNeue.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.6F));
@@ -404,28 +434,173 @@ public class ModelCreator extends JFrame
 
 	}
 
+	private int lastMouseX, lastMouseY;
+	private boolean grabbing = false;
+
 	public void handleInput()
 	{
 		final float cameraMod = Math.abs(camera.getZ());
 
-		if (Mouse.isButtonDown(0))
+		if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
 		{
-			final float modifier = (cameraMod * 0.05f);
-			camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
-			camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
+			if (!grabbing)
+			{
+				lastMouseX = Mouse.getX();
+				lastMouseY = Mouse.getY();
+				grabbing = true;
+			}
 		}
-		else if (Mouse.isButtonDown(1))
+		else
 		{
-			final float modifier = applyLimit(cameraMod * 0.1f);
-			camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
-			final float rxAbs = Math.abs(camera.getRX());
-			camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
+			grabbing = false;
 		}
 
-		final float wheel = Mouse.getDWheel();
-		if (wheel != 0)
+		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
 		{
-			camera.addZ(wheel * (cameraMod / 5000F));
+			if (manager.getSelectedCuboid() != null)
+			{
+				int state = getCameraState(camera);
+				System.out.println(state);
+
+				if (Mouse.isButtonDown(0))
+				{
+					int newMouseX = Mouse.getX();
+					int newMouseY = Mouse.getY();
+
+					int xMovement = (int) ((newMouseX - lastMouseX) / 20);
+					int yMovement = (int) ((newMouseY - lastMouseY) / 20);
+
+					if (xMovement != 0 | yMovement != 0)
+					{
+						Element element = manager.getSelectedCuboid();
+						switch (state)
+						{
+						case 0:
+							element.addStartX(xMovement);
+							element.addStartY(yMovement);
+							break;
+						case 1:
+							element.addStartZ(xMovement);
+							element.addStartY(yMovement);
+							break;
+						case 2:
+							element.addStartX(-xMovement);
+							element.addStartY(yMovement);
+							break;
+						case 3:
+							element.addStartZ(-xMovement);
+							element.addStartY(yMovement);
+							break;
+						case 4:
+							element.addStartX(xMovement);
+							element.addStartZ(-yMovement);
+							break;
+						case 5:
+							element.addStartX(yMovement);
+							element.addStartZ(xMovement);
+							break;
+						case 6:
+							element.addStartX(-xMovement);
+							element.addStartZ(yMovement);
+							break;
+						case 7:
+							element.addStartX(-yMovement);
+							element.addStartZ(-xMovement);
+							break;
+						}
+						
+						if (xMovement != 0)
+							lastMouseX = newMouseX;
+						if (yMovement != 0)
+							lastMouseY = newMouseY;
+
+						manager.updateValues();
+						element.updateUV();
+					}
+				}
+				else if (Mouse.isButtonDown(1))
+				{
+					int newMouseX = Mouse.getX();
+					int newMouseY = Mouse.getY();
+
+					int xMovement = (int) ((newMouseX - lastMouseX) / 20);
+					int yMovement = (int) ((newMouseY - lastMouseY) / 20);
+
+					if (xMovement != 0 | yMovement != 0)
+					{
+						Element element = manager.getSelectedCuboid();
+						switch (state)
+						{
+						case 0:
+							element.addHeight(yMovement);
+							element.addWidth(xMovement);
+							break;
+						case 1:
+							element.addHeight(yMovement);
+							element.addDepth(xMovement);
+							break;
+						case 2:
+							element.addHeight(yMovement);
+							element.addWidth(-xMovement);
+							break;
+						case 3:
+							element.addHeight(yMovement);
+							element.addDepth(-xMovement);
+							break;
+						case 4:
+							element.addDepth(-yMovement);
+							element.addWidth(xMovement);
+							break;
+						case 5:
+							element.addDepth(xMovement);
+							element.addWidth(yMovement);
+							break;
+						case 6:
+							element.addDepth(yMovement);
+							element.addWidth(-xMovement);
+							break;
+						case 7:
+							element.addDepth(-xMovement);
+							element.addWidth(-yMovement);
+							break;
+						case 8:
+							element.addDepth(-yMovement);
+							element.addWidth(xMovement);
+							break;
+						}
+						
+						if (xMovement != 0)
+							lastMouseX = newMouseX;
+						if (yMovement != 0)
+							lastMouseY = newMouseY;
+
+						manager.updateValues();
+						element.updateUV();
+					}
+				}
+			}
+		}
+		else
+		{
+			if (Mouse.isButtonDown(0))
+			{
+				final float modifier = (cameraMod * 0.05f);
+				camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
+				camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
+			}
+			else if (Mouse.isButtonDown(1))
+			{
+				final float modifier = applyLimit(cameraMod * 0.1f);
+				camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
+				final float rxAbs = Math.abs(camera.getRX());
+				camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
+			}
+
+			final float wheel = Mouse.getDWheel();
+			if (wheel != 0)
+			{
+				camera.addZ(wheel * (cameraMod / 5000F));
+			}
 		}
 	}
 
@@ -442,24 +617,41 @@ public class ModelCreator extends JFrame
 		return value;
 	}
 
+	public int getCameraState(Camera camera)
+	{
+		int cameraRotY = (int) (camera.getRY() >= 0 ? camera.getRY() : 360 + camera.getRY());
+		int state = (int) ((cameraRotY * 4.0F / 360.0F) + 0.5D) & 3;
+
+		if (camera.getRX() > 45)
+		{
+			state += 4;
+		}
+		if (camera.getRX() < -45)
+		{
+			state += 8;
+		}
+		return state;
+	}
+
 	public void drawGrid()
 	{
 		glPushMatrix();
 		{
 			glColor3f(0.2F, 0.2F, 0.27F);
+			glTranslatef(-8, 0, -8);
 
 			// Bold outside lines
 			glLineWidth(2F);
 			glBegin(GL_LINES);
 			{
-				glVertex3i(-8, 0, -8);
-				glVertex3i(-8, 0, 8);
-				glVertex3i(8, 0, -8);
-				glVertex3i(8, 0, 8);
-				glVertex3i(-8, 0, 8);
-				glVertex3i(8, 0, 8);
-				glVertex3i(-8, 0, -8);
-				glVertex3i(8, 0, -8);
+				glVertex3i(0, 0, 0);
+				glVertex3i(0, 0, 16);
+				glVertex3i(16, 0, 0);
+				glVertex3i(16, 0, 16);
+				glVertex3i(0, 0, 16);
+				glVertex3i(16, 0, 16);
+				glVertex3i(0, 0, 0);
+				glVertex3i(16, 0, 0);
 			}
 			glEnd();
 
@@ -467,16 +659,16 @@ public class ModelCreator extends JFrame
 			glLineWidth(1F);
 			glBegin(GL_LINES);
 			{
-				for (int i = -7; i <= 7; i++)
+				for (int i = 1; i <= 16; i++)
 				{
-					glVertex3i(i, 0, -8);
-					glVertex3i(i, 0, 8);
+					glVertex3i(i, 0, 0);
+					glVertex3i(i, 0, 16);
 				}
 
-				for (int i = -7; i <= 7; i++)
+				for (int i = 1; i <= 16; i++)
 				{
-					glVertex3i(-8, 0, i);
-					glVertex3i(8, 0, i);
+					glVertex3i(0, 0, i);
+					glVertex3i(16, 0, i);
 				}
 			}
 			glEnd();

@@ -154,9 +154,9 @@ public class Element
 		GL11.glPushMatrix();
 		{
 			GL11.glEnable(GL_CULL_FACE);
-			GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
+			GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
 			rotateAxis();
-			GL11.glTranslated(-getOriginX(), -getOriginY(), getOriginZ());
+			GL11.glTranslated(-getOriginX(), -getOriginY(), -getOriginZ());
 
 			// North
 			if (faces[0].isEnabled())
@@ -165,11 +165,11 @@ public class Element
 				faces[0].renderNorth();
 			}
 
-			// East
+			// West
 			if (faces[1].isEnabled())
 			{
 				GL11.glColor3f(0, 0, 1);
-				faces[1].renderEast();
+				faces[1].renderWest();
 			}
 
 			// South
@@ -179,11 +179,11 @@ public class Element
 				faces[2].renderSouth();
 			}
 
-			// West
+			// East
 			if (faces[3].isEnabled())
 			{
 				GL11.glColor3f(1, 1, 0);
-				faces[3].renderWest();
+				faces[3].renderEast();
 			}
 
 			// Top
@@ -209,7 +209,7 @@ public class Element
 		{
 			GL11.glPushMatrix();
 			{
-				GL11.glTranslated(getOriginX(), getOriginY(), -getOriginZ());
+				GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
 				GL11.glColor3f(0.25F, 0.25F, 0.25F);
 				sphere.draw(0.2F, 16, 16);
 				rotateAxis();

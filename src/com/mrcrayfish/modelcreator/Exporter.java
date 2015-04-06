@@ -64,6 +64,7 @@ public class Exporter
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
+				System.out.println(face.getTextureLocation() + " " + face.getTextureName());
 				if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
 				{
 					textureList.add(face.getTextureLocation() + face.getTextureName());

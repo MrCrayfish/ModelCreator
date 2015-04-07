@@ -38,6 +38,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -200,6 +202,11 @@ public class ModelCreator extends JFrame
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Input File");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Import");
+			
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+			chooser.setFileFilter(filter);
+			
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -215,12 +222,20 @@ public class ModelCreator extends JFrame
 		{
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Export");
+			
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+			chooser.setFileFilter(filter);
+			
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
-				Exporter exporter = new Exporter(manager, chooser.getSelectedFile().getAbsolutePath(), "test");
-				exporter.export();
+				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				if (!filePath.endsWith(".json"))
+					chooser.setSelectedFile(new File(filePath + ".json"));
+				Exporter exporter = new Exporter(manager);
+				exporter.export(chooser.getSelectedFile());
 			}
 		});
 
@@ -508,7 +523,7 @@ public class ModelCreator extends JFrame
 							element.addStartZ(-xMovement);
 							break;
 						}
-						
+
 						if (xMovement != 0)
 							lastMouseX = newMouseX;
 						if (yMovement != 0)
@@ -568,7 +583,7 @@ public class ModelCreator extends JFrame
 							element.addWidth(xMovement);
 							break;
 						}
-						
+
 						if (xMovement != 0)
 							lastMouseX = newMouseX;
 						if (yMovement != 0)

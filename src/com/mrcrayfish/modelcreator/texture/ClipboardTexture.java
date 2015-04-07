@@ -5,10 +5,10 @@ public class ClipboardTexture
 	private String location;
 	private String texture;
 
-	public ClipboardTexture(String texture, String location)
+	public ClipboardTexture(String location, String texture)
 	{
-		this.texture = texture;
 		this.location = location;
+		this.texture = texture;
 	}
 
 	public String getLocation()

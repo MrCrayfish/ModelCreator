@@ -138,16 +138,19 @@ public class Element
 		for (Face face : faces)
 		{
 			face.setTexture(null);
+			face.setTextureLocation("blocks/");
 		}
 	}
 
-	public void setAllTextures(String texture)
+	public void setAllTextures(String location, String texture)
 	{
 		for (Face face : faces)
 		{
 			face.setTexture(texture);
+			face.setTextureLocation(location);
 		}
 	}
+
 
 	public void draw()
 	{

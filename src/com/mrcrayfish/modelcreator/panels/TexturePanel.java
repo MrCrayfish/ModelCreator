@@ -64,7 +64,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			{
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					manager.getSelectedCuboid().setAllTextures(null);
+					manager.getSelectedCuboid().setAllTextures(null, null);
 				}
 				else
 				{
@@ -79,8 +79,8 @@ public class TexturePanel extends JPanel implements TextureCallback
 		{
 			if (manager.getSelectedCuboid() != null)
 			{
-				String texture = manager.getSelectedCuboid().getSelectedFace().getTextureName();
-				Clipboard.copyTexture(texture);
+				Face face = manager.getSelectedCuboid().getSelectedFace();
+				Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName());
 			}
 		});
 		btnCopy.setFont(defaultFont);
@@ -95,7 +95,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 				{
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
-						manager.getSelectedCuboid().setAllTextures(texture.getTexture());
+						manager.getSelectedCuboid().setAllTextures(texture.getLocation(), texture.getTexture());
 					}
 					else
 					{

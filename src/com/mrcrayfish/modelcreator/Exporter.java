@@ -22,24 +22,25 @@ public class Exporter
 	private ElementManager manager;
 	private String modelName;
 
-	public Exporter(ElementManager manager, String outputPath, String outputName)
+	public Exporter(ElementManager manager)
 	{
 		this.manager = manager;
-		this.modelName = outputName;
-		this.outputPath = outputPath;
 		compileTextureList();
 	}
 
-	public void export()
+	public void export(File file)
 	{
-		File path = new File(outputPath);
+		File path = file.getParentFile();
 		if (path.exists() && path.isDirectory())
 		{
 			FileWriter fw;
 			BufferedWriter writer;
 			try
 			{
-				fw = new FileWriter(new File(path, modelName + "_model.json"));
+				if(!file.exists()) {
+					file.createNewFile();
+				}
+				fw = new FileWriter(file);
 				writer = new BufferedWriter(fw);
 				writeComponents(writer, manager);
 				writer.close();

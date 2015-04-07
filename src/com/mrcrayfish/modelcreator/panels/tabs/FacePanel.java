@@ -168,11 +168,15 @@ public class FacePanel extends JPanel implements IValueUpdater
 			menuList.setSelectedIndex(cube.getSelectedFaceIndex());
 			modidField.setEnabled(true);
 			modidField.setText(cube.getSelectedFace().getTextureLocation());
+			rotation.setEnabled(true);
+			rotation.setValue((int) Math.floor(cube.getSelectedFace().getRotation() / 90.0D));
 		}
 		else
 		{
 			modidField.setEnabled(false);
 			modidField.setText("");
+			rotation.setEnabled(false);
+			rotation.setValue(0);
 		}
 		panelUV.updateValues(cube);
 		panelProperties.updateValues(cube);

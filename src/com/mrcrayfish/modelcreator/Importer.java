@@ -249,6 +249,17 @@ public class Importer
 			{
 				face.setRotation(obj.get("rotation").getAsDouble());
 			}
+
+			// TODO cullface with different direction than face,tintindex
+			if (obj.has("cullface") && obj.get("cullface").isJsonPrimitive())
+			{
+				String cullface = obj.get("cullface").getAsString();
+
+				if (cullface.equals(Face.getFaceName(face.getSide())))
+				{
+					face.setCullface(true);
+				}
+			}
 		}
 	}
 }

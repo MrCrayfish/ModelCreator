@@ -202,6 +202,11 @@ public class ModelCreator extends JFrame
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Input File");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Import");
+			
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+			chooser.setFileFilter(filter);
+			
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -218,16 +223,17 @@ public class ModelCreator extends JFrame
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Output Directory");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Export");
+			
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
-			int returnVal = chooser.showSaveDialog(null);
+			
+			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				String filePath = chooser.getSelectedFile().getAbsolutePath();
 				if (!filePath.endsWith(".json"))
-				{
 					chooser.setSelectedFile(new File(filePath + ".json"));
-				}
 				Exporter exporter = new Exporter(manager);
 				exporter.export(chooser.getSelectedFile());
 			}

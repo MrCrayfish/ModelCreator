@@ -130,7 +130,7 @@ public class TextureManager
 
 		JPanel panel = new JPanel(new GridLayout(1, 3));
 		panel.setPreferredSize(new Dimension(1000, 40));
-		JButton btnSelect = new JButton("Select");
+		JButton btnSelect = new JButton("Apply");
 		btnSelect.addActionListener(a ->
 		{
 			if (list.getSelectedValue() != null)
@@ -142,7 +142,7 @@ public class TextureManager
 		btnSelect.setFont(defaultFont);
 		panel.add(btnSelect);
 
-		JButton btnImport = new JButton("Browse");
+		JButton btnImport = new JButton("Import");
 		btnImport.addActionListener(a ->
 		{
 			JFileChooser chooser = new JFileChooser();

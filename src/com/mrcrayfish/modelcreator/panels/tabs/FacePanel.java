@@ -82,6 +82,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 				updateValues(manager.getSelectedCuboid());
 			}
 		});
+		menuList.setToolTipText("The face to edit.");
 		menuPanel.setMaximumSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 
@@ -106,6 +107,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		{
 			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue());
 		});
+		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
 

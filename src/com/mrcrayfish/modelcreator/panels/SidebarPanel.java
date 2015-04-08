@@ -201,6 +201,15 @@ public class SidebarPanel extends JPanel implements ElementManager
 			return (Element) model.getElementAt(i);
 		return null;
 	}
+	
+	@Override
+	public void setSelectedCuboid(int pos)
+	{
+		if(pos<model.size()) {
+			list.setSelectedIndex(pos);
+			updateValues();
+		}
+	}
 
 	@Override
 	public List<Element> getAllCuboids()

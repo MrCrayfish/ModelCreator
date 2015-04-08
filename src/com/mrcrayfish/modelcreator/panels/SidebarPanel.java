@@ -54,7 +54,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		this.creator = creator;
 		setLayout(layout = new SpringLayout());
-		setPreferredSize(new Dimension(200, 850));
+		setPreferredSize(new Dimension(200, 780));
 		initComponents();
 		setLayoutConstaints();
 	}

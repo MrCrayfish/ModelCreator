@@ -256,7 +256,7 @@ public class Importer
 			}
 			
 			if(obj.has("rotation") && obj.get("rotation").isJsonPrimitive()) {
-				face.setRotation(obj.get("rotation").getAsDouble());
+				face.setRotation((int) obj.get("rotation").getAsDouble() / 90);
 			}
 			
 			//TODO cullface with different direction than face,tintindex

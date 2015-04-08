@@ -104,7 +104,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue() * 90D);
+			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue());
 		});
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
@@ -169,7 +169,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 			modidField.setEnabled(true);
 			modidField.setText(cube.getSelectedFace().getTextureLocation());
 			rotation.setEnabled(true);
-			rotation.setValue((int) Math.floor(cube.getSelectedFace().getRotation() / 90.0D));
+			rotation.setValue(cube.getSelectedFace().getRotation());
 		}
 		else
 		{

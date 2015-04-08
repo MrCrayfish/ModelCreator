@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -52,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.lwjgl.LWJGLException;
@@ -89,6 +91,7 @@ public class ModelCreator extends JFrame
 	public boolean closeRequested = false;
 
 	// Swing Components
+	private JScrollPane scroll;
 	private JMenuBar menuBar = new JMenuBar();
 	private ElementManager manager;
 
@@ -102,8 +105,7 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 
-		setPreferredSize(new Dimension(1493, 840));
-		setMinimumSize(new Dimension(1200, 840));
+		setMinimumSize(new Dimension(1200, 500));
 		setLayout(new BorderLayout(10, 0));
 
 		canvas = new Canvas();
@@ -203,10 +205,10 @@ public class ModelCreator extends JFrame
 			chooser.setDialogTitle("Input File");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			chooser.setApproveButtonText("Import");
-			
+
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
-			
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -224,10 +226,10 @@ public class ModelCreator extends JFrame
 			chooser.setDialogTitle("Output Directory");
 			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			chooser.setApproveButtonText("Export");
-			
+
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
-			
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -271,7 +273,7 @@ public class ModelCreator extends JFrame
 		menuBar.add(file);
 		setJMenuBar(menuBar);
 
-		canvas.setSize(new Dimension(990, 790));
+		canvas.setPreferredSize(new Dimension(1000, 790));
 		add(canvas, BorderLayout.CENTER);
 
 		canvas.setFocusable(true);
@@ -279,7 +281,11 @@ public class ModelCreator extends JFrame
 		canvas.requestFocus();
 
 		manager = new SidebarPanel(this);
-		add((JPanel) manager, BorderLayout.EAST);
+		scroll = new JScrollPane((JPanel) manager);
+		scroll.setBorder(BorderFactory.createEmptyBorder());
+		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		add(scroll, BorderLayout.EAST);
 	}
 
 	public void initDisplay()

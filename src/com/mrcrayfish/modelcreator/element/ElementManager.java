@@ -7,6 +7,8 @@ import com.mrcrayfish.modelcreator.texture.PendingTexture;
 public interface ElementManager
 {
 	public Element getSelectedCuboid();
+	
+	public void setSelectedCuboid(int pos);
 
 	public List<Element> getAllCuboids();
 

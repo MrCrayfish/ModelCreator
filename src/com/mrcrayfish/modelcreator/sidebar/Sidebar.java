@@ -13,7 +13,7 @@ public class Sidebar
 		this.title = title;
 	}
 
-	public void draw(int sidebarWidth, int canvasWidth, int canvasHeight)
+	public void draw(int sidebarWidth, int canvasWidth, int canvasHeight, int frameHeight)
 	{
 		glColor3f(0.866F, 0.866F, 0.894F);
 		glBegin(GL_QUADS);

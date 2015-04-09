@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 
@@ -12,6 +13,13 @@ import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Face
 {
+	private static final Color RED = new Color(1, 0, 0);
+	private static final Color GREEN = new Color(0, 1, 0);
+	private static final Color BLUE = new Color(0, 0, 1);
+	private static final Color YELLOW = new Color(1, 1, 0);
+	private static final Color MAGENTA = new Color(1, 0, 1);
+	private static final Color CYAN = new Color(0, 1, 1);	
+	
 	private String texture = null;
 	private String textureLocation = "blocks/";
 	private double textureU = 0;
@@ -441,6 +449,26 @@ public class Face
 			return 5;
 		}
 		return -1;
+	}
+	
+	public static Color getFaceColour(int side)
+	{
+		switch (side)
+		{
+		case 0:
+			return RED;
+		case 1:
+			return GREEN;
+		case 2:
+			return BLUE;
+		case 3:
+			return YELLOW;
+		case 4:
+			return CYAN;
+		case 5:
+			return MAGENTA;
+		}
+		return RED;
 	}
 
 	public int getRotation()

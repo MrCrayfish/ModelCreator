@@ -75,8 +75,9 @@ public class ModelCreator extends JFrame
 	private boolean grabbing = false;
 	private boolean closeRequested = false;
 
-	public static Sidebar activeSidebar = null;
-	public static final Sidebar SIDEBAR_UV = new UVSidebar("UV Editor");
+	private final int SIDEBAR_WIDTH = 130;
+	public Sidebar activeSidebar = null;
+	public final Sidebar SIDEBAR_UV;
 
 	public ModelCreator(String title)
 	{
@@ -89,6 +90,8 @@ public class ModelCreator extends JFrame
 		canvas = new Canvas();
 
 		initComponents();
+		
+		SIDEBAR_UV = new UVSidebar("UV Editor", manager);
 
 		canvas.addComponentListener(new ComponentAdapter()
 		{
@@ -303,8 +306,9 @@ public class ModelCreator extends JFrame
 				width = newDim.width;
 				height = newDim.height;
 			}
+			
+			int offset = getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
-			int offset = 160;
 			glViewport(offset, 0, width - offset, height);
 
 			handleInput();
@@ -327,9 +331,11 @@ public class ModelCreator extends JFrame
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 
-			drawOverlay();
+			drawOverlay(offset);
 
 			Display.update();
+			
+			System.out.println(ModelCreator.this.getHeight());
 		}
 	}
 
@@ -380,7 +386,7 @@ public class ModelCreator extends JFrame
 		GL11.glPopMatrix();
 	}
 
-	public void drawOverlay()
+	public void drawOverlay(int offset)
 	{
 		glPushMatrix();
 		{
@@ -388,18 +394,18 @@ public class ModelCreator extends JFrame
 			glLineWidth(2F);
 			glBegin(GL_LINES);
 			{
-				glVertex2i(160,0);
+				glVertex2i(offset,0);
 				glVertex2i(width,0);
 				glVertex2i(width,0);
 				glVertex2i(width,height);
-				glVertex2i(160,height);
-				glVertex2i(160,0);
+				glVertex2i(offset,height);
+				glVertex2i(offset,0);
 			}
 			glEnd();
 		}
 		glPopMatrix();
 		
-		SIDEBAR_UV.draw(160, width, height);
+		SIDEBAR_UV.draw(offset, width, height, getHeight());
 
 		glPushMatrix();
 		{

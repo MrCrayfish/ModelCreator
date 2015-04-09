@@ -15,12 +15,8 @@ public class Exporter
 {
 	private List<String> textureList = new ArrayList<String>();
 
-	// Output Directory
-	private String outputPath;
-
 	// Model Variables
 	private ElementManager manager;
-	private String modelName;
 
 	public Exporter(ElementManager manager)
 	{

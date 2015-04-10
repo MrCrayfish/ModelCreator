@@ -77,7 +77,7 @@ public class ModelCreator extends JFrame
 
 	private final int SIDEBAR_WIDTH = 130;
 	public Sidebar activeSidebar = null;
-	public final Sidebar SIDEBAR_UV;
+	public static Sidebar SIDEBAR_UV;
 
 	public ModelCreator(String title)
 	{
@@ -307,11 +307,11 @@ public class ModelCreator extends JFrame
 				height = newDim.height;
 			}
 
-			int offset = getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
+			int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
 			glViewport(offset, 0, width - offset, height);
 
-			handleInput();
+			handleInput(offset);
 
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
@@ -403,7 +403,8 @@ public class ModelCreator extends JFrame
 		}
 		glPopMatrix();
 
-		SIDEBAR_UV.draw(offset, width, height, getHeight());
+		if (activeSidebar != null)
+			activeSidebar.draw(offset, width, height, getHeight());
 
 		glPushMatrix();
 		{
@@ -450,7 +451,7 @@ public class ModelCreator extends JFrame
 		glPopMatrix();
 	}
 
-	public void handleInput()
+	public void handleInput(int offset)
 	{
 		final float cameraMod = Math.abs(camera.getZ());
 
@@ -468,8 +469,6 @@ public class ModelCreator extends JFrame
 			grabbing = false;
 			grabbed = null;
 		}
-		
-		int offset = getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
 		if (Mouse.getX() < offset)
 		{
@@ -743,6 +742,11 @@ public class ModelCreator extends JFrame
 			glEnd();
 		}
 		glPopMatrix();
+	}
+
+	public void setSidebar(Sidebar s)
+	{
+		activeSidebar = s;
 	}
 
 	public synchronized boolean getCloseRequested()

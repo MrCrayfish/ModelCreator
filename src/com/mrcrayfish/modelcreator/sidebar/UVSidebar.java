@@ -10,6 +10,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.TextureImpl;
 
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -21,7 +22,7 @@ public class UVSidebar extends Sidebar
 
 	private final int LENGTH = 110;
 
-	private final Color BLACK_ALPHA = new Color(0, 0, 0, 0.5F);
+	private final Color BLACK_ALPHA = new Color(0, 0, 0, 0.75F);
 
 	private int[] startX = { 0, 0, 0, 0, 0, 0 };
 	private int[] startY = { 0, 0, 0, 0, 0, 0 };
@@ -91,6 +92,8 @@ public class UVSidebar extends Sidebar
 							glVertex2i(0, 0);
 						}
 						glEnd();
+						
+						TextureImpl.bindNone();
 
 						glColor3f(1, 1, 1);
 
@@ -172,10 +175,14 @@ public class UVSidebar extends Sidebar
 						}
 						else
 						{
+							face.setAutoUVEnabled(false);
+							
 							if ((face.getEndU() + xMovement) <= 16.0)
 								face.addTextureXEnd(xMovement);
 							if ((face.getEndV() - yMovement) <= 16.0)
 								face.addTextureYEnd(-yMovement);
+							
+							face.setAutoUVEnabled(false);
 						}
 						face.updateUV();
 
@@ -184,7 +191,6 @@ public class UVSidebar extends Sidebar
 						if (yMovement != 0)
 							this.lastMouseY = newMouseY;
 					}
-
 					manager.updateValues();
 				}
 			}
@@ -197,15 +203,12 @@ public class UVSidebar extends Sidebar
 
 	public int getFace(int canvasHeight, int mouseX, int mouseY)
 	{
-		System.out.println(mouseX + ":" + (canvasHeight - mouseY));
 		for (int i = 0; i < 6; i++)
 		{
-			System.out.println(startX[i] + " " + startY[i] + "\n");
 			if (mouseX >= startX[i] && mouseX <= startX[i] + LENGTH)
 			{
 				if ((canvasHeight - mouseY - 45) >= startY[i] && (canvasHeight - mouseY - 45) <= startY[i] + LENGTH)
 				{
-					System.out.println(Face.getFaceName(5 - i));
 					return i;
 				}
 			}

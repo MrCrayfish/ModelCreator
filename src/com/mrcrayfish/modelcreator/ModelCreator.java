@@ -90,7 +90,7 @@ public class ModelCreator extends JFrame
 		canvas = new Canvas();
 
 		initComponents();
-		
+
 		SIDEBAR_UV = new UVSidebar("UV Editor", manager);
 
 		canvas.addComponentListener(new ComponentAdapter()
@@ -306,7 +306,7 @@ public class ModelCreator extends JFrame
 				width = newDim.width;
 				height = newDim.height;
 			}
-			
+
 			int offset = getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
 			glViewport(offset, 0, width - offset, height);
@@ -334,8 +334,6 @@ public class ModelCreator extends JFrame
 			drawOverlay(offset);
 
 			Display.update();
-			
-			System.out.println(ModelCreator.this.getHeight());
 		}
 	}
 
@@ -394,17 +392,17 @@ public class ModelCreator extends JFrame
 			glLineWidth(2F);
 			glBegin(GL_LINES);
 			{
-				glVertex2i(offset,0);
-				glVertex2i(width,0);
-				glVertex2i(width,0);
-				glVertex2i(width,height);
-				glVertex2i(offset,height);
-				glVertex2i(offset,0);
+				glVertex2i(offset, 0);
+				glVertex2i(width, 0);
+				glVertex2i(width, 0);
+				glVertex2i(width, height);
+				glVertex2i(offset, height);
+				glVertex2i(offset, 0);
 			}
 			glEnd();
 		}
 		glPopMatrix();
-		
+
 		SIDEBAR_UV.draw(offset, width, height, getHeight());
 
 		glPushMatrix();
@@ -470,145 +468,155 @@ public class ModelCreator extends JFrame
 			grabbing = false;
 			grabbed = null;
 		}
+		
+		int offset = getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+		if (Mouse.getX() < offset)
 		{
-			if (grabbed == null)
+			SIDEBAR_UV.handleInput();
+		}
+		else
+		{
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
 			{
-				if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
+				if (grabbed == null)
 				{
-					int sel = select(Mouse.getX(), Mouse.getY());
-					if (sel >= 0)
+					if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
 					{
-						grabbed = manager.getAllCuboids().get(sel);
-						manager.setSelectedCuboid(sel);
+						int sel = select(Mouse.getX(), Mouse.getY());
+						if (sel >= 0)
+						{
+							grabbed = manager.getAllCuboids().get(sel);
+							manager.setSelectedCuboid(sel);
+						}
+					}
+				}
+				else
+				{
+					Element element = grabbed;
+					int state = getCameraState(camera);
+
+					int newMouseX = Mouse.getX();
+					int newMouseY = Mouse.getY();
+
+					int xMovement = (int) ((newMouseX - lastMouseX) / 20);
+					int yMovement = (int) ((newMouseY - lastMouseY) / 20);
+
+					if (xMovement != 0 | yMovement != 0)
+					{
+						if (Mouse.isButtonDown(0))
+						{
+							switch (state)
+							{
+							case 0:
+								element.addStartX(xMovement);
+								element.addStartY(yMovement);
+								break;
+							case 1:
+								element.addStartZ(xMovement);
+								element.addStartY(yMovement);
+								break;
+							case 2:
+								element.addStartX(-xMovement);
+								element.addStartY(yMovement);
+								break;
+							case 3:
+								element.addStartZ(-xMovement);
+								element.addStartY(yMovement);
+								break;
+							case 4:
+								element.addStartX(xMovement);
+								element.addStartZ(-yMovement);
+								break;
+							case 5:
+								element.addStartX(yMovement);
+								element.addStartZ(xMovement);
+								break;
+							case 6:
+								element.addStartX(-xMovement);
+								element.addStartZ(yMovement);
+								break;
+							case 7:
+								element.addStartX(-yMovement);
+								element.addStartZ(-xMovement);
+								break;
+							}
+						}
+						else if (Mouse.isButtonDown(1))
+						{
+							switch (state)
+							{
+							case 0:
+								element.addHeight(yMovement);
+								element.addWidth(xMovement);
+								break;
+							case 1:
+								element.addHeight(yMovement);
+								element.addDepth(xMovement);
+								break;
+							case 2:
+								element.addHeight(yMovement);
+								element.addWidth(-xMovement);
+								break;
+							case 3:
+								element.addHeight(yMovement);
+								element.addDepth(-xMovement);
+								break;
+							case 4:
+								element.addDepth(-yMovement);
+								element.addWidth(xMovement);
+								break;
+							case 5:
+								element.addDepth(xMovement);
+								element.addWidth(yMovement);
+								break;
+							case 6:
+								element.addDepth(yMovement);
+								element.addWidth(-xMovement);
+								break;
+							case 7:
+								element.addDepth(-xMovement);
+								element.addWidth(-yMovement);
+								break;
+							case 8:
+								element.addDepth(-yMovement);
+								element.addWidth(xMovement);
+								break;
+							}
+						}
+
+						if (xMovement != 0)
+							lastMouseX = newMouseX;
+						if (yMovement != 0)
+							lastMouseY = newMouseY;
+
+						manager.updateValues();
+						element.updateUV();
 					}
 				}
 			}
 			else
 			{
-				Element element = grabbed;
-				int state = getCameraState(camera);
-
-				int newMouseX = Mouse.getX();
-				int newMouseY = Mouse.getY();
-
-				int xMovement = (int) ((newMouseX - lastMouseX) / 20);
-				int yMovement = (int) ((newMouseY - lastMouseY) / 20);
-
-				if (xMovement != 0 | yMovement != 0)
+				if (Mouse.isButtonDown(0))
 				{
-					if (Mouse.isButtonDown(0))
-					{
-						switch (state)
-						{
-						case 0:
-							element.addStartX(xMovement);
-							element.addStartY(yMovement);
-							break;
-						case 1:
-							element.addStartZ(xMovement);
-							element.addStartY(yMovement);
-							break;
-						case 2:
-							element.addStartX(-xMovement);
-							element.addStartY(yMovement);
-							break;
-						case 3:
-							element.addStartZ(-xMovement);
-							element.addStartY(yMovement);
-							break;
-						case 4:
-							element.addStartX(xMovement);
-							element.addStartZ(-yMovement);
-							break;
-						case 5:
-							element.addStartX(yMovement);
-							element.addStartZ(xMovement);
-							break;
-						case 6:
-							element.addStartX(-xMovement);
-							element.addStartZ(yMovement);
-							break;
-						case 7:
-							element.addStartX(-yMovement);
-							element.addStartZ(-xMovement);
-							break;
-						}
-					}
-					else if (Mouse.isButtonDown(1))
-					{
-						switch (state)
-						{
-						case 0:
-							element.addHeight(yMovement);
-							element.addWidth(xMovement);
-							break;
-						case 1:
-							element.addHeight(yMovement);
-							element.addDepth(xMovement);
-							break;
-						case 2:
-							element.addHeight(yMovement);
-							element.addWidth(-xMovement);
-							break;
-						case 3:
-							element.addHeight(yMovement);
-							element.addDepth(-xMovement);
-							break;
-						case 4:
-							element.addDepth(-yMovement);
-							element.addWidth(xMovement);
-							break;
-						case 5:
-							element.addDepth(xMovement);
-							element.addWidth(yMovement);
-							break;
-						case 6:
-							element.addDepth(yMovement);
-							element.addWidth(-xMovement);
-							break;
-						case 7:
-							element.addDepth(-xMovement);
-							element.addWidth(-yMovement);
-							break;
-						case 8:
-							element.addDepth(-yMovement);
-							element.addWidth(xMovement);
-							break;
-						}
-					}
-
-					if (xMovement != 0)
-						lastMouseX = newMouseX;
-					if (yMovement != 0)
-						lastMouseY = newMouseY;
-
-					manager.updateValues();
-					element.updateUV();
+					final float modifier = (cameraMod * 0.05f);
+					camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
+					camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
 				}
-			}
-		}
-		else
-		{
-			if (Mouse.isButtonDown(0))
-			{
-				final float modifier = (cameraMod * 0.05f);
-				camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
-				camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
-			}
-			else if (Mouse.isButtonDown(1))
-			{
-				final float modifier = applyLimit(cameraMod * 0.1f);
-				camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
-				final float rxAbs = Math.abs(camera.getRX());
-				camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
-			}
+				else if (Mouse.isButtonDown(1))
+				{
+					final float modifier = applyLimit(cameraMod * 0.1f);
+					camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
+					final float rxAbs = Math.abs(camera.getRX());
+					camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
+				}
 
-			final float wheel = Mouse.getDWheel();
-			if (wheel != 0)
-			{
-				camera.addZ(wheel * (cameraMod / 5000F));
+				final float wheel = Mouse.getDWheel();
+				if (wheel != 0)
+				{
+					camera.addZ(wheel * (cameraMod / 5000F));
+				}
 			}
 		}
 	}

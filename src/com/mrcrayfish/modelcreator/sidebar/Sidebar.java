@@ -2,6 +2,8 @@ package com.mrcrayfish.modelcreator.sidebar;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.newdawn.slick.Color;
+
 import com.mrcrayfish.modelcreator.util.FontManager;
 
 public class Sidebar
@@ -32,7 +34,12 @@ public class Sidebar
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		FontManager.BEBAS_NEUE_20.drawString(5, 5, title);
+		FontManager.BEBAS_NEUE_20.drawString(5, 5, title, new Color(0.5F, 0.5F, 0.6F));
 		glDisable(GL_BLEND);
+	}
+	
+	public void handleInput()
+	{
+		
 	}
 }

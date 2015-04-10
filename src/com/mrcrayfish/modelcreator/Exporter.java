@@ -15,12 +15,8 @@ public class Exporter
 {
 	private List<String> textureList = new ArrayList<String>();
 
-	// Output Directory
-	private String outputPath;
-
 	// Model Variables
 	private ElementManager manager;
-	private String modelName;
 
 	public Exporter(ElementManager manager)
 	{
@@ -177,7 +173,7 @@ public class Exporter
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
 				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
 				if (face.getRotation() > 0)
-					writer.write(", \"rotation\": " + (int) face.getRotation());
+					writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
 				if (face.isCullfaced())
 					writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
 				writer.write(" }");

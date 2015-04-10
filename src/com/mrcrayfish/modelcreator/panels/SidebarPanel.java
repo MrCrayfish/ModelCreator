@@ -47,7 +47,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	private JTextField name = new JTextField();
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 	private JRadioButton boxAmbient;
-	
+
 	private boolean ambientOcc = true;
 
 	public SidebarPanel(ModelCreator creator)
@@ -75,6 +75,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			e.printStackTrace();
 		}
 
+		btnAdd.setToolTipText("New Element");
 		btnAdd.addActionListener(e ->
 		{
 			model.addElement(new Element(1, 1, 1));
@@ -93,6 +94,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			e.printStackTrace();
 		}
 
+		btnRemove.setToolTipText("Remove Element");
 		btnRemove.addActionListener(e ->
 		{
 			int selected = list.getSelectedIndex();
@@ -118,6 +120,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			e.printStackTrace();
 		}
 
+		btnDuplicate.setToolTipText("Duplicate Element");
 		btnDuplicate.addActionListener(e ->
 		{
 			int selected = list.getSelectedIndex();
@@ -133,7 +136,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		add(btnContainer);
 
 		name.setPreferredSize(new Dimension(190, 30));
-		name.setToolTipText("Placeholder");
+		name.setToolTipText("Element Name");
 		name.setEnabled(false);
 		name.addKeyListener(new KeyAdapter()
 		{
@@ -177,11 +180,23 @@ public class SidebarPanel extends JPanel implements ElementManager
 		tabbedPane.add("Faces", new FacePanel(this));
 		tabbedPane.setPreferredSize(new Dimension(190, 500));
 		tabbedPane.setTabPlacement(JTabbedPane.TOP);
+		tabbedPane.addChangeListener(c ->
+		{
+			if (tabbedPane.getSelectedIndex() == 2)
+			{
+				creator.setSidebar(ModelCreator.SIDEBAR_UV);
+			}
+			else
+			{
+				creator.setSidebar(null);
+			}
+		});
 		add(tabbedPane);
-		
+
 		boxAmbient = new JRadioButton("Ambient Occulusion");
 		boxAmbient.setSelected(true);
 		boxAmbient.addActionListener(a -> ambientOcc = boxAmbient.isSelected());
+		boxAmbient.setToolTipText("Determine the light for each element");
 		add(boxAmbient);
 	}
 
@@ -201,11 +216,12 @@ public class SidebarPanel extends JPanel implements ElementManager
 			return (Element) model.getElementAt(i);
 		return null;
 	}
-	
+
 	@Override
 	public void setSelectedCuboid(int pos)
 	{
-		if(pos<model.size()) {
+		if (pos < model.size())
+		{
 			list.setSelectedIndex(pos);
 			updateValues();
 		}
@@ -271,7 +287,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		return ambientOcc;
 	}
-	
+
 	@Override
 	public void setAmbientOcc(boolean occ)
 	{

@@ -49,13 +49,13 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			manager.getSelectedCuboid().getSelectedFace().fitTexture(boxFill.isSelected());
 		});
 		boxEnabled = new JRadioButton("Enable");
-		boxEnabled.setToolTipText("<html>Determines if face should be included<br>Default: On</html>");
+		boxEnabled.setToolTipText("<html>Determines if face should be rendered<br>Default: On</html>");
 		boxEnabled.addActionListener(e ->
 		{
 			manager.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
 		boxAutoUV = new JRadioButton("Auto UV");
-		boxAutoUV.setToolTipText("<html>Determines if uv end coordinates should be set based on element size<br>Default: On</html>");
+		boxAutoUV.setToolTipText("<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
 		boxAutoUV.addActionListener(e ->
 		{
 			manager.getSelectedCuboid().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());

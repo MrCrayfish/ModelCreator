@@ -35,6 +35,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 		{
 			manager.getSelectedCuboid().setShade(btnShade.isSelected());
 		});
+		btnShade.setToolTipText("<html>Determines if shadows should be rendered<br>Default: On</html>");
 	}
 
 	public void addComponents()

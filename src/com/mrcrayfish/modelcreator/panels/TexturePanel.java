@@ -42,7 +42,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
 
-		btnSelect = new JButton("Select...");
+		btnSelect = new JButton("Image...");
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
@@ -56,6 +56,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			}
 		});
 		btnSelect.setFont(defaultFont);
+		btnSelect.setToolTipText("Opens the Texture Manager");
 
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(e ->
@@ -73,6 +74,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			}
 		});
 		btnClear.setFont(defaultFont);
+		btnClear.setToolTipText("<html>Clears the texture from this face.<br><b>Hold shift to clear all faces</b></html>");
 
 		btnCopy = new JButton("Copy");
 		btnCopy.addActionListener(e ->
@@ -84,6 +86,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			}
 		});
 		btnCopy.setFont(defaultFont);
+		btnCopy.setToolTipText("Copies the texture on this face to clipboard");
 
 		btnPaste = new JButton("Paste");
 		btnPaste.addActionListener(e ->
@@ -107,6 +110,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			}
 		});
 		btnPaste.setFont(defaultFont);
+		btnPaste.setToolTipText("<html>Pastes the clipboard texture to this face.<br><b>Hold shift to paste to all faces</b></html>");
 	}
 
 	public void addComponents()

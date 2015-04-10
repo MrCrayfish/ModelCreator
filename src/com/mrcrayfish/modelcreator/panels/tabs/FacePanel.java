@@ -60,10 +60,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initMenu()
 	{
 		model = new DefaultComboBoxModel<String>();
-		model.addElement("<html><div style='padding:5px;color:rgb(0,255,0);'><b>North</b></html>");
-		model.addElement("<html><div style='padding:5px;color:rgb(255,187,0);'><b>East</b></html>");
-		model.addElement("<html><div style='padding:5px;color:rgb(255,0,0);'><b>South</b></html>");
-		model.addElement("<html><div style='padding:5px;color:rgb(0,0,255);'><b>West</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(255,0,0);'><b>North</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(0,255,0);'><b>East</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(0,0,255);'><b>South</b></html>");
+		model.addElement("<html><div style='padding:5px;color:rgb(255,187,0);'><b>West</b></html>");
 		model.addElement("<html><div style='padding:5px;color:rgb(0,255,255);'><b>Up</b></html>");
 		model.addElement("<html><div style='padding:5px;color:rgb(255,0,255);'><b>Down</b></html>");
 	}
@@ -82,6 +82,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 				updateValues(manager.getSelectedCuboid());
 			}
 		});
+		menuList.setToolTipText("The face to edit.");
 		menuPanel.setMaximumSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 
@@ -104,8 +105,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue() * 90D);
+			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue());
 		});
+		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
 
@@ -169,7 +171,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 			modidField.setEnabled(true);
 			modidField.setText(cube.getSelectedFace().getTextureLocation());
 			rotation.setEnabled(true);
-			rotation.setValue((int) Math.floor(cube.getSelectedFace().getRotation() / 90.0D));
+			rotation.setValue(cube.getSelectedFace().getRotation());
 		}
 		else
 		{

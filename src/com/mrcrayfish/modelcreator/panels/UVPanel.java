@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -14,6 +18,7 @@ import javax.swing.JTextField;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.util.Parser;
 
 public class UVPanel extends JPanel implements IValueUpdater
 {
@@ -26,7 +31,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 	private JTextField yStartField;
 	private JButton btnNegX;
 	private JButton btnNegY;
-	
+
 	private JButton btnPlusXEnd;
 	private JButton btnPlusYEnd;
 	private JTextField xEndField;
@@ -55,7 +60,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		yStartField = new JTextField();
 		btnNegX = new JButton("-");
 		btnNegY = new JButton("-");
-		
+
 		btnPlusXEnd = new JButton("+");
 		btnPlusYEnd = new JButton("+");
 		xEndField = new JTextField();
@@ -69,23 +74,144 @@ public class UVPanel extends JPanel implements IValueUpdater
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xStartField.setSize(new Dimension(62, 30));
 		xStartField.setFont(defaultFont);
-		xStartField.setEditable(false);
 		xStartField.setHorizontalAlignment(JTextField.CENTER);
+		xStartField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					if(manager.getSelectedCuboid() != null)
+					{
+						Face face = manager.getSelectedCuboid().getSelectedFace();
+						face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
+						face.updateUV();
+						manager.updateValues();
+					}
+					
+				}
+			}
+		});
+		xStartField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(manager.getSelectedCuboid() != null)
+				{
+					Face face = manager.getSelectedCuboid().getSelectedFace();
+					face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
+					face.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		yStartField.setSize(new Dimension(62, 30));
 		yStartField.setFont(defaultFont);
-		yStartField.setEditable(false);
 		yStartField.setHorizontalAlignment(JTextField.CENTER);
-		
+		yStartField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					if(manager.getSelectedCuboid() != null)
+					{
+						Face face = manager.getSelectedCuboid().getSelectedFace();
+						face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
+						face.updateUV();
+						manager.updateValues();
+					}
+				}
+			}
+		});
+		yStartField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(manager.getSelectedCuboid() != null)
+				{
+					Face face = manager.getSelectedCuboid().getSelectedFace();
+					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
+					face.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
+
 		xEndField.setSize(new Dimension(62, 30));
 		xEndField.setFont(defaultFont);
-		xEndField.setEditable(false);
 		xEndField.setHorizontalAlignment(JTextField.CENTER);
+		xEndField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					if(manager.getSelectedCuboid() != null)
+					{
+						Face face = manager.getSelectedCuboid().getSelectedFace();
+						face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
+						face.updateUV();
+						manager.updateValues();
+					}
+				}
+			}
+		});
+		xEndField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(manager.getSelectedCuboid() != null)
+				{
+					Face face = manager.getSelectedCuboid().getSelectedFace();
+					face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
+					face.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		yEndField.setSize(new Dimension(62, 30));
 		yEndField.setFont(defaultFont);
-		yEndField.setEditable(false);
 		yEndField.setHorizontalAlignment(JTextField.CENTER);
+		yEndField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					if(manager.getSelectedCuboid() != null)
+					{
+						Face face = manager.getSelectedCuboid().getSelectedFace();
+						face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
+						face.updateUV();
+						manager.updateValues();
+					}
+				}
+			}
+		});
+		yEndField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(manager.getSelectedCuboid() != null)
+				{
+					Face face = manager.getSelectedCuboid().getSelectedFace();
+					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
+					face.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		btnPlusX.addActionListener(e ->
 		{
@@ -105,6 +231,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				manager.updateValues();
 			}
 		});
+		
 		btnPlusX.setSize(new Dimension(62, 30));
 		btnPlusX.setFont(defaultFont);
 		btnPlusX.setToolTipText("<html>Increases the start U.<br><b>Hold shift for decimals</b></html>");
@@ -174,7 +301,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 		btnNegY.setSize(new Dimension(62, 30));
 		btnNegY.setFont(defaultFont);
 		btnNegY.setToolTipText("<html>Decreases the start V.<br><b>Hold shift for decimals</b></html>");
-		
+
 		btnPlusXEnd.addActionListener(e ->
 		{
 			if (manager.getSelectedCuboid() != null)
@@ -285,6 +412,10 @@ public class UVPanel extends JPanel implements IValueUpdater
 	{
 		if (cube != null)
 		{
+			xStartField.setEnabled(true);
+			yStartField.setEnabled(true);
+			xEndField.setEnabled(true);
+			yEndField.setEnabled(true);
 			xStartField.setText(df.format(cube.getSelectedFace().getStartU()));
 			yStartField.setText(df.format(cube.getSelectedFace().getStartV()));
 			xEndField.setText(df.format(cube.getSelectedFace().getEndU()));
@@ -292,6 +423,10 @@ public class UVPanel extends JPanel implements IValueUpdater
 		}
 		else
 		{
+			xStartField.setEnabled(false);
+			yStartField.setEnabled(false);
+			xEndField.setEnabled(false);
+			yEndField.setEnabled(false);
 			xStartField.setText("");
 			yStartField.setText("");
 			xEndField.setText("");

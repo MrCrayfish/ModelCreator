@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -13,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.Parser;
 
 public class SizePanel extends JPanel implements IValueUpdater
 {
@@ -61,18 +66,111 @@ public class SizePanel extends JPanel implements IValueUpdater
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xSizeField.setSize(new Dimension(62, 30));
 		xSizeField.setFont(defaultFont);
-		xSizeField.setEditable(false);
 		xSizeField.setHorizontalAlignment(JTextField.CENTER);
+		xSizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
+						element.updateUV();
+						manager.updateValues();
+					}
+					
+				}
+			}
+		});
+		xSizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		ySizeField.setSize(new Dimension(62, 30));
 		ySizeField.setFont(defaultFont);
-		ySizeField.setEditable(false);
 		ySizeField.setHorizontalAlignment(JTextField.CENTER);
+		ySizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
+						element.updateUV();
+						manager.updateValues();
+					}
+					
+				}
+			}
+		});
+		ySizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		zSizeField.setSize(new Dimension(62, 30));
 		zSizeField.setFont(defaultFont);
-		zSizeField.setEditable(false);
 		zSizeField.setHorizontalAlignment(JTextField.CENTER);
+		zSizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+						element.updateUV();
+						manager.updateValues();
+					}
+					
+				}
+			}
+		});
+		zSizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		btnPlusX.addActionListener(e ->
 		{
@@ -219,12 +317,18 @@ public class SizePanel extends JPanel implements IValueUpdater
 	{
 		if (cube != null)
 		{
+			xSizeField.setEnabled(true);
+			ySizeField.setEnabled(true);
+			zSizeField.setEnabled(true);
 			xSizeField.setText(df.format(cube.getWidth()));
 			ySizeField.setText(df.format(cube.getHeight()));
 			zSizeField.setText(df.format(cube.getDepth()));
 		}
 		else
 		{
+			xSizeField.setEnabled(false);
+			ySizeField.setEnabled(false);
+			zSizeField.setEnabled(false);
 			xSizeField.setText("");
 			ySizeField.setText("");
 			zSizeField.setText("");

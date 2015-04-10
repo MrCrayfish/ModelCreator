@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -13,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.Parser;
 
 public class OriginPanel extends JPanel implements IValueUpdater
 {
@@ -61,18 +66,102 @@ public class OriginPanel extends JPanel implements IValueUpdater
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xOriginField.setSize(new Dimension(62, 30));
 		xOriginField.setFont(defaultFont);
-		xOriginField.setEditable(false);
 		xOriginField.setHorizontalAlignment(JTextField.CENTER);
+		xOriginField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
+						manager.updateValues();
+					}	
+				}
+			}
+		});
+		xOriginField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
+					manager.updateValues();
+				}
+			}
+		});
 
 		yOriginField.setSize(new Dimension(62, 30));
 		yOriginField.setFont(defaultFont);
-		yOriginField.setEditable(false);
 		yOriginField.setHorizontalAlignment(JTextField.CENTER);
+		yOriginField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
+						manager.updateValues();
+					}	
+				}
+			}
+		});
+		yOriginField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
+					manager.updateValues();
+				}
+			}
+		});
 
 		zOriginField.setSize(new Dimension(62, 30));
 		zOriginField.setFont(defaultFont);
-		zOriginField.setEditable(false);
 		zOriginField.setHorizontalAlignment(JTextField.CENTER);
+		zOriginField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedCuboid();
+					if(element != null)
+					{
+						element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
+						manager.updateValues();
+					}	
+				}
+			}
+		});
+		zOriginField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedCuboid();
+				if(element != null)
+				{
+					element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
+					manager.updateValues();
+				}
+			}
+		});
 
 		btnPlusX.addActionListener(e ->
 		{
@@ -213,12 +302,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 	{
 		if (cube != null)
 		{
+			xOriginField.setEnabled(true);
+			yOriginField.setEnabled(true);
+			zOriginField.setEnabled(true);
 			xOriginField.setText(df.format(cube.getOriginX()));
 			yOriginField.setText(df.format(cube.getOriginY()));
 			zOriginField.setText(df.format(cube.getOriginZ()));
 		}
 		else
 		{
+			xOriginField.setEnabled(false);
+			yOriginField.setEnabled(false);
+			zOriginField.setEnabled(false);
 			xOriginField.setText("");
 			yOriginField.setText("");
 			zOriginField.setText("");

@@ -3,6 +3,7 @@ package com.mrcrayfish.modelcreator;
 import java.io.File;
 import java.util.Properties;
 
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
@@ -11,6 +12,14 @@ public class Start
 {
 	public static void main(String[] args)
 	{
+		Double version = Double.parseDouble(System.getProperty("java.specification.version"));
+		if(version < 1.8)
+		{
+			JOptionPane.showMessageDialog(null, "You need Java 1.8 or higher to run this program.");
+			return;
+		}
+		
+		
 		System.setProperty("org.lwjgl.util.Debug", "true");
 		System.setProperty("org.lwjgl.librarypath", new File("natives/windows").getAbsolutePath());
 

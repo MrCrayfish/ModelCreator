@@ -38,7 +38,7 @@ public class Sidebar
 		glDisable(GL_BLEND);
 	}
 	
-	public void handleInput()
+	public void handleInput(int canvasHeight)
 	{
 		
 	}

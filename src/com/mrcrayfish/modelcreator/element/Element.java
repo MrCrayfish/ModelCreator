@@ -38,6 +38,7 @@ public class Element
 		this.height = height;
 		this.depth = depth;
 		initFaces();
+		updateUV();
 	}
 
 	public Element(Element cuboid)

@@ -473,7 +473,7 @@ public class ModelCreator extends JFrame
 
 		if (Mouse.getX() < offset)
 		{
-			SIDEBAR_UV.handleInput();
+			SIDEBAR_UV.handleInput(getHeight());
 		}
 		else
 		{

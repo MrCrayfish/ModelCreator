@@ -41,15 +41,18 @@ public class UVSidebar extends Sidebar
 		{
 			glTranslatef(10, 30, 0);
 
+			int count = 0;
+
 			for (int i = 0; i < 6; i++)
 			{
 				glPushMatrix();
 				{
 					if (30 + i * (LENGTH + 10) + (LENGTH + 10) > canvasHeight)
 					{
-						glTranslatef(20 + LENGTH, (5 - i) * (LENGTH + 10), 0);
+						glTranslatef(10 + LENGTH, count * (LENGTH + 10), 0);
 						startX[i] = 20 + LENGTH;
-						startY[i] = (5 - i) * (LENGTH + 10) + 30;
+						startY[i] = count * (LENGTH + 10) + 40;
+						count++;
 					}
 					else
 					{
@@ -125,9 +128,9 @@ public class UVSidebar extends Sidebar
 	private boolean grabbing = false;
 
 	@Override
-	public void handleInput()
+	public void handleInput(int canvasHeight)
 	{
-		super.handleInput();
+		super.handleInput(canvasHeight);
 
 		if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
 		{
@@ -148,7 +151,7 @@ public class UVSidebar extends Sidebar
 			int newMouseX = Mouse.getX();
 			int newMouseY = Mouse.getY();
 
-			int side = getFace(newMouseX, newMouseY);
+			int side = getFace(canvasHeight, newMouseX, newMouseY);
 			if (side != -1 | selected != -1)
 			{
 				if (manager.getSelectedCuboid() != null)
@@ -192,15 +195,18 @@ public class UVSidebar extends Sidebar
 		}
 	}
 
-	public int getFace(int mouseX, int mouseY)
+	public int getFace(int canvasHeight, int mouseX, int mouseY)
 	{
+		System.out.println(mouseX + ":" + (canvasHeight - mouseY));
 		for (int i = 0; i < 6; i++)
 		{
+			System.out.println(startX[i] + " " + startY[i] + "\n");
 			if (mouseX >= startX[i] && mouseX <= startX[i] + LENGTH)
 			{
-				if (mouseY >= startY[i] && mouseY <= startY[i] + LENGTH)
+				if ((canvasHeight - mouseY - 45) >= startY[i] && (canvasHeight - mouseY - 45) <= startY[i] + LENGTH)
 				{
-					return 5 - i;
+					System.out.println(Face.getFaceName(5 - i));
+					return i;
 				}
 			}
 		}

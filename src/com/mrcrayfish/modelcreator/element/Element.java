@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.GL_LINES;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
 
 public class Element
@@ -142,6 +143,11 @@ public class Element
 			face.setTextureLocation("blocks/");
 		}
 	}
+	
+	public void setAllTextures(ClipboardTexture texture)
+	{
+		setAllTextures(texture.getLocation(), texture.getTexture());
+	}
 
 	public void setAllTextures(String location, String texture)
 	{
@@ -149,6 +155,18 @@ public class Element
 		{
 			face.setTexture(texture);
 			face.setTextureLocation(location);
+		}
+	}
+	
+	public void setAllUVCoords(ClipboardTexture texture)
+	{
+		for (Face face : faces)
+		{
+			face.setStartU(texture.getStartU());
+			face.setStartV(texture.getStartV());
+			face.setEndU(texture.getEndU());
+			face.setEndV(texture.getEndV());
+			face.setRotation(texture.getRotation());
 		}
 	}
 

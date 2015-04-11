@@ -75,13 +75,13 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -91,7 +91,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
 					element.updateUV();
@@ -111,13 +111,13 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -127,7 +127,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
 					element.updateUV();
@@ -147,13 +147,13 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -163,7 +163,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
 					element.updateUV();

@@ -66,7 +66,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		horizontalBox.add(boxFill);
 		horizontalBox.add(boxEnabled);
 		horizontalBox.add(boxAutoUV);
-		
+
 	}
 
 	public void addComponents()

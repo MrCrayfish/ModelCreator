@@ -77,13 +77,13 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -93,7 +93,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
 					element.updateUV();
@@ -113,13 +113,13 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -129,7 +129,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
 					element.updateUV();
@@ -149,13 +149,13 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
 						element.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -165,7 +165,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
 					element.updateUV();

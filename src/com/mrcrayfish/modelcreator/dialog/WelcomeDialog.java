@@ -21,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import org.newdawn.slick.util.ResourceLoader;
-
 public class WelcomeDialog
 {
 	public static void show(JFrame parent)
@@ -66,14 +64,15 @@ public class WelcomeDialog
 		btnGrid.add(btnDonate);
 
 		JButton btnTwitter = new JButton("Twitter");
-		btnTwitter.addActionListener(new ActionListener(){
+		btnTwitter.addActionListener(new ActionListener()
+		{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
 				openUrl("https://www.twitter.com/MrCraayfish");
 			}
-			
+
 		});
 		btnGrid.add(btnTwitter);
 
@@ -104,7 +103,7 @@ public class WelcomeDialog
 		dialog.setVisible(true);
 		dialog.requestFocusInWindow();
 	}
-	
+
 	private static void openUrl(String url)
 	{
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;

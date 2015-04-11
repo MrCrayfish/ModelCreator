@@ -37,9 +37,9 @@ public class Sidebar
 		FontManager.BEBAS_NEUE_20.drawString(5, 5, title, new Color(0.5F, 0.5F, 0.6F));
 		glDisable(GL_BLEND);
 	}
-	
+
 	public void handleInput(int canvasHeight)
 	{
-		
+
 	}
 }

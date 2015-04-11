@@ -82,14 +82,14 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(manager.getSelectedCuboid() != null)
+					if (manager.getSelectedCuboid() != null)
 					{
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
 						face.updateUV();
 						manager.updateValues();
 					}
-					
+
 				}
 			}
 		});
@@ -98,7 +98,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(manager.getSelectedCuboid() != null)
+				if (manager.getSelectedCuboid() != null)
 				{
 					Face face = manager.getSelectedCuboid().getSelectedFace();
 					face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
@@ -118,7 +118,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(manager.getSelectedCuboid() != null)
+					if (manager.getSelectedCuboid() != null)
 					{
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
@@ -133,7 +133,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(manager.getSelectedCuboid() != null)
+				if (manager.getSelectedCuboid() != null)
 				{
 					Face face = manager.getSelectedCuboid().getSelectedFace();
 					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
@@ -153,7 +153,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(manager.getSelectedCuboid() != null)
+					if (manager.getSelectedCuboid() != null)
 					{
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
@@ -168,7 +168,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(manager.getSelectedCuboid() != null)
+				if (manager.getSelectedCuboid() != null)
 				{
 					Face face = manager.getSelectedCuboid().getSelectedFace();
 					face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
@@ -188,7 +188,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if(manager.getSelectedCuboid() != null)
+					if (manager.getSelectedCuboid() != null)
 					{
 						Face face = manager.getSelectedCuboid().getSelectedFace();
 						face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
@@ -203,7 +203,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(manager.getSelectedCuboid() != null)
+				if (manager.getSelectedCuboid() != null)
 				{
 					Face face = manager.getSelectedCuboid().getSelectedFace();
 					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
@@ -231,7 +231,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				manager.updateValues();
 			}
 		});
-		
+
 		btnPlusX.setSize(new Dimension(62, 30));
 		btnPlusX.setFont(defaultFont);
 		btnPlusX.setToolTipText("<html>Increases the start U.<br><b>Hold shift for decimals</b></html>");

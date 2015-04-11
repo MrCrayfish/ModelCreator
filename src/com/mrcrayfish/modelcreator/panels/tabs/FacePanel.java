@@ -140,9 +140,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
-		modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>"
-				                + "texture in a sub folder, write the custom directory<br>"
-				                + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
+		modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>" + "texture in a sub folder, write the custom directory<br>" + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
 		panelModId.add(modidField);
 	}
 

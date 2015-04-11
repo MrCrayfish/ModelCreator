@@ -2,13 +2,7 @@ package com.mrcrayfish.modelcreator.sidebar;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
-
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.TextureImpl;
 
@@ -92,7 +86,7 @@ public class UVSidebar extends Sidebar
 							glVertex2i(0, 0);
 						}
 						glEnd();
-						
+
 						TextureImpl.bindNone();
 
 						glColor3f(1, 1, 1);
@@ -176,12 +170,12 @@ public class UVSidebar extends Sidebar
 						else
 						{
 							face.setAutoUVEnabled(false);
-							
+
 							if ((face.getEndU() + xMovement) <= 16.0)
 								face.addTextureXEnd(xMovement);
 							if ((face.getEndV() - yMovement) <= 16.0)
 								face.addTextureYEnd(-yMovement);
-							
+
 							face.setAutoUVEnabled(false);
 						}
 						face.updateUV();

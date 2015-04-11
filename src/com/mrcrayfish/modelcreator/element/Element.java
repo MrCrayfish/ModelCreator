@@ -152,7 +152,6 @@ public class Element
 		}
 	}
 
-
 	public void draw()
 	{
 		GL11.glPushMatrix();
@@ -265,7 +264,7 @@ public class Element
 	{
 		return startZ;
 	}
-	
+
 	public void setStartX(double amt)
 	{
 		this.startX = amt;
@@ -310,17 +309,17 @@ public class Element
 	{
 		this.depth += amt;
 	}
-	
+
 	public void setWidth(double width)
 	{
 		this.width = width;
 	}
-	
+
 	public void setHeight(double height)
 	{
 		this.height = height;
 	}
-	
+
 	public void setDepth(double depth)
 	{
 		this.depth = depth;
@@ -340,12 +339,12 @@ public class Element
 	{
 		return originZ;
 	}
-	
+
 	public void addOriginX(double amt)
 	{
 		this.originX += amt;
 	}
-	
+
 	public void addOriginY(double amt)
 	{
 		this.originY += amt;
@@ -360,7 +359,7 @@ public class Element
 	{
 		this.originX = amt;
 	}
-	
+
 	public void setOriginY(double amt)
 	{
 		this.originY = amt;
@@ -370,7 +369,7 @@ public class Element
 	{
 		this.originZ = amt;
 	}
-	
+
 	public double getRotation()
 	{
 		return rotation;
@@ -421,9 +420,11 @@ public class Element
 	{
 		return name;
 	}
-	
-	public void updateUV() {
-		for(Face face : faces) {
+
+	public void updateUV()
+	{
+		for (Face face : faces)
+		{
 			face.updateUV();
 		}
 	}
@@ -457,7 +458,7 @@ public class Element
 		}
 		return "x";
 	}
-	
+
 	public static int parseAxisString(String axis)
 	{
 		switch (axis)

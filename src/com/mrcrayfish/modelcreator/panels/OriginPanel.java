@@ -75,11 +75,11 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
 						manager.updateValues();
-					}	
+					}
 				}
 			}
 		});
@@ -89,7 +89,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
 					manager.updateValues();
@@ -108,11 +108,11 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
 						manager.updateValues();
-					}	
+					}
 				}
 			}
 		});
@@ -122,7 +122,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
 					manager.updateValues();
@@ -141,11 +141,11 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
 					Element element = manager.getSelectedCuboid();
-					if(element != null)
+					if (element != null)
 					{
 						element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
 						manager.updateValues();
-					}	
+					}
 				}
 			}
 		});
@@ -155,7 +155,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			public void focusLost(FocusEvent e)
 			{
 				Element element = manager.getSelectedCuboid();
-				if(element != null)
+				if (element != null)
 				{
 					element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
 					manager.updateValues();

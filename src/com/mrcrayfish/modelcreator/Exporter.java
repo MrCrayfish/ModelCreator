@@ -33,7 +33,8 @@ public class Exporter
 			BufferedWriter writer;
 			try
 			{
-				if(!file.exists()) {
+				if (!file.exists())
+				{
 					file.createNewFile();
 				}
 				fw = new FileWriter(file);
@@ -168,7 +169,8 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if(face.isEnabled()) {
+			if (face.isEnabled())
+			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
 				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
@@ -188,26 +190,16 @@ public class Exporter
 		writer.write(space(3) + "}");
 	}
 
-	/*private void writeChild(BufferedWriter writer) throws IOException
-	{
-		writer.write("{");
-		writer.newLine();
-		writer.write(space(1) + "\"parent\": \"block/" + modelName + "\",");
-		writer.newLine();
-		writer.write(space(1) + "\"textures\": {");
-		writer.newLine();
-		for (int i = 0; i < textureList.size(); i++)
-		{
-			writer.write(space(2) + "\"" + i + "\": \"block/" + textureList.get(i) + "\"");
-			if (i != textureList.size() - 1)
-			{
-				writer.write(",");
-			}
-			writer.newLine();
-		}
-		writer.write(space(1) + "}");
-		writer.write("}");
-	}*/
+	/*
+	 * private void writeChild(BufferedWriter writer) throws IOException {
+	 * writer.write("{"); writer.newLine(); writer.write(space(1) +
+	 * "\"parent\": \"block/" + modelName + "\","); writer.newLine();
+	 * writer.write(space(1) + "\"textures\": {"); writer.newLine(); for (int i
+	 * = 0; i < textureList.size(); i++) { writer.write(space(2) + "\"" + i +
+	 * "\": \"block/" + textureList.get(i) + "\""); if (i != textureList.size()
+	 * - 1) { writer.write(","); } writer.newLine(); } writer.write(space(1) +
+	 * "}"); writer.write("}"); }
+	 */
 
 	private String space(int size)
 	{

@@ -67,8 +67,8 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
-				manager.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
+			if (manager.getSelectedElement() != null)
+				manager.getSelectedElement().setPrevAxis(axisList.getSelectedIndex());
 		});
 		axisPanel.setMaximumSize(new Dimension(186, 50));
 		axisPanel.add(axisList);
@@ -89,7 +89,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().setRotation(rotation.getValue() * 22.5D);
+			manager.getSelectedElement().setRotation(rotation.getValue() * 22.5D);
 		});
 		rotation.setToolTipText("<html>The rotation of the element<br>Default: 0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
@@ -101,7 +101,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		btnRescale.setToolTipText("<html>Should scale faces across whole block<br>Default: Off<html>");
 		btnRescale.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().setRescale(btnRescale.isSelected());
+			manager.getSelectedElement().setRescale(btnRescale.isSelected());
 		});
 		extraPanel.setMaximumSize(new Dimension(186, 50));
 		extraPanel.add(btnRescale);

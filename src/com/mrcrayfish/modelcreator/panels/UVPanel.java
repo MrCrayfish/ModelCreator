@@ -82,9 +82,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						Face face = manager.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
 						face.updateUV();
 						manager.updateValues();
@@ -98,9 +98,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getSelectedFace();
+					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
 					face.updateUV();
 					manager.updateValues();
@@ -118,9 +118,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						Face face = manager.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
 						face.updateUV();
 						manager.updateValues();
@@ -133,9 +133,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getSelectedFace();
+					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
 					face.updateUV();
 					manager.updateValues();
@@ -153,9 +153,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						Face face = manager.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
 						face.updateUV();
 						manager.updateValues();
@@ -168,9 +168,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getSelectedFace();
+					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
 					face.updateUV();
 					manager.updateValues();
@@ -188,9 +188,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						Face face = manager.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
 						face.updateUV();
 						manager.updateValues();
@@ -203,9 +203,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getSelectedFace();
+					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
 					face.updateUV();
 					manager.updateValues();
@@ -215,9 +215,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -238,9 +238,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -260,9 +260,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -282,9 +282,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -304,9 +304,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnPlusXEnd.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -326,9 +326,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnPlusYEnd.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -348,9 +348,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnNegXEnd.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
@@ -370,9 +370,9 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 		btnNegYEnd.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{

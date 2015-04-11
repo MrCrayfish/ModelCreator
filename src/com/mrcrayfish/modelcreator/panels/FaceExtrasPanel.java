@@ -40,26 +40,26 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setCullface(boxCullFace.isSelected());
+			manager.getSelectedElement().getSelectedFace().setCullface(boxCullFace.isSelected());
 		});
 		boxFill = new JRadioButton("Fill");
 		boxFill.setToolTipText("<html>Makes the texture fill the face<br>Default: Off</html>");
 		boxFill.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().fitTexture(boxFill.isSelected());
+			manager.getSelectedElement().getSelectedFace().fitTexture(boxFill.isSelected());
 		});
 		boxEnabled = new JRadioButton("Enable");
 		boxEnabled.setToolTipText("<html>Determines if face should be rendered<br>Default: On</html>");
 		boxEnabled.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setEnabled(boxEnabled.isSelected());
+			manager.getSelectedElement().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
 		boxAutoUV = new JRadioButton("Auto UV");
 		boxAutoUV.setToolTipText("<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
 		boxAutoUV.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
-			manager.getSelectedCuboid().getSelectedFace().updateUV();
+			manager.getSelectedElement().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
+			manager.getSelectedElement().getSelectedFace().updateUV();
 			manager.updateValues();
 		});
 		horizontalBox.add(boxCullFace);

@@ -6,15 +6,15 @@ import com.mrcrayfish.modelcreator.texture.PendingTexture;
 
 public interface ElementManager
 {
-	public Element getSelectedCuboid();
+	public Element getSelectedElement();
 
-	public void setSelectedCuboid(int pos);
+	public void setSelectedElement(int pos);
 
-	public List<Element> getAllCuboids();
+	public List<Element> getAllElements();
 
-	public Element getCuboid(int index);
+	public Element getElement(int index);
 
-	public int getCuboidCount();
+	public int getElementCount();
 
 	public void clearElements();
 

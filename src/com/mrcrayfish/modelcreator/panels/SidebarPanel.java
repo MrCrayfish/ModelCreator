@@ -162,7 +162,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			Element cube = getSelectedCuboid();
+			Element cube = getSelectedElement();
 			if (cube != null)
 			{
 				tabbedPane.updateValues();
@@ -209,7 +209,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	}
 
 	@Override
-	public Element getSelectedCuboid()
+	public Element getSelectedElement()
 	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
@@ -218,7 +218,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	}
 
 	@Override
-	public void setSelectedCuboid(int pos)
+	public void setSelectedElement(int pos)
 	{
 		if (pos < model.size())
 		{
@@ -228,7 +228,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	}
 
 	@Override
-	public List<Element> getAllCuboids()
+	public List<Element> getAllElements()
 	{
 		List<Element> list = new ArrayList<Element>();
 		for (int i = 0; i < model.size(); i++)
@@ -239,13 +239,13 @@ public class SidebarPanel extends JPanel implements ElementManager
 	}
 
 	@Override
-	public Element getCuboid(int index)
+	public Element getElement(int index)
 	{
 		return model.getElementAt(index);
 	}
 
 	@Override
-	public int getCuboidCount()
+	public int getElementCount()
 	{
 		return model.size();
 	}
@@ -256,7 +256,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		String newName = name.getText();
 		if (newName.isEmpty())
 			newName = "Cuboid";
-		Element cube = getSelectedCuboid();
+		Element cube = getSelectedElement();
 		if (cube != null)
 		{
 			cube.setName(newName);

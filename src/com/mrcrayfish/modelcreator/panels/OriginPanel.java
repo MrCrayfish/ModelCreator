@@ -74,7 +74,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
@@ -88,7 +88,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
@@ -107,7 +107,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
@@ -121,7 +121,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
@@ -140,7 +140,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
@@ -154,7 +154,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
@@ -165,9 +165,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginX(0.1F);
@@ -185,9 +185,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginY(0.1F);
@@ -205,9 +205,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginZ(0.1F);
@@ -225,9 +225,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginX(-0.1F);
@@ -245,9 +245,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginY(-0.1F);
@@ -265,9 +265,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addOriginZ(-0.1F);

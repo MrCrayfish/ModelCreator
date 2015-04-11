@@ -355,10 +355,10 @@ public class ModelCreator extends JFrame
 		drawGrid();
 
 		glTranslatef(-8, 0, -8);
-		for (int i = 0; i < manager.getCuboidCount(); i++)
+		for (int i = 0; i < manager.getElementCount(); i++)
 		{
 			GL11.glLoadName(i + 1);
-			Element cube = manager.getCuboid(i);
+			Element cube = manager.getElement(i);
 			cube.draw();
 			GL11.glLoadName(0);
 			cube.drawExtras(manager);
@@ -486,8 +486,8 @@ public class ModelCreator extends JFrame
 						int sel = select(Mouse.getX(), Mouse.getY());
 						if (sel >= 0)
 						{
-							grabbed = manager.getAllCuboids().get(sel);
-							manager.setSelectedCuboid(sel);
+							grabbed = manager.getAllElements().get(sel);
+							manager.setSelectedElement(sel);
 						}
 					}
 				}

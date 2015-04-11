@@ -58,7 +58,7 @@ public class Exporter
 
 	private void compileTextureList()
 	{
-		for (Element cuboid : manager.getAllCuboids())
+		for (Element cuboid : manager.getAllElements())
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
@@ -85,15 +85,15 @@ public class Exporter
 		writeTextures(writer);
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");
-		for (int i = 0; i < manager.getCuboidCount(); i++)
+		for (int i = 0; i < manager.getElementCount(); i++)
 		{
 			writer.newLine();
 			writer.write(space(2) + "{");
 			writer.newLine();
-			writeElement(writer, manager.getCuboid(i));
+			writeElement(writer, manager.getElement(i));
 			writer.newLine();
 			writer.write(space(2) + "}");
-			if (i != manager.getCuboidCount() - 1)
+			if (i != manager.getElementCount() - 1)
 				writer.write(",");
 		}
 		writer.newLine();

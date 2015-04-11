@@ -46,12 +46,12 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSelect.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
 				String texture = TextureManager.display(manager);
 				if (texture != null)
 				{
-					manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
+					manager.getSelectedElement().getSelectedFace().setTexture(texture);
 				}
 			}
 		});
@@ -61,15 +61,15 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnClear = new JButton("Clear");
 		btnClear.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					manager.getSelectedCuboid().setAllTextures(null, null);
+					manager.getSelectedElement().setAllTextures(null, null);
 				}
 				else
 				{
-					manager.getSelectedCuboid().getSelectedFace().setTexture(null);
+					manager.getSelectedElement().getSelectedFace().setTexture(null);
 				}
 			}
 		});
@@ -79,9 +79,9 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnCopy = new JButton("Copy");
 		btnCopy.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Face face = manager.getSelectedCuboid().getSelectedFace();
+				Face face = manager.getSelectedElement().getSelectedFace();
 				Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName());
 			}
 		});
@@ -91,18 +91,18 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnPaste = new JButton("Paste");
 		btnPaste.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
 				ClipboardTexture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
-						manager.getSelectedCuboid().setAllTextures(texture.getLocation(), texture.getTexture());
+						manager.getSelectedElement().setAllTextures(texture.getLocation(), texture.getTexture());
 					}
 					else
 					{
-						Face face = manager.getSelectedCuboid().getSelectedFace();
+						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setTexture(texture.getTexture());
 						face.setTextureLocation(texture.getLocation());
 					}
@@ -125,9 +125,9 @@ public class TexturePanel extends JPanel implements TextureCallback
 	public void callback(boolean success, String texture)
 	{
 		if (success)
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				manager.getSelectedCuboid().getSelectedFace().setTexture(texture);
+				manager.getSelectedElement().getSelectedFace().setTexture(texture);
 			}
 	}
 }

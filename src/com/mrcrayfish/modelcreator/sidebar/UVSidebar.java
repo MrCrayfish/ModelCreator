@@ -60,8 +60,8 @@ public class UVSidebar extends Sidebar
 					glColor3f(color.getRed(), color.getGreen(), color.getBlue());
 
 					Face[] faces = null;
-					if (manager.getSelectedCuboid() != null)
-						faces = manager.getSelectedCuboid().getAllFaces();
+					if (manager.getSelectedElement() != null)
+						faces = manager.getSelectedElement().getAllFaces();
 
 					if (faces != null)
 					{
@@ -151,9 +151,9 @@ public class UVSidebar extends Sidebar
 			int side = getFace(canvasHeight, newMouseX, newMouseY);
 			if (side != -1 | selected != -1)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getAllFaces()[(selected != -1 ? selected : side)];
+					Face face = manager.getSelectedElement().getAllFaces()[(selected != -1 ? selected : side)];
 
 					int xMovement = (int) ((newMouseX - this.lastMouseX) / 5);
 					int yMovement = (int) ((newMouseY - this.lastMouseY) / 5);

@@ -76,7 +76,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
@@ -92,7 +92,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
@@ -112,7 +112,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
@@ -128,7 +128,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
@@ -148,7 +148,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedCuboid();
+					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
 						element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
@@ -164,7 +164,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedCuboid();
+				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
 					element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
@@ -177,9 +177,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 		btnPlusX.addActionListener(e ->
 		{
 			System.out.println("Hey");
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartX(0.1F);
@@ -197,9 +197,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartY(0.1F);
@@ -217,9 +217,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartZ(0.1F);
@@ -237,9 +237,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartX(-0.1F);
@@ -257,9 +257,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartY(-0.1F);
@@ -277,9 +277,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addStartZ(-0.1F);

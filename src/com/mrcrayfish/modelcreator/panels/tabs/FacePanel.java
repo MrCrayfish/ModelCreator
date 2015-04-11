@@ -76,10 +76,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 		menuList.setModel(model);
 		menuList.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				manager.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
-				updateValues(manager.getSelectedCuboid());
+				manager.getSelectedElement().setSelectedFace(menuList.getSelectedIndex());
+				updateValues(manager.getSelectedElement());
 			}
 		});
 		menuList.setToolTipText("The face to edit.");
@@ -105,7 +105,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue());
+			manager.getSelectedElement().getSelectedFace().setRotation(rotation.getValue());
 		});
 		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
@@ -122,9 +122,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+						manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
 					}
 				}
 			}
@@ -134,9 +134,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+					manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
 				}
 			}
 		});

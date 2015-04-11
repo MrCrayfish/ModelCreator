@@ -208,7 +208,7 @@ public class Element
 
 	public void drawExtras(ElementManager manager)
 	{
-		if (manager.getSelectedCuboid() == this)
+		if (manager.getSelectedElement() == this)
 		{
 			GL11.glPushMatrix();
 			{

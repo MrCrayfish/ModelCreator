@@ -33,7 +33,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 		btnShade = new JRadioButton("Shade");
 		btnShade.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().setShade(btnShade.isSelected());
+			manager.getSelectedElement().setShade(btnShade.isSelected());
 		});
 		btnShade.setToolTipText("<html>Determines if shadows should be rendered<br>Default: On</html>");
 	}

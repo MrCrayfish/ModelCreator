@@ -149,7 +149,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 					Element element = manager.getSelectedElement();
 					if (element != null)
 					{
-						element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+						element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
 						element.updateUV();
 						manager.updateValues();
 					}
@@ -165,7 +165,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				Element element = manager.getSelectedElement();
 				if (element != null)
 				{
-					element.setHeight(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
 					element.updateUV();
 					manager.updateValues();
 				}

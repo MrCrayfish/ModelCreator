@@ -75,9 +75,10 @@ public class ModelCreator extends JFrame
 	private boolean grabbing = false;
 	private boolean closeRequested = false;
 
+	/* Sidebar Variables */
 	private final int SIDEBAR_WIDTH = 130;
 	public Sidebar activeSidebar = null;
-	public static Sidebar SIDEBAR_UV;
+	public static Sidebar uvSidebar;
 
 	public ModelCreator(String title)
 	{
@@ -91,7 +92,7 @@ public class ModelCreator extends JFrame
 
 		initComponents();
 
-		SIDEBAR_UV = new UVSidebar("UV Editor", manager);
+		uvSidebar = new UVSidebar("UV Editor", manager);
 
 		canvas.addComponentListener(new ComponentAdapter()
 		{
@@ -199,7 +200,7 @@ public class ModelCreator extends JFrame
 
 		JMenuItem menuItemExport = new JMenuItem("Export");
 		menuItemExport.setMnemonic(KeyEvent.VK_E);
-		menuItemExport.setToolTipText("Export model to JSON");
+		menuItemExport.setToolTipText("Export Model to JSON");
 		menuItemExport.addActionListener(e ->
 		{
 			JFileChooser chooser = new JFileChooser();
@@ -223,7 +224,7 @@ public class ModelCreator extends JFrame
 
 		JMenuItem menuItemExit = new JMenuItem("Exit");
 		menuItemExit.setMnemonic(KeyEvent.VK_E);
-		menuItemExit.setToolTipText("Exit application");
+		menuItemExit.setToolTipText("Exit Application");
 		menuItemExit.addActionListener(e ->
 		{
 			System.exit(0);
@@ -232,11 +233,11 @@ public class ModelCreator extends JFrame
 		// Going to change this to be integrated into the import option
 		JMenuItem menuItemTexturePath = new JMenuItem("Set Texture path");
 		menuItemTexturePath.setMnemonic(KeyEvent.VK_S);
-		menuItemTexturePath.setToolTipText("Set the base path from where to look for textures");
+		menuItemTexturePath.setToolTipText("Set the base path to look for textures");
 		menuItemTexturePath.addActionListener(e ->
 		{
 			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Texture path");
+			chooser.setDialogTitle("Texture Path");
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -472,7 +473,7 @@ public class ModelCreator extends JFrame
 
 		if (Mouse.getX() < offset)
 		{
-			SIDEBAR_UV.handleInput(getHeight());
+			activeSidebar.handleInput(getHeight());
 		}
 		else
 		{

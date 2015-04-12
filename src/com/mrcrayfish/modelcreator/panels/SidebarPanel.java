@@ -184,7 +184,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		{
 			if (tabbedPane.getSelectedIndex() == 2)
 			{
-				creator.setSidebar(ModelCreator.SIDEBAR_UV);
+				creator.setSidebar(ModelCreator.uvSidebar);
 			}
 			else
 			{

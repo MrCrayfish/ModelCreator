@@ -157,18 +157,6 @@ public class Element
 			face.setTextureLocation(location);
 		}
 	}
-	
-	public void setAllUVCoords(ClipboardTexture texture)
-	{
-		for (Face face : faces)
-		{
-			face.setStartU(texture.getStartU());
-			face.setStartV(texture.getStartV());
-			face.setEndU(texture.getEndU());
-			face.setEndV(texture.getEndV());
-			face.setRotation(texture.getRotation());
-		}
-	}
 
 	public void draw()
 	{

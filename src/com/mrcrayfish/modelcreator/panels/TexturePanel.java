@@ -82,7 +82,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			if (manager.getSelectedElement() != null)
 			{
 				Face face = manager.getSelectedElement().getSelectedFace();
-				Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName(), face.getStartU(), face.getStartV(), face.getEndU(), face.getEndV(), face.getRotation());
+				Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName());
 			}
 		});
 		btnCopy.setFont(defaultFont);
@@ -99,18 +99,12 @@ public class TexturePanel extends JPanel implements TextureCallback
 					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 					{
 						manager.getSelectedElement().setAllTextures(texture);
-						manager.getSelectedElement().setAllUVCoords(texture);
 					}
 					else
 					{
 						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setTexture(texture.getTexture());
 						face.setTextureLocation(texture.getLocation());
-						face.setStartU(texture.getStartU());
-						face.setStartV(texture.getStartV());
-						face.setEndU(texture.getEndU());
-						face.setEndV(texture.getEndV());
-						face.setRotation(texture.getRotation());
 					}
 				}
 			}

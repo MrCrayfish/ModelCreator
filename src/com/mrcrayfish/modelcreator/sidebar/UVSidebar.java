@@ -70,19 +70,19 @@ public class UVSidebar extends Sidebar
 						glBegin(GL_QUADS);
 						{
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(0, true);
+								glTexCoord2f(0, 1);
 							glVertex2i(0, LENGTH);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(1, true);
+								glTexCoord2f(1, 1);
 							glVertex2i(LENGTH, LENGTH);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(2, true);
+								glTexCoord2f(1, 0);
 							glVertex2i(LENGTH, 0);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(3, true);
+								glTexCoord2f(0, 0);
 							glVertex2i(0, 0);
 						}
 						glEnd();

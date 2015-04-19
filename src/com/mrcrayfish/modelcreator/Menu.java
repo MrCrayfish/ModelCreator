@@ -57,9 +57,9 @@ public class Menu extends JMenuBar
 			itemNew = createItem("New", "New Model", KeyEvent.VK_N, new ImageIcon(getClass().getClassLoader().getResource("icons/new.png")));
 			itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load);
 			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk);
-			itemImport = createItem("Import JSON", "Import Model from JSON", KeyEvent.VK_I, new ImageIcon(getClass().getClassLoader().getResource("icons/import.png")));
-			itemExport = createItem("Export JSON", "Export Model to JSON", KeyEvent.VK_E, new ImageIcon(getClass().getClassLoader().getResource("icons/export.png")));
-			itemTexturePath = createItem("Set Texture Path", "Set the base path to look for textures", KeyEvent.VK_S, new ImageIcon(getClass().getClassLoader().getResource("icons/texture.png")));
+			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, new ImageIcon(getClass().getClassLoader().getResource("icons/import.png")));
+			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, new ImageIcon(getClass().getClassLoader().getResource("icons/export.png")));
+			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, new ImageIcon(getClass().getClassLoader().getResource("icons/texture.png")));
 			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, new ImageIcon(getClass().getClassLoader().getResource("icons/exit.png")));
 		}
 

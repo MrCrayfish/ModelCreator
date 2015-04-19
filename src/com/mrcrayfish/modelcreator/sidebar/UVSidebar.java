@@ -155,8 +155,8 @@ public class UVSidebar extends Sidebar
 				{
 					Face face = manager.getSelectedElement().getAllFaces()[(selected != -1 ? selected : side)];
 
-					int xMovement = (int) ((newMouseX - this.lastMouseX) / 5);
-					int yMovement = (int) ((newMouseY - this.lastMouseY) / 5);
+					int xMovement = (int) ((newMouseX - this.lastMouseX) / 6);
+					int yMovement = (int) ((newMouseY - this.lastMouseY) / 6);
 
 					if (xMovement != 0 | yMovement != 0)
 					{

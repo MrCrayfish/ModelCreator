@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,7 +15,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -45,7 +48,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(3, 4, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "UV"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>UV</b></html>"));
 		setMaximumSize(new Dimension(186, 124));
 		initComponents();
 		initProperties();
@@ -54,19 +57,19 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		btnPlusX = new JButton("+");
-		btnPlusY = new JButton("+");
+		btnPlusX = new JButton(Icons.arrow_up);
+		btnPlusY = new JButton(Icons.arrow_up);
 		xStartField = new JTextField();
 		yStartField = new JTextField();
-		btnNegX = new JButton("-");
-		btnNegY = new JButton("-");
+		btnNegX = new JButton(Icons.arrow_down);
+		btnNegY = new JButton(Icons.arrow_down);
 
-		btnPlusXEnd = new JButton("+");
-		btnPlusYEnd = new JButton("+");
+		btnPlusXEnd = new JButton(Icons.arrow_up);
+		btnPlusYEnd = new JButton(Icons.arrow_up);
 		xEndField = new JTextField();
 		yEndField = new JTextField();
-		btnNegXEnd = new JButton("-");
-		btnNegYEnd = new JButton("-");
+		btnNegXEnd = new JButton(Icons.arrow_down);
+		btnNegYEnd = new JButton(Icons.arrow_down);
 	}
 
 	public void initProperties()

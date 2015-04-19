@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -10,6 +11,7 @@ import javax.swing.JRadioButton;
 
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 public class FaceExtrasPanel extends JPanel implements IValueUpdater
 {
@@ -27,7 +29,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	{
 		this.manager = manager;
 		setLayout(new BorderLayout(0, 5));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
 		setMaximumSize(new Dimension(186, 100));
 		initComponents();
 		addComponents();
@@ -36,26 +38,22 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	public void initComponents()
 	{
 		horizontalBox = new JPanel(new GridLayout(2, 2));
-		boxCullFace = new JRadioButton("Cullface");
-		boxCullFace.setToolTipText("<html>Should render face is another block is adjacent<br>Default: Off</html>");
+		boxCullFace = ComponentUtil.createRadioButton("Cullface", "<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
 		{
 			manager.getSelectedElement().getSelectedFace().setCullface(boxCullFace.isSelected());
 		});
-		boxFill = new JRadioButton("Fill");
-		boxFill.setToolTipText("<html>Makes the texture fill the face<br>Default: Off</html>");
+		boxFill = ComponentUtil.createRadioButton("Fill", "<html>Makes the texture fill the face<br>Default: Off</html>");
 		boxFill.addActionListener(e ->
 		{
 			manager.getSelectedElement().getSelectedFace().fitTexture(boxFill.isSelected());
 		});
-		boxEnabled = new JRadioButton("Enable");
-		boxEnabled.setToolTipText("<html>Determines if face should be rendered<br>Default: On</html>");
+		boxEnabled = ComponentUtil.createRadioButton("Enable","<html>Determines if face should be rendered<br>Default: On</html>");
 		boxEnabled.addActionListener(e ->
 		{
 			manager.getSelectedElement().getSelectedFace().setEnabled(boxEnabled.isSelected());
 		});
-		boxAutoUV = new JRadioButton("Auto UV");
-		boxAutoUV.setToolTipText("<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
+		boxAutoUV = ComponentUtil.createRadioButton("Auto UV", "<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
 		boxAutoUV.addActionListener(e ->
 		{
 			manager.getSelectedElement().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());

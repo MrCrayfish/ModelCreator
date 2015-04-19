@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.Parser;
@@ -42,7 +44,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(3, 3, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Position"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Position</b></html>"));
 		setMaximumSize(new Dimension(186, 124));
 		setAlignmentX(JPanel.CENTER_ALIGNMENT);
 		initComponents();
@@ -52,15 +54,15 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		btnPlusX = new JButton("+");
-		btnPlusY = new JButton("+");
-		btnPlusZ = new JButton("+");
+		btnPlusX = new JButton(Icons.arrow_up);
+		btnPlusY = new JButton(Icons.arrow_up);
+		btnPlusZ = new JButton(Icons.arrow_up);
 		xPositionField = new JTextField();
 		yPositionField = new JTextField();
 		zPositionField = new JTextField();
-		btnNegX = new JButton("-");
-		btnNegY = new JButton("-");
-		btnNegZ = new JButton("-");
+		btnNegX = new JButton(Icons.arrow_down);
+		btnNegY = new JButton(Icons.arrow_down);
+		btnNegZ = new JButton(Icons.arrow_down);
 	}
 
 	public void initProperties()

@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
@@ -32,7 +34,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(2, 2, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Texture"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Texture</b></html>"));
 		setMaximumSize(new Dimension(186, 90));
 		initComponents();
 		addComponents();
@@ -42,8 +44,8 @@ public class TexturePanel extends JPanel implements TextureCallback
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
 
-		btnSelect = new JButton("Image...");
-		btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnSelect = new JButton("Image");
+		btnSelect.setIcon(Icons.texture);
 		btnSelect.addActionListener(e ->
 		{
 			if (manager.getSelectedElement() != null)
@@ -59,6 +61,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnSelect.setToolTipText("Opens the Texture Manager");
 
 		btnClear = new JButton("Clear");
+		btnClear.setIcon(Icons.clear);
 		btnClear.addActionListener(e ->
 		{
 			if (manager.getSelectedElement() != null)
@@ -77,6 +80,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnClear.setToolTipText("<html>Clears the texture from this face.<br><b>Hold shift to clear all faces</b></html>");
 
 		btnCopy = new JButton("Copy");
+		btnCopy.setIcon(Icons.copy);
 		btnCopy.addActionListener(e ->
 		{
 			if (manager.getSelectedElement() != null)
@@ -89,6 +93,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnCopy.setToolTipText("Copies the texture on this face to clipboard");
 
 		btnPaste = new JButton("Paste");
+		btnPaste.setIcon(Icons.clipboard);
 		btnPaste.addActionListener(e ->
 		{
 			if (manager.getSelectedElement() != null)

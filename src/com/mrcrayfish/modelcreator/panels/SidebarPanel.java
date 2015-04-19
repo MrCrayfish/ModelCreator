@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -21,6 +22,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -28,6 +30,7 @@ import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 public class SidebarPanel extends JPanel implements ElementManager
 {
@@ -65,16 +68,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 		btnContainer = new JPanel(new GridLayout(1, 3, 4, 0));
 		btnContainer.setPreferredSize(new Dimension(190, 30));
-		try
-		{
-			btnAdd.setIcon(new ImageIcon(getClass().getClassLoader().getResource("add.png")));
-			btnAdd.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("add_rollover.png")));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
 
+		btnAdd.setIcon(Icons.cube);
 		btnAdd.setToolTipText("New Element");
 		btnAdd.addActionListener(e ->
 		{
@@ -83,17 +78,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 		});
 		btnAdd.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnAdd);
-
-		try
-		{
-			btnRemove.setIcon(new ImageIcon(getClass().getClassLoader().getResource("remove.png")));
-			btnRemove.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("remove_rollover.png")));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
+		
+		btnRemove.setIcon(Icons.bin);
 		btnRemove.setToolTipText("Remove Element");
 		btnRemove.addActionListener(e ->
 		{
@@ -110,16 +96,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		btnRemove.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnRemove);
 
-		try
-		{
-			btnDuplicate.setIcon(new ImageIcon(getClass().getClassLoader().getResource("duplicate.png")));
-			btnDuplicate.setRolloverIcon(new ImageIcon(getClass().getClassLoader().getResource("duplicate_rollover.png")));
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
+		btnDuplicate.setIcon(Icons.copy);
 		btnDuplicate.setToolTipText("Duplicate Element");
 		btnDuplicate.addActionListener(e ->
 		{
@@ -175,6 +152,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 		scrollPane.setPreferredSize(new Dimension(190, 170));
 		add(scrollPane);
 
+		tabbedPane.setBackground(new Color(127, 132, 145));
+		tabbedPane.setForeground(Color.WHITE);
 		tabbedPane.add("Element", new ElementPanel(this));
 		tabbedPane.add("Rotation", new RotationPanel(this));
 		tabbedPane.add("Faces", new FacePanel(this));
@@ -193,10 +172,9 @@ public class SidebarPanel extends JPanel implements ElementManager
 		});
 		add(tabbedPane);
 
-		boxAmbient = new JRadioButton("Ambient Occulusion");
+		boxAmbient = ComponentUtil.createRadioButton("Ambient Occulusion", "Determine the light for each element");
 		boxAmbient.setSelected(true);
 		boxAmbient.addActionListener(a -> ambientOcc = boxAmbient.isSelected());
-		boxAmbient.setToolTipText("Determine the light for each element");
 		add(boxAmbient);
 	}
 

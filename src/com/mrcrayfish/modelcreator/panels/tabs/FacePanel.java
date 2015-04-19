@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
@@ -71,9 +72,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initComponents()
 	{
 		menuPanel = new JPanel(new GridLayout(1, 1));
-		menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Side"));
+		menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Side</b></html>"));
 		menuList = new JComboBox<String>();
 		menuList.setModel(model);
+		menuList.setToolTipText("The face to edit.");
 		menuList.addActionListener(e ->
 		{
 			if (manager.getSelectedElement() != null)
@@ -82,8 +84,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 				updateValues(manager.getSelectedElement());
 			}
 		});
-		menuList.setToolTipText("The face to edit.");
-		menuPanel.setMaximumSize(new Dimension(186, 50));
+		menuPanel.setPreferredSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 
 		panelTexture = new TexturePanel(manager);
@@ -97,7 +98,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		labelTable.put(new Integer(3), new JLabel("270\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
-		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
+		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));
 		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
 		rotation.setMajorTickSpacing(4);
 		rotation.setPaintTicks(true);
@@ -112,9 +113,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 		sliderPanel.add(rotation);
 
 		panelModId = new JPanel(new GridLayout(1, 1));
-		panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Location:"));
+		panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Location</b></html>"));
 		modidField = new JTextField();
-		modidField.setPreferredSize(new Dimension(190, 40));
+		modidField.setSize(new Dimension(190, 30));
 		modidField.addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -148,15 +149,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	{
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(menuPanel);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelTexture);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelUV);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(sliderPanel);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelModId);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelProperties);
 	}
 

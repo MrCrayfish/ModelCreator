@@ -24,36 +24,38 @@ public class Exporter
 		compileTextureList();
 	}
 
-	public void export(File file)
+	public File export(File file)
 	{
 		File path = file.getParentFile();
 		if (path.exists() && path.isDirectory())
 		{
-			FileWriter fw;
-			BufferedWriter writer;
-			try
-			{
-				if (!file.exists())
-				{
-					file.createNewFile();
-				}
-				fw = new FileWriter(file);
-				writer = new BufferedWriter(fw);
-				writeComponents(writer, manager);
-				writer.close();
-				fw.close();
-
-				/*
-				 * fw = new FileWriter(new File(path, modelName + ".json"));
-				 * writer = new BufferedWriter(fw); writeChild(writer);
-				 * writer.close(); fw.close();
-				 */
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			writeJSONFile(file);
 		}
+		return file;
+	}
+	
+	public File writeJSONFile(File file)
+	{
+		FileWriter fw;
+		BufferedWriter writer;
+		try
+		{
+			if (!file.exists())
+			{
+				file.createNewFile();
+			}
+			fw = new FileWriter(file);
+			writer = new BufferedWriter(fw);
+			writeComponents(writer, manager);
+			writer.close();
+			fw.close();
+			return file;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void compileTextureList()

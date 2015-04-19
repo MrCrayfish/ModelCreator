@@ -21,31 +21,21 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import com.mrcrayfish.modelcreator.Icons;
+
 public class WelcomeDialog
 {
 	public static void show(JFrame parent)
 	{
-		InputStream inputStream = WelcomeDialog.class.getClassLoader().getResourceAsStream("bebas_neue.otf");
-		Font customFont = null;
-		try
-		{
-			customFont = Font.createFont(Font.TRUETYPE_FONT, inputStream).deriveFont(24f);
-		}
-		catch (FontFormatException | IOException e1)
-		{
-			e1.printStackTrace();
-		}
-
 		JPanel container = new JPanel(new BorderLayout(20, 10));
 		container.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		ImageIcon crayfish = new ImageIcon("res/sticker.png");
+		ImageIcon crayfish = new ImageIcon(parent.getClass().getClassLoader().getResource("sticker.png"));
 		container.add(new JLabel(crayfish), BorderLayout.EAST);
 
 		JPanel leftPanel = new JPanel(new BorderLayout());
 
-		JLabel title = new JLabel("<html><b>Model Creator</b> by MrCrayfish</html>");
-		title.setFont(customFont);
+		JLabel title = new JLabel("<html><div style=\"font-size:16px;\"><b>Model Creator</b> by MrCrayfish<div></html>");
 		leftPanel.add(title, BorderLayout.NORTH);
 
 		JLabel message = new JLabel();
@@ -57,6 +47,7 @@ public class WelcomeDialog
 
 		JPanel btnGrid = new JPanel(new GridLayout(1, 4, 5, 0));
 		JButton btnDonate = new JButton("Donate");
+		btnDonate.setIcon(Icons.coin);
 		btnDonate.addActionListener(a ->
 		{
 			openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2");
@@ -64,6 +55,7 @@ public class WelcomeDialog
 		btnGrid.add(btnDonate);
 
 		JButton btnTwitter = new JButton("Twitter");
+		btnTwitter.setIcon(Icons.twitter);
 		btnTwitter.addActionListener(new ActionListener()
 		{
 
@@ -77,6 +69,7 @@ public class WelcomeDialog
 		btnGrid.add(btnTwitter);
 
 		JButton btnFacebook = new JButton("Facebook");
+		btnFacebook.setIcon(Icons.facebook);
 		btnFacebook.addActionListener(a ->
 		{
 			openUrl("https://www.facebook.com/MrCrayfish");

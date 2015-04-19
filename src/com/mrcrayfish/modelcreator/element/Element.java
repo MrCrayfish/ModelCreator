@@ -1,11 +1,11 @@
 package com.mrcrayfish.modelcreator.element;
 
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
 
@@ -162,6 +162,8 @@ public class Element
 	{
 		GL11.glPushMatrix();
 		{
+			if(ModelCreator.transparent)
+				GL11.glEnable(GL_BLEND);
 			GL11.glEnable(GL_CULL_FACE);
 			GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
 			rotateAxis();

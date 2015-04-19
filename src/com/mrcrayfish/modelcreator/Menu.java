@@ -65,7 +65,7 @@ public class Menu extends JMenuBar
 
 		menuOptions = new JMenu("Options");
 		{
-			itemTransparency = createItem("Enable Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, Icons.transparent);
+			itemTransparency = createItem("Toggle Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, Icons.transparent);
 		}
 
 		menuHelp = new JMenu("More");
@@ -229,7 +229,7 @@ public class Menu extends JMenuBar
 				}
 			}
 		});
- 
+
 		itemTexturePath.addActionListener(e ->
 		{
 			JFileChooser chooser = new JFileChooser();
@@ -249,7 +249,13 @@ public class Menu extends JMenuBar
 
 		itemTransparency.addActionListener(a ->
 		{
-			JOptionPane.showMessageDialog(null, "This option has not been added yet. Please wait until the next preview.");
+			ModelCreator.transparent ^= true;
+			if (ModelCreator.transparent)
+				JOptionPane.showMessageDialog(null, "<html>Transparent textures do not represent the same as in Minecraft.<br> "
+						                                + "It depends if the model you are overwriting, allows transparent<br>"
+						                                + "textures in the code. Blocks like Grass and Stone don't allow<br>"
+						                                + "transparency, where as Glass and Cauldron do. Please take this into<br>"
+						                                + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		itemMF.addActionListener(a ->

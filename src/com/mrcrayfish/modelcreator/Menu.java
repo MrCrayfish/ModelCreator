@@ -1,10 +1,15 @@
 package com.mrcrayfish.modelcreator;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -43,6 +48,7 @@ public class Menu extends JMenuBar
 	private JMenuItem itemSaveToDisk;
 	private JMenuItem itemShareFB;
 	private JMenuItem itemShareTWTR;
+	private JMenuItem itemImgurLink;
 
 	/* Extras */
 	private JMenu menuHelp;
@@ -81,8 +87,9 @@ public class Menu extends JMenuBar
 		menuScreenshot = new JMenu("Screenshot");
 		{
 			itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
-			itemShareFB = createItem("Share to Facebook", "Share the current render preview to Facebook.", KeyEvent.VK_S, Icons.facebook);
-			itemShareTWTR = createItem("Share to Twitter", "Share the current render preview to Twitter.", KeyEvent.VK_S, Icons.twitter);
+			itemShareFB = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
+			itemShareTWTR = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
+			itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_G, Icons.imgur);
 		}
 
 		menuHelp = new JMenu("More");
@@ -117,6 +124,7 @@ public class Menu extends JMenuBar
 		menuScreenshot.add(itemSaveToDisk);
 		menuScreenshot.add(itemShareFB);
 		menuScreenshot.add(itemShareTWTR);
+		menuScreenshot.add(itemImgurLink);
 
 		menuFile.add(itemNew);
 		menuFile.addSeparator();
@@ -334,6 +342,32 @@ public class Menu extends JMenuBar
 					{
 						String url = Uploader.upload(file);
 						Screenshot.shareToTwitter(url);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}));
+		});
+
+		itemImgurLink.addActionListener(a ->
+		{
+			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
+			{
+				@Override
+				public void callback(File file)
+				{
+					try
+					{
+						String url = Uploader.upload(file);
+						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(url), null);
+						JOptionPane message = new JOptionPane();
+						message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
+						JDialog dialog = message.createDialog(Menu.this, "Success");
+						dialog.setLocationRelativeTo(null);
+						dialog.setModal(false);
+						dialog.setVisible(true);
 					}
 					catch (Exception e)
 					{

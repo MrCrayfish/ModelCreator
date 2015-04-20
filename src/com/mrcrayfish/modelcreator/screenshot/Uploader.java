@@ -16,7 +16,7 @@ import com.mrcrayfish.modelcreator.util.StreamUtils;
 public class Uploader
 {
 	private static final String UPLOAD_URL = "https://api.imgur.com/3/image";
-	private static final String CLIENT_ID = "SECRETKEY";
+	private static final String CLIENT_ID = "5cd0235db91ac6e";
 
 	public static String upload(File file) throws Exception
 	{

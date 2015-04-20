@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;

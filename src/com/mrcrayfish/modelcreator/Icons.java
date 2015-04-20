@@ -29,6 +29,7 @@ public class Icons
 	public static Icon arrow_down;
 	public static Icon facebook;
 	public static Icon twitter;
+	public static Icon imgur;
 	public static Icon planet_minecraft;
 	public static Icon minecraft_forum;
 	public static Icon github;
@@ -57,7 +58,6 @@ public class Icons
 		disk = new ImageIcon(loader.getResource("icons/disk.png"));
 		exit = new ImageIcon(loader.getResource("icons/exit.png"));
 		
-		
 		light_on = new ImageIcon(loader.getResource("icons/box_off.png"));
 		light_off = new ImageIcon(loader.getResource("icons/box_on.png"));
 		
@@ -66,6 +66,7 @@ public class Icons
 		
 		facebook = new ImageIcon(loader.getResource("icons/facebook.png"));
 		twitter = new ImageIcon(loader.getResource("icons/twitter.png"));
+		imgur = new ImageIcon(loader.getResource("icons/imgur.png"));
 		planet_minecraft = new ImageIcon(loader.getResource("icons/planet_minecraft.png"));
 		minecraft_forum = new ImageIcon(loader.getResource("icons/minecraft_forum.png"));
 		github = new ImageIcon(loader.getResource("icons/github.png"));

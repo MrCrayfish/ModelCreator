@@ -12,6 +12,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
+import com.mrcrayfish.modelcreator.screenshot.Screenshot;
+import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
+import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.Util;
 
 public class Menu extends JMenuBar
@@ -33,6 +37,12 @@ public class Menu extends JMenuBar
 	/* Options */
 	private JMenu menuOptions;
 	private JMenuItem itemTransparency;
+
+	/* Share */
+	private JMenu menuScreenshot;
+	private JMenuItem itemSaveToDisk;
+	private JMenuItem itemShareFB;
+	private JMenuItem itemShareTWTR;
 
 	/* Extras */
 	private JMenu menuHelp;
@@ -68,6 +78,13 @@ public class Menu extends JMenuBar
 			itemTransparency = createItem("Toggle Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, Icons.transparent);
 		}
 
+		menuScreenshot = new JMenu("Screenshot");
+		{
+			itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
+			itemShareFB = createItem("Share to Facebook", "Share the current render preview to Facebook.", KeyEvent.VK_S, Icons.facebook);
+			itemShareTWTR = createItem("Share to Twitter", "Share the current render preview to Twitter.", KeyEvent.VK_S, Icons.twitter);
+		}
+
 		menuHelp = new JMenu("More");
 		{
 			menuExamples = new JMenu("Examples");
@@ -97,6 +114,10 @@ public class Menu extends JMenuBar
 
 		menuOptions.add(itemTransparency);
 
+		menuScreenshot.add(itemSaveToDisk);
+		menuScreenshot.add(itemShareFB);
+		menuScreenshot.add(itemShareTWTR);
+
 		menuFile.add(itemNew);
 		menuFile.addSeparator();
 		menuFile.add(itemLoad);
@@ -111,6 +132,7 @@ public class Menu extends JMenuBar
 
 		add(menuFile);
 		add(menuOptions);
+		add(menuScreenshot);
 		add(menuHelp);
 	}
 
@@ -251,11 +273,74 @@ public class Menu extends JMenuBar
 		{
 			ModelCreator.transparent ^= true;
 			if (ModelCreator.transparent)
-				JOptionPane.showMessageDialog(null, "<html>Transparent textures do not represent the same as in Minecraft.<br> "
-						                                + "It depends if the model you are overwriting, allows transparent<br>"
-						                                + "textures in the code. Blocks like Grass and Stone don't allow<br>"
-						                                + "transparency, where as Glass and Cauldron do. Please take this into<br>"
-						                                + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "<html>Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
+		});
+
+		itemSaveToDisk.addActionListener(a ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Output Directory");
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Save");
+
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG (.png)", "png");
+			chooser.setFileFilter(filter);
+
+			int returnVal = chooser.showOpenDialog(null);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				if (chooser.getSelectedFile().exists())
+				{
+					returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+				}
+				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+				{
+					String filePath = chooser.getSelectedFile().getAbsolutePath();
+					if (!filePath.endsWith(".png"))
+						chooser.setSelectedFile(new File(filePath + ".png"));
+					creator.startScreenshot(new PendingScreenshot(chooser.getSelectedFile(), null));
+				}
+			}
+		});
+
+		itemShareFB.addActionListener(a ->
+		{
+			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
+			{
+				@Override
+				public void callback(File file)
+				{
+					try
+					{
+						String url = Uploader.upload(file);
+						Screenshot.shareToFacebook(url);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}));
+		});
+
+		itemShareTWTR.addActionListener(a ->
+		{
+			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
+			{
+				@Override
+				public void callback(File file)
+				{
+					try
+					{
+						String url = Uploader.upload(file);
+						Screenshot.shareToTwitter(url);
+					}
+					catch (Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}));
 		});
 
 		itemMF.addActionListener(a ->

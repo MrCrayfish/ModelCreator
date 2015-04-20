@@ -61,6 +61,8 @@ import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
+import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
+import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
@@ -87,6 +89,7 @@ public class ModelCreator extends JFrame
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
+	private PendingScreenshot screenshot = null;
 
 	private int lastMouseX, lastMouseY;
 	private boolean grabbing = false;
@@ -220,14 +223,11 @@ public class ModelCreator extends JFrame
 
 		while (!Display.isCloseRequested() && !getCloseRequested())
 		{
-			synchronized (this)
+			for (PendingTexture texture : pendingTextures)
 			{
-				for (PendingTexture texture : pendingTextures)
-				{
-					texture.load();
-				}
-				pendingTextures.clear();
+				texture.load();
 			}
+			pendingTextures.clear();
 
 			newDim = newCanvasSize.getAndSet(null);
 
@@ -264,6 +264,15 @@ public class ModelCreator extends JFrame
 			drawOverlay(offset);
 
 			Display.update();
+			
+			if (screenshot != null)
+			{
+				if(screenshot.getFile() != null)
+					Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
+				else
+					Screenshot.getScreenshot(width, height, screenshot.getCallback());
+				screenshot = null;
+			}
 		}
 	}
 
@@ -328,6 +337,8 @@ public class ModelCreator extends JFrame
 				glVertex2i(width, height);
 				glVertex2i(offset, height);
 				glVertex2i(offset, 0);
+				glVertex2i(offset, height);
+				glVertex2i(width, height);
 			}
 			glEnd();
 		}
@@ -674,11 +685,16 @@ public class ModelCreator extends JFrame
 		glPopMatrix();
 	}
 
+	public void startScreenshot(PendingScreenshot screenshot)
+	{
+		this.screenshot = screenshot;
+	}
+
 	public void setSidebar(Sidebar s)
 	{
 		activeSidebar = s;
 	}
-	
+
 	public ElementManager getElementManager()
 	{
 		return manager;

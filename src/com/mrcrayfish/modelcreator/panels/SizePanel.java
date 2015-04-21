@@ -1,9 +1,14 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -11,8 +16,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.Parser;
 
 public class SizePanel extends JPanel implements IValueUpdater
 {
@@ -36,7 +43,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(3, 3, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Size"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Size</b></html>"));
 		setMaximumSize(new Dimension(186, 124));
 		initComponents();
 		initProperties();
@@ -45,15 +52,15 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		btnPlusX = new JButton("+");
-		btnPlusY = new JButton("+");
-		btnPlusZ = new JButton("+");
+		btnPlusX = new JButton(Icons.arrow_up);
+		btnPlusY = new JButton(Icons.arrow_up);
+		btnPlusZ = new JButton(Icons.arrow_up);
 		xSizeField = new JTextField();
 		ySizeField = new JTextField();
 		zSizeField = new JTextField();
-		btnNegX = new JButton("-");
-		btnNegY = new JButton("-");
-		btnNegZ = new JButton("-");
+		btnNegX = new JButton(Icons.arrow_down);
+		btnNegY = new JButton(Icons.arrow_down);
+		btnNegZ = new JButton(Icons.arrow_down);
 	}
 
 	public void initProperties()
@@ -61,24 +68,117 @@ public class SizePanel extends JPanel implements IValueUpdater
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 		xSizeField.setSize(new Dimension(62, 30));
 		xSizeField.setFont(defaultFont);
-		xSizeField.setEditable(false);
 		xSizeField.setHorizontalAlignment(JTextField.CENTER);
+		xSizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedElement();
+					if (element != null)
+					{
+						element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
+						element.updateUV();
+						manager.updateValues();
+					}
+
+				}
+			}
+		});
+		xSizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		ySizeField.setSize(new Dimension(62, 30));
 		ySizeField.setFont(defaultFont);
-		ySizeField.setEditable(false);
 		ySizeField.setHorizontalAlignment(JTextField.CENTER);
+		ySizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedElement();
+					if (element != null)
+					{
+						element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
+						element.updateUV();
+						manager.updateValues();
+					}
+
+				}
+			}
+		});
+		ySizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		zSizeField.setSize(new Dimension(62, 30));
 		zSizeField.setFont(defaultFont);
-		zSizeField.setEditable(false);
 		zSizeField.setHorizontalAlignment(JTextField.CENTER);
+		zSizeField.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					Element element = manager.getSelectedElement();
+					if (element != null)
+					{
+						element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+						element.updateUV();
+						manager.updateValues();
+					}
+
+				}
+			}
+		});
+		zSizeField.addFocusListener(new FocusAdapter()
+		{
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+					element.updateUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addWidth(0.1F);
@@ -97,9 +197,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addHeight(0.1F);
@@ -118,9 +218,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addDepth(0.1F);
@@ -139,9 +239,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addWidth(-0.1F);
@@ -160,9 +260,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addHeight(-0.1F);
@@ -181,9 +281,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				Element cube = manager.getSelectedCuboid();
+				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					cube.addDepth(-0.1F);
@@ -219,12 +319,18 @@ public class SizePanel extends JPanel implements IValueUpdater
 	{
 		if (cube != null)
 		{
+			xSizeField.setEnabled(true);
+			ySizeField.setEnabled(true);
+			zSizeField.setEnabled(true);
 			xSizeField.setText(df.format(cube.getWidth()));
 			ySizeField.setText(df.format(cube.getHeight()));
 			zSizeField.setText(df.format(cube.getDepth()));
 		}
 		else
 		{
+			xSizeField.setEnabled(false);
+			ySizeField.setEnabled(false);
+			zSizeField.setEnabled(false);
 			xSizeField.setText("");
 			ySizeField.setText("");
 			zSizeField.setText("");

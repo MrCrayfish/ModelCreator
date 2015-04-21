@@ -1,11 +1,14 @@
 package com.mrcrayfish.modelcreator.element;
 
+import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
 import static org.lwjgl.opengl.GL11.GL_LINES;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
 
 public class Element
@@ -142,6 +145,11 @@ public class Element
 			face.setTextureLocation("blocks/");
 		}
 	}
+	
+	public void setAllTextures(ClipboardTexture texture)
+	{
+		setAllTextures(texture.getLocation(), texture.getTexture());
+	}
 
 	public void setAllTextures(String location, String texture)
 	{
@@ -152,11 +160,12 @@ public class Element
 		}
 	}
 
-
 	public void draw()
 	{
 		GL11.glPushMatrix();
 		{
+			if(ModelCreator.transparent)
+				GL11.glEnable(GL_BLEND);
 			GL11.glEnable(GL_CULL_FACE);
 			GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
 			rotateAxis();
@@ -209,7 +218,7 @@ public class Element
 
 	public void drawExtras(ElementManager manager)
 	{
-		if (manager.getSelectedCuboid() == this)
+		if (manager.getSelectedElement() == this)
 		{
 			GL11.glPushMatrix();
 			{
@@ -265,7 +274,7 @@ public class Element
 	{
 		return startZ;
 	}
-	
+
 	public void setStartX(double amt)
 	{
 		this.startX = amt;
@@ -311,6 +320,21 @@ public class Element
 		this.depth += amt;
 	}
 
+	public void setWidth(double width)
+	{
+		this.width = width;
+	}
+
+	public void setHeight(double height)
+	{
+		this.height = height;
+	}
+
+	public void setDepth(double depth)
+	{
+		this.depth = depth;
+	}
+
 	public double getOriginX()
 	{
 		return originX;
@@ -325,12 +349,12 @@ public class Element
 	{
 		return originZ;
 	}
-	
+
 	public void addOriginX(double amt)
 	{
 		this.originX += amt;
 	}
-	
+
 	public void addOriginY(double amt)
 	{
 		this.originY += amt;
@@ -345,7 +369,7 @@ public class Element
 	{
 		this.originX = amt;
 	}
-	
+
 	public void setOriginY(double amt)
 	{
 		this.originY = amt;
@@ -355,7 +379,7 @@ public class Element
 	{
 		this.originZ = amt;
 	}
-	
+
 	public double getRotation()
 	{
 		return rotation;
@@ -406,9 +430,11 @@ public class Element
 	{
 		return name;
 	}
-	
-	public void updateUV() {
-		for(Face face : faces) {
+
+	public void updateUV()
+	{
+		for (Face face : faces)
+		{
 			face.updateUV();
 		}
 	}
@@ -442,7 +468,7 @@ public class Element
 		}
 		return "x";
 	}
-	
+
 	public static int parseAxisString(String axis)
 	{
 		switch (axis)

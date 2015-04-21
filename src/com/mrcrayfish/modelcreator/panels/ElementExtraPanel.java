@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -9,6 +10,7 @@ import javax.swing.JRadioButton;
 
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 public class ElementExtraPanel extends JPanel implements IValueUpdater
 {
@@ -22,7 +24,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 	{
 		this.manager = manager;
 		setLayout(new GridLayout(1, 2));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
+		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
 		setMaximumSize(new Dimension(186, 50));
 		initComponents();
 		addComponents();
@@ -30,12 +32,11 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		btnShade = new JRadioButton("Shade");
+		btnShade = ComponentUtil.createRadioButton("Shade", "<html>Determines if shadows should be rendered<br>Default: On</html>");
 		btnShade.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().setShade(btnShade.isSelected());
+			manager.getSelectedElement().setShade(btnShade.isSelected());
 		});
-		btnShade.setToolTipText("<html>Determines if shadows should be rendered<br>Default: On</html>");
 	}
 
 	public void addComponents()

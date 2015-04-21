@@ -41,27 +41,6 @@ public class TextureManager
 
 	public static File lastLocation = null;
 
-	public static void init()
-	{
-		try
-		{
-			loadInternalTexture("brick");
-			loadInternalTexture("dirt");
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	private static boolean loadInternalTexture(String file) throws IOException
-	{
-		Texture texture = TextureLoader.getTexture("PNG", TextureManager.class.getClassLoader().getResourceAsStream(file + ".png"));
-		ImageIcon image = upscale(new ImageIcon(TextureManager.class.getClassLoader().getResource(file + ".png")));
-		textureCache.add(new TextureEntry(file, texture, image));
-		return true;
-	}
-
 	public static boolean loadExternalTexture(String path, String file) throws IOException
 	{
 		FileInputStream is = new FileInputStream(new File(path + "/" + file));
@@ -73,7 +52,7 @@ public class TextureManager
 			return false;
 		}
 		ImageIcon image = upscale(new ImageIcon(path + "/" + file));
-		textureCache.add(new TextureEntry(file.replace(".png", ""), texture, image));
+		textureCache.add(new TextureEntry(file.replace(".png", "").replaceAll("\\d*$", ""), texture, image, path + "/" + file));
 		return true;
 	}
 
@@ -83,8 +62,20 @@ public class TextureManager
 		Image newimg = img.getScaledInstance(256, 256, java.awt.Image.SCALE_FAST);
 		return new ImageIcon(newimg);
 	}
+	
+	public static TextureEntry getTextureEntry(String name)
+	{
+		for (TextureEntry entry : textureCache)
+		{
+			if (entry.getName().equalsIgnoreCase(name))
+			{
+				return entry;
+			}
+		}
+		return null;
+	}
 
-	public static synchronized Texture getTexture(String name)
+	public static Texture getTexture(String name)
 	{
 		for (TextureEntry entry : textureCache)
 		{
@@ -95,8 +86,20 @@ public class TextureManager
 		}
 		return null;
 	}
+	
+	public static String getTextureLocation(String name)
+	{
+		for (TextureEntry entry : textureCache)
+		{
+			if (entry.getName().equalsIgnoreCase(name))
+			{
+				return entry.getLocation();
+			}
+		}
+		return null;
+	}
 
-	public static synchronized ImageIcon getIcon(String name)
+	public static ImageIcon getIcon(String name)
 	{
 		for (TextureEntry entry : textureCache)
 		{

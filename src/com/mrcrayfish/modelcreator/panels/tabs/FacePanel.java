@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.FocusAdapter;
@@ -71,19 +72,19 @@ public class FacePanel extends JPanel implements IValueUpdater
 	public void initComponents()
 	{
 		menuPanel = new JPanel(new GridLayout(1, 1));
-		menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Side"));
+		menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Side</b></html>"));
 		menuList = new JComboBox<String>();
 		menuList.setModel(model);
+		menuList.setToolTipText("The face to edit.");
 		menuList.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
+			if (manager.getSelectedElement() != null)
 			{
-				manager.getSelectedCuboid().setSelectedFace(menuList.getSelectedIndex());
-				updateValues(manager.getSelectedCuboid());
+				manager.getSelectedElement().setSelectedFace(menuList.getSelectedIndex());
+				updateValues(manager.getSelectedElement());
 			}
 		});
-		menuList.setToolTipText("The face to edit.");
-		menuPanel.setMaximumSize(new Dimension(186, 50));
+		menuPanel.setPreferredSize(new Dimension(186, 50));
 		menuPanel.add(menuList);
 
 		panelTexture = new TexturePanel(manager);
@@ -97,7 +98,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 		labelTable.put(new Integer(3), new JLabel("270\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
-		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
+		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));
 		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
 		rotation.setMajorTickSpacing(4);
 		rotation.setPaintTicks(true);
@@ -105,16 +106,16 @@ public class FacePanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().getSelectedFace().setRotation(rotation.getValue());
+			manager.getSelectedElement().getSelectedFace().setRotation(rotation.getValue());
 		});
 		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
 
 		panelModId = new JPanel(new GridLayout(1, 1));
-		panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Location:"));
+		panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Location</b></html>"));
 		modidField = new JTextField();
-		modidField.setPreferredSize(new Dimension(190, 40));
+		modidField.setSize(new Dimension(190, 30));
 		modidField.addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -122,9 +123,9 @@ public class FacePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedCuboid() != null)
+					if (manager.getSelectedElement() != null)
 					{
-						manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+						manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
 					}
 				}
 			}
@@ -134,15 +135,13 @@ public class FacePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					manager.getSelectedCuboid().getSelectedFace().setTextureLocation(modidField.getText());
+					manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
 				}
 			}
 		});
-		modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>"
-				                + "texture in a sub folder, write the custom directory<br>"
-				                + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
+		modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>" + "texture in a sub folder, write the custom directory<br>" + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
 		panelModId.add(modidField);
 	}
 
@@ -150,15 +149,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 	{
 		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(menuPanel);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelTexture);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelUV);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(sliderPanel);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelModId);
-		add(Box.createRigidArea(new Dimension(192, 5)));
 		add(panelProperties);
 	}
 

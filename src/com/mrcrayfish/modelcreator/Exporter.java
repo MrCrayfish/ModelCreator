@@ -24,40 +24,43 @@ public class Exporter
 		compileTextureList();
 	}
 
-	public void export(File file)
+	public File export(File file)
 	{
 		File path = file.getParentFile();
 		if (path.exists() && path.isDirectory())
 		{
-			FileWriter fw;
-			BufferedWriter writer;
-			try
-			{
-				if(!file.exists()) {
-					file.createNewFile();
-				}
-				fw = new FileWriter(file);
-				writer = new BufferedWriter(fw);
-				writeComponents(writer, manager);
-				writer.close();
-				fw.close();
-
-				/*
-				 * fw = new FileWriter(new File(path, modelName + ".json"));
-				 * writer = new BufferedWriter(fw); writeChild(writer);
-				 * writer.close(); fw.close();
-				 */
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			writeJSONFile(file);
 		}
+		return file;
+	}
+	
+	public File writeJSONFile(File file)
+	{
+		FileWriter fw;
+		BufferedWriter writer;
+		try
+		{
+			if (!file.exists())
+			{
+				file.createNewFile();
+			}
+			fw = new FileWriter(file);
+			writer = new BufferedWriter(fw);
+			writeComponents(writer, manager);
+			writer.close();
+			fw.close();
+			return file;
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void compileTextureList()
 	{
-		for (Element cuboid : manager.getAllCuboids())
+		for (Element cuboid : manager.getAllElements())
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
@@ -84,15 +87,15 @@ public class Exporter
 		writeTextures(writer);
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");
-		for (int i = 0; i < manager.getCuboidCount(); i++)
+		for (int i = 0; i < manager.getElementCount(); i++)
 		{
 			writer.newLine();
 			writer.write(space(2) + "{");
 			writer.newLine();
-			writeElement(writer, manager.getCuboid(i));
+			writeElement(writer, manager.getElement(i));
 			writer.newLine();
 			writer.write(space(2) + "}");
-			if (i != manager.getCuboidCount() - 1)
+			if (i != manager.getElementCount() - 1)
 				writer.write(",");
 		}
 		writer.newLine();
@@ -168,7 +171,8 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if(face.isEnabled()) {
+			if (face.isEnabled())
+			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
 				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
@@ -188,26 +192,16 @@ public class Exporter
 		writer.write(space(3) + "}");
 	}
 
-	/*private void writeChild(BufferedWriter writer) throws IOException
-	{
-		writer.write("{");
-		writer.newLine();
-		writer.write(space(1) + "\"parent\": \"block/" + modelName + "\",");
-		writer.newLine();
-		writer.write(space(1) + "\"textures\": {");
-		writer.newLine();
-		for (int i = 0; i < textureList.size(); i++)
-		{
-			writer.write(space(2) + "\"" + i + "\": \"block/" + textureList.get(i) + "\"");
-			if (i != textureList.size() - 1)
-			{
-				writer.write(",");
-			}
-			writer.newLine();
-		}
-		writer.write(space(1) + "}");
-		writer.write("}");
-	}*/
+	/*
+	 * private void writeChild(BufferedWriter writer) throws IOException {
+	 * writer.write("{"); writer.newLine(); writer.write(space(1) +
+	 * "\"parent\": \"block/" + modelName + "\","); writer.newLine();
+	 * writer.write(space(1) + "\"textures\": {"); writer.newLine(); for (int i
+	 * = 0; i < textureList.size(); i++) { writer.write(space(2) + "\"" + i +
+	 * "\": \"block/" + textureList.get(i) + "\""); if (i != textureList.size()
+	 * - 1) { writer.write(","); } writer.newLine(); } writer.write(space(1) +
+	 * "}"); writer.write("}"); }
+	 */
 
 	private String space(int size)
 	{

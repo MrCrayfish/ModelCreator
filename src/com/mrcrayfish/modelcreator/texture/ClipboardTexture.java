@@ -4,7 +4,6 @@ public class ClipboardTexture
 {
 	private String location;
 	private String texture;
-
 	public ClipboardTexture(String location, String texture)
 	{
 		this.location = location;

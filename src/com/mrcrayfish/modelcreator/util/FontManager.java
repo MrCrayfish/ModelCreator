@@ -10,16 +10,15 @@ import com.mrcrayfish.modelcreator.ModelCreator;
 
 public enum FontManager
 {
-	BEBAS_NEUE_20("bebas_neue.otf", 20),
-	BEBAS_NEUE_50("bebas_neue.otf", 50);
-	
+	BEBAS_NEUE_20("bebas_neue.otf", 20), BEBAS_NEUE_50("bebas_neue.otf", 50);
+
 	private TrueTypeFont font;
-	
+
 	FontManager(String name, float size)
 	{
 		loadFont(name, size);
 	}
-	
+
 	private void loadFont(String name, float size)
 	{
 		try
@@ -27,14 +26,14 @@ public enum FontManager
 			InputStream is = ModelCreator.class.getClassLoader().getResourceAsStream(name);
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
 			this.font = new TrueTypeFont(font.deriveFont(size), false);
-			
+
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void drawString(int x, int y, String text)
 	{
 		font.drawString(x, y, text);

@@ -1,16 +1,43 @@
 package com.mrcrayfish.modelcreator;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
+import static org.lwjgl.opengl.GL11.GL_LIGHTING;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
+import static org.lwjgl.opengl.GL11.GL_PROJECTION;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glColor3d;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glLineWidth;
+import static org.lwjgl.opengl.GL11.glLoadIdentity;
+import static org.lwjgl.opengl.GL11.glMatrixMode;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotated;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2i;
+import static org.lwjgl.opengl.GL11.glVertex3i;
+import static org.lwjgl.opengl.GL11.glViewport;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
@@ -19,16 +46,10 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -42,10 +63,11 @@ import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
+import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
+import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.FontManager;
 
 public class ModelCreator extends JFrame
@@ -54,6 +76,7 @@ public class ModelCreator extends JFrame
 
 	// TODO remove static instance
 	public static String texturePath = ".";
+	public static boolean transparent = false;
 
 	// Canvas Variables
 	private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
@@ -62,22 +85,22 @@ public class ModelCreator extends JFrame
 
 	// Swing Components
 	private JScrollPane scroll;
-	private JMenuBar menuBar = new JMenuBar();
-
 	private Camera camera;
 	private ElementManager manager;
 	private Element grabbed = null;
 
 	// Texture Loading Cache
 	public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
+	private PendingScreenshot screenshot = null;
 
 	private int lastMouseX, lastMouseY;
 	private boolean grabbing = false;
 	private boolean closeRequested = false;
 
+	/* Sidebar Variables */
 	private final int SIDEBAR_WIDTH = 130;
 	public Sidebar activeSidebar = null;
-	public static Sidebar SIDEBAR_UV;
+	public static Sidebar uvSidebar;
 
 	public ModelCreator(String title)
 	{
@@ -86,12 +109,13 @@ public class ModelCreator extends JFrame
 		setPreferredSize(new Dimension(1200, 835));
 		setMinimumSize(new Dimension(1200, 500));
 		setLayout(new BorderLayout(10, 0));
+		setIconImages(getIcons());
 
 		canvas = new Canvas();
 
 		initComponents();
 
-		SIDEBAR_UV = new UVSidebar("UV Editor", manager);
+		uvSidebar = new UVSidebar("UV Editor", manager);
 
 		canvas.addComponentListener(new ComponentAdapter()
 		{
@@ -139,8 +163,6 @@ public class ModelCreator extends JFrame
 
 					WelcomeDialog.show(ModelCreator.this);
 
-					TextureManager.init();
-
 					loop();
 
 					Display.destroy();
@@ -158,100 +180,8 @@ public class ModelCreator extends JFrame
 
 	public void initComponents()
 	{
-		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-		JMenu file = new JMenu("File");
-		file.setMnemonic(KeyEvent.VK_F);
-
-		JMenuItem menuItemNew = new JMenuItem("New");
-		menuItemNew.setMnemonic(KeyEvent.VK_N);
-		menuItemNew.setToolTipText("New Model");
-		menuItemNew.addActionListener(a ->
-		{
-			int returnVal = JOptionPane.showConfirmDialog(this, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
-			if (returnVal == JOptionPane.YES_OPTION)
-			{
-				manager.clearElements();
-				manager.updateValues();
-			}
-		});
-
-		JMenuItem menuItemImport = new JMenuItem("Import");
-		menuItemImport.setMnemonic(KeyEvent.VK_I);
-		menuItemImport.setToolTipText("Import model from JSON");
-		menuItemImport.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Input File");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Import");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-			chooser.setFileFilter(filter);
-
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				Importer importer = new Importer(manager, chooser.getSelectedFile().getAbsolutePath());
-				importer.importFromJSON();
-			}
-		});
-
-		JMenuItem menuItemExport = new JMenuItem("Export");
-		menuItemExport.setMnemonic(KeyEvent.VK_E);
-		menuItemExport.setToolTipText("Export model to JSON");
-		menuItemExport.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Export");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-			chooser.setFileFilter(filter);
-
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				String filePath = chooser.getSelectedFile().getAbsolutePath();
-				if (!filePath.endsWith(".json"))
-					chooser.setSelectedFile(new File(filePath + ".json"));
-				Exporter exporter = new Exporter(manager);
-				exporter.export(chooser.getSelectedFile());
-			}
-		});
-
-		JMenuItem menuItemExit = new JMenuItem("Exit");
-		menuItemExit.setMnemonic(KeyEvent.VK_E);
-		menuItemExit.setToolTipText("Exit application");
-		menuItemExit.addActionListener(e ->
-		{
-			System.exit(0);
-		});
-
-		// Going to change this to be integrated into the import option
-		JMenuItem menuItemTexturePath = new JMenuItem("Set Texture path");
-		menuItemTexturePath.setMnemonic(KeyEvent.VK_S);
-		menuItemTexturePath.setToolTipText("Set the base path from where to look for textures");
-		menuItemTexturePath.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Texture path");
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				texturePath = chooser.getSelectedFile().getAbsolutePath();
-			}
-		});
-
-		file.add(menuItemNew);
-		file.add(menuItemImport);
-		file.add(menuItemExport);
-		file.add(menuItemTexturePath);
-		file.add(menuItemExit);
-		menuBar.add(file);
-		setJMenuBar(menuBar);
+		Icons.init(getClass());
+		setupMenuBar();
 
 		canvas.setPreferredSize(new Dimension(1000, 790));
 		add(canvas, BorderLayout.CENTER);
@@ -266,6 +196,22 @@ public class ModelCreator extends JFrame
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scroll, BorderLayout.EAST);
+	}
+	
+	private List<Image> getIcons()
+	{
+		List<Image> icons = new ArrayList<Image>();
+		icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_16x.png"));
+		icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_32x.png"));
+		icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_64x.png"));
+		icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_128x.png"));
+		return icons;
+	}
+
+	private void setupMenuBar()
+	{
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+		setJMenuBar(new Menu(this));
 	}
 
 	public void initDisplay()
@@ -290,14 +236,11 @@ public class ModelCreator extends JFrame
 
 		while (!Display.isCloseRequested() && !getCloseRequested())
 		{
-			synchronized (this)
+			for (PendingTexture texture : pendingTextures)
 			{
-				for (PendingTexture texture : pendingTextures)
-				{
-					texture.load();
-				}
-				pendingTextures.clear();
+				texture.load();
 			}
+			pendingTextures.clear();
 
 			newDim = newCanvasSize.getAndSet(null);
 
@@ -334,6 +277,15 @@ public class ModelCreator extends JFrame
 			drawOverlay(offset);
 
 			Display.update();
+			
+			if (screenshot != null)
+			{
+				if(screenshot.getFile() != null)
+					Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
+				else
+					Screenshot.getScreenshot(width, height, screenshot.getCallback());
+				screenshot = null;
+			}
 		}
 	}
 
@@ -355,10 +307,10 @@ public class ModelCreator extends JFrame
 		drawGrid();
 
 		glTranslatef(-8, 0, -8);
-		for (int i = 0; i < manager.getCuboidCount(); i++)
+		for (int i = 0; i < manager.getElementCount(); i++)
 		{
 			GL11.glLoadName(i + 1);
-			Element cube = manager.getCuboid(i);
+			Element cube = manager.getElement(i);
 			cube.draw();
 			GL11.glLoadName(0);
 			cube.drawExtras(manager);
@@ -398,6 +350,8 @@ public class ModelCreator extends JFrame
 				glVertex2i(width, height);
 				glVertex2i(offset, height);
 				glVertex2i(offset, 0);
+				glVertex2i(offset, height);
+				glVertex2i(width, height);
 			}
 			glEnd();
 		}
@@ -472,7 +426,7 @@ public class ModelCreator extends JFrame
 
 		if (Mouse.getX() < offset)
 		{
-			SIDEBAR_UV.handleInput(getHeight());
+			activeSidebar.handleInput(getHeight());
 		}
 		else
 		{
@@ -486,8 +440,8 @@ public class ModelCreator extends JFrame
 						int sel = select(Mouse.getX(), Mouse.getY());
 						if (sel >= 0)
 						{
-							grabbed = manager.getAllCuboids().get(sel);
-							manager.setSelectedCuboid(sel);
+							grabbed = manager.getAllElements().get(sel);
+							manager.setSelectedElement(sel);
 						}
 					}
 				}
@@ -744,9 +698,19 @@ public class ModelCreator extends JFrame
 		glPopMatrix();
 	}
 
+	public void startScreenshot(PendingScreenshot screenshot)
+	{
+		this.screenshot = screenshot;
+	}
+
 	public void setSidebar(Sidebar s)
 	{
 		activeSidebar = s;
+	}
+
+	public ElementManager getElementManager()
+	{
+		return manager;
 	}
 
 	public synchronized boolean getCloseRequested()

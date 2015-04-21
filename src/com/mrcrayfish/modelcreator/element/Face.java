@@ -18,8 +18,8 @@ public class Face
 	private static final Color BLUE = new Color(0, 0, 1);
 	private static final Color YELLOW = new Color(1, 1, 0);
 	private static final Color MAGENTA = new Color(1, 0, 1);
-	private static final Color CYAN = new Color(0, 1, 1);	
-	
+	private static final Color CYAN = new Color(0, 1, 1);
+
 	private String texture = null;
 	private String textureLocation = "blocks/";
 	private double textureU = 0;
@@ -227,7 +227,7 @@ public class Face
 		}
 		GL11.glPopMatrix();
 	}
-	
+
 	public void setTexCoord(int corner)
 	{
 		setTexCoord(corner, false);
@@ -236,13 +236,13 @@ public class Face
 	public void setTexCoord(int corner, boolean forceFit)
 	{
 		int coord = corner + rotation;
-		if(coord == 0 | coord == 4)
+		if (coord == 0 | coord == 4)
 			GL11.glTexCoord2d(fitTexture | forceFit ? 0 : (textureU / 16), fitTexture | forceFit ? 1 : (textureVEnd / 16));
-		if(coord == 1 | coord == 5)
+		if (coord == 1 | coord == 5)
 			GL11.glTexCoord2d(fitTexture | forceFit ? 1 : (textureUEnd / 16), fitTexture | forceFit ? 1 : (textureVEnd / 16));
-		if(coord == 2 | coord == 6)
+		if (coord == 2 | coord == 6)
 			GL11.glTexCoord2d(fitTexture | forceFit ? 1 : (textureUEnd / 16), fitTexture | forceFit ? 0 : (textureV / 16));
-		if(coord == 3)
+		if (coord == 3)
 			GL11.glTexCoord2d(fitTexture | forceFit ? 0 : (textureU / 16), fitTexture | forceFit ? 0 : (textureV / 16));
 	}
 
@@ -276,13 +276,13 @@ public class Face
 			}
 		}
 	}
-	
+
 	public void moveTextureU(double amt)
 	{
 		this.textureU += amt;
 		this.textureUEnd += amt;
 	}
-	
+
 	public void moveTextureV(double amt)
 	{
 		this.textureV += amt;
@@ -467,7 +467,7 @@ public class Face
 		}
 		return -1;
 	}
-	
+
 	public static Color getFaceColour(int side)
 	{
 		switch (side)

@@ -1,14 +1,24 @@
 package com.mrcrayfish.modelcreator.sidebar;
 
-import static org.lwjgl.opengl.GL11.*;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.IntBuffer;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glBlendFunc;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2d;
+import static org.lwjgl.opengl.GL11.glVertex2i;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.TextureImpl;
 
@@ -66,8 +76,8 @@ public class UVSidebar extends Sidebar
 					glColor3f(color.getRed(), color.getGreen(), color.getBlue());
 
 					Face[] faces = null;
-					if (manager.getSelectedCuboid() != null)
-						faces = manager.getSelectedCuboid().getAllFaces();
+					if (manager.getSelectedElement() != null)
+						faces = manager.getSelectedElement().getAllFaces();
 
 					if (faces != null)
 					{
@@ -76,23 +86,23 @@ public class UVSidebar extends Sidebar
 						glBegin(GL_QUADS);
 						{
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(0, true);
+								glTexCoord2f(0, 1);
 							glVertex2i(0, LENGTH);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(1, true);
+								glTexCoord2f(1, 1);
 							glVertex2i(LENGTH, LENGTH);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(2, true);
+								glTexCoord2f(1, 0);
 							glVertex2i(LENGTH, 0);
 
 							if (faces[i].isBinded())
-								faces[i].setTexCoord(3, true);
+								glTexCoord2f(0, 0);
 							glVertex2i(0, 0);
 						}
 						glEnd();
-						
+
 						TextureImpl.bindNone();
 
 						glColor3f(1, 1, 1);
@@ -157,12 +167,12 @@ public class UVSidebar extends Sidebar
 			int side = getFace(canvasHeight, newMouseX, newMouseY);
 			if (side != -1 | selected != -1)
 			{
-				if (manager.getSelectedCuboid() != null)
+				if (manager.getSelectedElement() != null)
 				{
-					Face face = manager.getSelectedCuboid().getAllFaces()[(selected != -1 ? selected : side)];
+					Face face = manager.getSelectedElement().getAllFaces()[(selected != -1 ? selected : side)];
 
-					int xMovement = (int) ((newMouseX - this.lastMouseX) / 5);
-					int yMovement = (int) ((newMouseY - this.lastMouseY) / 5);
+					int xMovement = (int) ((newMouseX - this.lastMouseX) / 6);
+					int yMovement = (int) ((newMouseY - this.lastMouseY) / 6);
 
 					if (xMovement != 0 | yMovement != 0)
 					{
@@ -176,12 +186,12 @@ public class UVSidebar extends Sidebar
 						else
 						{
 							face.setAutoUVEnabled(false);
-							
+
 							if ((face.getEndU() + xMovement) <= 16.0)
 								face.addTextureXEnd(xMovement);
 							if ((face.getEndV() - yMovement) <= 16.0)
 								face.addTextureYEnd(-yMovement);
-							
+
 							face.setAutoUVEnabled(false);
 						}
 						face.updateUV();

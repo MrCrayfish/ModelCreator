@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Hashtable;
@@ -18,6 +19,7 @@ import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
+import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 public class RotationPanel extends JPanel implements IValueUpdater
 {
@@ -61,16 +63,17 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		panelOrigin = new OriginPanel(manager);
 
 		axisPanel = new JPanel(new GridLayout(1, 1));
-		axisPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Axis"));
+		axisPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Axis</b></html>"));
 		axisList = new JComboBox<String>();
 		axisList.setModel(model);
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			if (manager.getSelectedCuboid() != null)
-				manager.getSelectedCuboid().setPrevAxis(axisList.getSelectedIndex());
+			if (manager.getSelectedElement() != null)
+				manager.getSelectedElement().setPrevAxis(axisList.getSelectedIndex());
 		});
-		axisPanel.setMaximumSize(new Dimension(186, 50));
+		axisList.setMaximumSize(new Dimension(186, 55));
+		axisPanel.setMaximumSize(new Dimension(186, 55));
 		axisPanel.add(axisList);
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
@@ -81,7 +84,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		labelTable.put(new Integer(2), new JLabel("45\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
-		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rotation"));
+		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));
 		rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
 		rotation.setMajorTickSpacing(1);
 		rotation.setPaintTicks(true);
@@ -89,19 +92,19 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedCuboid().setRotation(rotation.getValue() * 22.5D);
+			manager.getSelectedElement().setRotation(rotation.getValue() * 22.5D);
 		});
 		rotation.setToolTipText("<html>The rotation of the element<br>Default: 0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
 		sliderPanel.add(rotation);
 
 		extraPanel = new JPanel(new GridLayout(1, 2));
-		extraPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Extras"));
-		btnRescale = new JRadioButton("Rescale");
-		btnRescale.setToolTipText("<html>Should scale faces across whole block<br>Default: Off<html>");
+		extraPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
+		
+		btnRescale = ComponentUtil.createRadioButton("Rescale", "<html>Should scale faces across whole block<br>Default: Off<html>");
 		btnRescale.addActionListener(e ->
 		{
-			manager.getSelectedCuboid().setRescale(btnRescale.isSelected());
+			manager.getSelectedElement().setRescale(btnRescale.isSelected());
 		});
 		extraPanel.setMaximumSize(new Dimension(186, 50));
 		extraPanel.add(btnRescale);
@@ -111,11 +114,8 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	{
 		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelOrigin);
-		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(axisPanel);
-		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(sliderPanel);
-		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(extraPanel);
 	}
 

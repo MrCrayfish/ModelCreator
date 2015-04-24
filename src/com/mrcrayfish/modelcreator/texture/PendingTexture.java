@@ -12,10 +12,12 @@ public class PendingTexture
 {
 	private String name;
 	private TextureCallback callback;
+	private File metaFile;
 
-	public PendingTexture(String name, TextureCallback callback)
+	public PendingTexture(String name, File metaFile, TextureCallback callback)
 	{
 		this.name = name;
+		this.metaFile = metaFile;
 		this.callback = callback;
 	}
 
@@ -30,7 +32,7 @@ public class PendingTexture
 			{
 				FileInputStream is = new FileInputStream(new File(name));
 				texture = TextureLoader.getTexture("PNG", is);
-				result = TextureManager.loadExternalTexture(Paths.get(name).getParent().toString(), fileName);
+				result = TextureManager.loadExternalTexture(Paths.get(name).getParent().toString(), fileName, metaFile);
 				is.close();
 			}
 			if (callback != null)

@@ -141,7 +141,6 @@ public class TextureManager
 						List<Integer> frameList = new ArrayList<Integer>();
 						Map<Integer, Integer> customTimes = new HashMap<Integer, Integer>();
 
-						//TODO - custom frame times
 						for(int i=0; i<frames.size(); i++) {
 							JsonElement frame = frames.get(i);
 

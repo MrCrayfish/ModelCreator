@@ -147,7 +147,7 @@ public class TextureEntry
 	
 	public long getFrameTime(int frame) {
 		if(customTimes.containsKey(frame)) {
-			return customTimes.get(frame);
+			return customTimes.get(frame) * 50L;
 		}
 		return frametime * 50L;
 	}

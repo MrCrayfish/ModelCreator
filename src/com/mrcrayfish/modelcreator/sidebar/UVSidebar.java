@@ -24,6 +24,7 @@ import org.newdawn.slick.opengl.TextureImpl;
 
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.FontManager;
 
 public class UVSidebar extends Sidebar
@@ -81,27 +82,33 @@ public class UVSidebar extends Sidebar
 
 					if (faces != null)
 					{
-						faces[i].bindTexture();
-
-						glBegin(GL_QUADS);
-						{
-							if (faces[i].isBinded())
-								glTexCoord2f(0, 1);
-							glVertex2i(0, LENGTH);
-
-							if (faces[i].isBinded())
-								glTexCoord2f(1, 1);
-							glVertex2i(LENGTH, LENGTH);
-
-							if (faces[i].isBinded())
-								glTexCoord2f(1, 0);
-							glVertex2i(LENGTH, 0);
-
-							if (faces[i].isBinded())
-								glTexCoord2f(0, 0);
-							glVertex2i(0, 0);
+						int max = 0;
+						if(TextureManager.getTextureEntry(faces[i].getTextureName())!=null && TextureManager.getTextureEntry(faces[i].getTextureName()).isInterpolated() && TextureManager.getTextureEntry(faces[i].getTextureName()).getFrameCount()>1) {
+							max = 1;
 						}
-						glEnd();
+						for(int pos=0; pos<=max; pos++) {
+							faces[i].bindTexture(pos);
+	
+							glBegin(GL_QUADS);
+							{
+								if (faces[i].isBinded())
+									glTexCoord2f(0, 1);
+								glVertex2i(0, LENGTH);
+	
+								if (faces[i].isBinded())
+									glTexCoord2f(1, 1);
+								glVertex2i(LENGTH, LENGTH);
+	
+								if (faces[i].isBinded())
+									glTexCoord2f(1, 0);
+								glVertex2i(LENGTH, 0);
+	
+								if (faces[i].isBinded())
+									glTexCoord2f(0, 0);
+								glVertex2i(0, 0);
+							}
+							glEnd();
+						}
 
 						TextureImpl.bindNone();
 

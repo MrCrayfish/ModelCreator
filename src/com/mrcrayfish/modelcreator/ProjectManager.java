@@ -23,16 +23,25 @@ public class ProjectManager
 	{
 		manager.clearElements();
 		
-		for (File file : extractFiles(modelFile))
+		File[] files = extractFiles(modelFile);
+		for (File file : files)
 		{
 			if (file.getAbsolutePath().contains("model.json"))
 			{
 				Importer importer = new Importer(manager, file.getAbsolutePath());
 				importer.importFromJSON();
 			}
-			else
+			else if(!file.getAbsolutePath().contains(".mcmeta"))
 			{
-				manager.addPendingTexture(new PendingTexture(file.getAbsolutePath(), null));
+				File metaFile = null;
+				for(File mfile : files) {
+					if(mfile.getAbsolutePath().startsWith(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf(".")))) {
+						if(mfile.getAbsolutePath().contains(".mcmeta")) {
+							metaFile = mfile;
+						}
+					}
+				}
+				manager.addPendingTexture(new PendingTexture(file.getAbsolutePath(), metaFile, null));
 			}
 		}
 	}
@@ -92,7 +101,12 @@ public class ProjectManager
 
 			for (String location : getTextureLocations(manager))
 			{
-				addToZipFile(new File(location), zos, "textures/");
+				File texfile = new File(location);
+				addToZipFile(texfile, zos, "textures/");
+				File metafile = new File(texfile.getParentFile(), texfile.getName()+".mcmeta");
+				if(metafile.exists()) {
+					addToZipFile(metafile, zos, "textures/");
+				}
 			}
 
 			zos.close();
@@ -117,11 +131,12 @@ public class ProjectManager
 			for (Face face : cuboid.getAllFaces())
 			{
 				String texture = TextureManager.getTextureLocation(face.getTextureName());
+				System.out.println(texture);
 				if (texture != null)
 				{
-					if (!locations.contains(TextureManager.getTextureLocation(face.getTextureName())))
+					if (!locations.contains(texture))
 					{
-						locations.add(TextureManager.getTextureLocation(face.getTextureName()));
+						locations.add(texture);
 					}
 				}
 			}

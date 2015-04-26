@@ -130,6 +130,7 @@ public class Importer
 				if (entry.getValue().isJsonPrimitive())
 				{
 					String texture = entry.getValue().getAsString();
+
 					if (texture.startsWith("#"))
 					{
 						System.out.println("1. Adding key '" + entry.getKey() + "' with texture '" + textureMap.get(texture.replace("#", "")) + "'.");
@@ -138,7 +139,14 @@ public class Importer
 					else
 					{
 						System.out.println("2. Adding key '" + entry.getKey().replace("#", "") + "' with texture '" + texture + "'.");
-						textureMap.put(entry.getKey().replace("#", ""), texture);
+						if (entry.getKey().equals("particle"))
+						{
+							manager.setParticle(texture);
+						}
+						else
+						{
+							textureMap.put(entry.getKey().replace("#", ""), texture);
+						}
 						loadTexture(file, texture);
 					}
 				}
@@ -157,7 +165,7 @@ public class Importer
 				File textureFile = new File(textureDir, texture + ".png");
 				if (textureFile.exists() && textureFile.isFile())
 				{
-					manager.addPendingTexture(new PendingTexture(textureFile.getAbsolutePath(), null));
+					manager.addPendingTexture(new PendingTexture(textureFile.getAbsolutePath()));
 					return;
 				}
 			}

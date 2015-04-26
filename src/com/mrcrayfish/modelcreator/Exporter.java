@@ -33,7 +33,7 @@ public class Exporter
 		}
 		return file;
 	}
-	
+
 	public File writeJSONFile(File file)
 	{
 		FileWriter fw;
@@ -108,6 +108,15 @@ public class Exporter
 	{
 		writer.write(space(1) + "\"textures\": {");
 		writer.newLine();
+		if (manager.getParticle() != null)
+		{
+			writer.write(space(2) + "\"particle\": \"blocks/" + manager.getParticle() + "\"");
+			if(textureList.size() > 0)
+			{
+				writer.write(",");
+			}
+			writer.newLine();
+		}
 		for (String texture : textureList)
 		{
 			writer.write(space(2) + "\"" + textureList.indexOf(texture) + "\": \"" + texture + "\"");

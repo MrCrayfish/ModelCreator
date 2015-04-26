@@ -7,10 +7,13 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import com.mrcrayfish.modelcreator.Menu;
 import com.mrcrayfish.modelcreator.util.Util;
 
 public class Screenshot
@@ -61,13 +64,31 @@ public class Screenshot
 		}
 	}
 
+	public static boolean isUrl(String url)
+	{
+		if(url == null | url.equals("null"))
+		{
+			JOptionPane message = new JOptionPane();
+			message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
+			JDialog dialog = message.createDialog(null, "Error");
+			dialog.setLocationRelativeTo(null);
+			dialog.setModal(false);
+			dialog.setVisible(true);
+			return false;
+		}
+		return true;
+	}
+
 	public static void shareToFacebook(String link)
 	{
 		try
 		{
-			String url = "https://www.facebook.com/sharer/sharer.php?";
-			url += "u=" + URLEncoder.encode(link, "UTF-8");
-			Util.openUrl(url);
+			if (isUrl(link))
+			{
+				String url = "https://www.facebook.com/sharer/sharer.php?";
+				url += "u=" + URLEncoder.encode(link, "UTF-8");
+				Util.openUrl(url);
+			}
 		}
 		catch (Exception e)
 		{
@@ -79,10 +100,13 @@ public class Screenshot
 	{
 		try
 		{
-			String url = "https://twitter.com/intent/tweet?";
-			url += "text=" + URLEncoder.encode("Check out this awesome model I created with @MrCraayfish's Model Creator", "UTF-8");
-			url += "&url=" + URLEncoder.encode(link, "UTF-8");
-			Util.openUrl(url);
+			if (isUrl(link))
+			{
+				String url = "https://twitter.com/intent/tweet?";
+				url += "text=" + URLEncoder.encode("Check out this awesome model I created with @MrCraayfish's Model Creator", "UTF-8");
+				url += "&url=" + URLEncoder.encode(link, "UTF-8");
+				Util.openUrl(url);
+			}
 		}
 		catch (Exception e)
 		{

@@ -5,10 +5,12 @@ import java.awt.Dimension;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.ElementExtraPanel;
+import com.mrcrayfish.modelcreator.panels.GlobalPanel;
 import com.mrcrayfish.modelcreator.panels.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.PositionPanel;
 import com.mrcrayfish.modelcreator.panels.SizePanel;
@@ -22,6 +24,7 @@ public class ElementPanel extends JPanel implements IValueUpdater
 	private SizePanel panelSize;
 	private PositionPanel panelPosition;
 	private ElementExtraPanel panelExtras;
+	private GlobalPanel panelGlobal;
 
 	public ElementPanel(ElementManager manager)
 	{
@@ -36,6 +39,7 @@ public class ElementPanel extends JPanel implements IValueUpdater
 		panelSize = new SizePanel(manager);
 		panelPosition = new PositionPanel(manager);
 		panelExtras = new ElementExtraPanel(manager);
+		panelGlobal = new GlobalPanel(manager);
 	}
 
 	public void addComponents()
@@ -46,6 +50,9 @@ public class ElementPanel extends JPanel implements IValueUpdater
 		add(panelPosition);
 		add(Box.createRigidArea(new Dimension(188, 5)));
 		add(panelExtras);
+		add(Box.createRigidArea(new Dimension(188, 70)));
+		add(new JSeparator(JSeparator.HORIZONTAL));
+		add(panelGlobal);
 	}
 
 	@Override

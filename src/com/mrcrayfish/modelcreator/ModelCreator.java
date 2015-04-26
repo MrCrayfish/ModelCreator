@@ -106,7 +106,7 @@ public class ModelCreator extends JFrame
 	{
 		super(title);
 
-		setPreferredSize(new Dimension(1200, 835));
+		setPreferredSize(new Dimension(1200, 815));
 		setMinimumSize(new Dimension(1200, 500));
 		setLayout(new BorderLayout(10, 0));
 		setIconImages(getIcons());

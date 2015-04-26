@@ -29,4 +29,10 @@ public interface ElementManager
 	public void setAmbientOcc(boolean occ);
 
 	public void addElement(Element e);
+	
+	public void setParticle(String texture);
+	
+	public String getParticle();
+	
+	public void reset();
 }

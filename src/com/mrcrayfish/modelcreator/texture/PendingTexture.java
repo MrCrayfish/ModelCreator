@@ -13,6 +13,11 @@ public class PendingTexture
 	private String name;
 	private TextureCallback callback;
 
+	public PendingTexture(String name)
+	{
+		this(name, null);
+	}
+	
 	public PendingTexture(String name, TextureCallback callback)
 	{
 		this.name = name;

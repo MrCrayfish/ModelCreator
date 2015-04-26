@@ -51,15 +51,15 @@ public class TextureManager
 			texture.release();
 			return false;
 		}
-		ImageIcon image = upscale(new ImageIcon(path + "/" + file));
+		ImageIcon image = upscale(new ImageIcon(path + "/" + file), 256);
 		textureCache.add(new TextureEntry(file.replace(".png", "").replaceAll("\\d*$", ""), texture, image, path + "/" + file));
 		return true;
 	}
 
-	public static ImageIcon upscale(ImageIcon source)
+	public static ImageIcon upscale(ImageIcon source, int length)
 	{
 		Image img = source.getImage();
-		Image newimg = img.getScaledInstance(256, 256, java.awt.Image.SCALE_FAST);
+		Image newimg = img.getScaledInstance(length, length, java.awt.Image.SCALE_FAST);
 		return new ImageIcon(newimg);
 	}
 	

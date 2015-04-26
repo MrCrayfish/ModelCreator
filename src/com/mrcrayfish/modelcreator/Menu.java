@@ -149,7 +149,7 @@ public class Menu extends JMenuBar
 			int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
 			if (returnVal == JOptionPane.YES_OPTION)
 			{
-				creator.getElementManager().clearElements();
+				creator.getElementManager().reset();
 				creator.getElementManager().updateValues();
 			}
 		});
@@ -359,10 +359,24 @@ public class Menu extends JMenuBar
 					try
 					{
 						String url = Uploader.upload(file);
-						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(url), null);
+						
 						JOptionPane message = new JOptionPane();
-						message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
-						JDialog dialog = message.createDialog(Menu.this, "Success");
+						String title;
+						
+						if (url != null && !url.equals("null"))
+						{
+							StringSelection text = new StringSelection(url);
+							Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+							title = "Success";
+							message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
+						}
+						else
+						{
+							title = "Error";
+							message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
+						}
+
+						JDialog dialog = message.createDialog(Menu.this, title);
 						dialog.setLocationRelativeTo(null);
 						dialog.setModal(false);
 						dialog.setVisible(true);

@@ -3,24 +3,36 @@ package com.mrcrayfish.modelcreator.texture;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 
 public class PendingTexture
 {
-	private String name;
+	private File texture;
+	private File meta;
 	private TextureCallback callback;
 
-	public PendingTexture(String name)
+	public PendingTexture(File texture)
 	{
-		this(name, null);
+		this(texture, (TextureCallback) null);
 	}
-	
-	public PendingTexture(String name, TextureCallback callback)
+
+	public PendingTexture(File texture, File meta)
 	{
-		this.name = name;
+		this(texture, meta, null);
+	}
+
+	public PendingTexture(File texture, TextureCallback callback)
+	{
+		this.texture = texture;
+		this.callback = callback;
+	}
+
+	public PendingTexture(File texture, File meta, TextureCallback callback)
+	{
+		this.texture = texture;
+		this.meta = meta;
 		this.callback = callback;
 	}
 
@@ -29,13 +41,13 @@ public class PendingTexture
 		try
 		{
 			boolean result = false;
-			String fileName = Paths.get(name).getFileName().toString();
+			String fileName = this.texture.getName().replace(".png", "").replaceAll("\\d*$", "");
 			Texture texture = TextureManager.getTexture(fileName);
 			if (texture == null)
 			{
-				FileInputStream is = new FileInputStream(new File(name));
+				FileInputStream is = new FileInputStream(this.texture);
 				texture = TextureLoader.getTexture("PNG", is);
-				result = TextureManager.loadExternalTexture(Paths.get(name).getParent().toString(), fileName);
+				result = TextureManager.loadExternalTexture(this.texture, this.meta);
 				is.close();
 			}
 			if (callback != null)

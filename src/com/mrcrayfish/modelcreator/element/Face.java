@@ -1,14 +1,17 @@
 package com.mrcrayfish.modelcreator.element;
 
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 
 public class Face
@@ -44,9 +47,23 @@ public class Face
 
 	public void renderNorth()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderNorth(i);
+		}
+	}
+
+	private void renderNorth(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -75,9 +92,23 @@ public class Face
 
 	public void renderEast()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderEast(i);
+		}
+	}
+
+	private void renderEast(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -106,9 +137,23 @@ public class Face
 
 	public void renderSouth()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderSouth(i);
+		}
+	}
+
+	private void renderSouth(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -137,9 +182,23 @@ public class Face
 
 	public void renderWest()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderWest(i);
+		}
+	}
+
+	private void renderWest(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -168,9 +227,23 @@ public class Face
 
 	public void renderUp()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderUp(i);
+		}
+	}
+
+	private void renderUp(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -199,9 +272,23 @@ public class Face
 
 	public void renderDown()
 	{
+		TextureEntry entry = TextureManager.getTextureEntry(texture);
+		int passes = 1;
+
+		if (entry != null)
+			passes = entry.getPasses();
+
+		for (int i = 0; i < passes; i++)
+		{
+			renderDown(i);
+		}
+	}
+
+	public void renderDown(int pass)
+	{
 		GL11.glPushMatrix();
 		{
-			startRender();
+			startRender(pass);
 
 			GL11.glBegin(GL11.GL_QUADS);
 			{
@@ -246,11 +333,11 @@ public class Face
 			GL11.glTexCoord2d(fitTexture | forceFit ? 0 : (textureU / 16), fitTexture | forceFit ? 0 : (textureV / 16));
 	}
 
-	public void startRender()
+	public void startRender(int pass)
 	{
 		GL11.glEnable(GL_TEXTURE_2D);
 		GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		bindTexture();
+		bindTexture(pass);
 	}
 
 	public void finishRender()
@@ -263,15 +350,41 @@ public class Face
 		this.texture = texture;
 	}
 
-	public void bindTexture()
+	public void bindTexture(int pass)
 	{
 		TextureImpl.bindNone();
 		if (texture != null)
 		{
-			if (TextureManager.getTexture(texture) != null)
+			TextureEntry entry = TextureManager.getTextureEntry(texture);
+			if (entry != null)
 			{
-				GL11.glColor3f(1.0F, 1.0F, 1.0F);
-				TextureManager.getTexture(texture).bind();
+				if (pass == 0)
+				{
+					if (entry.getTexture() != null)
+					{
+						GL11.glColor3f(1.0F, 1.0F, 1.0F);
+						entry.getTexture().bind();
+					}
+				}
+				else if (pass == 1)
+				{
+					if (entry.isAnimated() && entry.getNextTexture() != null)
+					{
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+						GL11.glDepthFunc(GL11.GL_EQUAL);
+
+						entry.getNextTexture().bind();
+						GL11.glColor4d(1.0D, 1.0D, 1.0D, entry.getAnimation().getFrameInterpolation());
+					}
+				}
+
+				if (entry.hasProperties() && entry.getProperties().isBlurred())
+				{
+					GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+					GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				}
+
 				binded = true;
 			}
 		}

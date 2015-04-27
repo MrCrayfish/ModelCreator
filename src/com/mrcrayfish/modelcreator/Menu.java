@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
@@ -44,8 +45,9 @@ public class Menu extends JMenuBar
 	/* Share */
 	private JMenu menuScreenshot;
 	private JMenuItem itemSaveToDisk;
-	private JMenuItem itemShareFB;
-	private JMenuItem itemShareTWTR;
+	private JMenuItem itemShareFacebook;
+	private JMenuItem itemShareTwitter;
+	private JMenuItem itemShareReddit;
 	private JMenuItem itemImgurLink;
 
 	/* Extras */
@@ -85,8 +87,9 @@ public class Menu extends JMenuBar
 		menuScreenshot = new JMenu("Screenshot");
 		{
 			itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
-			itemShareFB = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
-			itemShareTWTR = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
+			itemShareFacebook = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
+			itemShareTwitter = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
+			itemShareReddit = createItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
 			itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_G, Icons.imgur);
 		}
 
@@ -120,8 +123,9 @@ public class Menu extends JMenuBar
 		menuOptions.add(itemTransparency);
 
 		menuScreenshot.add(itemSaveToDisk);
-		menuScreenshot.add(itemShareFB);
-		menuScreenshot.add(itemShareTWTR);
+		menuScreenshot.add(itemShareFacebook);
+		menuScreenshot.add(itemShareTwitter);
+		menuScreenshot.add(itemShareReddit);
 		menuScreenshot.add(itemImgurLink);
 
 		menuFile.add(itemNew);
@@ -227,6 +231,7 @@ public class Menu extends JMenuBar
 					Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 					importer.importFromJSON();
 				}
+				creator.getElementManager().updateValues();
 			}
 		});
 
@@ -309,7 +314,7 @@ public class Menu extends JMenuBar
 			}
 		});
 
-		itemShareFB.addActionListener(a ->
+		itemShareFacebook.addActionListener(a ->
 		{
 			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
 			{
@@ -329,7 +334,7 @@ public class Menu extends JMenuBar
 			}));
 		});
 
-		itemShareTWTR.addActionListener(a ->
+		itemShareTwitter.addActionListener(a ->
 		{
 			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
 			{
@@ -349,7 +354,7 @@ public class Menu extends JMenuBar
 			}));
 		});
 
-		itemImgurLink.addActionListener(a ->
+		itemShareReddit.addActionListener(a ->
 		{
 			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
 			{
@@ -359,32 +364,59 @@ public class Menu extends JMenuBar
 					try
 					{
 						String url = Uploader.upload(file);
-						
-						JOptionPane message = new JOptionPane();
-						String title;
-						
-						if (url != null && !url.equals("null"))
-						{
-							StringSelection text = new StringSelection(url);
-							Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
-							title = "Success";
-							message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
-						}
-						else
-						{
-							title = "Error";
-							message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
-						}
-
-						JDialog dialog = message.createDialog(Menu.this, title);
-						dialog.setLocationRelativeTo(null);
-						dialog.setModal(false);
-						dialog.setVisible(true);
+						Screenshot.shareToReddit(url);
 					}
 					catch (Exception e)
 					{
 						e.printStackTrace();
 					}
+				}
+			}));
+		});
+
+		itemImgurLink.addActionListener(a ->
+		{
+			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
+			{
+				@Override
+				public void callback(File file)
+				{
+					SwingUtilities.invokeLater(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							try
+							{
+								String url = Uploader.upload(file);
+
+								JOptionPane message = new JOptionPane();
+								String title;
+
+								if (url != null && !url.equals("null"))
+								{
+									StringSelection text = new StringSelection(url);
+									Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+									title = "Success";
+									message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
+								}
+								else
+								{
+									title = "Error";
+									message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
+								}
+
+								JDialog dialog = message.createDialog(Menu.this, title);
+								dialog.setLocationRelativeTo(null);
+								dialog.setModal(false);
+								dialog.setVisible(true);
+							}
+							catch (Exception e)
+							{
+								e.printStackTrace();
+							}
+						}
+					});
 				}
 			}));
 		});

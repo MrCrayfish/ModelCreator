@@ -16,7 +16,7 @@ import com.mrcrayfish.modelcreator.util.StreamUtils;
 public class Uploader
 {
 	private static final String UPLOAD_URL = "https://api.imgur.com/3/image";
-	private static final String CLIENT_ID = "SECRETKEY";
+	private static final String CLIENT_ID = "5cd0235db91ac6e";
 
 	public static String upload(File file) throws Exception
 	{
@@ -30,7 +30,7 @@ public class Uploader
 			conn.setRequestProperty("Authorization", "Client-ID " + CLIENT_ID);
 
 			OutputStream out = conn.getOutputStream();
-			copy(new FileInputStream(file), out);
+			upload(new FileInputStream(file), out);
 			out.flush();
 			out.close();
 
@@ -47,33 +47,36 @@ public class Uploader
 		return null;
 	}
 
-	private static int copy(InputStream input, OutputStream output) throws IOException
+	private static int upload(InputStream input, OutputStream output) throws IOException
 	{
 		byte[] buffer = new byte[8192];
 		int count = 0;
 		int n = 0;
+		int size = input.available();
+
 		while (-1 != (n = input.read(buffer)))
 		{
 			output.write(buffer, 0, n);
 			count += n;
 		}
+		
 		return count;
 	}
-	
+
 	private static String getImageLink(InputStream input) throws IOException
 	{
 		String json = StreamUtils.convertToString(input);
-		
+
 		System.out.println(json);
-		
+
 		JsonParser parser = new JsonParser();
 		JsonElement read = parser.parse(json);
-		
+
 		if (read.isJsonObject())
 		{
 			JsonObject obj = read.getAsJsonObject();
-			
-			if(obj.has("data") && obj.get("data").isJsonObject())
+
+			if (obj.has("data") && obj.get("data").isJsonObject())
 			{
 				JsonObject data = obj.getAsJsonObject("data");
 				return "http://imgur.com/" + data.get("id").getAsString();

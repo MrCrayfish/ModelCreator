@@ -7,12 +7,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,6 +30,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.BufferedImageUtil;
 
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
@@ -41,18 +44,63 @@ public class TextureManager
 
 	public static File lastLocation = null;
 
-	public static boolean loadExternalTexture(String path, String file) throws IOException
+	public static boolean loadExternalTexture(File image, File meta) throws IOException
 	{
-		FileInputStream is = new FileInputStream(new File(path + "/" + file));
+		TextureMeta textureMeta = TextureMeta.parse(meta);
+
+		if (textureMeta != null)
+		{
+			if (textureMeta.getAnimation() != null)
+			{
+				System.out.println("Loading Animated Texture!");
+				BufferedImage bimage = ImageIO.read(image);
+
+				int fWidth = textureMeta.getAnimation().getWidth();
+				int fHeight = textureMeta.getAnimation().getHeight();
+
+				ImageIcon icon = null;
+
+				List<Texture> textures = new ArrayList<Texture>();
+
+				int xpos = 0;
+				while (xpos + fWidth <= bimage.getWidth())
+				{
+					int ypos = 0;
+					while (ypos + fHeight <= bimage.getHeight())
+					{
+						BufferedImage subImage = bimage.getSubimage(xpos, ypos, fWidth, fHeight);
+						if (icon == null)
+						{
+							icon = TextureManager.upscale(new ImageIcon(subImage), 256);
+						}
+						Texture texture = BufferedImageUtil.getTexture("", subImage);
+						textures.add(texture);
+						ypos += fHeight;
+					}
+					xpos += fWidth;
+				}
+				String imageName = image.getName();
+				textureCache.add(new TextureEntry(image.getName().substring(0, imageName.indexOf(".png")), textures, icon, image.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
+				return true;
+			}
+			return loadTexture(image, textureMeta, meta.getAbsolutePath());
+		}
+		return loadTexture(image, null, null);
+	}
+
+	private static boolean loadTexture(File image, TextureMeta meta, String location) throws IOException
+	{
+		FileInputStream is = new FileInputStream(image);
 		Texture texture = TextureLoader.getTexture("PNG", is);
 		is.close();
+
 		if (texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
 		{
 			texture.release();
 			return false;
 		}
-		ImageIcon image = upscale(new ImageIcon(path + "/" + file), 256);
-		textureCache.add(new TextureEntry(file.replace(".png", "").replaceAll("\\d*$", ""), texture, image, path + "/" + file));
+		ImageIcon icon = upscale(new ImageIcon(image.getAbsolutePath()), 256);
+		textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
 		return true;
 	}
 
@@ -62,7 +110,7 @@ public class TextureManager
 		Image newimg = img.getScaledInstance(length, length, java.awt.Image.SCALE_FAST);
 		return new ImageIcon(newimg);
 	}
-	
+
 	public static TextureEntry getTextureEntry(String name)
 	{
 		for (TextureEntry entry : textureCache)
@@ -86,14 +134,26 @@ public class TextureManager
 		}
 		return null;
 	}
-	
+
 	public static String getTextureLocation(String name)
 	{
 		for (TextureEntry entry : textureCache)
 		{
 			if (entry.getName().equalsIgnoreCase(name))
 			{
-				return entry.getLocation();
+				return entry.getTextureLocation();
+			}
+		}
+		return null;
+	}
+	
+	public static String getMetaLocation(String name)
+	{
+		for (TextureEntry entry : textureCache)
+		{
+			if (entry.getName().equalsIgnoreCase(name))
+			{
+				return entry.getMetaLocation();
 			}
 		}
 		return null;
@@ -159,7 +219,9 @@ public class TextureManager
 				lastLocation = chooser.getSelectedFile().getParentFile();
 				try
 				{
-					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile().getAbsolutePath(), new TextureCallback()
+					File meta = new File(chooser.getSelectedFile().getAbsolutePath() + ".mcmeta");
+					System.out.println(meta.getName());
+					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile(), meta, new TextureCallback()
 					{
 						@Override
 						public void callback(boolean success, String texture)

@@ -65,9 +65,12 @@ public class Exporter
 			for (Face face : cuboid.getAllFaces())
 			{
 				System.out.println(face.getTextureLocation() + " " + face.getTextureName());
-				if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
+				if (face.getTextureName() != null && !face.getTextureName().equals("null"))
 				{
-					textureList.add(face.getTextureLocation() + face.getTextureName());
+					if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
+					{
+						textureList.add(face.getTextureLocation() + face.getTextureName());
+					}
 				}
 			}
 		}
@@ -111,7 +114,7 @@ public class Exporter
 		if (manager.getParticle() != null)
 		{
 			writer.write(space(2) + "\"particle\": \"blocks/" + manager.getParticle() + "\"");
-			if(textureList.size() > 0)
+			if (textureList.size() > 0)
 			{
 				writer.write(",");
 			}

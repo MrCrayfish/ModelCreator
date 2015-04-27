@@ -61,5 +61,6 @@ public class ElementPanel extends JPanel implements IValueUpdater
 		panelSize.updateValues(cube);
 		panelPosition.updateValues(cube);
 		panelExtras.updateValues(cube);
+		panelGlobal.updateValues(cube);
 	}
 }

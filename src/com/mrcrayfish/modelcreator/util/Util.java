@@ -34,9 +34,9 @@ public class Util
 		try
 		{
 			InputStream is = clazz.getClassLoader().getResourceAsStream(name + ".model");
-			File file = File.createTempFile(name+".model", "");
+			File file = File.createTempFile(name + ".model", "");
 			FileOutputStream fos = new FileOutputStream(file);
-			
+
 			byte[] buffer = new byte[1024];
 
 			int len;
@@ -44,10 +44,10 @@ public class Util
 			{
 				fos.write(buffer, 0, len);
 			}
-			
+
 			fos.close();
 			is.close();
-			
+
 			ProjectManager.loadProject(manager, file.getAbsolutePath());
 		}
 		catch (FileNotFoundException e)
@@ -58,6 +58,5 @@ public class Util
 		{
 			e.printStackTrace();
 		}
-		
 	}
 }

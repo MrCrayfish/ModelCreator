@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
@@ -18,10 +17,11 @@ import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 public class GlobalPanel extends JPanel implements IValueUpdater
 {
+	private static final long serialVersionUID = 1L;
+
 	private ElementManager manager;
 
 	private JRadioButton ambientOcc;
-	private JLabel particleImage;
 	private JButton btnParticle;
 
 	public GlobalPanel(ElementManager manager)
@@ -39,8 +39,6 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 		ambientOcc = ComponentUtil.createRadioButton("Ambient Occulusion", "Determine the light for each element");
 		ambientOcc.setSelected(true);
 		ambientOcc.addActionListener(a -> manager.setAmbientOcc(ambientOcc.isSelected()));
-		
-		particleImage = new JLabel("Particle: missing");
 
 		btnParticle = new JButton("Particle");
 		btnParticle.setIcon(Icons.texture);
@@ -65,5 +63,13 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 	public void updateValues(Element cube)
 	{
 		ambientOcc.setSelected(manager.getAmbientOcc());
+		if (manager.getParticle() == null)
+		{
+			btnParticle.setText("Particle");
+		}
+		else
+		{
+			btnParticle.setText(manager.getParticle());
+		}
 	}
 }

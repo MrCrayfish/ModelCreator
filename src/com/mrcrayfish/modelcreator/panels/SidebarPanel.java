@@ -76,7 +76,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		});
 		btnAdd.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnAdd);
-		
+
 		btnRemove.setIcon(Icons.bin);
 		btnRemove.setToolTipText("Remove Element");
 		btnRemove.addActionListener(e ->
@@ -281,7 +281,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		this.particle = texture;
 	}
-	
+
 	@Override
 	public String getParticle()
 	{

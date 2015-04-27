@@ -28,10 +28,17 @@ public class Importer
 	// Model Variables
 	private ElementManager manager;
 
+	private boolean ignoreTextures = false;
+
 	public Importer(ElementManager manager, String outputPath)
 	{
 		this.manager = manager;
 		this.inputPath = outputPath;
+	}
+
+	public void ignoreTextureLoading()
+	{
+		this.ignoreTextures = true;
 	}
 
 	public void importFromJSON()
@@ -80,7 +87,6 @@ public class Importer
 				if (file.exists())
 				{
 					// load textures
-					System.out.println(obj.get("textures"));
 					loadTextures(dir, obj);
 
 					// Load Parent
@@ -133,12 +139,10 @@ public class Importer
 
 					if (texture.startsWith("#"))
 					{
-						System.out.println("1. Adding key '" + entry.getKey() + "' with texture '" + textureMap.get(texture.replace("#", "")) + "'.");
 						textureMap.put(entry.getKey(), textureMap.get(texture.replace("#", "")));
 					}
 					else
 					{
-						System.out.println("2. Adding key '" + entry.getKey().replace("#", "") + "' with texture '" + texture + "'.");
 						if (entry.getKey().equals("particle"))
 						{
 							manager.setParticle(texture);
@@ -147,8 +151,8 @@ public class Importer
 						{
 							textureMap.put(entry.getKey().replace("#", ""), texture);
 						}
-						loadTexture(file, texture);
 					}
+					loadTexture(file, texture);
 				}
 			}
 		}
@@ -157,15 +161,18 @@ public class Importer
 	private void loadTexture(File dir, String texture)
 	{
 		File assets = dir.getParentFile().getParentFile();
+		System.out.println("1." + assets.getAbsolutePath());
 		if (assets != null)
 		{
 			File textureDir = new File(assets, "textures/");
+			System.out.println("3." + textureDir.getAbsolutePath());
 			if (textureDir.exists() && textureDir.isDirectory())
 			{
 				File textureFile = new File(textureDir, texture + ".png");
+				System.out.println("4." + textureFile.getAbsolutePath());
 				if (textureFile.exists() && textureFile.isFile())
 				{
-					manager.addPendingTexture(new PendingTexture(textureFile.getAbsolutePath()));
+					manager.addPendingTexture(new PendingTexture(textureFile));
 					return;
 				}
 			}
@@ -173,7 +180,7 @@ public class Importer
 
 		if (new File(ModelCreator.texturePath + File.separator + texture + ".png").exists())
 		{
-			manager.addPendingTexture(new PendingTexture(ModelCreator.texturePath + File.separator + texture + ".png", null));
+			manager.addPendingTexture(new PendingTexture(new File(ModelCreator.texturePath + File.separator + texture + ".png")));
 		}
 	}
 

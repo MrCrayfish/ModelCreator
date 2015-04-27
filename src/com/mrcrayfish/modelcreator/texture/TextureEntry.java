@@ -1,5 +1,8 @@
 package com.mrcrayfish.modelcreator.texture;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 
 import org.newdawn.slick.opengl.Texture;
@@ -7,16 +10,46 @@ import org.newdawn.slick.opengl.Texture;
 public class TextureEntry
 {
 	private String name;
-	private Texture texture;
 	private ImageIcon image;
-	private String location;
+	private List<Texture> textures;
+	private String textureLocation;
+	private String metaLocation;
 
-	public TextureEntry(String name, Texture texture, ImageIcon image, String location)
+	private TextureAnimation anim;
+	private TextureProperties props;
+
+	public TextureEntry(String name, Texture texture, ImageIcon image, String textureLocation)
 	{
 		this.name = name;
-		this.texture = texture;
+		this.textures = Arrays.asList(texture);
 		this.image = image;
-		this.location = location;
+		this.textureLocation = textureLocation;
+	}
+
+	public TextureEntry(String name, Texture texture, ImageIcon image, String textureLocation, TextureMeta meta, String metaLocation)
+	{
+		this.name = name;
+		this.textures = Arrays.asList(texture);
+		this.image = image;
+		this.textureLocation = textureLocation;
+		if (meta != null)
+			this.anim = meta.getAnimation();
+		if (meta != null)
+			this.props = meta.getProperties();
+		this.metaLocation = metaLocation;
+	}
+
+	public TextureEntry(String name, List<Texture> textures, ImageIcon image, String textureLocation, TextureMeta meta, String metaLocation)
+	{
+		this.name = name;
+		this.textures = textures;
+		this.image = image;
+		this.textureLocation = textureLocation;
+		if (meta != null)
+			this.anim = meta.getAnimation();
+		if (meta != null)
+			this.props = meta.getProperties();
+		this.metaLocation = metaLocation;
 	}
 
 	public String getName()
@@ -24,19 +57,18 @@ public class TextureEntry
 		return name;
 	}
 
-	public void setName(String name)
-	{
-		this.name = name;
-	}
-
 	public Texture getTexture()
 	{
-		return texture;
+		if (isAnimated())
+			return textures.get(anim.getCurrentAnimationFrame());
+		return textures.get(0);
 	}
 
-	public void setTexture(Texture texture)
+	public Texture getNextTexture()
 	{
-		this.texture = texture;
+		if (isAnimated())
+			return textures.get(anim.getNextAnimationFrame());
+		return textures.get(0);
 	}
 
 	public ImageIcon getImage()
@@ -44,13 +76,40 @@ public class TextureEntry
 		return image;
 	}
 
-	public void setImage(ImageIcon image)
+	public String getTextureLocation()
 	{
-		this.image = image;
+		return textureLocation;
 	}
 
-	public String getLocation()
+	public TextureAnimation getAnimation()
 	{
-		return location;
+		return anim;
+	}
+
+	public boolean isAnimated()
+	{
+		return anim != null;
+	}
+
+	public TextureProperties getProperties()
+	{
+		return props;
+	}
+
+	public boolean hasProperties()
+	{
+		return props != null;
+	}
+
+	public String getMetaLocation()
+	{
+		return metaLocation;
+	}
+
+	public int getPasses()
+	{
+		if (anim != null)
+			return anim.getPasses();
+		return 1;
 	}
 }

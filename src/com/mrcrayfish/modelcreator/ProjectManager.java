@@ -22,18 +22,16 @@ public class ProjectManager
 	public static void loadProject(ElementManager manager, String modelFile)
 	{
 		manager.clearElements();
-		
-		for (File file : extractFiles(modelFile))
+
+		Project project = new Project(manager, extractFiles(modelFile));
+
+		Importer importer = new Importer(manager, project.getModel().getAbsolutePath());
+		importer.ignoreTextureLoading();
+		importer.importFromJSON();
+
+		for (ProjectTexture texture : project.getTextures())
 		{
-			if (file.getAbsolutePath().contains("model.json"))
-			{
-				Importer importer = new Importer(manager, file.getAbsolutePath());
-				importer.importFromJSON();
-			}
-			else
-			{
-				manager.addPendingTexture(new PendingTexture(file.getAbsolutePath(), null));
-			}
+			manager.addPendingTexture(new PendingTexture(texture.getTexture(), texture.getMeta()));
 		}
 	}
 
@@ -47,7 +45,6 @@ public class ProjectManager
 			ZipEntry ze = null;
 			while ((ze = zis.getNextEntry()) != null)
 			{
-				System.out.println(ze.getName());
 				File file = File.createTempFile(ze.getName(), "");
 				file.mkdirs();
 
@@ -90,9 +87,28 @@ public class ProjectManager
 			addToZipFile(file, zos);
 			file.delete();
 
-			for (String location : getTextureLocations(manager))
+			for (String textureLocation : getTextureLocations(manager))
 			{
-				addToZipFile(new File(location), zos, "textures/");
+				if (textureLocation != null)
+				{
+					File texture = new File(textureLocation);
+					if (texture.exists())
+					{
+						addToZipFile(texture, zos, "textures/");
+					}
+				}
+			}
+			
+			for(String metaLocation : getMetaLocations(manager))
+			{
+				if (metaLocation != null)
+				{
+					File texture = new File(metaLocation);
+					if (texture.exists())
+					{
+						addToZipFile(texture, zos, "textures/");
+					}
+				}
 			}
 
 			zos.close();
@@ -106,7 +122,6 @@ public class ProjectManager
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 	private static String[] getTextureLocations(ElementManager manager)
@@ -116,13 +131,27 @@ public class ProjectManager
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
-				String texture = TextureManager.getTextureLocation(face.getTextureName());
-				if (texture != null)
+				String location = TextureManager.getTextureLocation(face.getTextureName());
+				if (!locations.contains(location))
 				{
-					if (!locations.contains(TextureManager.getTextureLocation(face.getTextureName())))
-					{
-						locations.add(TextureManager.getTextureLocation(face.getTextureName()));
-					}
+					locations.add(location);
+				}
+			}
+		}
+		return locations.toArray(new String[0]);
+	}
+	
+	private static String[] getMetaLocations(ElementManager manager)
+	{
+		List<String> locations = new ArrayList<String>();
+		for (Element cuboid : manager.getAllElements())
+		{
+			for (Face face : cuboid.getAllFaces())
+			{
+				String location = TextureManager.getMetaLocation(face.getTextureName());
+				if (!locations.contains(location))
+				{
+					locations.add(location);
 				}
 			}
 		}
@@ -154,5 +183,71 @@ public class ProjectManager
 
 		zos.closeEntry();
 		fis.close();
+	}
+
+	private static class Project
+	{
+		public File model;
+		private List<ProjectTexture> textures;
+
+		public Project(ElementManager manager, File[] files)
+		{
+			textures = new ArrayList<ProjectTexture>();
+
+			for (File file : files)
+			{
+				if (file.getAbsolutePath().contains("model.json"))
+				{
+					this.model = file;
+				}
+				else if (!file.getAbsolutePath().contains(".mcmeta"))
+				{
+					File metaFile = null;
+					for (File mfile : files)
+					{
+						if (mfile.getAbsolutePath().startsWith(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("."))))
+						{
+							if (mfile.getAbsolutePath().contains(".mcmeta"))
+							{
+								metaFile = mfile;
+							}
+						}
+					}
+					textures.add(new ProjectTexture(file, metaFile));
+				}
+			}
+		}
+
+		public File getModel()
+		{
+			return model;
+		}
+
+		public List<ProjectTexture> getTextures()
+		{
+			return textures;
+		}
+	}
+
+	private static class ProjectTexture
+	{
+		private File texture;
+		private File meta;
+
+		public ProjectTexture(File texture, File meta)
+		{
+			this.texture = texture;
+			this.meta = meta;
+		}
+
+		public File getTexture()
+		{
+			return texture;
+		}
+
+		public File getMeta()
+		{
+			return meta;
+		}
 	}
 }

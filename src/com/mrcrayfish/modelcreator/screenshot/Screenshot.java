@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.mrcrayfish.modelcreator.Menu;
 import com.mrcrayfish.modelcreator.util.Util;
 
 public class Screenshot
@@ -66,7 +65,7 @@ public class Screenshot
 
 	public static boolean isUrl(String url)
 	{
-		if(url == null | url.equals("null"))
+		if(url == null | (url != null && url.equals("null")))
 		{
 			JOptionPane message = new JOptionPane();
 			message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
@@ -104,6 +103,24 @@ public class Screenshot
 			{
 				String url = "https://twitter.com/intent/tweet?";
 				url += "text=" + URLEncoder.encode("Check out this awesome model I created with @MrCraayfish's Model Creator", "UTF-8");
+				url += "&url=" + URLEncoder.encode(link, "UTF-8");
+				Util.openUrl(url);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public static void shareToReddit(String link)
+	{
+		try
+		{
+			if (isUrl(link))
+			{
+				String url = "http://www.reddit.com/r/Minecraft/submit?";
+				url += "title=" + URLEncoder.encode("[Model] <enter name and description here> (Created using MrCrayfish's Model Creator)", "UTF-8");
 				url += "&url=" + URLEncoder.encode(link, "UTF-8");
 				Util.openUrl(url);
 			}

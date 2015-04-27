@@ -20,7 +20,7 @@ public class Start
 		}
 
 		System.setProperty("org.lwjgl.util.Debug", "true");
-		System.setProperty("org.lwjgl.librarypath", new File("natives/windows").getAbsolutePath());
+		//System.setProperty("org.lwjgl.librarypath", new File("natives/windows").getAbsolutePath());
 
 		try
 		{

@@ -277,7 +277,7 @@ public class Menu extends JMenuBar
 
 		itemExit.addActionListener(e ->
 		{
-			System.exit(0);
+			creator.close();
 		});
 
 		itemTransparency.addActionListener(a ->

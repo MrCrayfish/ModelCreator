@@ -150,32 +150,24 @@ public class ModelCreator extends JFrame
 		setVisible(true);
 		setLocationRelativeTo(null);
 
-		Thread loopThread = new Thread(new Runnable()
+		initDisplay();
+
+		try
 		{
-			@Override
-			public void run()
-			{
-				initDisplay();
+			Display.create();
 
-				try
-				{
-					Display.create();
+			WelcomeDialog.show(ModelCreator.this);
 
-					WelcomeDialog.show(ModelCreator.this);
+			loop();
 
-					loop();
-
-					Display.destroy();
-					dispose();
-					System.exit(0);
-				}
-				catch (LWJGLException e1)
-				{
-					e1.printStackTrace();
-				}
-			}
-		});
-		loopThread.start();
+			Display.destroy();
+			dispose();
+			System.exit(0);
+		}
+		catch (LWJGLException e1)
+		{
+			e1.printStackTrace();
+		}
 	}
 
 	public void initComponents()
@@ -197,7 +189,7 @@ public class ModelCreator extends JFrame
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		add(scroll, BorderLayout.EAST);
 	}
-	
+
 	private List<Image> getIcons()
 	{
 		List<Image> icons = new ArrayList<Image>();
@@ -277,10 +269,10 @@ public class ModelCreator extends JFrame
 			drawOverlay(offset);
 
 			Display.update();
-			
+
 			if (screenshot != null)
 			{
-				if(screenshot.getFile() != null)
+				if (screenshot.getFile() != null)
 					Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
 				else
 					Screenshot.getScreenshot(width, height, screenshot.getCallback());
@@ -712,8 +704,13 @@ public class ModelCreator extends JFrame
 	{
 		return manager;
 	}
+	
+	public void close()
+	{
+		this.closeRequested = true;
+	}
 
-	public synchronized boolean getCloseRequested()
+	public boolean getCloseRequested()
 	{
 		return closeRequested;
 	}

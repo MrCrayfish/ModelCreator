@@ -110,6 +110,7 @@ public class ModelCreator extends JFrame
 		setMinimumSize(new Dimension(1200, 500));
 		setLayout(new BorderLayout(10, 0));
 		setIconImages(getIcons());
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		canvas = new Canvas();
 

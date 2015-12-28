@@ -1,39 +1,22 @@
 package com.mrcrayfish.modelcreator.texture;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.panels.SidebarPanel;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.BufferedImageUtil;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.BufferedImageUtil;
-
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 
 public class TextureManager
 {
@@ -209,8 +192,21 @@ public class TextureManager
 		btnImport.addActionListener(a ->
 		{
 			JFileChooser chooser = new JFileChooser();
-			if (lastLocation != null)
+			if (lastLocation != null) {
 				chooser.setCurrentDirectory(lastLocation);
+			}
+			else
+			{
+				try
+				{
+					chooser.setCurrentDirectory(new File(ModelCreator.texturePath));
+				}
+				catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+
+
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
 			chooser.setFileFilter(filter);
 			int returnVal = chooser.showOpenDialog(null);

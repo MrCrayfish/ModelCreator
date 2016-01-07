@@ -1,15 +1,12 @@
 package com.mrcrayfish.modelcreator.element;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.Sphere;
-
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Sphere;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Element
 {
@@ -109,7 +106,7 @@ public class Element
 		int id = 0;
 		for (Face face : faces)
 		{
-			if (face.isEnabled())
+			if (face.isEnabled() && face.getTexture() != null)
 			{
 				id = face.getSide();
 			}

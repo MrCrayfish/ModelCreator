@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,14 @@ import com.mrcrayfish.modelcreator.element.Face;
 
 public class Exporter
 {
+	/**  decimalformatter for rounding */
+	private static final DecimalFormat df = new DecimalFormat("0.0###");
+	static {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator('.');
+		df.setDecimalFormatSymbols(symbols);
+	}
+
 	private List<String> textureList = new ArrayList<String>();
 
 	// Model Variables
@@ -65,7 +75,7 @@ public class Exporter
 			for (Face face : cuboid.getAllFaces())
 			{
 				System.out.println(face.getTextureLocation() + " " + face.getTextureName());
-				if (face.getTextureName() != null && !face.getTextureName().equals("null"))
+				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled())
 				{
 					if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
 					{
@@ -88,6 +98,8 @@ public class Exporter
 			writer.newLine();
 		}
 		writeTextures(writer);
+		writer.newLine();
+		writeDisplay(writer);
 		writer.newLine();
 		writer.write(space(1) + "\"elements\": [");
 		for (int i = 0; i < manager.getElementCount(); i++)
@@ -154,9 +166,9 @@ public class Exporter
 
 	private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"from\": [ " + cuboid.getStartX() + ", " + cuboid.getStartY() + ", " + cuboid.getStartZ() + " ], ");
+		writer.write(space(3) + "\"from\": [ " + df.format(cuboid.getStartX()) + ", " + df.format(cuboid.getStartY()) + ", " + df.format(cuboid.getStartZ()) + " ], ");
 		writer.newLine();
-		writer.write(space(3) + "\"to\": [ " + (cuboid.getStartX() + cuboid.getWidth()) + ", " + (cuboid.getStartY() + cuboid.getHeight()) + ", " + (cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
+		writer.write(space(3) + "\"to\": [ " + df.format(cuboid.getStartX() + cuboid.getWidth()) + ", " + df.format(cuboid.getStartY() + cuboid.getHeight()) + ", " + df.format(cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
 	}
 
 	private void writeShade(BufferedWriter writer, Element cuboid) throws IOException
@@ -183,11 +195,11 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if (face.isEnabled())
+			if (face.isEnabled() && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
 			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-				writer.write(", \"uv\": [ " + face.getStartU() + ", " + face.getStartV() + ", " + face.getEndU() + ", " + face.getEndV() + " ]");
+				writer.write(", \"uv\": [ " + df.format(face.getStartU()) + ", " + df.format(face.getStartV()) + ", " + df.format(face.getEndU()) + ", " + df.format(face.getEndV()) + " ]");
 				if (face.getRotation() > 0)
 					writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
 				if (face.isCullfaced())
@@ -202,6 +214,91 @@ public class Exporter
 		}
 		writer.newLine();
 		writer.write(space(3) + "}");
+	}
+
+	private void writeDisplay(BufferedWriter writer) throws IOException
+	{
+		writer.write(space(1) + "\"display\": {");
+		writer.newLine();
+
+		writer.write(space(2) + "\"gui\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 30, 225, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 0, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.625, 0.625, 0.625 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"ground\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 0, 0, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 3, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.25, 0.25, 0.25 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"fixed\": {"); // Item frames
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 0, 0, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 0, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.5, 0.5, 0.5 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"thirdperson_righthand\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 75, 45, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.375, 0.375, 0.375 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"thirdperson_lefthand\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 75, 255, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.375, 0.375, 0.375 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"firstperson_righthand\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 0, 45, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.4, 0.4, 0.4 ]");
+		writer.newLine();
+		writer.write(space(2) + "},");
+		writer.newLine();
+
+		writer.write(space(2) + "\"firstperson_lefthand\": {");
+		writer.newLine();
+		writer.write(space(3) + "\"rotation\": [ 0, 225, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
+		writer.newLine();
+		writer.write(space(3) + "\"scale\": [ 0.4, 0.4, 0.4 ]");
+		writer.newLine();
+		writer.write(space(2) + "}");
+		writer.newLine();
+
+		writer.write(space(1) + "},");
 	}
 
 	/*

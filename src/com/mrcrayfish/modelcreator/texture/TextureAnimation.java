@@ -70,15 +70,15 @@ public class TextureAnimation
 			maxTime += getFrameTime(i);
 		}
 
-		long animTime = System.currentTimeMillis() % maxTime;
+		if (maxTime != 0) {
+			long animTime = System.currentTimeMillis() % maxTime;
 
-		for (int i = 0; i < frames.size(); i++)
-		{
-			if (animTime <= getFrameTime(i))
-			{
-				return frames.get(i);
+			for (int i = 0; i < frames.size(); i++) {
+				if (animTime <= getFrameTime(i)) {
+					return frames.get(i);
+				}
+				animTime -= getFrameTime(i);
 			}
-			animTime -= getFrameTime(i);
 		}
 
 		return 0;

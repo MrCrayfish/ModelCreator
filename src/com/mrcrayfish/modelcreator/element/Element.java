@@ -1,12 +1,15 @@
 package com.mrcrayfish.modelcreator.element;
 
-import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
-import com.mrcrayfish.modelcreator.util.FaceDimension;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
+import static org.lwjgl.opengl.GL11.GL_LINES;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
-import static org.lwjgl.opengl.GL11.*;
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
+import com.mrcrayfish.modelcreator.util.FaceDimension;
 
 public class Element
 {

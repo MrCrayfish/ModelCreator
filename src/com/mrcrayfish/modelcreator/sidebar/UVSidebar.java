@@ -24,8 +24,6 @@ import org.newdawn.slick.opengl.TextureImpl;
 
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.FontManager;
 
 public class UVSidebar extends Sidebar
@@ -83,12 +81,6 @@ public class UVSidebar extends Sidebar
 
 					if (faces != null)
 					{
-						TextureEntry entry = TextureManager.getTextureEntry(faces[i].getTextureName());
-
-						int passes = 1;
-						if (entry != null)
-							passes = entry.getPasses();
-
 						faces[i].bindTexture(0);
 
 						glBegin(GL_QUADS);

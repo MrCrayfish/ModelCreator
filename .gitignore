@@ -54,3 +54,4 @@ out/
 .idea/
 *.iml
 src/META-INF/MANIFEST.MF
+.metadata/

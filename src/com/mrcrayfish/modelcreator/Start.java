@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator;
 
-import java.io.File;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;

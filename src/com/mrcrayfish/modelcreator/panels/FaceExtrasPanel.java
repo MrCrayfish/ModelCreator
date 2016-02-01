@@ -38,21 +38,22 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 	public void initComponents()
 	{
 		horizontalBox = new JPanel(new GridLayout(2, 2));
+
 		boxCullFace = ComponentUtil.createRadioButton("Cullface", "<html>Should render face is another block is adjacent<br>Default: Off</html>");
 		boxCullFace.addActionListener(e ->
-		{
-			manager.getSelectedElement().getSelectedFace().setCullface(boxCullFace.isSelected());
-		});
+				manager.getSelectedElement().getSelectedFace().setCullface(boxCullFace.isSelected()));
+		horizontalBox.add(boxCullFace);
+
 		boxFill = ComponentUtil.createRadioButton("Fill", "<html>Makes the texture fill the face<br>Default: Off</html>");
 		boxFill.addActionListener(e ->
-		{
-			manager.getSelectedElement().getSelectedFace().fitTexture(boxFill.isSelected());
-		});
+				manager.getSelectedElement().getSelectedFace().fitTexture(boxFill.isSelected()));
+		horizontalBox.add(boxFill);
+
 		boxEnabled = ComponentUtil.createRadioButton("Enable","<html>Determines if face should be rendered<br>Default: On</html>");
 		boxEnabled.addActionListener(e ->
-		{
-			manager.getSelectedElement().getSelectedFace().setEnabled(boxEnabled.isSelected());
-		});
+				manager.getSelectedElement().getSelectedFace().setEnabled(boxEnabled.isSelected()));
+		horizontalBox.add(boxEnabled);
+
 		boxAutoUV = ComponentUtil.createRadioButton("Auto UV", "<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
 		boxAutoUV.addActionListener(e ->
 		{
@@ -60,11 +61,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			manager.getSelectedElement().getSelectedFace().updateUV();
 			manager.updateValues();
 		});
-		horizontalBox.add(boxCullFace);
-		horizontalBox.add(boxFill);
-		horizontalBox.add(boxEnabled);
 		horizontalBox.add(boxAutoUV);
-
 	}
 
 	public void addComponents()

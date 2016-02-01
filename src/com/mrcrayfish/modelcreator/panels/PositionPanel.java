@@ -178,6 +178,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
+			System.out.println("Hey");
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();

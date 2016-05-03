@@ -50,6 +50,11 @@ public class PendingTexture
 				result = TextureManager.loadExternalTexture(this.texture, this.meta);
 				is.close();
 			}
+			else
+			{
+				result = true;
+			}
+
 			if (callback != null)
 				callback.callback(result, fileName);
 		}

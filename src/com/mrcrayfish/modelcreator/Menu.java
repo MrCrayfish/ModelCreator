@@ -219,6 +219,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getJSONDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -228,6 +235,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setJSONDir(location.toString());
+
 					Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 					importer.importFromJSON();
 				}
@@ -245,6 +255,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getJSONDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -254,6 +271,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setJSONDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".json"))
 						chooser.setSelectedFile(new File(filePath + ".json"));

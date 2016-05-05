@@ -168,6 +168,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getModelDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -177,6 +184,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setModelDir(location.toString());
+
 					ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 				}
 			}
@@ -191,6 +201,12 @@ public class Menu extends JMenuBar
 
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
 			chooser.setFileFilter(filter);
+			String dir = Settings.getModelDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
 
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -201,6 +217,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setModelDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".model"))
 						filePath += ".model";

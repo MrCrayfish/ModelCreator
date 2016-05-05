@@ -307,6 +307,12 @@ public class Menu extends JMenuBar
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Texture Path");
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+			if (ModelCreator.texturePath != null)
+			{
+				chooser.setCurrentDirectory(new File(ModelCreator.texturePath));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{

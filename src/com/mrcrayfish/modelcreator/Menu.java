@@ -208,7 +208,7 @@ public class Menu extends JMenuBar
 				chooser.setCurrentDirectory(new File(dir));
 			}
 
-			int returnVal = chooser.showOpenDialog(null);
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())
@@ -281,7 +281,7 @@ public class Menu extends JMenuBar
 				chooser.setCurrentDirectory(new File(dir));
 			}
 
-			int returnVal = chooser.showOpenDialog(null);
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())
@@ -349,7 +349,7 @@ public class Menu extends JMenuBar
 				chooser.setCurrentDirectory(new File(dir));
 			}
 
-			int returnVal = chooser.showOpenDialog(null);
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())

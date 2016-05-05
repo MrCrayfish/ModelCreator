@@ -336,6 +336,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG (.png)", "png");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getScreenshotDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -345,6 +352,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setScreenshotDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".png"))
 						chooser.setSelectedFile(new File(filePath + ".png"));

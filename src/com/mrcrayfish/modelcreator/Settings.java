@@ -5,6 +5,7 @@ import java.util.prefs.Preferences;
 public class Settings
 {
 	private static final String IMAGE_IMPORT_DIR = "imageimportdir";
+	private static final String SCREENSHOT_DIR = "screenshotdir";
 	private static final String MODEL_DIR = "modeldir";
 	private static final String JSON_DIR = "jsondir";
 
@@ -20,6 +21,18 @@ public class Settings
 		prefs.put(IMAGE_IMPORT_DIR, dir);
 	}
 
+	public static String getScreenshotDir()
+	{
+		Preferences prefs = getPreferences();
+		return prefs.get(SCREENSHOT_DIR, null);
+	}
+	
+	public static void setScreenshotDir(String dir)
+	{		
+		Preferences prefs = getPreferences();
+		prefs.put(SCREENSHOT_DIR, dir);
+	}
+	
 	public static String getModelDir()
 	{
 		Preferences prefs = getPreferences();

@@ -68,6 +68,7 @@ public class Element
 			faces[i].setStartV(oldFace.getStartV());
 			faces[i].setEndU(oldFace.getEndU());
 			faces[i].setEndV(oldFace.getEndV());
+			faces[i].setRotation(oldFace.getRotation());
 			faces[i].setCullface(oldFace.isCullfaced());
 			faces[i].setEnabled(oldFace.isEnabled());
 			faces[i].setAutoUVEnabled(oldFace.isAutoUVEnabled());

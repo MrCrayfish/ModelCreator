@@ -168,6 +168,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getModelDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -177,6 +184,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setModelDir(location.toString());
+
 					ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 				}
 			}
@@ -191,8 +201,14 @@ public class Menu extends JMenuBar
 
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
 			chooser.setFileFilter(filter);
+			String dir = Settings.getModelDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
 
-			int returnVal = chooser.showOpenDialog(null);
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())
@@ -201,6 +217,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setModelDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".model"))
 						filePath += ".model";
@@ -219,6 +238,13 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
 
+			String dir = Settings.getJSONDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -228,6 +254,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setJSONDir(location.toString());
+
 					Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 					importer.importFromJSON();
 				}
@@ -245,7 +274,14 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
 			chooser.setFileFilter(filter);
 
-			int returnVal = chooser.showOpenDialog(null);
+			String dir = Settings.getJSONDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())
@@ -254,6 +290,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setJSONDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".json"))
 						chooser.setSelectedFile(new File(filePath + ".json"));
@@ -268,6 +307,12 @@ public class Menu extends JMenuBar
 			JFileChooser chooser = new JFileChooser();
 			chooser.setDialogTitle("Texture Path");
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+			if (ModelCreator.texturePath != null)
+			{
+				chooser.setCurrentDirectory(new File(ModelCreator.texturePath));
+			}
+
 			int returnVal = chooser.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -297,7 +342,14 @@ public class Menu extends JMenuBar
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG (.png)", "png");
 			chooser.setFileFilter(filter);
 
-			int returnVal = chooser.showOpenDialog(null);
+			String dir = Settings.getScreenshotDir();
+			
+			if (dir != null)
+			{
+				chooser.setCurrentDirectory(new File(dir));
+			}
+
+			int returnVal = chooser.showSaveDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				if (chooser.getSelectedFile().exists())
@@ -306,6 +358,9 @@ public class Menu extends JMenuBar
 				}
 				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
 				{
+					File location = chooser.getSelectedFile().getParentFile();
+					Settings.setScreenshotDir(location.toString());
+
 					String filePath = chooser.getSelectedFile().getAbsolutePath();
 					if (!filePath.endsWith(".png"))
 						chooser.setSelectedFile(new File(filePath + ".png"));

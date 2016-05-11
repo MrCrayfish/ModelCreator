@@ -157,6 +157,16 @@ public class ModelCreator extends JFrame
 		{
 			Display.create();
 
+			Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()
+			{
+				@Override
+				public void uncaughtException (Thread thread, final Throwable ex)
+				{
+					Display.destroy();
+					System.exit(0);
+				}
+			});
+
 			WelcomeDialog.show(ModelCreator.this);
 
 			loop();

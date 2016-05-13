@@ -532,7 +532,16 @@ public class Face
 		return binded;
 	}
 
-	public void updateUV()
+	public void updateStartUV()
+	{
+		if (autoUV)
+		{
+			textureU = textureUEnd - cuboid.getFaceDimension(side).getWidth();
+			textureV = textureVEnd - cuboid.getFaceDimension(side).getHeight();
+		}
+	}
+	
+	public void updateEndUV()
 	{
 		if (autoUV)
 		{

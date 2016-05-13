@@ -41,7 +41,7 @@ public class Element
 		this.height = height;
 		this.depth = depth;
 		initFaces();
-		updateUV();
+		updateEndUVs();
 	}
 
 	public Element(Element cuboid)
@@ -76,7 +76,7 @@ public class Element
 			faces[i].setEnabled(oldFace.isEnabled());
 			faces[i].setAutoUVEnabled(oldFace.isAutoUVEnabled());
 		}
-		updateUV();
+		updateEndUVs();
 	}
 
 	public void initFaces()
@@ -432,11 +432,19 @@ public class Element
 		return name;
 	}
 
-	public void updateUV()
+	public void updateStartUVs()
 	{
 		for (Face face : faces)
 		{
-			face.updateUV();
+			face.updateStartUV();
+		}
+	}
+	
+	public void updateEndUVs()
+	{
+		for (Face face : faces)
+		{
+			face.updateEndUV();
 		}
 	}
 

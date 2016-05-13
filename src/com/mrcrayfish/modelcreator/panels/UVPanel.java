@@ -88,7 +88,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 					{
 						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
-						face.updateUV();
+						face.updateEndUV();
 						manager.updateValues();
 					}
 
@@ -104,7 +104,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
-					face.updateUV();
+					face.updateEndUV();
 					manager.updateValues();
 				}
 			}
@@ -124,7 +124,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 					{
 						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
-						face.updateUV();
+						face.updateEndUV();
 						manager.updateValues();
 					}
 				}
@@ -139,7 +139,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
-					face.updateUV();
+					face.updateEndUV();
 					manager.updateValues();
 				}
 			}
@@ -159,7 +159,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 					{
 						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
-						face.updateUV();
+						face.updateEndUV();
 						manager.updateValues();
 					}
 				}
@@ -174,7 +174,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
-					face.updateUV();
+					face.updateEndUV();
 					manager.updateValues();
 				}
 			}
@@ -194,7 +194,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 					{
 						Face face = manager.getSelectedElement().getSelectedFace();
 						face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
-						face.updateUV();
+						face.updateEndUV();
 						manager.updateValues();
 					}
 				}
@@ -209,7 +209,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
-					face.updateUV();
+					face.updateEndUV();
 					manager.updateValues();
 				}
 			}
@@ -229,7 +229,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(1.0);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -252,7 +252,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(1.0);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -274,7 +274,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureX(-1.0);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -296,7 +296,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureY(-1.0);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -318,7 +318,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureXEnd(1.0);
 				}
-				face.setAutoUVEnabled(false);
+				cube.updateStartUVs();
 				manager.updateValues();
 			}
 		});
@@ -340,7 +340,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureYEnd(1.0);
 				}
-				face.setAutoUVEnabled(false);
+				cube.updateStartUVs();
 				manager.updateValues();
 			}
 		});
@@ -362,7 +362,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureXEnd(-1.0);
 				}
-				face.setAutoUVEnabled(false);
+				cube.updateStartUVs();
 				manager.updateValues();
 			}
 		});
@@ -384,7 +384,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					face.addTextureYEnd(-1.0);
 				}
-				face.setAutoUVEnabled(false);
+				cube.updateStartUVs();
 				manager.updateValues();
 			}
 		});

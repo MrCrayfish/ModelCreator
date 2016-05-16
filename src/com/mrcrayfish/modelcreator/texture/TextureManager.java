@@ -33,6 +33,7 @@ import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.BufferedImageUtil;
 
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
 
@@ -210,6 +211,17 @@ public class TextureManager
 		btnImport.addActionListener(a ->
 		{
 			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Input File");
+			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			chooser.setApproveButtonText("Import");
+			
+			if (lastLocation == null) {
+				String dir = Settings.getImageImportDir();
+
+				if (dir != null)
+					lastLocation = new File(dir);
+			}
+			
 			if (lastLocation != null) {
 				chooser.setCurrentDirectory(lastLocation);
 			}
@@ -231,6 +243,8 @@ public class TextureManager
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
 				lastLocation = chooser.getSelectedFile().getParentFile();
+				Settings.setImageImportDir(lastLocation.toString());
+				
 				try
 				{
 					File meta = new File(chooser.getSelectedFile().getAbsolutePath() + ".mcmeta");

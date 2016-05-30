@@ -44,17 +44,11 @@ public class Importer
 	public void importFromJSON()
 	{
 		File path = new File(inputPath);
+
 		if (path.exists() && path.isFile())
 		{
-			FileReader fr;
-			BufferedReader reader;
-			try
-			{
-				fr = new FileReader(path);
-				reader = new BufferedReader(fr);
-				readComponents(reader, manager, path.getParentFile());
-				reader.close();
-				fr.close();
+			try(BufferedReader reader = new BufferedReader(new FileReader(path)) {
+			    readComponents(reader, manager, path.getParentFile());
 			}
 			catch (IOException e)
 			{

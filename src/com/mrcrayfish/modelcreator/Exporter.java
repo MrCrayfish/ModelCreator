@@ -46,25 +46,22 @@ public class Exporter
 
 	public File writeJSONFile(File file)
 	{
-		FileWriter fw;
-		BufferedWriter writer;
-		try
+		try(BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
 		{
 			if (!file.exists())
-			{
+	     		{
 				file.createNewFile();
 			}
-			fw = new FileWriter(file);
-			writer = new BufferedWriter(fw);
+			
 			writeComponents(writer, manager);
-			writer.close();
-			fw.close();
+			
 			return file;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 

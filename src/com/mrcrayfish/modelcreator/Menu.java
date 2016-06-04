@@ -21,6 +21,7 @@ import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.Util;
+import com.mrcrayfish.modelcreator.util.ResourceUtil;
 
 public class Menu extends JMenuBar
 {
@@ -70,13 +71,13 @@ public class Menu extends JMenuBar
 	{
 		menuFile = new JMenu("File");
 		{
-			itemNew = createItem("New", "New Model", KeyEvent.VK_N, new ImageIcon(getClass().getClassLoader().getResource("icons/new.png")));
+			itemNew = createItem("New", "New Model", KeyEvent.VK_N, new ImageIcon(ResourceUtil.getResource("icons/new.png")));
 			itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load);
 			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk);
-			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, new ImageIcon(getClass().getClassLoader().getResource("icons/import.png")));
-			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, new ImageIcon(getClass().getClassLoader().getResource("icons/export.png")));
-			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, new ImageIcon(getClass().getClassLoader().getResource("icons/texture.png")));
-			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, new ImageIcon(getClass().getClassLoader().getResource("icons/exit.png")));
+			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, new ImageIcon(ResourceUtil.getResource("icons/import.png")));
+			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, new ImageIcon(ResourceUtil.getResource("icons/export.png")));
+			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, new ImageIcon(ResourceUtil.getResource("icons/texture.png")));
+			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, new ImageIcon(ResourceUtil.getResource("icons/exit.png")));
 		}
 
 		menuOptions = new JMenu("Options");

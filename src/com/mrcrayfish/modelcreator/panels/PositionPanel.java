@@ -317,8 +317,8 @@ public class PositionPanel extends JPanel implements IValueUpdater
 		if (cube != null)
 		{
 			xPositionField.setEnabled(true);
-			xPositionField.setEnabled(true);
-			xPositionField.setEnabled(true);
+			yPositionField.setEnabled(true);
+			zPositionField.setEnabled(true);
 			xPositionField.setText(df.format(cube.getStartX()));
 			yPositionField.setText(df.format(cube.getStartY()));
 			zPositionField.setText(df.format(cube.getStartZ()));
@@ -326,8 +326,8 @@ public class PositionPanel extends JPanel implements IValueUpdater
 		else
 		{
 			xPositionField.setEnabled(false);
-			xPositionField.setEnabled(false);
-			xPositionField.setEnabled(false);
+			yPositionField.setEnabled(false);
+			zPositionField.setEnabled(false);
 			xPositionField.setText("");
 			yPositionField.setText("");
 			zPositionField.setText("");

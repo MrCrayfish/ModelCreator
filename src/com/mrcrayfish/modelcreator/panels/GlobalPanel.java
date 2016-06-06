@@ -36,7 +36,7 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 
 	public void initComponents()
 	{
-		ambientOcc = ComponentUtil.createRadioButton("Ambient Occulusion", "Determine the light for each element");
+		ambientOcc = ComponentUtil.createRadioButton("Ambient Occlusion", "Determine the light for each element");
 		ambientOcc.setSelected(true);
 		ambientOcc.addActionListener(a -> manager.setAmbientOcc(ambientOcc.isSelected()));
 

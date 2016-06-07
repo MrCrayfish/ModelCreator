@@ -11,7 +11,7 @@ public final class ResourceUtil {
     return getClass().getClassLoader().getResource(path);
   }
   
-  public static InputStream getResource(String path) {
+  public static InputStream getResourceAsStream(String path) {
     return getClass().getClassLoader().getResourceAsStream(path);
   }
 }

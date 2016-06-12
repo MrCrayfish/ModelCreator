@@ -20,7 +20,6 @@ import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.Util;
-import com.mrcrayfish.modelcreator.util.ResourceUtil;
 
 public class Menu extends JMenuBar
 {

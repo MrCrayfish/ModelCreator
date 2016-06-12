@@ -1,24 +1,18 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
-import com.mrcrayfish.modelcreator.texture.TextureCallback;
+import com.mrcrayfish.modelcreator.texture.ITextureCallback;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.Clipboard;
 
-public class TexturePanel extends JPanel implements TextureCallback
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+public class TexturePanel extends JPanel implements ITextureCallback
 {
 	private static final long serialVersionUID = 1L;
 

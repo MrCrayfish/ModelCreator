@@ -1,22 +1,12 @@
 package com.mrcrayfish.modelcreator.dialog;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.util.ResourceUtil;
+import com.mrcrayfish.modelcreator.util.Util;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.net.URL;
+import java.awt.*;
 
 public class WelcomeDialog
 {
@@ -24,17 +14,17 @@ public class WelcomeDialog
 
 	public static void show(JFrame parent)
 	{
-		JPanel dialogContent = getDialogContent(parent);
+		JPanel dialogContent = getDialogContent();
 		JDialog welcomeDialog = getWelcomeDialog(parent, dialogContent);
 		showDialog(welcomeDialog);
 	}
 
-	private static JPanel getDialogContent(JFrame parent)
+	private static JPanel getDialogContent()
 	{
 		JPanel container = new JPanel(new BorderLayout(20, 10));
 		container.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		ImageIcon crayfish = new ImageIcon(parent.getClass().getClassLoader().getResource("sticker.png"));
+		ImageIcon crayfish = new ImageIcon(ResourceUtil.getResource("sticker.png"));
 		container.add(new JLabel(crayfish), BorderLayout.EAST);
 
 		JPanel leftPanel = getLeftPanel();
@@ -87,42 +77,23 @@ public class WelcomeDialog
 		JPanel btnGrid = new JPanel(new GridLayout(1, 4, 5, 0));
 		JButton btnDonate = new JButton("Donate");
 		btnDonate.setIcon(Icons.coin);
-		btnDonate.addActionListener(a ->
-				openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2"));
+		btnDonate.addActionListener(a -> Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2"));
 		btnGrid.add(btnDonate);
 
 		JButton btnTwitter = new JButton("Twitter");
 		btnTwitter.setIcon(Icons.twitter);
-		btnTwitter.addActionListener(arg0 -> openUrl("https://www.twitter.com/MrCraayfish"));
+		btnTwitter.addActionListener(arg0 -> Util.openUrl("https://www.twitter.com/MrCraayfish"));
 		btnGrid.add(btnTwitter);
 
 		JButton btnFacebook = new JButton("Facebook");
 		btnFacebook.setIcon(Icons.facebook);
-		btnFacebook.addActionListener(a ->
-				openUrl("https://www.facebook.com/MrCrayfish"));
+		btnFacebook.addActionListener(a -> Util.openUrl("https://www.facebook.com/MrCrayfish"));
 		btnGrid.add(btnFacebook);
 
 		JButton btnClose = new JButton("Close");
-		btnClose.addActionListener(a ->
-				SwingUtilities.getWindowAncestor(btnClose).dispose());
+		btnClose.addActionListener(a -> SwingUtilities.getWindowAncestor(btnClose).dispose());
 		btnGrid.add(btnClose);
 		return btnGrid;
-	}
-
-	private static void openUrl(String url)
-	{
-		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE))
-		{
-			try
-			{
-				desktop.browse(new URL(url).toURI());
-			}
-			catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
 	}
 
 	private static JDialog getWelcomeDialog(JFrame parent, JPanel dialogContent)

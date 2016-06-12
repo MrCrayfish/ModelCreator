@@ -57,7 +57,6 @@ public class ModelCreator extends JFrame
 	private PendingScreenshot screenshot = null;
 	private int lastMouseX, lastMouseY;
 	private boolean grabbing = false;
-	private boolean closeRequested = false;
 
 	public ModelCreator(String title)
 	{
@@ -93,14 +92,12 @@ public class ModelCreator extends JFrame
 			}
 		});
 
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				closeRequested = true;
-			}
-		});
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                close();
+            }
+        });
 
 		manager.updateValues();
 
@@ -117,10 +114,6 @@ public class ModelCreator extends JFrame
 			WelcomeDialog.show(ModelCreator.this);
 
 			loop();
-
-			Display.destroy();
-			dispose();
-			System.exit(0);
 		}
 		catch (LWJGLException e1)
 		{
@@ -184,8 +177,7 @@ public class ModelCreator extends JFrame
 
 		Dimension newDim;
 
-		while (!Display.isCloseRequested() && !getCloseRequested())
-		{
+        while (!Display.isCloseRequested()) {
 			pendingTextures.forEach(PendingTexture::load);
 			pendingTextures.clear();
 
@@ -233,8 +225,8 @@ public class ModelCreator extends JFrame
 					Screenshot.getScreenshot(width, height, screenshot.getCallback());
 				screenshot = null;
 			}
-		}
-	}
+        }
+    }
 
 	public void draw()
 	{
@@ -659,14 +651,8 @@ public class ModelCreator extends JFrame
 	{
 		return manager;
 	}
-	
-	public void close()
-	{
-		this.closeRequested = true;
-	}
 
-	public boolean getCloseRequested()
-	{
-		return closeRequested;
-	}
+    public synchronized void close() {
+        System.exit(0);
+    }
 }

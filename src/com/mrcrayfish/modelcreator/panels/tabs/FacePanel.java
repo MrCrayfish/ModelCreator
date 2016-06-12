@@ -1,24 +1,5 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.Hashtable;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JTextField;
-
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
@@ -26,12 +7,21 @@ import com.mrcrayfish.modelcreator.panels.IValueUpdater;
 import com.mrcrayfish.modelcreator.panels.TexturePanel;
 import com.mrcrayfish.modelcreator.panels.UVPanel;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Hashtable;
+
 public class FacePanel extends JPanel implements IValueUpdater
 {
 	private static final long serialVersionUID = 1L;
-
+	private final int ROTATION_MIN = 0;
+	private final int ROTATION_MAX = 3;
+	private final int ROTATION_INIT = 0;
 	private ElementManager manager;
-
 	private JPanel menuPanel;
 	private JComboBox<String> menuList;
 	private UVPanel panelUV;
@@ -39,14 +29,8 @@ public class FacePanel extends JPanel implements IValueUpdater
 	private JSlider rotation;
 	private TexturePanel panelTexture;
 	private FaceExtrasPanel panelProperties;
-
 	private JPanel panelModId;
 	private JTextField modidField;
-
-	private final int ROTATION_MIN = 0;
-	private final int ROTATION_MAX = 3;
-	private final int ROTATION_INIT = 0;
-
 	private DefaultComboBoxModel<String> model;
 
 	public FacePanel(ElementManager manager)
@@ -91,11 +75,11 @@ public class FacePanel extends JPanel implements IValueUpdater
 		panelUV = new UVPanel(manager);
 		panelProperties = new FaceExtrasPanel(manager);
 
-		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
-		labelTable.put(new Integer(1), new JLabel("90\u00b0"));
-		labelTable.put(new Integer(2), new JLabel("180\u00b0"));
-		labelTable.put(new Integer(3), new JLabel("270\u00b0"));
+		Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
+		labelTable.put(0, new JLabel("0\u00b0"));
+		labelTable.put(1, new JLabel("90\u00b0"));
+		labelTable.put(2, new JLabel("180\u00b0"));
+		labelTable.put(3, new JLabel("270\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
 		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));

@@ -1,5 +1,9 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -8,10 +12,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.element.Face;
 
 public class Exporter
 {
@@ -23,7 +23,7 @@ public class Exporter
 		df.setDecimalFormatSymbols(symbols);
 	}
 
-	private List<String> textureList = new ArrayList<String>();
+	private List<String> textureList = new ArrayList<>();
 
 	// Model Variables
 	private ElementManager manager;
@@ -198,7 +198,7 @@ public class Exporter
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
 				writer.write(", \"uv\": [ " + df.format(face.getStartU()) + ", " + df.format(face.getStartV()) + ", " + df.format(face.getEndU()) + ", " + df.format(face.getEndV()) + " ]");
 				if (face.getRotation() > 0)
-					writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
+					writer.write(", \"rotation\": " + face.getRotation() * 90);
 				if (face.isCullfaced())
 					writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
 				writer.write(" }");

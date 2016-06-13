@@ -263,11 +263,6 @@ public class Importer
 				element.setShade(obj.get("shade").getAsBoolean());
 			}
 
-			for (Face face : element.getAllFaces())
-			{
-				face.setEnabled(false);
-			}
-
 			if (obj.has("faces") && obj.get("faces").isJsonObject())
 			{
 				JsonObject faces = obj.get("faces").getAsJsonObject();
@@ -298,8 +293,6 @@ public class Importer
 
 		if (face != null)
 		{
-			face.setEnabled(true);
-
 			// automatically set uv if not specified
 			face.setEndU(element.getFaceDimension(face.getSide()).getWidth());
 			face.setEndV(element.getFaceDimension(face.getSide()).getHeight());

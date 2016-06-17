@@ -16,7 +16,7 @@ import com.mrcrayfish.modelcreator.element.Face;
 public class Exporter
 {
 	/**  decimalformatter for rounding */
-	private static final DecimalFormat df = new DecimalFormat("0.0###");
+	private static final DecimalFormat df = new DecimalFormat("0.00###");
 	static {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');

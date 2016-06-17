@@ -52,16 +52,16 @@ public class Exporter
 	     		{
 				file.createNewFile();
 			}
-			
+
 			writeComponents(writer, manager);
-			
+
 			return file;
 		}
 		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 
@@ -87,7 +87,7 @@ public class Exporter
 	{
 		writer.write("{");
 		writer.newLine();
-		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)\",");
+		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)\",");
 		writer.newLine();
 		if (!manager.getAmbientOcc())
 		{

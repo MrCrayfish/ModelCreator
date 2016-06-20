@@ -1,21 +1,21 @@
 package com.mrcrayfish.modelcreator.texture;
 
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 
 public class PendingTexture
 {
 	private File texture;
 	private File meta;
-	private TextureCallback callback;
+	private ITextureCallback callback;
 
 	public PendingTexture(File texture)
 	{
-		this(texture, (TextureCallback) null);
+		this(texture, (ITextureCallback) null);
 	}
 
 	public PendingTexture(File texture, File meta)
@@ -23,13 +23,13 @@ public class PendingTexture
 		this(texture, meta, null);
 	}
 
-	public PendingTexture(File texture, TextureCallback callback)
+	public PendingTexture(File texture, ITextureCallback callback)
 	{
 		this.texture = texture;
 		this.callback = callback;
 	}
 
-	public PendingTexture(File texture, File meta, TextureCallback callback)
+	public PendingTexture(File texture, File meta, ITextureCallback callback)
 	{
 		this.texture = texture;
 		this.meta = meta;

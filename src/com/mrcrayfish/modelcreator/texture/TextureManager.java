@@ -1,12 +1,17 @@
 package com.mrcrayfish.modelcreator.texture;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.Settings;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.panels.SidebarPanel;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.util.BufferedImageUtil;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,37 +19,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.BufferedImageUtil;
-
-import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.Settings;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.panels.SidebarPanel;
-
 public class TextureManager
 {
-	private static List<TextureEntry> textureCache = new ArrayList<TextureEntry>();
-
 	public static Texture cobblestone;
 	public static Texture dirt;
-
 	public static File lastLocation = null;
+	private static List<TextureEntry> textureCache = new ArrayList<TextureEntry>();
+	private static String texture = null;
 
 	public static boolean loadExternalTexture(File image, File meta) throws IOException
 	{
@@ -148,7 +129,7 @@ public class TextureManager
 		}
 		return null;
 	}
-	
+
 	public static String getMetaLocation(String name)
 	{
 		for (TextureEntry entry : textureCache)
@@ -172,8 +153,6 @@ public class TextureManager
 		}
 		return null;
 	}
-
-	private static String texture = null;
 
 	public static String display(ElementManager manager)
 	{
@@ -249,7 +228,7 @@ public class TextureManager
 				{
 					File meta = new File(chooser.getSelectedFile().getAbsolutePath() + ".mcmeta");
 					System.out.println(meta.getName());
-					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile(), meta, new TextureCallback()
+					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile(), meta, new ITextureCallback()
 					{
 						@Override
 						public void callback(boolean success, String texture)

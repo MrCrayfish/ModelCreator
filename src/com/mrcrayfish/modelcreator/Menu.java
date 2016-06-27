@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 
 import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -80,7 +81,7 @@ public class Menu extends JMenuBar
 
 		menuOptions = new JMenu("Options");
 		{
-			itemTransparency = createItem("Toggle Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, Icons.transparent);
+			itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
 		}
 
 		menuScreenshot = new JMenu("Screenshot");
@@ -327,8 +328,11 @@ public class Menu extends JMenuBar
 		itemTransparency.addActionListener(a ->
 		{
 			ModelCreator.transparent ^= true;
+			Settings.setTransparencyMode(ModelCreator.transparent);
 			if (ModelCreator.transparent)
-				JOptionPane.showMessageDialog(null, "<html>Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		itemSaveToDisk.addActionListener(a ->
@@ -517,6 +521,16 @@ public class Menu extends JMenuBar
 		item.setToolTipText(tooltip);
 		item.setMnemonic(mnemonic);
 		item.setIcon(icon);
+		return item;
+	}
+
+	private JMenuItem createCheckboxItem(String name, String tooltip, int mnemonic, boolean checked, Icon icon)
+	{
+		JMenuItem item = new JCheckBoxMenuItem(name, checked);
+		item.setToolTipText(tooltip);
+		item.setMnemonic(mnemonic);
+		item.setIcon(icon);
+
 		return item;
 	}
 }

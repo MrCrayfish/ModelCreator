@@ -66,8 +66,6 @@ public class Uploader
 	{
 		String json = StreamUtils.convertToString(input);
 
-		System.out.println(json);
-
 		JsonParser parser = new JsonParser();
 		JsonElement read = parser.parse(json);
 

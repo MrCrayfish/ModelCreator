@@ -54,7 +54,6 @@ public class TextureManager
 		{
 			if (textureMeta.getAnimation() != null)
 			{
-				System.out.println("Loading Animated Texture!");
 				BufferedImage bimage = ImageIO.read(image);
 
 				int fWidth = textureMeta.getAnimation().getWidth();
@@ -248,7 +247,6 @@ public class TextureManager
 				try
 				{
 					File meta = new File(chooser.getSelectedFile().getAbsolutePath() + ".mcmeta");
-					System.out.println(meta.getName());
 					manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile(), meta, new TextureCallback()
 					{
 						@Override

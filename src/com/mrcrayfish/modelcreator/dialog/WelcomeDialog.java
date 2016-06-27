@@ -1,6 +1,10 @@
 package com.mrcrayfish.modelcreator.dialog;
 
-import com.mrcrayfish.modelcreator.Icons;
+import java.awt.BorderLayout;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -12,11 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.net.URL;
+
+import com.mrcrayfish.modelcreator.Icons;
 
 public class WelcomeDialog
 {

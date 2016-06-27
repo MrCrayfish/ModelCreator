@@ -71,7 +71,6 @@ public class Exporter
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
-				System.out.println(face.getTextureLocation() + " " + face.getTextureName());
 				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled())
 				{
 					if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))

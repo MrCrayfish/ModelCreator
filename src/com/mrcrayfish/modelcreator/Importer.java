@@ -162,15 +162,12 @@ public class Importer
 	private void loadTexture(File dir, String texture)
 	{
 		File assets = dir.getParentFile().getParentFile();
-		System.out.println("1." + assets.getAbsolutePath());
 		if (assets != null)
 		{
 			File textureDir = new File(assets, "textures/");
-			System.out.println("3." + textureDir.getAbsolutePath());
 			if (textureDir.exists() && textureDir.isDirectory())
 			{
 				File textureFile = new File(textureDir, texture + ".png");
-				System.out.println("4." + textureFile.getAbsolutePath());
 				if (textureFile.exists() && textureFile.isFile())
 				{
 					manager.addPendingTexture(new PendingTexture(textureFile));

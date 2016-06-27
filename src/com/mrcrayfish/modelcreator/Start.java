@@ -42,6 +42,6 @@ public class Start
 			e.printStackTrace();
 		}
 
-		new ModelCreator("Model Creator - pre4");
+		new ModelCreator(Constants.NAME + " - " + Constants.VERSION);
 	}
 }

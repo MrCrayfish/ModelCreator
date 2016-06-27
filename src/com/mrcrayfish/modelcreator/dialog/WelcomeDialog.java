@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import com.mrcrayfish.modelcreator.Constants;
 import com.mrcrayfish.modelcreator.Icons;
 
 public class WelcomeDialog
@@ -88,19 +89,17 @@ public class WelcomeDialog
 		JPanel btnGrid = new JPanel(new GridLayout(1, 4, 5, 0));
 		JButton btnDonate = new JButton("Donate");
 		btnDonate.setIcon(Icons.coin);
-		btnDonate.addActionListener(a ->
-				openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2"));
+		btnDonate.addActionListener(a -> openUrl(Constants.URL_DONATE));
 		btnGrid.add(btnDonate);
 
 		JButton btnTwitter = new JButton("Twitter");
 		btnTwitter.setIcon(Icons.twitter);
-		btnTwitter.addActionListener(arg0 -> openUrl("https://www.twitter.com/MrCraayfish"));
+		btnTwitter.addActionListener(arg0 -> openUrl(Constants.URL_TWITTER));
 		btnGrid.add(btnTwitter);
 
 		JButton btnFacebook = new JButton("Facebook");
 		btnFacebook.setIcon(Icons.facebook);
-		btnFacebook.addActionListener(a ->
-				openUrl("https://www.facebook.com/MrCrayfish"));
+		btnFacebook.addActionListener(a -> openUrl(Constants.URL_FACEBOOK));
 		btnGrid.add(btnFacebook);
 
 		JButton btnClose = new JButton("Close");

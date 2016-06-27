@@ -496,12 +496,12 @@ public class Menu extends JMenuBar
 
 		itemGitHub.addActionListener(a ->
 		{
-			Util.openUrl("https://github.com/MrCrayfish/ModelCreator");
+			Util.openUrl(Constants.URL_GITHUB);
 		});
 
 		itemDonate.addActionListener(a ->
 		{
-			Util.openUrl("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=HVXLDWFN4MNA2");
+			Util.openUrl(Constants.URL_DONATE);
 		});
 
 		itemModelCauldron.addActionListener(a ->

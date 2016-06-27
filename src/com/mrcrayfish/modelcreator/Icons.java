@@ -31,6 +31,7 @@ public class Icons
 	public static Icon twitter;
 	public static Icon reddit;
 	public static Icon imgur;
+	public static Icon patreon;
 	public static Icon planet_minecraft;
 	public static Icon minecraft_forum;
 	public static Icon github;
@@ -69,6 +70,7 @@ public class Icons
 		twitter = new ImageIcon(loader.getResource("icons/twitter.png"));
 		reddit = new ImageIcon(loader.getResource("icons/reddit.png"));
 		imgur = new ImageIcon(loader.getResource("icons/imgur.png"));
+		patreon = new ImageIcon(loader.getResource("icons/patreon.png"));
 		planet_minecraft = new ImageIcon(loader.getResource("icons/planet_minecraft.png"));
 		minecraft_forum = new ImageIcon(loader.getResource("icons/minecraft_forum.png"));
 		github = new ImageIcon(loader.getResource("icons/github.png"));

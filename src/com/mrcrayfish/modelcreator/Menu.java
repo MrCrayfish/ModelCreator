@@ -101,7 +101,7 @@ public class Menu extends JMenuBar
 				itemModelCauldron = createItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
 				itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
 			}
-			itemDonate = createItem("Donate (PayPal)", "Donate to MrCrayfish", KeyEvent.VK_D, Icons.coin);
+			itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
 			itemPM = createItem("Planet Minecraft", "Open PMC Post", KeyEvent.VK_P, Icons.planet_minecraft);
 			itemMF = createItem("Minecraft Forum", "Open MF Post", KeyEvent.VK_M, Icons.minecraft_forum);
 			itemGitHub = createItem("Github", "View Source Code", KeyEvent.VK_G, Icons.github);

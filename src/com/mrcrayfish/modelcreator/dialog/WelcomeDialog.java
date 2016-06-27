@@ -88,7 +88,7 @@ public class WelcomeDialog
 	{
 		JPanel btnGrid = new JPanel(new GridLayout(1, 4, 5, 0));
 		JButton btnDonate = new JButton("Donate");
-		btnDonate.setIcon(Icons.coin);
+		btnDonate.setIcon(Icons.patreon);
 		btnDonate.addActionListener(a -> openUrl(Constants.URL_DONATE));
 		btnGrid.add(btnDonate);
 

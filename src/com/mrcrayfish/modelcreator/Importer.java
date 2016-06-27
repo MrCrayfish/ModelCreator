@@ -315,7 +315,13 @@ public class Importer
 				face.setStartV(vStart);
 				face.setEndU(uEnd);
 				face.setEndV(vEnd);
-				face.setAutoUVEnabled(false);
+				
+				if(element.getFaceDimension(face.getSide()).getWidth() != face.getEndU() - face.getStartU() 
+				   || element.getFaceDimension(face.getSide()).getHeight() != face.getEndV() - face.getStartV())
+				{
+					face.setAutoUVEnabled(false);
+				}
+				
 			}
 
 			if (obj.has("texture") && obj.get("texture").isJsonPrimitive())

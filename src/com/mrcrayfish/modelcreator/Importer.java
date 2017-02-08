@@ -196,6 +196,10 @@ public class Importer
 		{
 			name = obj.get("comment").getAsString();
 		}
+		else if (obj.has("__comment") && obj.get("__comment").isJsonPrimitive())
+		{
+			name = obj.get("__comment").getAsString();
+		}
 		if (obj.has("from") && obj.get("from").isJsonArray())
 		{
 			from = obj.get("from").getAsJsonArray();

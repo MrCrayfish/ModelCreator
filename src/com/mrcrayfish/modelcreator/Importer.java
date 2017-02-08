@@ -91,11 +91,13 @@ public class Importer
 					loadTextures(dir, obj);
 
 					// Load Parent
-					FileReader fr = new FileReader(file);
-					reader = new BufferedReader(fr);
-					readComponents(reader, manager, file.getParentFile());
-					reader.close();
-					fr.close();
+					try(BufferedReader reader = new BufferedReader(new FileReader(path)) {
+			                    readComponents(reader, manager, path.getParentFile());
+			                }
+			                catch (IOException e)
+			                {
+				            e.printStackTrace();
+			                }
 				}
 
 				return;

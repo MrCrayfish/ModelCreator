@@ -82,7 +82,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -98,7 +98,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -118,7 +118,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -134,7 +134,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -154,7 +154,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -170,7 +170,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}

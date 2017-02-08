@@ -538,7 +538,7 @@ public class ModelCreator extends JFrame
 							lastMouseY = newMouseY;
 
 						manager.updateValues();
-						element.updateUV();
+						element.updateEndUVs();
 					}
 				}
 			}

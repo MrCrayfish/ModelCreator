@@ -57,7 +57,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 		boxAutoUV.addActionListener(e ->
 		{
 			manager.getSelectedElement().getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
-			manager.getSelectedElement().getSelectedFace().updateUV();
+			manager.getSelectedElement().getSelectedFace().updateEndUV();
 			manager.updateValues();
 		});
 		horizontalBox.add(boxCullFace);

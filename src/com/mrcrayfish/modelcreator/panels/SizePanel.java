@@ -80,7 +80,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -96,7 +96,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -116,7 +116,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -132,7 +132,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -152,7 +152,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 					if (element != null)
 					{
 						element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
-						element.updateUV();
+						element.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -168,7 +168,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
-					element.updateUV();
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -187,7 +187,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -208,7 +208,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -229,7 +229,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -250,7 +250,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addWidth(-1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -271,7 +271,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addHeight(-1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -292,7 +292,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				{
 					cube.addDepth(-1.0F);
 				}
-				cube.updateUV();
+				cube.updateEndUVs();
 				manager.updateValues();
 			}
 		});

@@ -194,7 +194,7 @@ public class UVSidebar extends Sidebar
 
 							face.setAutoUVEnabled(false);
 						}
-						face.updateUV();
+						face.updateEndUV();
 
 						if (xMovement != 0)
 							this.lastMouseX = newMouseX;

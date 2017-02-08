@@ -11,8 +11,7 @@ public class Start
 {
 	public static void main(String[] args)
 	{
-		Double version = Double.parseDouble(System.getProperty("java.specification.version"));
-		if (version < 1.8)
+		if (Double.parseDouble(System.getProperty("java.specification.version")) < 1.8)
 		{
 			JOptionPane.showMessageDialog(null, "You need Java 1.8 or higher to run this program.");
 			return;

@@ -1,5 +1,22 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
+import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
+import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
+import com.mrcrayfish.modelcreator.texture.PendingTexture;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,24 +27,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
-
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
-import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
-import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
 
 public class SidebarPanel extends JPanel implements ElementManager
 {
@@ -192,7 +191,15 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		if (pos < model.size())
 		{
-			list.setSelectedIndex(pos);
+			if (pos >= 0)
+			{
+				list.setSelectedIndex(pos);
+			}
+			else
+			{
+				list.clearSelection();
+			}
+
 			updateValues();
 		}
 	}

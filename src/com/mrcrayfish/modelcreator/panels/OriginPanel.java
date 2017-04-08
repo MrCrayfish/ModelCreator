@@ -1,5 +1,14 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.Parser;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,17 +18,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.text.DecimalFormat;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.util.Parser;
 
 public class OriginPanel extends JPanel implements IValueUpdater
 {
@@ -98,6 +99,25 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
+		xOriginField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setOriginX(Parser.parseDouble(xOriginField.getText(), element.getOriginX()) - scrollAmount);
+					element.updateEndUVs();
+					manager.updateValues();
+				}
+			}
+		});
 
 		yOriginField.setSize(new Dimension(62, 30));
 		yOriginField.setFont(defaultFont);
@@ -131,6 +151,25 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
+		yOriginField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setOriginY(Parser.parseDouble(yOriginField.getText(), element.getOriginY()) - scrollAmount);
+					element.updateEndUVs();
+					manager.updateValues();
+				}
+			}
+		});
 
 		zOriginField.setSize(new Dimension(62, 30));
 		zOriginField.setFont(defaultFont);
@@ -160,6 +199,25 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
+					manager.updateValues();
+				}
+			}
+		});
+		zOriginField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setOriginZ(Parser.parseDouble(zOriginField.getText(), element.getOriginZ()) - scrollAmount);
+					element.updateEndUVs();
 					manager.updateValues();
 				}
 			}

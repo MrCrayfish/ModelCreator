@@ -1,5 +1,14 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.Parser;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,17 +18,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.text.DecimalFormat;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.util.Parser;
 
 public class SizePanel extends JPanel implements IValueUpdater
 {
@@ -87,6 +88,25 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
+		xSizeField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()) - scrollAmount);
+					element.updateEndUVs();
+					manager.updateValues();
+				}
+			}
+		});
 		xSizeField.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -120,6 +140,25 @@ public class SizePanel extends JPanel implements IValueUpdater
 						manager.updateValues();
 					}
 
+				}
+			}
+		});
+		ySizeField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()) - scrollAmount);
+					element.updateEndUVs();
+					manager.updateValues();
 				}
 			}
 		});
@@ -168,6 +207,25 @@ public class SizePanel extends JPanel implements IValueUpdater
 				if (element != null)
 				{
 					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
+					element.updateEndUVs();
+					manager.updateValues();
+				}
+			}
+		});
+		zSizeField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()) - scrollAmount);
 					element.updateEndUVs();
 					manager.updateValues();
 				}

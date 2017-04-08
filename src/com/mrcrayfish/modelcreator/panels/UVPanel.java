@@ -1,5 +1,15 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.util.Parser;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,18 +19,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.text.DecimalFormat;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.util.Parser;
 
 public class UVPanel extends JPanel implements IValueUpdater
 {
@@ -109,6 +110,26 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
+		xStartField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					Face face = element.getSelectedFace();
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()) - scrollAmount);
+					face.updateEndUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		yStartField.setSize(new Dimension(62, 30));
 		yStartField.setFont(defaultFont);
@@ -139,6 +160,26 @@ public class UVPanel extends JPanel implements IValueUpdater
 				{
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
+					face.updateEndUV();
+					manager.updateValues();
+				}
+			}
+		});
+		yStartField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					Face face = element.getSelectedFace();
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()) - scrollAmount);
 					face.updateEndUV();
 					manager.updateValues();
 				}
@@ -179,6 +220,26 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 			}
 		});
+		xEndField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					Face face = element.getSelectedFace();
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()) - scrollAmount);
+					face.updateStartUV();
+					manager.updateValues();
+				}
+			}
+		});
 
 		yEndField.setSize(new Dimension(62, 30));
 		yEndField.setFont(defaultFont);
@@ -210,6 +271,26 @@ public class UVPanel extends JPanel implements IValueUpdater
 					Face face = manager.getSelectedElement().getSelectedFace();
 					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
 					face.updateEndUV();
+					manager.updateValues();
+				}
+			}
+		});
+		yEndField.addMouseWheelListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e)
+			{
+				Element element = manager.getSelectedElement();
+				if (element != null)
+				{
+					Face face = element.getSelectedFace();
+					float scrollAmount = e.getUnitsToScroll() / 3;
+					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					{
+						scrollAmount /= 10;
+					}
+					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()) - scrollAmount);
+					face.updateStartUV();
 					manager.updateValues();
 				}
 			}

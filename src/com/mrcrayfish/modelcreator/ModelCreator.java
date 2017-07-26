@@ -544,7 +544,7 @@ public class ModelCreator extends JFrame
 			}
 			else
 			{
-				if (Mouse.isButtonDown(0))
+				if (Mouse.isButtonDown(2))
 				{
 					final float modifier = (cameraMod * 0.05f);
 					camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);

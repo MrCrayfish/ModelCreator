@@ -37,102 +37,85 @@ import java.util.zip.ZipFile;
  * @author Nathan Sweet
  */
 public class SharedLibraryLoader {
-	static public boolean isWindows = System.getProperty("os.name").contains("Windows");
-	static public boolean isLinux = System.getProperty("os.name").contains("Linux");
-	static public boolean isMac = System.getProperty("os.name").contains("Mac");
-	//static public boolean isIos = false;
-	//static public boolean isAndroid = false;
-	//static public boolean isARM = System.getProperty("os.arch").startsWith("arm");
-	static public boolean is64Bit = System.getProperty("os.arch").equals("amd64")
+	
+	public static final boolean isWindows = System.getProperty("os.name").contains("Windows");
+	public static final boolean isLinux = System.getProperty("os.name").contains("Linux");
+	public static final boolean isMac = System.getProperty("os.name").contains("Mac");
+	public static final boolean is64Bit = System.getProperty("os.arch").equals("amd64")
 			|| System.getProperty("os.arch").equals("x86_64");
-
-	// JDK 8 only.
-	//static public String abi = (System.getProperty("sun.arch.abi") != null ? System.getProperty("sun.arch.abi") : "");
+	
+	private static final HashSet<String> loadedLibraries = new HashSet<>();
+	private static final boolean usingJws;
 
 	static {
 		if (!isWindows && !isLinux && !isMac) {
 			throw new UnsupportedOperationException("Unknown platform: "+System.getProperty("os.name"));
 		}
-	}
-
-	static boolean load = true;
-
-	static {
+		
 		// Don't extract natives if using JWS.
+		boolean failed = false;
 		try {
 			Method method = Class.forName("javax.jnlp.ServiceManager").getDeclaredMethod("lookup",
 					new Class[] { String.class });
 			method.invoke(null, "javax.jnlp.PersistenceService");
-			load = false;
 		} catch (Throwable ex) {
-			load = true;
+			failed = true;
 		}
+		usingJws = !failed;
 	}
 
 	/**
 	 * Extracts the LWJGL native libraries from the classpath and sets the
 	 * "org.lwjgl.librarypath" system property.
 	 */
-	static public synchronized void load() {
-		load(false);
-	}
-
-	/**
-	 * Extracts the LWJGL native libraries from the classpath and sets the
-	 * "org.lwjgl.librarypath" system property.
-	 */
-	static public synchronized void load(boolean disableOpenAL) {
-		if (!load)
+	public static synchronized void load(boolean disableOpenAL) {
+		if (usingJws)
 			return;
 
 		SharedLibraryLoader loader = new SharedLibraryLoader();
 		File nativesDir = null;
 		try {
 			if (SharedLibraryLoader.isWindows) {
+				
 				nativesDir = loader.extractFile(SharedLibraryLoader.is64Bit ? "lwjgl64.dll" : "lwjgl.dll", null)
 						.getParentFile();
+				
 				if (!disableOpenAL)
-					loader.extractFile(SharedLibraryLoader.is64Bit ? "OpenAL64.dll" : "OpenAL32.dll",
-							nativesDir.getName());
+					loader.extractFile(SharedLibraryLoader.is64Bit ? "OpenAL64.dll" : "OpenAL32.dll", nativesDir.getName());
+				
 			} else if (SharedLibraryLoader.isMac) {
+				
 				nativesDir = loader.extractFile("liblwjgl.dylib", null).getParentFile();
+				
 				if (!disableOpenAL)
 					loader.extractFile("openal.dylib", nativesDir.getName());
+				
 			} else if (SharedLibraryLoader.isLinux) {
+				
 				nativesDir = loader.extractFile(SharedLibraryLoader.is64Bit ? "liblwjgl64.so" : "liblwjgl.so", null)
 						.getParentFile();
+				
 				if (!disableOpenAL)
-					loader.extractFile(SharedLibraryLoader.is64Bit ? "libopenal64.so" : "libopenal.so",
-							nativesDir.getName());
+					loader.extractFile(SharedLibraryLoader.is64Bit ? "libopenal64.so" : "libopenal.so", nativesDir.getName());
+				
+			} else {
+				throw new UnsupportedOperationException("Unknown platform: "+System.getProperty("os.name"));
 			}
 		} catch (Throwable ex) {
-			throw new RuntimeException("Unable to extract LWJGL natives.", ex);
+			throw new Error("Unable to extract LWJGL natives.", ex);
 		}
+		
 		System.setProperty("org.lwjgl.librarypath", nativesDir.getAbsolutePath());
-		load = false;
 	}
-
-	static private final HashSet<String> loadedLibraries = new HashSet<String>();
 
 	
 	
 	private String nativesJar;
 
-	public SharedLibraryLoader() {
-	}
-
-	/**
-	 * Fetches the natives from the given natives jar file. Used for testing a
-	 * shared lib on the fly.
-	 * 
-	 * @param nativesJar
-	 */
-	public SharedLibraryLoader(String nativesJar) {
-		this.nativesJar = nativesJar;
-	}
+	private SharedLibraryLoader() {}
 
 	/** Returns a CRC of the remaining bytes in the stream. */
-	public String crc(InputStream input) {
+	private String crc(InputStream input) {
 		if (input == null)
 			throw new IllegalArgumentException("input cannot be null.");
 		CRC32 crc = new CRC32();
@@ -156,7 +139,7 @@ public class SharedLibraryLoader {
 	}
 
 	/** Maps a platform independent library name to a platform dependent name. */
-	public String mapLibraryName(String libraryName) {
+	private String mapLibraryName(String libraryName) {
 		if (isWindows)
 			return libraryName + (is64Bit ? "64.dll" : ".dll");
 		if (isLinux)
@@ -172,7 +155,7 @@ public class SharedLibraryLoader {
 	 * @param libraryName The platform independent library name. If not contain a
 	 *                    prefix (eg lib) or suffix (eg .dll).
 	 */
-	public synchronized void load(String libraryName) {
+	private synchronized void load(String libraryName) {
 		libraryName = mapLibraryName(libraryName);
 		if (loadedLibraries.contains(libraryName))
 			return;
@@ -185,6 +168,9 @@ public class SharedLibraryLoader {
 		}
 		loadedLibraries.add(libraryName);
 	}
+	
+	
+	
 
 	private InputStream readFile(String path) {
 		if (nativesJar == null) {
@@ -213,6 +199,10 @@ public class SharedLibraryLoader {
 			}
 		}
 	}
+	
+	
+	
+	
 
 	/**
 	 * Extracts the specified file into the temp directory if it does not already
@@ -224,7 +214,7 @@ public class SharedLibraryLoader {
 	 *                   extracted. If null, the file's CRC will be used.
 	 * @return The extracted file.
 	 */
-	public File extractFile(String sourcePath, String dirName) throws IOException {
+	private File extractFile(String sourcePath, String dirName) throws IOException {
 		try {
 			String sourceCrc = crc(readFile(sourcePath));
 			if (dirName == null)
@@ -240,6 +230,10 @@ public class SharedLibraryLoader {
 			throw ex;
 		}
 	}
+	
+	
+	
+	
 
 	/**
 	 * Returns a path to a file that can be written. Tries multiple locations and

@@ -14,6 +14,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Face
 {
+	public static final int NORTH = 0;
+	public static final int EAST = 1;
+	public static final int SOUTH = 2;
+	public static final int WEST = 3;
+	public static final int UP = 4;
+	public static final int DOWN = 5;
+
 	private static final Color RED = new Color(1, 0, 0);
 	private static final Color GREEN = new Color(0, 1, 0);
 	private static final Color BLUE = new Color(0, 0, 1);
@@ -410,6 +417,60 @@ public class Face
 	{
 		this.textureV += amt;
 		this.textureVEnd += amt;
+	}
+
+	public double getMinX()
+	{
+		if(side == EAST)
+		{
+			return cuboid.getStartX() + cuboid.getWidth();
+		}
+		return cuboid.getStartX();
+	}
+
+	public double getMinY()
+	{
+		if(side == UP)
+		{
+			return cuboid.getStartY() + cuboid.getHeight();
+		}
+		return cuboid.getStartY();
+	}
+
+	public double getMinZ()
+	{
+		if(side == SOUTH)
+		{
+			return cuboid.getStartZ() + cuboid.getDepth();
+		}
+		return cuboid.getStartZ();
+	}
+
+	public double getMaxX()
+	{
+		if(side == EAST)
+		{
+			return cuboid.getStartX();
+		}
+		return cuboid.getStartX() + cuboid.getWidth();
+	}
+
+	public double getMaxY()
+	{
+		if(side == DOWN)
+		{
+			return cuboid.getStartY();
+		}
+		return cuboid.getStartY() + cuboid.getHeight();
+	}
+
+	public double getMaxZ()
+	{
+		if(side == NORTH)
+		{
+			return cuboid.getStartZ();
+		}
+		return cuboid.getStartZ() + cuboid.getDepth();
 	}
 
 	public void addTextureX(double amt)

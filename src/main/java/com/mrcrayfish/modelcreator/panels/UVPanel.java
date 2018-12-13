@@ -4,11 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -16,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -41,17 +38,15 @@ public class UVPanel extends JPanel implements IValueUpdater
 	private JButton btnNegXEnd;
 	private JButton btnNegYEnd;
 
-	private DecimalFormat df = new DecimalFormat("#.#");
-
 	public UVPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(3, 4, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>UV</b></html>"));
-		setMaximumSize(new Dimension(186, 124));
-		initComponents();
-		initProperties();
-		addComponents();
+		this.setLayout(new GridLayout(3, 4, 4, 4));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>UV</b></html>"));
+		this.setMaximumSize(new Dimension(186, 124));
+		this.initComponents();
+		this.initProperties();
+		this.addComponents();
 	}
 
 	public void initComponents()
@@ -221,9 +216,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureX(0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureX(0.01);
 				}
 				else
 				{
@@ -244,9 +243,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureY(0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureY(0.01);
 				}
 				else
 				{
@@ -266,9 +269,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureX(-0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureX(-0.01);
 				}
 				else
 				{
@@ -288,9 +295,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureY(-0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureY(-0.01);
 				}
 				else
 				{
@@ -310,9 +321,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureXEnd(0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureXEnd(0.01);
 				}
 				else
 				{
@@ -332,9 +347,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureYEnd(0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureYEnd(0.01);
 				}
 				else
 				{
@@ -354,9 +373,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureXEnd(-0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureXEnd(-0.01);
 				}
 				else
 				{
@@ -376,9 +399,13 @@ public class UVPanel extends JPanel implements IValueUpdater
 			{
 				Element cube = manager.getSelectedElement();
 				Face face = cube.getSelectedFace();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					face.addTextureYEnd(-0.1);
+				}
+				else if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					face.addTextureYEnd(-0.01);
 				}
 				else
 				{
@@ -395,18 +422,18 @@ public class UVPanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(btnPlusX);
-		add(btnPlusY);
-		add(btnPlusXEnd);
-		add(btnPlusYEnd);
-		add(xStartField);
-		add(yStartField);
-		add(xEndField);
-		add(yEndField);
-		add(btnNegX);
-		add(btnNegY);
-		add(btnNegXEnd);
-		add(btnNegYEnd);
+		this.add(btnPlusX);
+		this.add(btnPlusY);
+		this.add(btnPlusXEnd);
+		this.add(btnPlusYEnd);
+		this.add(xStartField);
+		this.add(yStartField);
+		this.add(xEndField);
+		this.add(yEndField);
+		this.add(btnNegX);
+		this.add(btnNegY);
+		this.add(btnNegXEnd);
+		this.add(btnNegYEnd);
 	}
 
 	@Override
@@ -418,10 +445,10 @@ public class UVPanel extends JPanel implements IValueUpdater
 			yStartField.setEnabled(true);
 			xEndField.setEnabled(true);
 			yEndField.setEnabled(true);
-			xStartField.setText(df.format(cube.getSelectedFace().getStartU()));
-			yStartField.setText(df.format(cube.getSelectedFace().getStartV()));
-			xEndField.setText(df.format(cube.getSelectedFace().getEndU()));
-			yEndField.setText(df.format(cube.getSelectedFace().getEndV()));
+			xStartField.setText(Exporter.FORMAT.format(cube.getSelectedFace().getStartU()));
+			yStartField.setText(Exporter.FORMAT.format(cube.getSelectedFace().getStartV()));
+			xEndField.setText(Exporter.FORMAT.format(cube.getSelectedFace().getEndU()));
+			yEndField.setText(Exporter.FORMAT.format(cube.getSelectedFace().getEndV()));
 		}
 		else
 		{

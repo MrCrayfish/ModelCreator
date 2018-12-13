@@ -16,11 +16,12 @@ import com.mrcrayfish.modelcreator.element.Face;
 public class Exporter
 {
 	/**  decimalformatter for rounding */
-	private static final DecimalFormat df = new DecimalFormat("0.00###");
+	public static final DecimalFormat FORMAT = new DecimalFormat("#.##");
+
 	static {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
-		df.setDecimalFormatSymbols(symbols);
+		FORMAT.setDecimalFormatSymbols(symbols);
 	}
 
 	private List<String> textureList = new ArrayList<String>();
@@ -162,9 +163,9 @@ public class Exporter
 
 	private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"from\": [ " + df.format(cuboid.getStartX()) + ", " + df.format(cuboid.getStartY()) + ", " + df.format(cuboid.getStartZ()) + " ], ");
+		writer.write(space(3) + "\"from\": [ " + FORMAT.format(cuboid.getStartX()) + ", " + FORMAT.format(cuboid.getStartY()) + ", " + FORMAT.format(cuboid.getStartZ()) + " ], ");
 		writer.newLine();
-		writer.write(space(3) + "\"to\": [ " + df.format(cuboid.getStartX() + cuboid.getWidth()) + ", " + df.format(cuboid.getStartY() + cuboid.getHeight()) + ", " + df.format(cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
+		writer.write(space(3) + "\"to\": [ " + FORMAT.format(cuboid.getStartX() + cuboid.getWidth()) + ", " + FORMAT.format(cuboid.getStartY() + cuboid.getHeight()) + ", " + FORMAT.format(cuboid.getStartZ() + cuboid.getDepth()) + " ], ");
 	}
 
 	private void writeShade(BufferedWriter writer, Element cuboid) throws IOException
@@ -195,7 +196,7 @@ public class Exporter
 			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-				writer.write(", \"uv\": [ " + df.format(face.getStartU()) + ", " + df.format(face.getStartV()) + ", " + df.format(face.getEndU()) + ", " + df.format(face.getEndV()) + " ]");
+				writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
 				if (face.getRotation() > 0)
 					writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
 				if (face.isCullfaced())

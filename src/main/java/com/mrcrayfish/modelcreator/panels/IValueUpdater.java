@@ -4,5 +4,5 @@ import com.mrcrayfish.modelcreator.element.Element;
 
 public interface IValueUpdater
 {
-	public void updateValues(Element cube);
+	void updateValues(Element cube);
 }

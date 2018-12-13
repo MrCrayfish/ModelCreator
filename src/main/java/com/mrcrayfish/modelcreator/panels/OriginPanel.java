@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -37,17 +38,15 @@ public class OriginPanel extends JPanel implements IValueUpdater
 	private JButton btnNegY;
 	private JButton btnNegZ;
 
-	private DecimalFormat df = new DecimalFormat("#.#");
-
 	public OriginPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(3, 3, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Origin</b></html>"));
-		setMaximumSize(new Dimension(186, 124));
-		initComponents();
-		initProperties();
-		addComponents();
+		this.setLayout(new GridLayout(3, 3, 4, 4));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Origin</b></html>"));
+		this.setMaximumSize(new Dimension(186, 124));
+		this.initComponents();
+		this.initProperties();
+		this.addComponents();
 	}
 
 	public void initComponents()
@@ -178,7 +177,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginX(1.0F);
 				}
-				xOriginField.setText(df.format(cube.getOriginX()));
+				xOriginField.setText(Exporter.FORMAT.format(cube.getOriginX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -198,7 +197,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginY(1.0F);
 				}
-				yOriginField.setText(df.format(cube.getOriginY()));
+				yOriginField.setText(Exporter.FORMAT.format(cube.getOriginY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -218,7 +217,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginZ(1.0F);
 				}
-				zOriginField.setText(df.format(cube.getOriginZ()));
+				zOriginField.setText(Exporter.FORMAT.format(cube.getOriginZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -238,7 +237,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginX(-1.0F);
 				}
-				xOriginField.setText(df.format(cube.getOriginX()));
+				xOriginField.setText(Exporter.FORMAT.format(cube.getOriginX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -258,7 +257,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginY(-1.0F);
 				}
-				yOriginField.setText(df.format(cube.getOriginY()));
+				yOriginField.setText(Exporter.FORMAT.format(cube.getOriginY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -278,7 +277,7 @@ public class OriginPanel extends JPanel implements IValueUpdater
 				{
 					cube.addOriginZ(-1.0F);
 				}
-				zOriginField.setText(df.format(cube.getOriginZ()));
+				zOriginField.setText(Exporter.FORMAT.format(cube.getOriginZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
@@ -288,15 +287,15 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(btnPlusX);
-		add(btnPlusY);
-		add(btnPlusZ);
-		add(xOriginField);
-		add(yOriginField);
-		add(zOriginField);
-		add(btnNegX);
-		add(btnNegY);
-		add(btnNegZ);
+		this.add(btnPlusX);
+		this.add(btnPlusY);
+		this.add(btnPlusZ);
+		this.add(xOriginField);
+		this.add(yOriginField);
+		this.add(zOriginField);
+		this.add(btnNegX);
+		this.add(btnNegY);
+		this.add(btnNegZ);
 	}
 
 	@Override
@@ -307,9 +306,9 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			xOriginField.setEnabled(true);
 			yOriginField.setEnabled(true);
 			zOriginField.setEnabled(true);
-			xOriginField.setText(df.format(cube.getOriginX()));
-			yOriginField.setText(df.format(cube.getOriginY()));
-			zOriginField.setText(df.format(cube.getOriginZ()));
+			xOriginField.setText(Exporter.FORMAT.format(cube.getOriginX()));
+			yOriginField.setText(Exporter.FORMAT.format(cube.getOriginY()));
+			zOriginField.setText(Exporter.FORMAT.format(cube.getOriginZ()));
 		}
 		else
 		{

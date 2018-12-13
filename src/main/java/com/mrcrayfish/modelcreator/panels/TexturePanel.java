@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,11 +33,11 @@ public class TexturePanel extends JPanel implements TextureCallback
 	public TexturePanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(2, 2, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Texture</b></html>"));
-		setMaximumSize(new Dimension(186, 90));
-		initComponents();
-		addComponents();
+		this.setLayout(new GridLayout(2, 2, 4, 4));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Texture</b></html>"));
+		this.setMaximumSize(new Dimension(186, 90));
+		this.initComponents();
+		this.addComponents();
 	}
 
 	public void initComponents()
@@ -65,7 +66,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 		{
 			if (manager.getSelectedElement() != null)
 			{
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
 					manager.getSelectedElement().setAllTextures(null, null);
 				}
@@ -100,7 +101,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 				ClipboardTexture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
-					if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+					if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 					{
 						manager.getSelectedElement().setAllTextures(texture);
 					}
@@ -119,10 +120,10 @@ public class TexturePanel extends JPanel implements TextureCallback
 
 	public void addComponents()
 	{
-		add(btnSelect);
-		add(btnClear);
-		add(btnCopy);
-		add(btnPaste);
+		this.add(btnSelect);
+		this.add(btnClear);
+		this.add(btnCopy);
+		this.add(btnPaste);
 	}
 
 	@Override

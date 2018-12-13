@@ -27,11 +27,11 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 	public GlobalPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(2, 1, 0, 5));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Global Properties</b></html>"));
-		setMaximumSize(new Dimension(186, 80));
-		initComponents();
-		addComponents();
+		this.setLayout(new GridLayout(2, 1, 0, 5));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Global Properties</b></html>"));
+		this.setMaximumSize(new Dimension(186, 80));
+		this.initComponents();
+		this.addComponents();
 	}
 
 	public void initComponents()

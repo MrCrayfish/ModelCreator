@@ -1,25 +1,15 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.Parser;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.DecimalFormat;
 
 public class SizePanel extends JPanel implements IValueUpdater
 {
@@ -37,17 +27,15 @@ public class SizePanel extends JPanel implements IValueUpdater
 	private JButton btnNegY;
 	private JButton btnNegZ;
 
-	private DecimalFormat df = new DecimalFormat("#.#");
-
 	public SizePanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(3, 3, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Size</b></html>"));
-		setMaximumSize(new Dimension(186, 124));
-		initComponents();
-		initProperties();
-		addComponents();
+		this.setLayout(new GridLayout(3, 3, 4, 4));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Size</b></html>"));
+		this.setMaximumSize(new Dimension(186, 124));
+		this.initComponents();
+		this.initProperties();
+		this.addComponents();
 	}
 
 	public void initComponents()
@@ -179,13 +167,17 @@ public class SizePanel extends JPanel implements IValueUpdater
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addWidth(0.1F);
+					cube.addWidth(0.1);
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.addWidth(0.01);
 				}
 				else
 				{
-					cube.addWidth(1.0F);
+					cube.addWidth(1.0);
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -200,13 +192,17 @@ public class SizePanel extends JPanel implements IValueUpdater
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addHeight(0.1F);
+					cube.addHeight(0.1);
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.addHeight(0.01);
 				}
 				else
 				{
-					cube.addHeight(1.0F);
+					cube.addHeight(1.0);
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -221,13 +217,17 @@ public class SizePanel extends JPanel implements IValueUpdater
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addDepth(0.1F);
+					cube.addDepth(0.1);
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.addDepth(0.01);
 				}
 				else
 				{
-					cube.addDepth(1.0F);
+					cube.addDepth(1.0);
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -242,13 +242,17 @@ public class SizePanel extends JPanel implements IValueUpdater
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addWidth(-0.1F);
+					cube.setWidth(Math.max(0.0, cube.getWidth() - 0.1));
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.setWidth(Math.max(0.0, cube.getWidth() - 0.01));
 				}
 				else
 				{
-					cube.addWidth(-1.0F);
+					cube.setWidth(Math.max(0.0, cube.getWidth() - 1.0));
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -263,13 +267,17 @@ public class SizePanel extends JPanel implements IValueUpdater
 			if (manager.getSelectedElement() != null)
 			{
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addHeight(-0.1F);
+					cube.setHeight(Math.max(0.0, cube.getHeight() - 0.1));
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.setHeight(Math.max(0.0, cube.getHeight() - 0.01));
 				}
 				else
 				{
-					cube.addHeight(-1.0F);
+					cube.setHeight(Math.max(0.0, cube.getHeight() - 1.0));
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -283,14 +291,19 @@ public class SizePanel extends JPanel implements IValueUpdater
 		{
 			if (manager.getSelectedElement() != null)
 			{
+				System.out.println(e.getModifiers() & InputEvent.SHIFT_MASK & InputEvent.CTRL_MASK);
 				Element cube = manager.getSelectedElement();
-				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+				if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addDepth(-0.1F);
+					cube.setDepth(Math.max(0.0, cube.getDepth() - 0.1));
+				}
+				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
+				{
+					cube.setDepth(Math.max(0.0, cube.getDepth() - 0.01));
 				}
 				else
 				{
-					cube.addDepth(-1.0F);
+					cube.setDepth(Math.max(0.0, cube.getDepth() - 1.0));
 				}
 				cube.updateEndUVs();
 				manager.updateValues();
@@ -303,15 +316,15 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(btnPlusX);
-		add(btnPlusY);
-		add(btnPlusZ);
-		add(xSizeField);
-		add(ySizeField);
-		add(zSizeField);
-		add(btnNegX);
-		add(btnNegY);
-		add(btnNegZ);
+		this.add(btnPlusX);
+		this.add(btnPlusY);
+		this.add(btnPlusZ);
+		this.add(xSizeField);
+		this.add(ySizeField);
+		this.add(zSizeField);
+		this.add(btnNegX);
+		this.add(btnNegY);
+		this.add(btnNegZ);
 	}
 
 	@Override
@@ -322,9 +335,9 @@ public class SizePanel extends JPanel implements IValueUpdater
 			xSizeField.setEnabled(true);
 			ySizeField.setEnabled(true);
 			zSizeField.setEnabled(true);
-			xSizeField.setText(df.format(cube.getWidth()));
-			ySizeField.setText(df.format(cube.getHeight()));
-			zSizeField.setText(df.format(cube.getDepth()));
+			xSizeField.setText(Exporter.FORMAT.format(cube.getWidth()));
+			ySizeField.setText(Exporter.FORMAT.format(cube.getHeight()));
+			zSizeField.setText(Exporter.FORMAT.format(cube.getDepth()));
 		}
 		else
 		{

@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -38,18 +39,16 @@ public class PositionPanel extends JPanel implements IValueUpdater
 	private JButton btnNegY;
 	private JButton btnNegZ;
 
-	private DecimalFormat df = new DecimalFormat("#.#");
-
 	public PositionPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new GridLayout(3, 3, 4, 4));
-		setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Position</b></html>"));
-		setMaximumSize(new Dimension(186, 124));
-		setAlignmentX(JPanel.CENTER_ALIGNMENT);
-		initComponents();
-		initProperties();
-		addComponents();
+		this.setLayout(new GridLayout(3, 3, 4, 4));
+		this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Position</b></html>"));
+		this.setMaximumSize(new Dimension(186, 124));
+		this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+		this.initComponents();
+		this.initProperties();
+		this.addComponents();
 	}
 
 	public void initComponents()
@@ -189,7 +188,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartX(1.0F);
 				}
-				xPositionField.setText(df.format(cube.getStartX()));
+				xPositionField.setText(Exporter.FORMAT.format(cube.getStartX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -209,7 +208,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartY(1.0F);
 				}
-				yPositionField.setText(df.format(cube.getStartY()));
+				yPositionField.setText(Exporter.FORMAT.format(cube.getStartY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -229,7 +228,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartZ(1.0F);
 				}
-				zPositionField.setText(df.format(cube.getStartZ()));
+				zPositionField.setText(Exporter.FORMAT.format(cube.getStartZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -249,7 +248,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartX(-1.0F);
 				}
-				xPositionField.setText(df.format(cube.getStartX()));
+				xPositionField.setText(Exporter.FORMAT.format(cube.getStartX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -269,7 +268,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartY(-1.0F);
 				}
-				yPositionField.setText(df.format(cube.getStartY()));
+				yPositionField.setText(Exporter.FORMAT.format(cube.getStartY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -289,7 +288,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				{
 					cube.addStartZ(-1.0F);
 				}
-				zPositionField.setText(df.format(cube.getStartZ()));
+				zPositionField.setText(Exporter.FORMAT.format(cube.getStartZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));
@@ -299,15 +298,15 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 	public void addComponents()
 	{
-		add(btnPlusX);
-		add(btnPlusY);
-		add(btnPlusZ);
-		add(xPositionField);
-		add(yPositionField);
-		add(zPositionField);
-		add(btnNegX);
-		add(btnNegY);
-		add(btnNegZ);
+		this.add(btnPlusX);
+		this.add(btnPlusY);
+		this.add(btnPlusZ);
+		this.add(xPositionField);
+		this.add(yPositionField);
+		this.add(zPositionField);
+		this.add(btnNegX);
+		this.add(btnNegY);
+		this.add(btnNegZ);
 	}
 
 	@Override
@@ -318,9 +317,9 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			xPositionField.setEnabled(true);
 			yPositionField.setEnabled(true);
 			zPositionField.setEnabled(true);
-			xPositionField.setText(df.format(cube.getStartX()));
-			yPositionField.setText(df.format(cube.getStartY()));
-			zPositionField.setText(df.format(cube.getStartZ()));
+			xPositionField.setText(Exporter.FORMAT.format(cube.getStartX()));
+			yPositionField.setText(Exporter.FORMAT.format(cube.getStartY()));
+			zPositionField.setText(Exporter.FORMAT.format(cube.getStartZ()));
 		}
 		else
 		{

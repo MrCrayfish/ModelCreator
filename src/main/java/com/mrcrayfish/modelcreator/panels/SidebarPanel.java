@@ -54,10 +54,10 @@ public class SidebarPanel extends JPanel implements ElementManager
 	public SidebarPanel(ModelCreator creator)
 	{
 		this.creator = creator;
-		setLayout(layout = new SpringLayout());
-		setPreferredSize(new Dimension(200, 760));
-		initComponents();
-		setLayoutConstaints();
+		this.setLayout(layout = new SpringLayout());
+		this.setPreferredSize(new Dimension(200, 760));
+		this.initComponents();
+		this.setLayoutConstaints();
 	}
 
 	public void initComponents()
@@ -291,7 +291,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	@Override
 	public void reset()
 	{
-		clearElements();
+		this.clearElements();
 		ambientOcc = true;
 		particle = null;
 	}

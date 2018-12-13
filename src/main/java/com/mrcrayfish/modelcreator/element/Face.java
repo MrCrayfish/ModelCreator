@@ -546,8 +546,8 @@ public class Face
 	{
 		if (autoUV)
 		{
-			textureU = textureUEnd - cuboid.getFaceDimension(side).getWidth();
-			textureV = textureVEnd - cuboid.getFaceDimension(side).getHeight();
+			textureU = Math.max(0.0, textureUEnd - cuboid.getFaceDimension(side).getWidth());
+			textureV = Math.max(0.0, textureVEnd - cuboid.getFaceDimension(side).getHeight());
 		}
 	}
 	
@@ -555,8 +555,8 @@ public class Face
 	{
 		if (autoUV)
 		{
-			textureUEnd = textureU + cuboid.getFaceDimension(side).getWidth();
-			textureVEnd = textureV + cuboid.getFaceDimension(side).getHeight();
+			textureUEnd = Math.min(16.0, textureU + cuboid.getFaceDimension(side).getWidth());
+			textureVEnd = Math.min(16.0, textureV + cuboid.getFaceDimension(side).getHeight());
 		}
 	}
 

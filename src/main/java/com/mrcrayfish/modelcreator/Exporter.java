@@ -192,7 +192,7 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if (face.isEnabled() && isFaceVisible(face, cuboid) && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
+			if (face.isEnabled() && face.isVisible(manager) && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
 			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
@@ -300,43 +300,11 @@ public class Exporter
 	
 	private String space(int size)
 	{
-		String space = "";
+		StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < size; i++)
 		{
-			space += "    ";
+			builder.append("    ");
 		}
-		return space;
-	}
-	
-	private boolean isFaceVisible(Face face, Element cuboid)
-	{
-		for(Element element : manager.getAllElements())
-		{
-			if(element == cuboid)
-				continue;
-
-			if(face.getMinX() >= element.getStartX() && face.getMinX() <= element.getStartX() + element.getWidth())
-			{
-				if(face.getMinY() >= element.getStartY() && face.getMinY() <= element.getStartY() + element.getHeight())
-				{
-					if(face.getMinZ() >= element.getStartZ() && face.getMinZ() <= element.getStartZ() + element.getDepth())
-					{
-						System.out.println(face.getMaxX() + " " + element.getStartX() + " " + face.getMaxX() + " " + (element.getStartX() + element.getWidth()));
-						if(face.getMaxX() >= element.getStartX() && face.getMaxX() <= element.getStartX() + element.getWidth())
-						{
-							if(face.getMaxY() >= element.getStartY() && face.getMaxY() <= element.getStartY() + element.getHeight())
-							{
-								if(face.getMaxZ() >= element.getStartZ() && face.getMaxZ() <= element.getStartZ() + element.getDepth())
-								{
-									System.out.println(cuboid.toString() + "#" + face.getSide() + " is in " + element.toString());
-									return false;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		return true;
+		return builder.toString();
 	}
 }

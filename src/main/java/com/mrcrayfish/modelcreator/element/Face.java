@@ -690,4 +690,34 @@ public class Face
 	{
 		this.rotation = rotation;
 	}
+
+	public boolean isVisible(ElementManager manager)
+	{
+		for(Element element : manager.getAllElements())
+		{
+			if(element == cuboid)
+				continue;
+
+			if(this.getMinX() >= element.getStartX() && this.getMinX() <= element.getStartX() + element.getWidth())
+			{
+				if(this.getMinY() >= element.getStartY() && this.getMinY() <= element.getStartY() + element.getHeight())
+				{
+					if(this.getMinZ() >= element.getStartZ() && this.getMinZ() <= element.getStartZ() + element.getDepth())
+					{
+						if(this.getMaxX() >= element.getStartX() && this.getMaxX() <= element.getStartX() + element.getWidth())
+						{
+							if(this.getMaxY() >= element.getStartY() && this.getMaxY() <= element.getStartY() + element.getHeight())
+							{
+								if(this.getMaxZ() >= element.getStartZ() && this.getMaxZ() <= element.getStartZ() + element.getDepth())
+								{
+									return false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 }

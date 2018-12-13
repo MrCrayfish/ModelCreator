@@ -376,7 +376,7 @@ public class ModelCreator extends JFrame
 	{
 		final float cameraMod = Math.abs(camera.getZ());
 
-		if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
+		if (Mouse.isButtonDown(0) || Mouse.isButtonDown(1))
 		{
 			if (!grabbing)
 			{
@@ -402,7 +402,7 @@ public class ModelCreator extends JFrame
 			{
 				if (grabbed == null)
 				{
-					if (Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
+					if (Mouse.isButtonDown(0) || Mouse.isButtonDown(1))
 					{
 						int sel = select(Mouse.getX(), Mouse.getY());
 						if (sel >= 0)

@@ -1,18 +1,16 @@
 package com.mrcrayfish.modelcreator.element;
 
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
+import com.mrcrayfish.modelcreator.texture.TextureManager;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 
-import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Face
 {
@@ -55,17 +53,18 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderNorth(i);
+			renderNorth(i, GL11.GL_QUADS);
 		}
 	}
 
-	private void renderNorth(int pass)
+	public void renderNorth(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
+			applyShade(0.45F);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -100,17 +99,18 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderEast(i);
+			renderEast(i, GL11.GL_QUADS);
 		}
 	}
 
-	private void renderEast(int pass)
+	public void renderEast(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
+			applyShade(0.3F);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -145,17 +145,18 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderSouth(i);
+			renderSouth(i, GL11.GL_QUADS);
 		}
 	}
 
-	private void renderSouth(int pass)
+	public void renderSouth(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
+			applyShade(0.15F);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -190,17 +191,18 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderWest(i);
+			renderWest(i, GL11.GL_QUADS);
 		}
 	}
 
-	private void renderWest(int pass)
+	public void renderWest(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
+			applyShade(0.3F);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -235,17 +237,17 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderUp(i);
+			renderUp(i, GL11.GL_QUADS);
 		}
 	}
 
-	private void renderUp(int pass)
+	public void renderUp(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -280,17 +282,18 @@ public class Face
 
 		for (int i = 0; i < passes; i++)
 		{
-			renderDown(i);
+			renderDown(i, GL11.GL_QUADS);
 		}
 	}
 
-	public void renderDown(int pass)
+	public void renderDown(int pass, int mode)
 	{
 		GL11.glPushMatrix();
 		{
 			startRender(pass);
+			applyShade(0.55F);
 
-			GL11.glBegin(GL11.GL_QUADS);
+			GL11.glBegin(mode);
 			{
 				if (binded)
 					setTexCoord(0);
@@ -343,6 +346,13 @@ public class Face
 	public void finishRender()
 	{
 		GL11.glDisable(GL_TEXTURE_2D);
+	}
+
+	private void applyShade(float reduction)
+	{
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, buffer);
+		GL11.glColor3f(buffer.get() - reduction, buffer.get() - reduction, buffer.get() - reduction);
 	}
 
 	public void setTexture(String texture)

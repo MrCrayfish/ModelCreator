@@ -217,6 +217,11 @@ public class Element
 		GL11.glPopMatrix();
 	}
 
+	public boolean isSelected(ElementManager manager)
+	{
+		return manager.getSelectedElement() == this;
+	}
+
 	public void drawExtras(ElementManager manager)
 	{
 		if (manager.getSelectedElement() == this)

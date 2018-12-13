@@ -588,7 +588,9 @@ public class ModelCreator extends JFrame
 			GL11.glMatrixMode(GL11.GL_PROJECTION);
 			GL11.glLoadIdentity();
 			GLU.gluPickMatrix(x, y, 1, 1, IntBuffer.wrap(viewport));
-			GLU.gluPerspective(60F, (float) (width) / (float) height, 0.3F, 1000F);
+
+			int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
+			GLU.gluPerspective(60F, (float) (width - offset) / (float) height, 0.3F, 1000F);
 
 			draw();
 		}

@@ -1,0 +1,30 @@
+apply plugin: "java"
+apply plugin: "application"
+
+version = "pre5"
+mainClassName = "com.mrcrayfish.modelcreator.Start"
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'com.google.code.gson:gson:2.8.5'
+	compile 'org.slick2d:slick2d-core:1.0.2'
+	compile 'com.jtattoo:JTattoo:1.6.11'
+	
+	compile 'org.lwjgl.lwjgl:lwjgl:2.9.3'
+	compile 'org.lwjgl.lwjgl:lwjgl_util:2.9.3'
+	compile 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3'
+}
+
+jar {
+	manifest {
+		attributes "Main-Class": mainClassName
+	}
+	
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}

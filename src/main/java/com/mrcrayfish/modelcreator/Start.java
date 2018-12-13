@@ -6,11 +6,14 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
+import com.mrcrayfish.modelcreator.util.SharedLibraryLoader;
 
 public class Start
 {
 	public static void main(String[] args)
 	{
+		SharedLibraryLoader.load(false);
+		
 		Double version = Double.parseDouble(System.getProperty("java.specification.version"));
 		if (version < 1.8)
 		{
@@ -19,7 +22,6 @@ public class Start
 		}
 
 		System.setProperty("org.lwjgl.util.Debug", "true");
-		//System.setProperty("org.lwjgl.librarypath", new File("natives/windows").getAbsolutePath());
 
 		try
 		{

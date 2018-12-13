@@ -693,6 +693,9 @@ public class Face
 
 	public boolean isVisible(ElementManager manager)
 	{
+		if(cuboid.getRotation() != 0.0)
+			return true;
+
 		for(Element element : manager.getAllElements())
 		{
 			if(element == cuboid)

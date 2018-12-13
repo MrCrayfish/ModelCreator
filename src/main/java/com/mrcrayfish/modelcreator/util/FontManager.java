@@ -25,7 +25,7 @@ public enum FontManager
 		{
 			InputStream is = ModelCreator.class.getClassLoader().getResourceAsStream(name);
 			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			this.font = new TrueTypeFont(font.deriveFont(size), false);
+			this.font = new TrueTypeFont(font.deriveFont(size), true);
 
 		}
 		catch (Exception e)

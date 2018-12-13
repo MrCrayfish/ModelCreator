@@ -9,7 +9,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -77,11 +76,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
-						element.updateEndUVs();
+						selectedElement.setStartX(Parser.parseDouble(xPositionField.getText(), selectedElement.getStartX()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -93,11 +92,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setStartX(Parser.parseDouble(xPositionField.getText(), element.getStartX()));
-					element.updateEndUVs();
+					selectedElement.setStartX(Parser.parseDouble(xPositionField.getText(), selectedElement.getStartX()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -113,11 +112,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
-						element.updateEndUVs();
+						selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -129,11 +128,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setStartY(Parser.parseDouble(yPositionField.getText(), element.getStartY()));
-					element.updateEndUVs();
+					selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -149,11 +148,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
-						element.updateEndUVs();
+						selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -165,11 +164,11 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setStartZ(Parser.parseDouble(zPositionField.getText(), element.getStartZ()));
-					element.updateEndUVs();
+					selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -177,18 +176,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartX(0.1F);
+					selectedElement.addStartX(0.1F);
 				}
 				else
 				{
-					cube.addStartX(1.0F);
+					selectedElement.addStartX(1.0F);
 				}
-				xPositionField.setText(Exporter.FORMAT.format(cube.getStartX()));
+				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -197,18 +196,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartY(0.1F);
+					selectedElement.addStartY(0.1F);
 				}
 				else
 				{
-					cube.addStartY(1.0F);
+					selectedElement.addStartY(1.0F);
 				}
-				yPositionField.setText(Exporter.FORMAT.format(cube.getStartY()));
+				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -217,18 +216,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartZ(0.1F);
+					selectedElement.addStartZ(0.1F);
 				}
 				else
 				{
-					cube.addStartZ(1.0F);
+					selectedElement.addStartZ(1.0F);
 				}
-				zPositionField.setText(Exporter.FORMAT.format(cube.getStartZ()));
+				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -237,18 +236,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartX(-0.1F);
+					selectedElement.addStartX(-0.1F);
 				}
 				else
 				{
-					cube.addStartX(-1.0F);
+					selectedElement.addStartX(-1.0F);
 				}
-				xPositionField.setText(Exporter.FORMAT.format(cube.getStartX()));
+				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -257,18 +256,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartY(-0.1F);
+					selectedElement.addStartY(-0.1F);
 				}
 				else
 				{
-					cube.addStartY(-1.0F);
+					selectedElement.addStartY(-1.0F);
 				}
-				yPositionField.setText(Exporter.FORMAT.format(cube.getStartY()));
+				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -277,18 +276,18 @@ public class PositionPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addStartZ(-0.1F);
+					selectedElement.addStartZ(-0.1F);
 				}
 				else
 				{
-					cube.addStartZ(-1.0F);
+					selectedElement.addStartZ(-1.0F);
 				}
-				zPositionField.setText(Exporter.FORMAT.format(cube.getStartZ()));
+				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

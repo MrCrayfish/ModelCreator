@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
@@ -48,12 +49,13 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnSelect.setIcon(Icons.texture);
 		btnSelect.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if (selectedElement != null)
 			{
 				String texture = TextureManager.display(manager);
 				if (texture != null)
 				{
-					manager.getSelectedElement().getSelectedFace().setTexture(texture);
+					selectedElement.getSelectedFace().setTexture(texture);
 				}
 			}
 		});
@@ -64,15 +66,16 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnClear.setIcon(Icons.clear);
 		btnClear.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if (selectedElement != null)
 			{
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					manager.getSelectedElement().setAllTextures(null, null);
+					selectedElement.setAllTextures(null, null);
 				}
 				else
 				{
-					manager.getSelectedElement().getSelectedFace().setTexture(null);
+					selectedElement.getSelectedFace().setTexture(null);
 				}
 			}
 		});
@@ -83,9 +86,10 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnCopy.setIcon(Icons.copy);
 		btnCopy.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if (selectedElement != null)
 			{
-				Face face = manager.getSelectedElement().getSelectedFace();
+				Face face = selectedElement.getSelectedFace();
 				Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName());
 			}
 		});
@@ -96,18 +100,19 @@ public class TexturePanel extends JPanel implements TextureCallback
 		btnPaste.setIcon(Icons.clipboard);
 		btnPaste.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if (selectedElement != null)
 			{
 				ClipboardTexture texture = Clipboard.getTexture();
 				if (texture != null)
 				{
 					if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 					{
-						manager.getSelectedElement().setAllTextures(texture);
+						selectedElement.setAllTextures(texture);
 					}
 					else
 					{
-						Face face = manager.getSelectedElement().getSelectedFace();
+						Face face = selectedElement.getSelectedFace();
 						face.setTexture(texture.getTexture());
 						face.setTextureLocation(texture.getLocation());
 					}

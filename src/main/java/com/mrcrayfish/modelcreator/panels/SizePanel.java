@@ -64,11 +64,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
-						element.updateEndUVs();
+						selectedElement.setWidth(Parser.parseDouble(xSizeField.getText(), selectedElement.getWidth()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -80,11 +80,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setWidth(Parser.parseDouble(xSizeField.getText(), element.getWidth()));
-					element.updateEndUVs();
+					selectedElement.setWidth(Parser.parseDouble(xSizeField.getText(), selectedElement.getWidth()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -100,11 +100,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
-						element.updateEndUVs();
+						selectedElement.setHeight(Parser.parseDouble(ySizeField.getText(), selectedElement.getHeight()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -116,11 +116,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setHeight(Parser.parseDouble(ySizeField.getText(), element.getHeight()));
-					element.updateEndUVs();
+					selectedElement.setHeight(Parser.parseDouble(ySizeField.getText(), selectedElement.getHeight()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}
@@ -136,11 +136,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
-						element.updateEndUVs();
+						selectedElement.setDepth(Parser.parseDouble(zSizeField.getText(), selectedElement.getDepth()));
+						selectedElement.updateEndUVs();
 						manager.updateValues();
 					}
 
@@ -164,22 +164,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addWidth(0.1);
+					selectedElement.addWidth(0.1);
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.addWidth(0.01);
+					selectedElement.addWidth(0.01);
 				}
 				else
 				{
-					cube.addWidth(1.0);
+					selectedElement.addWidth(1.0);
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -189,22 +189,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addHeight(0.1);
+					selectedElement.addHeight(0.1);
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.addHeight(0.01);
+					selectedElement.addHeight(0.01);
 				}
 				else
 				{
-					cube.addHeight(1.0);
+					selectedElement.addHeight(1.0);
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -214,22 +214,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.addDepth(0.1);
+					selectedElement.addDepth(0.1);
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.addDepth(0.01);
+					selectedElement.addDepth(0.01);
 				}
 				else
 				{
-					cube.addDepth(1.0);
+					selectedElement.addDepth(1.0);
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -239,22 +239,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.setWidth(Math.max(0.0, cube.getWidth() - 0.1));
+					selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.1));
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.setWidth(Math.max(0.0, cube.getWidth() - 0.01));
+					selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.01));
 				}
 				else
 				{
-					cube.setWidth(Math.max(0.0, cube.getWidth() - 1.0));
+					selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 1.0));
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -264,22 +264,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.setHeight(Math.max(0.0, cube.getHeight() - 0.1));
+					selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.1));
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.setHeight(Math.max(0.0, cube.getHeight() - 0.01));
+					selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.01));
 				}
 				else
 				{
-					cube.setHeight(Math.max(0.0, cube.getHeight() - 1.0));
+					selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 1.0));
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});
@@ -289,23 +289,22 @@ public class SizePanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				System.out.println(e.getModifiers() & InputEvent.SHIFT_MASK & InputEvent.CTRL_MASK);
-				Element cube = manager.getSelectedElement();
 				if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
 				{
-					cube.setDepth(Math.max(0.0, cube.getDepth() - 0.1));
+					selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.1));
 				}
 				else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
 				{
-					cube.setDepth(Math.max(0.0, cube.getDepth() - 0.01));
+					selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.01));
 				}
 				else
 				{
-					cube.setDepth(Math.max(0.0, cube.getDepth() - 1.0));
+					selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 1.0));
 				}
-				cube.updateEndUVs();
+				selectedElement.updateEndUVs();
 				manager.updateValues();
 			}
 		});

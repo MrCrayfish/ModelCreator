@@ -75,10 +75,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if(selectedElement != null)
 					{
-						element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
+						selectedElement.setOriginX((Parser.parseDouble(xOriginField.getText(), selectedElement.getOriginX())));
 						manager.updateValues();
 					}
 				}
@@ -89,10 +89,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if(selectedElement != null)
 				{
-					element.setOriginX((Parser.parseDouble(xOriginField.getText(), element.getOriginX())));
+					selectedElement.setOriginX((Parser.parseDouble(xOriginField.getText(), selectedElement.getOriginX())));
 					manager.updateValues();
 				}
 			}
@@ -108,10 +108,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if(selectedElement != null)
 					{
-						element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
+						selectedElement.setOriginY((Parser.parseDouble(yOriginField.getText(), selectedElement.getOriginY())));
 						manager.updateValues();
 					}
 				}
@@ -122,10 +122,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if(selectedElement != null)
 				{
-					element.setOriginY((Parser.parseDouble(yOriginField.getText(), element.getOriginY())));
+					selectedElement.setOriginY((Parser.parseDouble(yOriginField.getText(), selectedElement.getOriginY())));
 					manager.updateValues();
 				}
 			}
@@ -166,18 +166,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginX(0.1F);
+					selectedElement.addOriginX(0.1F);
 				}
 				else
 				{
-					cube.addOriginX(1.0F);
+					selectedElement.addOriginX(1.0F);
 				}
-				xOriginField.setText(Exporter.FORMAT.format(cube.getOriginX()));
+				xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -186,18 +186,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginY(0.1F);
+					selectedElement.addOriginY(0.1F);
 				}
 				else
 				{
-					cube.addOriginY(1.0F);
+					selectedElement.addOriginY(1.0F);
 				}
-				yOriginField.setText(Exporter.FORMAT.format(cube.getOriginY()));
+				yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -206,18 +206,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnPlusZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginZ(0.1F);
+					selectedElement.addOriginZ(0.1F);
 				}
 				else
 				{
-					cube.addOriginZ(1.0F);
+					selectedElement.addOriginZ(1.0F);
 				}
-				zOriginField.setText(Exporter.FORMAT.format(cube.getOriginZ()));
+				zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -226,18 +226,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegX.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginX(-0.1F);
+					selectedElement.addOriginX(-0.1F);
 				}
 				else
 				{
-					cube.addOriginX(-1.0F);
+					selectedElement.addOriginX(-1.0F);
 				}
-				xOriginField.setText(Exporter.FORMAT.format(cube.getOriginX()));
+				xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -246,18 +246,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegY.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginY(-0.1F);
+					selectedElement.addOriginY(-0.1F);
 				}
 				else
 				{
-					cube.addOriginY(-1.0F);
+					selectedElement.addOriginY(-1.0F);
 				}
-				yOriginField.setText(Exporter.FORMAT.format(cube.getOriginY()));
+				yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -266,18 +266,18 @@ public class OriginPanel extends JPanel implements IValueUpdater
 
 		btnNegZ.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				Element cube = manager.getSelectedElement();
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
-					cube.addOriginZ(-0.1F);
+					selectedElement.addOriginZ(-0.1F);
 				}
 				else
 				{
-					cube.addOriginZ(-1.0F);
+					selectedElement.addOriginZ(-1.0F);
 				}
-				zOriginField.setText(Exporter.FORMAT.format(cube.getOriginZ()));
+				zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

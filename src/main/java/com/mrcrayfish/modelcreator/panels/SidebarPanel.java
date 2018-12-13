@@ -192,7 +192,14 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		if (pos < model.size())
 		{
-			list.setSelectedIndex(pos);
+			if (pos >= 0)
+			{
+				list.setSelectedIndex(pos);
+			}
+			else
+			{
+				list.clearSelection();
+			}
 			updateValues();
 		}
 	}

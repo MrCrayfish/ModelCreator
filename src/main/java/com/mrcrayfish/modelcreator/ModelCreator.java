@@ -16,11 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.mrcrayfish.modelcreator.element.Face;
 import org.lwjgl.LWJGLException;
@@ -283,6 +279,12 @@ public class ModelCreator extends JFrame
 			cube.drawExtras(manager);
 		}
 
+		Element selectedElement = manager.getSelectedElement();
+		if(selectedElement != null)
+		{
+			selectedElement.drawOutline();
+		}
+
 		GL11.glPushMatrix();
 		{
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -409,6 +411,11 @@ public class ModelCreator extends JFrame
 						{
 							grabbed = manager.getAllElements().get(sel);
 							manager.setSelectedElement(sel);
+						}
+						else
+						{
+							grabbed = null;
+							manager.setSelectedElement(-1);
 						}
 					}
 				}

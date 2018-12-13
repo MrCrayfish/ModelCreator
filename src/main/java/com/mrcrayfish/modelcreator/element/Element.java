@@ -1,15 +1,13 @@
 package com.mrcrayfish.modelcreator.element;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Element
 {
@@ -249,6 +247,55 @@ public class Element
 			}
 			GL11.glPopMatrix();
 		}
+	}
+
+	public void drawOutline()
+	{
+		GL11.glDepthMask(false);
+		GL11.glPushMatrix();
+		{
+			GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
+			rotateAxis();
+			GL11.glTranslated(-getOriginX(), -getOriginY(), -getOriginZ());
+			GL11.glTranslated(getStartX(), getStartY(), getStartZ());
+
+			float outlineScale = 1.01F;
+			GL11.glScalef(outlineScale, outlineScale, outlineScale);
+			GL11.glTranslated(-((getWidth() * outlineScale) - getWidth()) / 2.0, -((getHeight() * outlineScale) - getHeight()) / 2.0, -((getDepth() * outlineScale) - getDepth()) / 2.0);
+
+			GL11.glColor3f(1.0F, 1.0F, 1.0F);
+			GL11.glLineWidth(3F);
+			GL11.glBegin(GL_LINE_LOOP);
+			{
+				GL11.glVertex3d(0, 0, 0);
+				GL11.glVertex3d(width, 0, 0);
+				GL11.glVertex3d(width, 0, depth);
+				GL11.glVertex3d(0, 0, depth);
+			}
+			GL11.glEnd();
+			GL11.glBegin(GL_LINE_LOOP);
+			{
+				GL11.glVertex3d(0, height, 0);
+				GL11.glVertex3d(width, height, 0);
+				GL11.glVertex3d(width, height, depth);
+				GL11.glVertex3d(0, height, depth);
+			}
+			GL11.glEnd();
+			GL11.glBegin(GL_LINES);
+			{
+				GL11.glVertex3d(width, 0, 0);
+				GL11.glVertex3d(width, height, 0);
+				GL11.glVertex3d(0, 0, 0);
+				GL11.glVertex3d(0, height, 0);
+				GL11.glVertex3d(width, 0, depth);
+				GL11.glVertex3d(width, height, depth);
+				GL11.glVertex3d(0, 0, depth);
+				GL11.glVertex3d(0, height, depth);
+			}
+			GL11.glEnd();
+		}
+		GL11.glPopMatrix();
+		GL11.glDepthMask(true);
 	}
 
 	public void addStartX(double amt)

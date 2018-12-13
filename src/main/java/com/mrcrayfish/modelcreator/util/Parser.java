@@ -1,18 +1,21 @@
 package com.mrcrayfish.modelcreator.util;
 
+import com.mrcrayfish.modelcreator.Exporter;
+
+import java.text.ParseException;
+
 public class Parser
 {
 	public static double parseDouble(String text, double def)
 	{
-		double value;
 		try
 		{
-			value = Double.parseDouble(text);
+			return Exporter.FORMAT.parse(text).doubleValue();
 		}
-		catch (NumberFormatException e)
+		catch (NumberFormatException | ParseException e)
 		{
-			value = def;
+			e.printStackTrace();
 		}
-		return value;
+		return def;
 	}
 }

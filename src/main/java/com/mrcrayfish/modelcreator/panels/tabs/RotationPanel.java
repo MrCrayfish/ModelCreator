@@ -44,15 +44,15 @@ public class RotationPanel extends JPanel implements IValueUpdater
 	public RotationPanel(ElementManager manager)
 	{
 		this.manager = manager;
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		initMenu();
-		initComponents();
-		addComponents();
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.initMenu();
+		this.initComponents();
+		this.addComponents();
 	}
 
 	public void initMenu()
 	{
-		model = new DefaultComboBoxModel<String>();
+		model = new DefaultComboBoxModel<>();
 		model.addElement("<html><div style='padding:5px;color:red;'><b>X</b></html>");
 		model.addElement("<html><div style='padding:5px;color:green;'><b>Y</b></html>");
 		model.addElement("<html><div style='padding:5px;color:blue;'><b>Z</b></html>");
@@ -69,8 +69,11 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList.setToolTipText("The axis the element will rotate around");
 		axisList.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
-				manager.getSelectedElement().setPrevAxis(axisList.getSelectedIndex());
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
+			{
+				selectedElement.setPrevAxis(axisList.getSelectedIndex());
+			}
 		});
 		axisList.setMaximumSize(new Dimension(186, 55));
 		axisPanel.setMaximumSize(new Dimension(186, 55));
@@ -92,7 +95,11 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedElement().setRotation(rotation.getValue() * 22.5D);
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
+			{
+				selectedElement.setRotation(rotation.getValue() * 22.5D);
+			}
 		});
 		rotation.setToolTipText("<html>The rotation of the element<br>Default: 0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
@@ -104,7 +111,11 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		btnRescale = ComponentUtil.createRadioButton("Rescale", "<html>Should scale faces across whole block<br>Default: Off<html>");
 		btnRescale.addActionListener(e ->
 		{
-			manager.getSelectedElement().setRescale(btnRescale.isSelected());
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
+			{
+				selectedElement.setRescale(btnRescale.isSelected());
+			}
 		});
 		extraPanel.setMaximumSize(new Dimension(186, 50));
 		extraPanel.add(btnRescale);

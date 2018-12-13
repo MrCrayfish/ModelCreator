@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
@@ -41,6 +43,7 @@ public class Menu extends JMenuBar
 	/* Options */
 	private JMenu menuOptions;
 	private JMenuItem itemTransparency;
+	private JMenuItem itemOptimise;
 
 	/* Share */
 	private JMenu menuScreenshot;
@@ -82,6 +85,7 @@ public class Menu extends JMenuBar
 		menuOptions = new JMenu("Options");
 		{
 			itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
+			itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin);
 		}
 
 		menuScreenshot = new JMenu("Screenshot");
@@ -121,6 +125,7 @@ public class Menu extends JMenuBar
 		menuHelp.add(itemDonate);
 
 		menuOptions.add(itemTransparency);
+		menuOptions.add(itemOptimise);
 
 		menuScreenshot.add(itemSaveToDisk);
 		menuScreenshot.add(itemShareFacebook);
@@ -333,6 +338,25 @@ public class Menu extends JMenuBar
 				JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
 			else
 				JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
+		});
+
+		itemOptimise.addActionListener(a ->
+		{
+			int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Confirmation", JOptionPane.YES_NO_OPTION);
+			if(result == JOptionPane.YES_OPTION)
+			{
+				ElementManager manager = creator.getElementManager();
+				manager.getAllElements().forEach(element ->
+				{
+					for(Face face : element.getAllFaces())
+					{
+						if(!face.isVisible(manager))
+						{
+							face.setEnabled(false);
+						}
+					}
+				});
+			}
 		});
 
 		itemSaveToDisk.addActionListener(a ->

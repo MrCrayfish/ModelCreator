@@ -192,7 +192,7 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if (face.isEnabled() && face.isVisible(manager) && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
+			if (face.isEnabled() && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
 			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");

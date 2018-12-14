@@ -693,12 +693,12 @@ public class Face
 
 	public boolean isVisible(ElementManager manager)
 	{
-		if(cuboid.getRotation() != 0.0)
+		if(cuboid.getRotation() != 0.0) //TODO make it an option
 			return true;
 
 		for(Element element : manager.getAllElements())
 		{
-			if(element == cuboid)
+			if(element == cuboid || element.getRotation() != 0.0)
 				continue;
 
 			if(this.getMinX() >= element.getStartX() && this.getMinX() <= element.getStartX() + element.getWidth())

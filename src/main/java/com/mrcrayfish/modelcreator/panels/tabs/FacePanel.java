@@ -78,10 +78,11 @@ public class FacePanel extends JPanel implements IValueUpdater
 		menuList.setToolTipText("The face to edit.");
 		menuList.addActionListener(e ->
 		{
-			if (manager.getSelectedElement() != null)
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				manager.getSelectedElement().setSelectedFace(menuList.getSelectedIndex());
-				updateValues(manager.getSelectedElement());
+				selectedElement.setSelectedFace(menuList.getSelectedIndex());
+				updateValues(selectedElement);
 			}
 		});
 		menuPanel.setPreferredSize(new Dimension(186, 50));
@@ -106,7 +107,11 @@ public class FacePanel extends JPanel implements IValueUpdater
 		rotation.setLabelTable(labelTable);
 		rotation.addChangeListener(e ->
 		{
-			manager.getSelectedElement().getSelectedFace().setRotation(rotation.getValue());
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
+			{
+				selectedElement.getSelectedFace().setRotation(rotation.getValue());
+			}
 		});
 		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
 		sliderPanel.setMaximumSize(new Dimension(190, 80));
@@ -123,9 +128,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					if (manager.getSelectedElement() != null)
+					Element selectedElement = manager.getSelectedElement();
+					if(selectedElement != null)
 					{
-						manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
+						selectedElement.getSelectedFace().setTextureLocation(modidField.getText());
 					}
 				}
 			}
@@ -135,9 +141,10 @@ public class FacePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if (manager.getSelectedElement() != null)
+				Element selectedElement = manager.getSelectedElement();
+				if(selectedElement != null)
 				{
-					manager.getSelectedElement().getSelectedFace().setTextureLocation(modidField.getText());
+					selectedElement.getSelectedFace().setTextureLocation(modidField.getText());
 				}
 			}
 		});

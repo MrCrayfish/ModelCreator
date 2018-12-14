@@ -448,7 +448,7 @@ public class Face
 
 	public double getMaxX()
 	{
-		if(side == EAST)
+		if(side == WEST)
 		{
 			return cuboid.getStartX();
 		}

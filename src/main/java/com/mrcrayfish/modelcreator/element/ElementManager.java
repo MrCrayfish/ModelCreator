@@ -3,9 +3,11 @@ package com.mrcrayfish.modelcreator.element;
 import java.util.List;
 
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import org.jetbrains.annotations.Nullable;
 
 public interface ElementManager
 {
+	@Nullable
 	public Element getSelectedElement();
 
 	public void setSelectedElement(int pos);

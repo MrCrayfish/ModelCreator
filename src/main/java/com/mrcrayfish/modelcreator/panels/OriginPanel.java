@@ -141,10 +141,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			{
 				if (e.getKeyCode() == KeyEvent.VK_ENTER)
 				{
-					Element element = manager.getSelectedElement();
-					if (element != null)
+					Element selectedElement = manager.getSelectedElement();
+					if (selectedElement != null)
 					{
-						element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
+						selectedElement.setOriginZ((Parser.parseDouble(zOriginField.getText(), selectedElement.getOriginZ())));
 						manager.updateValues();
 					}
 				}
@@ -155,10 +155,10 @@ public class OriginPanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setOriginZ((Parser.parseDouble(zOriginField.getText(), element.getOriginZ())));
+					selectedElement.setOriginZ((Parser.parseDouble(zOriginField.getText(), selectedElement.getOriginZ())));
 					manager.updateValues();
 				}
 			}

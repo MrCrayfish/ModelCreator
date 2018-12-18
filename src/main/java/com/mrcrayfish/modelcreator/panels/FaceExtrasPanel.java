@@ -53,7 +53,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				manager.getSelectedElement().getSelectedFace().fitTexture(boxFill.isSelected());
+				selectedElement.getSelectedFace().fitTexture(boxFill.isSelected());
 			}
 		});
 		boxEnabled = ComponentUtil.createRadioButton("Enable","<html>Determines if face should be rendered<br>Default: On</html>");
@@ -62,7 +62,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				manager.getSelectedElement().getSelectedFace().setEnabled(boxEnabled.isSelected());
+				selectedElement.getSelectedFace().setEnabled(boxEnabled.isSelected());
 			}
 		});
 		boxAutoUV = ComponentUtil.createRadioButton("Auto UV", "<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");

@@ -135,9 +135,12 @@ public class TexturePanel extends JPanel implements TextureCallback
 	public void callback(boolean success, String texture)
 	{
 		if (success)
-			if (manager.getSelectedElement() != null)
+		{
+			Element selectedElement = manager.getSelectedElement();
+			if(selectedElement != null)
 			{
-				manager.getSelectedElement().getSelectedFace().setTexture(texture);
+				selectedElement.getSelectedFace().setTexture(texture);
 			}
+		}
 	}
 }

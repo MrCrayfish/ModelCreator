@@ -80,11 +80,11 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisPanel.add(axisList);
 
 		Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-		labelTable.put(new Integer(-2), new JLabel("-45\u00b0"));
-		labelTable.put(new Integer(-1), new JLabel("-22.5\u00b0"));
-		labelTable.put(new Integer(0), new JLabel("0\u00b0"));
-		labelTable.put(new Integer(1), new JLabel("22.5\u00b0"));
-		labelTable.put(new Integer(2), new JLabel("45\u00b0"));
+		labelTable.put(-2, new JLabel("-45\u00b0"));
+		labelTable.put(-1, new JLabel("-22.5\u00b0"));
+		labelTable.put(0, new JLabel("0\u00b0"));
+		labelTable.put(1, new JLabel("22.5\u00b0"));
+		labelTable.put(2, new JLabel("45\u00b0"));
 
 		sliderPanel = new JPanel(new GridLayout(1, 1));
 		sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));

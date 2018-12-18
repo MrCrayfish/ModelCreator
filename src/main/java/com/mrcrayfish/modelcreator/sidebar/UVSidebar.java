@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex2d;
 import static org.lwjgl.opengl.GL11.glVertex2i;
 
+import com.mrcrayfish.modelcreator.element.Element;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.TextureImpl;
@@ -76,8 +77,11 @@ public class UVSidebar extends Sidebar
 					glColor3f(color.getRed(), color.getGreen(), color.getBlue());
 
 					Face[] faces = null;
-					if (manager.getSelectedElement() != null)
-						faces = manager.getSelectedElement().getAllFaces();
+					Element selectedElement = manager.getSelectedElement();
+					if(selectedElement != null)
+					{
+						faces = selectedElement.getAllFaces();
+					}
 
 					if (faces != null)
 					{
@@ -167,9 +171,10 @@ public class UVSidebar extends Sidebar
 			int side = getFace(canvasHeight, newMouseX, newMouseY);
 			if (side != -1 | selected != -1)
 			{
-				if (manager.getSelectedElement() != null)
+				Element selectedElement = manager.getSelectedElement();
+				if(selectedElement != null)
 				{
-					Face face = manager.getSelectedElement().getAllFaces()[(selected != -1 ? selected : side)];
+					Face face = selectedElement.getAllFaces()[(selected != -1 ? selected : side)];
 
 					int xMovement = (int) ((newMouseX - this.lastMouseX) / 6);
 					int yMovement = (int) ((newMouseY - this.lastMouseY) / 6);

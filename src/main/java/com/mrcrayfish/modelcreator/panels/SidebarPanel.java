@@ -137,12 +137,12 @@ public class SidebarPanel extends JPanel implements ElementManager
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
-			Element cube = getSelectedElement();
-			if (cube != null)
+			Element selectedElement = getSelectedElement();
+			if (selectedElement != null)
 			{
 				tabbedPane.updateValues();
 				name.setEnabled(true);
-				name.setText(cube.toString());
+				name.setText(selectedElement.toString());
 			}
 		});
 
@@ -183,7 +183,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		int i = list.getSelectedIndex();
 		if (i != -1)
-			return (Element) model.getElementAt(i);
+			return model.getElementAt(i);
 		return null;
 	}
 
@@ -233,10 +233,10 @@ public class SidebarPanel extends JPanel implements ElementManager
 		String newName = name.getText();
 		if (newName.isEmpty())
 			newName = "Cuboid";
-		Element cube = getSelectedElement();
-		if (cube != null)
+		Element selectedElement = getSelectedElement();
+		if (selectedElement != null)
 		{
-			cube.setName(newName);
+			selectedElement.setName(newName);
 			name.setText(newName);
 			list.updateUI();
 		}

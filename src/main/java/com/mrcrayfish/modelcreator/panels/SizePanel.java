@@ -152,11 +152,11 @@ public class SizePanel extends JPanel implements IValueUpdater
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				Element element = manager.getSelectedElement();
-				if (element != null)
+				Element selectedElement = manager.getSelectedElement();
+				if (selectedElement != null)
 				{
-					element.setDepth(Parser.parseDouble(zSizeField.getText(), element.getDepth()));
-					element.updateEndUVs();
+					selectedElement.setDepth(Parser.parseDouble(zSizeField.getText(), selectedElement.getDepth()));
+					selectedElement.updateEndUVs();
 					manager.updateValues();
 				}
 			}

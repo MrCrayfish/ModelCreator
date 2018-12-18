@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
@@ -342,20 +343,23 @@ public class Menu extends JMenuBar
 
 		itemOptimise.addActionListener(a ->
 		{
-			int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Confirmation", JOptionPane.YES_NO_OPTION);
+			int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
 			if(result == JOptionPane.YES_OPTION)
 			{
+				int count = 0;
 				ElementManager manager = creator.getElementManager();
-				manager.getAllElements().forEach(element ->
+				for(Element element : manager.getAllElements())
 				{
 					for(Face face : element.getAllFaces())
 					{
-						if(!face.isVisible(manager))
+						if(face.isEnabled() && !face.isVisible(manager))
 						{
+							count++;
 							face.setEnabled(false);
 						}
 					}
-				});
+				}
+				JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 

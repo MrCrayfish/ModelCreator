@@ -3,38 +3,36 @@ package com.mrcrayfish.modelcreator.element;
 import java.util.List;
 
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
-import org.jetbrains.annotations.Nullable;
 
 public interface ElementManager
 {
-	@Nullable
-	public Element getSelectedElement();
+	 Element getSelectedElement();
 
-	public void setSelectedElement(int pos);
+	 void setSelectedElement(int pos);
 
-	public List<Element> getAllElements();
+	 List<Element> getAllElements();
 
-	public Element getElement(int index);
+	 Element getElement(int index);
 
-	public int getElementCount();
+	 int getElementCount();
 
-	public void clearElements();
+	 void clearElements();
 
-	public void updateName();
+	 void updateName();
 
-	public void updateValues();
+	 void updateValues();
 
-	public void addPendingTexture(PendingTexture texture);
+	 void addPendingTexture(PendingTexture texture);
 
-	public boolean getAmbientOcc();
+	 boolean getAmbientOcc();
 
-	public void setAmbientOcc(boolean occ);
+	 void setAmbientOcc(boolean occ);
 
-	public void addElement(Element e);
+	 void addElement(Element e);
 	
-	public void setParticle(String texture);
+	 void setParticle(String texture);
 	
-	public String getParticle();
+	 String getParticle();
 	
-	public void reset();
+	 void reset();
 }

@@ -1,6 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -18,6 +18,7 @@ import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
+import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
 
 public class Menu extends JMenuBar
@@ -74,9 +75,9 @@ public class Menu extends JMenuBar
 	{
 		menuFile = new JMenu("File");
 		{
-			itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_);
-			itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load);
-			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk);
+			itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+			itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
 			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
 			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, Icons.texture);
@@ -85,14 +86,14 @@ public class Menu extends JMenuBar
 
 		menuEdit = new JMenu("Edit");
 		{
-			itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin);
-			itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin);
+			itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
+			itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
 		}
 
 		menuOptions = new JMenu("Options");
 		{
 			itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
-			itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin);
+			itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
 		}
 
 		menuScreenshot = new JMenu("Screenshot");
@@ -182,80 +183,8 @@ public class Menu extends JMenuBar
 		itemNew.addActionListener(a -> Menu.newProject(creator));
 		itemLoad.addActionListener(a -> Menu.loadProject(creator));
 		itemSave.addActionListener(a -> Menu.saveProject(creator));
-
-		itemImport.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Input File");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Import");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-			chooser.setFileFilter(filter);
-
-			String dir = Settings.getJSONDir();
-
-			if (dir != null)
-			{
-				chooser.setCurrentDirectory(new File(dir));
-			}
-
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				if (creator.getElementManager().getElementCount() > 0)
-				{
-					returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-				}
-				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-				{
-					File location = chooser.getSelectedFile().getParentFile();
-					Settings.setJSONDir(location.toString());
-
-					Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
-					importer.importFromJSON();
-				}
-				creator.getElementManager().updateValues();
-			}
-		});
-
-		itemExport.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Export");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-			chooser.setFileFilter(filter);
-
-			String dir = Settings.getJSONDir();
-
-			if (dir != null)
-			{
-				chooser.setCurrentDirectory(new File(dir));
-			}
-
-			int returnVal = chooser.showSaveDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				if (chooser.getSelectedFile().exists())
-				{
-					returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
-				}
-				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-				{
-					File location = chooser.getSelectedFile().getParentFile();
-					Settings.setJSONDir(location.toString());
-
-					String filePath = chooser.getSelectedFile().getAbsolutePath();
-					if (!filePath.endsWith(".json"))
-						chooser.setSelectedFile(new File(filePath + ".json"));
-					Exporter exporter = new Exporter(creator.getElementManager());
-					exporter.export(chooser.getSelectedFile());
-				}
-			}
-		});
+		itemImport.addActionListener(e -> Menu.importJson(creator));
+		itemExport.addActionListener(e -> Menu.exportJson(creator));
 
 		itemTexturePath.addActionListener(e ->
 		{
@@ -282,7 +211,7 @@ public class Menu extends JMenuBar
 
 		itemTransparency.addActionListener(a ->
 		{
-			ModelCreator.transparent ^= true;
+			ModelCreator.transparent = itemTransparency.isSelected();
 			Settings.setTransparencyMode(ModelCreator.transparent);
 			if (ModelCreator.transparent)
 				JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
@@ -484,10 +413,26 @@ public class Menu extends JMenuBar
 
 	private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)
 	{
+		return createItem(name, tooltip, mnemonic, icon, null);
+	}
+
+	private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, KeyStroke shortcut)
+	{
 		JMenuItem item = new JMenuItem(name);
 		item.setToolTipText(tooltip);
 		item.setMnemonic(mnemonic);
 		item.setIcon(icon);
+
+		if(shortcut != null)
+		{
+			String shortcutText = KeyboardUtil.convertKeyStokeToString(shortcut);
+			item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+			JLabel label = new JLabel("<html><p style='color:#666666;font-size:9px'>" + shortcutText + "<p></html>");
+			item.add(label);
+			Dimension size = new Dimension((int) Math.ceil(item.getPreferredSize().getWidth() + label.getPreferredSize().getWidth()) + 10, 20);
+			item.setPreferredSize(size);
+		}
+
 		return item;
 	}
 
@@ -497,7 +442,6 @@ public class Menu extends JMenuBar
 		item.setToolTipText(tooltip);
 		item.setMnemonic(mnemonic);
 		item.setIcon(icon);
-
 		return item;
 	}
 
@@ -600,6 +544,80 @@ public class Menu extends JMenuBar
 				}
 			}
 			JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	public static void importJson(ModelCreator creator)
+	{
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Import JSON Model");
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setApproveButtonText("Import");
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+		chooser.setFileFilter(filter);
+
+		String dir = Settings.getJSONDir();
+
+		if (dir != null)
+		{
+			chooser.setCurrentDirectory(new File(dir));
+		}
+
+		int returnVal = chooser.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			if (creator.getElementManager().getElementCount() > 0)
+			{
+				returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+			}
+			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+			{
+				File location = chooser.getSelectedFile().getParentFile();
+				Settings.setJSONDir(location.toString());
+
+				Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+				importer.importFromJSON();
+			}
+			creator.getElementManager().updateValues();
+		}
+	}
+
+	public static void exportJson(ModelCreator creator)
+	{
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Export JSON Model");
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setApproveButtonText("Export");
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+		chooser.setFileFilter(filter);
+
+		String dir = Settings.getJSONDir();
+
+		if (dir != null)
+		{
+			chooser.setCurrentDirectory(new File(dir));
+		}
+
+		int returnVal = chooser.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			if (chooser.getSelectedFile().exists())
+			{
+				returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+			}
+			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+			{
+				File location = chooser.getSelectedFile().getParentFile();
+				Settings.setJSONDir(location.toString());
+
+				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				if (!filePath.endsWith(".json"))
+					chooser.setSelectedFile(new File(filePath + ".json"));
+				Exporter exporter = new Exporter(creator.getElementManager());
+				exporter.export(chooser.getSelectedFile());
+			}
 		}
 	}
 }

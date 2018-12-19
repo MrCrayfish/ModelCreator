@@ -215,41 +215,7 @@ public class Menu extends JMenuBar
 			}
 		});
 
-		itemSave.addActionListener(a ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Save");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
-			chooser.setFileFilter(filter);
-			String dir = Settings.getModelDir();
-
-			if (dir != null)
-			{
-				chooser.setCurrentDirectory(new File(dir));
-			}
-
-			int returnVal = chooser.showSaveDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				if (chooser.getSelectedFile().exists())
-				{
-					returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
-				}
-				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-				{
-					File location = chooser.getSelectedFile().getParentFile();
-					Settings.setModelDir(location.toString());
-
-					String filePath = chooser.getSelectedFile().getAbsolutePath();
-					if (!filePath.endsWith(".model"))
-						filePath += ".model";
-					ProjectManager.saveProject(creator.getElementManager(), filePath);
-				}
-			}
-		});
+		itemSave.addActionListener(a -> Menu.saveProject(creator));
 
 		itemImport.addActionListener(e ->
 		{
@@ -596,6 +562,42 @@ public class Menu extends JMenuBar
 		{
 			creator.getElementManager().reset();
 			creator.getElementManager().updateValues();
+		}
+	}
+
+	public static void saveProject(ModelCreator creator)
+	{
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Output Directory");
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setApproveButtonText("Save");
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
+		chooser.setFileFilter(filter);
+		String dir = Settings.getModelDir();
+
+		if (dir != null)
+		{
+			chooser.setCurrentDirectory(new File(dir));
+		}
+
+		int returnVal = chooser.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			if (chooser.getSelectedFile().exists())
+			{
+				returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+			}
+			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+			{
+				File location = chooser.getSelectedFile().getParentFile();
+				Settings.setModelDir(location.toString());
+
+				String filePath = chooser.getSelectedFile().getAbsolutePath();
+				if (!filePath.endsWith(".model"))
+					filePath += ".model";
+				ProjectManager.saveProject(creator.getElementManager(), filePath);
+			}
 		}
 	}
 }

@@ -184,28 +184,20 @@ public class ModelCreator extends JFrame
 
     private void registerShortcuts()
     {
-        this.keyActions.add(new KeyAction(KeyEvent.VK_Z, Keyboard.KEY_Z)
+        this.keyActions.add(new KeyAction(KeyEvent.VK_Z, Keyboard.KEY_Z, (modifiers, pressed) ->
         {
-            @Override
-            public void process(int modifiers, boolean pressed)
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
             {
-                if(pressed && modifiers == InputEvent.CTRL_MASK)
-                {
-                    StateManager.restorePreviousState(manager);
-                }
+                StateManager.restorePreviousState(manager);
             }
-        });
-        this.keyActions.add(new KeyAction(KeyEvent.VK_Y, Keyboard.KEY_Y)
+        }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_Y, Keyboard.KEY_Y, (modifiers, pressed) ->
         {
-            @Override
-            public void process(int modifiers, boolean pressed)
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
             {
-                if(pressed && modifiers == InputEvent.CTRL_MASK)
-                {
-                    StateManager.restoreNextState(manager);
-                }
+                StateManager.restoreNextState(manager);
             }
-        });
+        }));
     }
 
     private List<Image> getIcons()
@@ -825,30 +817,37 @@ public class ModelCreator extends JFrame
             {
                 if(keyAction.awtCode == code)
                 {
-                    keyAction.process(modifiers, pressed);
+                    keyAction.handler.process(modifiers, pressed);
                 }
             }
             else
             {
                 if(keyAction.keyboardCode == code)
                 {
-                    keyAction.process(modifiers, pressed);
+                    keyAction.handler.process(modifiers, pressed);
                 }
             }
         });
     }
 
-    private static abstract class KeyAction
-    {
-        public final int awtCode;
-        public final  int keyboardCode;
 
-        public KeyAction(int awtCode, int keyboardCode)
+
+    private static class KeyAction
+    {
+        private final int awtCode;
+        private final int keyboardCode;
+        private final Handler handler;
+
+        public KeyAction(int awtCode, int keyboardCode, Handler handler)
         {
             this.awtCode = awtCode;
             this.keyboardCode = keyboardCode;
+            this.handler = handler;
         }
 
-        public abstract void process(int modifiers, boolean pressed);
+        public interface Handler
+        {
+            void process(int modifiers, boolean pressed);
+        }
     }
 }

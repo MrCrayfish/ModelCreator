@@ -212,6 +212,13 @@ public class ModelCreator extends JFrame
                 showHistory = !showHistory;
             }
         }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_N, Keyboard.KEY_N, (modifiers, pressed) ->
+        {
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
+            {
+                Menu.newProject(this);
+            }
+        }));
     }
 
     private List<Image> getIcons()

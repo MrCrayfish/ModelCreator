@@ -179,15 +179,7 @@ public class Menu extends JMenuBar
 
 	private void initActions()
 	{
-		itemNew.addActionListener(a ->
-		{
-			int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
-			if (returnVal == JOptionPane.YES_OPTION)
-			{
-				creator.getElementManager().reset();
-				creator.getElementManager().updateValues();
-			}
-		});
+		itemNew.addActionListener(a -> Menu.newProject(creator));
 
 		itemLoad.addActionListener(a ->
 		{
@@ -595,5 +587,15 @@ public class Menu extends JMenuBar
 		item.setIcon(icon);
 
 		return item;
+	}
+
+	public static void newProject(ModelCreator creator)
+	{
+		int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
+		if (returnVal == JOptionPane.YES_OPTION)
+		{
+			creator.getElementManager().reset();
+			creator.getElementManager().updateValues();
+		}
 	}
 }

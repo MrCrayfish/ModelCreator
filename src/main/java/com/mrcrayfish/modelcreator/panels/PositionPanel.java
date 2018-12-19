@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.Parser;
@@ -82,6 +83,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 						selectedElement.setStartX(Parser.parseDouble(xPositionField.getText(), selectedElement.getStartX()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 
 				}
@@ -115,6 +117,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					Element selectedElement = manager.getSelectedElement();
 					if (selectedElement != null)
 					{
+						StateManager.pushState(manager);
 						selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
@@ -131,6 +134,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				Element selectedElement = manager.getSelectedElement();
 				if (selectedElement != null)
 				{
+					StateManager.pushState(manager);
 					selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
 					selectedElement.updateEndUVs();
 					manager.updateValues();
@@ -151,6 +155,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					Element selectedElement = manager.getSelectedElement();
 					if (selectedElement != null)
 					{
+						StateManager.pushState(manager);
 						selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
@@ -167,6 +172,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 				Element selectedElement = manager.getSelectedElement();
 				if (selectedElement != null)
 				{
+					StateManager.pushState(manager);
 					selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
 					selectedElement.updateEndUVs();
 					manager.updateValues();
@@ -179,6 +185,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartX(0.1F);
@@ -199,6 +206,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartY(0.1F);
@@ -219,6 +227,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartZ(0.1F);
@@ -239,6 +248,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartX(-0.1F);
@@ -259,6 +269,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartY(-0.1F);
@@ -279,6 +290,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
+				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartZ(-0.1F);

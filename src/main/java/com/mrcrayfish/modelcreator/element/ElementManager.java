@@ -35,4 +35,11 @@ public interface ElementManager
 	 String getParticle();
 	
 	 void reset();
+
+	 default ElementManagerState createState()
+	 {
+	 	return new ElementManagerState(this);
+	 }
+
+	 void restoreState(ElementManagerState state);
 }

@@ -143,7 +143,7 @@ public class Exporter
 
 	private void writeElement(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"name\": \"" + cuboid.toString() + "\",");
+		writer.write(space(3) + "\"name\": \"" + cuboid.getName() + "\",");
 		writer.newLine();
 		writeBounds(writer, cuboid);
 		writer.newLine();

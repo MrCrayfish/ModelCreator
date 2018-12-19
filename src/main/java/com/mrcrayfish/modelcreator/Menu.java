@@ -2,18 +2,13 @@ package com.mrcrayfish.modelcreator;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-import javax.swing.Icon;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mrcrayfish.modelcreator.element.Element;
@@ -40,6 +35,11 @@ public class Menu extends JMenuBar
 	private JMenuItem itemExport;
 	private JMenuItem itemTexturePath;
 	private JMenuItem itemExit;
+
+	/* Edit */
+	private JMenu menuEdit;
+	private JMenuItem itemUndo;
+	private JMenuItem itemRedo;
 
 	/* Options */
 	private JMenu menuOptions;
@@ -81,6 +81,12 @@ public class Menu extends JMenuBar
 			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
 			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, Icons.texture);
 			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
+		}
+
+		menuEdit = new JMenu("Edit");
+		{
+			itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin);
+			itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin);
 		}
 
 		menuOptions = new JMenu("Options");
@@ -125,6 +131,24 @@ public class Menu extends JMenuBar
 		menuHelp.addSeparator();
 		menuHelp.add(itemDonate);
 
+		menuEdit.add(itemUndo);
+		menuEdit.add(itemRedo);
+		menuEdit.addMenuListener(new MenuListener()
+		{
+			@Override
+			public void menuSelected(MenuEvent e)
+			{
+				itemRedo.setEnabled(StateManager.canRestoreNextState());
+				itemUndo.setEnabled(StateManager.canRestorePreviousState());
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {}
+		});
+
 		menuOptions.add(itemTransparency);
 		menuOptions.add(itemOptimise);
 
@@ -147,6 +171,7 @@ public class Menu extends JMenuBar
 		menuFile.add(itemExit);
 
 		add(menuFile);
+		add(menuEdit);
 		add(menuOptions);
 		add(menuScreenshot);
 		add(menuHelp);
@@ -540,6 +565,16 @@ public class Menu extends JMenuBar
 		itemModelChair.addActionListener(a ->
 		{
 			Util.loadModelFromJar(creator.getElementManager(), getClass(), "models/modern_chair");
+		});
+
+		itemUndo.addActionListener(a ->
+		{
+			StateManager.restorePreviousState(creator.getElementManager());
+		});
+
+		itemRedo.addActionListener(a ->
+		{
+			StateManager.restoreNextState(creator.getElementManager());
 		});
 	}
 

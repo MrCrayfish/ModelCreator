@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.Parser;
@@ -70,6 +71,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 						selectedElement.setWidth(Parser.parseDouble(xSizeField.getText(), selectedElement.getWidth()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 
 				}
@@ -106,6 +108,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 						selectedElement.setHeight(Parser.parseDouble(ySizeField.getText(), selectedElement.getHeight()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 
 				}
@@ -142,6 +145,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 						selectedElement.setDepth(Parser.parseDouble(zSizeField.getText(), selectedElement.getDepth()));
 						selectedElement.updateEndUVs();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 
 				}
@@ -181,6 +185,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -206,6 +211,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -231,6 +237,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -256,6 +263,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -281,6 +289,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -306,6 +315,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

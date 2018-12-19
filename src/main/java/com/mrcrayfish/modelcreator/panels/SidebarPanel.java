@@ -4,26 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.ElementManagerState;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
@@ -48,7 +40,6 @@ public class SidebarPanel extends JPanel implements ElementManager
 	private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
 	private String particle = null;
-	private String particleLocation = null;
 	private boolean ambientOcc = true;
 
 	public SidebarPanel(ModelCreator creator)
@@ -73,6 +64,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		{
 			model.addElement(new Element(1, 1, 1));
 			list.setSelectedIndex(model.size() - 1);
+			StateManager.pushState(creator.getElementManager());
 		});
 		btnAdd.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnAdd);
@@ -89,6 +81,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 				name.setEnabled(false);
 				tabbedPane.updateValues();
 				list.setSelectedIndex(selected);
+				StateManager.pushState(creator.getElementManager());
 			}
 		});
 		btnRemove.setPreferredSize(new Dimension(30, 30));
@@ -103,6 +96,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			{
 				model.addElement(new Element(model.getElementAt(selected)));
 				list.setSelectedIndex(model.getSize() - 1);
+				StateManager.pushState(creator.getElementManager());
 			}
 		});
 		btnDuplicate.setFont(defaultFont);
@@ -142,7 +136,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			{
 				tabbedPane.updateValues();
 				name.setEnabled(true);
-				name.setText(selectedElement.toString());
+				name.setText(selectedElement.getName());
 			}
 		});
 
@@ -182,7 +176,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	public Element getSelectedElement()
 	{
 		int i = list.getSelectedIndex();
-		if (i != -1)
+		if (model.getSize() > 0 && i >= 0 && i < model.getSize())
 			return model.getElementAt(i);
 		return null;
 	}
@@ -239,6 +233,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			selectedElement.setName(newName);
 			name.setText(newName);
 			list.updateUI();
+			StateManager.pushState(creator.getElementManager());
 		}
 	}
 
@@ -301,5 +296,19 @@ public class SidebarPanel extends JPanel implements ElementManager
 		this.clearElements();
 		ambientOcc = true;
 		particle = null;
+	}
+
+	@Override
+	public void restoreState(ElementManagerState state)
+	{
+		this.reset();
+		for(Element element : state.getElements())
+		{
+			this.model.addElement(new Element(element));
+		}
+		this.setSelectedElement(state.getSelectedIndex());
+		this.ambientOcc = state.isAmbientOcclusion();
+		this.particle = state.getParticleTexture();
+		this.updateValues();
 	}
 }

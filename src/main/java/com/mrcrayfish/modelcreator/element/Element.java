@@ -478,10 +478,15 @@ public class Element
 		this.name = name;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+
 	@Override
 	public String toString()
 	{
-		return name;
+		return name + "(width:" + width + ",height:" + height + ",depth:" + depth + ")";
 	}
 
 	public void updateStartUVs()

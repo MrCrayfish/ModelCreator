@@ -233,6 +233,13 @@ public class ModelCreator extends JFrame
                 Menu.loadProject(this);
             }
         }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_O, Keyboard.KEY_O, (modifiers, pressed) ->
+        {
+            if(pressed && (modifiers & InputEvent.CTRL_MASK) != 0 && (modifiers & InputEvent.SHIFT_MASK) != 0)
+            {
+                Menu.optimizeModel(this);
+            }
+        }));
     }
 
     private List<Image> getIcons()

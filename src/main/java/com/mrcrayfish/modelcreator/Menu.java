@@ -290,27 +290,7 @@ public class Menu extends JMenuBar
 				JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
 		});
 
-		itemOptimise.addActionListener(a ->
-		{
-			int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
-			if(result == JOptionPane.YES_OPTION)
-			{
-				int count = 0;
-				ElementManager manager = creator.getElementManager();
-				for(Element element : manager.getAllElements())
-				{
-					for(Face face : element.getAllFaces())
-					{
-						if(face.isEnabled() && !face.isVisible(manager))
-						{
-							count++;
-							face.setEnabled(false);
-						}
-					}
-				}
-				JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
+		itemOptimise.addActionListener(a -> Menu.optimizeModel(creator));
 
 		itemSaveToDisk.addActionListener(a ->
 		{
@@ -534,7 +514,7 @@ public class Menu extends JMenuBar
 	public static void loadProject(ModelCreator creator)
 	{
 		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Output Directory");
+		chooser.setDialogTitle("Load Project");
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setApproveButtonText("Load");
 
@@ -568,7 +548,7 @@ public class Menu extends JMenuBar
 	public static void saveProject(ModelCreator creator)
 	{
 		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Output Directory");
+		chooser.setDialogTitle("Save Project");
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setApproveButtonText("Save");
 
@@ -598,6 +578,28 @@ public class Menu extends JMenuBar
 					filePath += ".model";
 				ProjectManager.saveProject(creator.getElementManager(), filePath);
 			}
+		}
+	}
+
+	public static void optimizeModel(ModelCreator creator)
+	{
+		int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
+		if(result == JOptionPane.YES_OPTION)
+		{
+			int count = 0;
+			ElementManager manager = creator.getElementManager();
+			for(Element element : manager.getAllElements())
+			{
+				for(Face face : element.getAllFaces())
+				{
+					if(face.isEnabled() && !face.isVisible(manager))
+					{
+						count++;
+						face.setEnabled(false);
+					}
+				}
+			}
+			JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

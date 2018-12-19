@@ -46,7 +46,7 @@ public class ModelCreator extends JFrame
     // Swing Components
     private JScrollPane scroll;
     private Camera camera;
-    private ElementManager manager;
+    private SidebarPanel manager;
     private Element grabbed = null;
 
     // Texture Loading Cache
@@ -196,6 +196,13 @@ public class ModelCreator extends JFrame
             if(pressed && modifiers == InputEvent.CTRL_MASK)
             {
                 StateManager.restoreNextState(manager);
+            }
+        }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_E, Keyboard.KEY_E, (modifiers, pressed) ->
+        {
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
+            {
+                manager.newElement();
             }
         }));
     }

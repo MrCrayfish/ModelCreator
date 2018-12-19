@@ -60,12 +60,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 		btnAdd.setIcon(Icons.cube);
 		btnAdd.setToolTipText("New Element");
-		btnAdd.addActionListener(e ->
-		{
-			model.addElement(new Element(1, 1, 1));
-			list.setSelectedIndex(model.size() - 1);
-			StateManager.pushState(creator.getElementManager());
-		});
+		btnAdd.addActionListener(e -> this.newElement());
 		btnAdd.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnAdd);
 
@@ -310,5 +305,12 @@ public class SidebarPanel extends JPanel implements ElementManager
 		this.ambientOcc = state.isAmbientOcclusion();
 		this.particle = state.getParticleTexture();
 		this.updateValues();
+	}
+
+	public void newElement()
+	{
+		model.addElement(new Element(1, 1, 1));
+		list.setSelectedIndex(model.size() - 1);
+		StateManager.pushState(creator.getElementManager());
 	}
 }

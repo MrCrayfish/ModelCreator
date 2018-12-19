@@ -226,6 +226,13 @@ public class ModelCreator extends JFrame
                 Menu.saveProject(this);
             }
         }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_O, Keyboard.KEY_O, (modifiers, pressed) ->
+        {
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
+            {
+                Menu.loadProject(this);
+            }
+        }));
     }
 
     private List<Image> getIcons()

@@ -180,41 +180,7 @@ public class Menu extends JMenuBar
 	private void initActions()
 	{
 		itemNew.addActionListener(a -> Menu.newProject(creator));
-
-		itemLoad.addActionListener(a ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Load");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
-			chooser.setFileFilter(filter);
-
-			String dir = Settings.getModelDir();
-
-			if (dir != null)
-			{
-				chooser.setCurrentDirectory(new File(dir));
-			}
-
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				if (creator.getElementManager().getElementCount() > 0)
-				{
-					returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-				}
-				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-				{
-					File location = chooser.getSelectedFile().getParentFile();
-					Settings.setModelDir(location.toString());
-
-					ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
-				}
-			}
-		});
-
+		itemLoad.addActionListener(a -> Menu.loadProject(creator));
 		itemSave.addActionListener(a -> Menu.saveProject(creator));
 
 		itemImport.addActionListener(e ->
@@ -562,6 +528,40 @@ public class Menu extends JMenuBar
 		{
 			creator.getElementManager().reset();
 			creator.getElementManager().updateValues();
+		}
+	}
+
+	public static void loadProject(ModelCreator creator)
+	{
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Output Directory");
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setApproveButtonText("Load");
+
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
+		chooser.setFileFilter(filter);
+
+		String dir = Settings.getModelDir();
+
+		if (dir != null)
+		{
+			chooser.setCurrentDirectory(new File(dir));
+		}
+
+		int returnVal = chooser.showOpenDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION)
+		{
+			if (creator.getElementManager().getElementCount() > 0)
+			{
+				returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+			}
+			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+			{
+				File location = chooser.getSelectedFile().getParentFile();
+				Settings.setModelDir(location.toString());
+
+				ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+			}
 		}
 	}
 

@@ -205,6 +205,13 @@ public class ModelCreator extends JFrame
                 manager.newElement();
             }
         }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_D, Keyboard.KEY_D, (modifiers, pressed) ->
+        {
+            if(pressed && (modifiers & InputEvent.CTRL_MASK) != 0 && (modifiers & InputEvent.SHIFT_MASK) != 0 && (modifiers & InputEvent.ALT_MASK) != 0)
+            {
+                showHistory = !showHistory;
+            }
+        }));
     }
 
     private List<Image> getIcons()
@@ -399,30 +406,33 @@ public class ModelCreator extends JFrame
         }
         glPopMatrix();
 
-        glPushMatrix();
+        if(showHistory)
         {
-            List<ElementManagerState> states = StateManager.getStates();
-            for(int i = 0; i < states.size(); i++)
+            glPushMatrix();
             {
-                ElementManagerState managerState = states.get(i);
-                String text = "No Elements";
-                if(managerState.getElements().size() > 0)
+                List<ElementManagerState> states = StateManager.getStates();
+                for(int i = 0; i < states.size(); i++)
                 {
-                    text = managerState.getElements().get(0).toString();
-                }
+                    ElementManagerState managerState = states.get(i);
+                    String text = "No Elements";
+                    if(managerState.getElements().size() > 0)
+                    {
+                        text = managerState.getElements().get(0).toString();
+                    }
 
-                if(StateManager.getTailIndex() == i)
-                {
-                    text = text + " <<<";
-                }
+                    if(StateManager.getTailIndex() == i)
+                    {
+                        text = text + " <<<";
+                    }
 
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                FontManager.BEBAS_NEUE_20.drawString(10, 10 + i * 20, text, new Color(1, 1, 1));
-                GL11.glDisable(GL11.GL_BLEND);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    FontManager.BEBAS_NEUE_20.drawString(10, 10 + i * 20, text, new Color(1, 1, 1));
+                    GL11.glDisable(GL11.GL_BLEND);
+                }
             }
+            glPopMatrix();
         }
-        glPopMatrix();
 
         if(activeSidebar != null) activeSidebar.draw(offset, width, height, getHeight());
 

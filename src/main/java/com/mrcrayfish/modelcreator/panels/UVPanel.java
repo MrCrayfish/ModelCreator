@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -86,6 +87,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 						face.setStartU(Parser.parseDouble(xStartField.getText(), face.getStartU()));
 						face.updateEndUV();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 
 				}
@@ -124,6 +126,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 						face.setStartV(Parser.parseDouble(yStartField.getText(), face.getStartV()));
 						face.updateEndUV();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 				}
 			}
@@ -161,6 +164,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 						face.setEndU(Parser.parseDouble(xEndField.getText(), face.getEndU()));
 						face.updateEndUV();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 				}
 			}
@@ -198,6 +202,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 						face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
 						face.updateEndUV();
 						manager.updateValues();
+						StateManager.pushState(manager);
 					}
 				}
 			}
@@ -215,6 +220,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 					face.setEndV(Parser.parseDouble(yEndField.getText(), face.getEndV()));
 					face.updateEndUV();
 					manager.updateValues();
+					StateManager.pushState(manager);
 				}
 			}
 		});
@@ -239,6 +245,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 
@@ -266,6 +273,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -292,6 +300,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegX.setSize(new Dimension(62, 30));
@@ -318,6 +327,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegY.setSize(new Dimension(62, 30));
@@ -344,6 +354,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateStartUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusXEnd.setSize(new Dimension(62, 30));
@@ -370,6 +381,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateStartUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusYEnd.setPreferredSize(new Dimension(62, 30));
@@ -396,6 +408,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateStartUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegXEnd.setSize(new Dimension(62, 30));
@@ -422,6 +435,7 @@ public class UVPanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateStartUVs();
 				manager.updateValues();
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegYEnd.setSize(new Dimension(62, 30));

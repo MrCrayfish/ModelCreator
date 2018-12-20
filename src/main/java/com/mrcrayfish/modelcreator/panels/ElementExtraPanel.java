@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
@@ -39,6 +40,7 @@ public class ElementExtraPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setShade(btnShade.isSelected());
+				StateManager.pushState(manager);
 			}
 		});
 	}

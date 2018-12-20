@@ -185,7 +185,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartX(0.1F);
@@ -195,6 +194,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartX(1.0F);
 				}
 				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -206,7 +206,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartY(0.1F);
@@ -216,6 +215,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartY(1.0F);
 				}
 				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -227,7 +227,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartZ(0.1F);
@@ -237,6 +236,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartZ(1.0F);
 				}
 				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -248,7 +248,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartX(-0.1F);
@@ -258,6 +257,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartX(-1.0F);
 				}
 				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -269,7 +269,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartY(-0.1F);
@@ -279,6 +278,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartY(-1.0F);
 				}
 				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -290,7 +290,6 @@ public class PositionPanel extends JPanel implements IValueUpdater
 			Element selectedElement = manager.getSelectedElement();
 			if(selectedElement != null)
 			{
-				StateManager.pushState(manager);
 				if ((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
 				{
 					selectedElement.addStartZ(-0.1F);
@@ -300,6 +299,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartZ(-1.0F);
 				}
 				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

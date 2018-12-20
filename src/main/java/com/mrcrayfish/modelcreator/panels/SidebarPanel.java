@@ -37,6 +37,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 	private String particle = null;
 	private boolean ambientOcc = true;
 
+	private Timer timer;
+
 	public SidebarPanel(ModelCreator creator)
 	{
 		this.creator = creator;
@@ -333,11 +335,6 @@ public class SidebarPanel extends JPanel implements ElementManager
 			}
 			StateManager.pushState(creator.getElementManager());
 		}
-	}
-
-	private Rectangle expandRectangle(Rectangle r, int amount)
-	{
-		return new Rectangle(r.x - amount, r.y - amount, r.width + amount * 2, r.height + amount * 2);
 	}
 
 	public static class ElementEntry

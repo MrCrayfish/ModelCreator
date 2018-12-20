@@ -3,6 +3,8 @@ package com.mrcrayfish.modelcreator;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.ElementManagerState;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
 import java.util.Stack;
 
 /**
@@ -13,8 +15,28 @@ public class StateManager
     /* Undo/Redo Stack */
     private static Stack<ElementManagerState> states = new Stack<>();
     private static int tailIndex = -1;
+    private static Timer timer;
 
     public static void pushState(ElementManager manager)
+    {
+        pushState(manager.createState());
+    }
+
+    private static void pushState(ElementManagerState state)
+    {
+        if(timer != null && timer.isRunning())
+        {
+            for(ActionListener listener : timer.getActionListeners())
+            {
+                listener.actionPerformed(null);
+            }
+            timer.stop();
+            timer = null;
+        }
+        pushManagerState(state);
+    }
+
+    private static void pushManagerState(ElementManagerState state)
     {
         while(tailIndex < states.size() - 1)
         {
@@ -28,7 +50,7 @@ public class StateManager
                 states.remove(0);
             }
         }
-        states.push(manager.createState());
+        states.push(state);
         tailIndex = states.size() - 1;
     }
 
@@ -64,6 +86,10 @@ public class StateManager
 
     public static void clear()
     {
+        if(timer != null && timer.isRunning())
+        {
+            timer.stop();
+        }
         states.clear();
         tailIndex = -1;
     }
@@ -76,5 +102,18 @@ public class StateManager
     public static int getTailIndex()
     {
         return tailIndex;
+    }
+
+    public static void pushStateDelayed(ElementManager manager)
+    {
+        if(timer != null && timer.isRunning())
+        {
+            timer.stop();
+        }
+        ElementManagerState state = manager.createState();
+        ActionListener listener = e -> pushManagerState(state);
+        timer = new Timer(300, listener);
+        timer.setRepeats(false);
+        timer.start();
     }
 }

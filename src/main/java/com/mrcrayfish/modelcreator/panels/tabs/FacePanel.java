@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
@@ -111,6 +112,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().setRotation(rotation.getValue());
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
@@ -132,6 +134,7 @@ public class FacePanel extends JPanel implements IValueUpdater
 					if(selectedElement != null)
 					{
 						selectedElement.getSelectedFace().setTextureLocation(modidField.getText());
+						StateManager.pushState(manager);
 					}
 				}
 			}

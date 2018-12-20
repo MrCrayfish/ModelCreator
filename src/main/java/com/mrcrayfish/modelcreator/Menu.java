@@ -450,8 +450,10 @@ public class Menu extends JMenuBar
 		int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
 		if (returnVal == JOptionPane.YES_OPTION)
 		{
+			StateManager.clear();
 			creator.getElementManager().reset();
 			creator.getElementManager().updateValues();
+			StateManager.pushState(creator.getElementManager());
 		}
 	}
 
@@ -484,7 +486,9 @@ public class Menu extends JMenuBar
 				File location = chooser.getSelectedFile().getParentFile();
 				Settings.setModelDir(location.toString());
 
+				StateManager.clear();
 				ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+				StateManager.pushState(creator.getElementManager());
 			}
 		}
 	}
@@ -543,6 +547,10 @@ public class Menu extends JMenuBar
 					}
 				}
 			}
+			if(count > 0)
+			{
+				StateManager.pushState(manager);
+			}
 			JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
@@ -576,8 +584,10 @@ public class Menu extends JMenuBar
 				File location = chooser.getSelectedFile().getParentFile();
 				Settings.setJSONDir(location.toString());
 
+				StateManager.clear();
 				Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
 				importer.importFromJSON();
+				StateManager.pushState(creator.getElementManager());
 			}
 			creator.getElementManager().updateValues();
 		}

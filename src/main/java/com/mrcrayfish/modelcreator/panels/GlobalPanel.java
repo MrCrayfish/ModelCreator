@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
@@ -38,7 +39,11 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 	{
 		ambientOcc = ComponentUtil.createRadioButton("Ambient Occlusion", "Determine the light for each element");
 		ambientOcc.setSelected(true);
-		ambientOcc.addActionListener(a -> manager.setAmbientOcc(ambientOcc.isSelected()));
+		ambientOcc.addActionListener(a ->
+		{
+			manager.setAmbientOcc(ambientOcc.isSelected());
+			StateManager.pushState(manager);
+		});
 
 		btnParticle = new JButton("Particle");
 		btnParticle.setIcon(Icons.texture);
@@ -49,6 +54,7 @@ public class GlobalPanel extends JPanel implements IValueUpdater
 			{
 				manager.setParticle(texture);
 				btnParticle.setText(texture);
+				StateManager.pushState(manager);
 			}
 		});
 	}

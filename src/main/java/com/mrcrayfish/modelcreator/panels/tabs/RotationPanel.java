@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.IValueUpdater;
@@ -73,6 +74,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setPrevAxis(axisList.getSelectedIndex());
+				StateManager.pushState(manager);
 			}
 		});
 		axisList.setMaximumSize(new Dimension(186, 55));
@@ -99,6 +101,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setRotation(rotation.getValue() * 22.5D);
+				StateManager.pushStateDelayed(manager);
 			}
 		});
 		rotation.setToolTipText("<html>The rotation of the element<br>Default: 0</html>");
@@ -115,6 +118,7 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setRescale(btnRescale.isSelected());
+				StateManager.pushState(manager);
 			}
 		});
 		extraPanel.setMaximumSize(new Dimension(186, 50));

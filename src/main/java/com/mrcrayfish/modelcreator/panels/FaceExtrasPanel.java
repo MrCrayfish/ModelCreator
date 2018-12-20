@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
@@ -45,6 +46,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().setCullface(boxCullFace.isSelected());
+				StateManager.pushState(manager);
 			}
 		});
 		boxFill = ComponentUtil.createRadioButton("Fill", "<html>Makes the texture fill the face<br>Default: Off</html>");
@@ -54,6 +56,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().fitTexture(boxFill.isSelected());
+				StateManager.pushState(manager);
 			}
 		});
 		boxEnabled = ComponentUtil.createRadioButton("Enable","<html>Determines if face should be rendered<br>Default: On</html>");
@@ -63,6 +66,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().setEnabled(boxEnabled.isSelected());
+				StateManager.pushState(manager);
 			}
 		});
 		boxAutoUV = ComponentUtil.createRadioButton("Auto UV", "<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
@@ -74,6 +78,7 @@ public class FaceExtrasPanel extends JPanel implements IValueUpdater
 				selectedElement.getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
 				selectedElement.getSelectedFace().updateEndUV();
 				manager.updateValues();
+				StateManager.pushState(manager);
 			}
 		});
 		horizontalBox.add(boxCullFace);

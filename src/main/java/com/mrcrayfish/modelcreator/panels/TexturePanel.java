@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -56,6 +57,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 				if (texture != null)
 				{
 					selectedElement.getSelectedFace().setTexture(texture);
+					StateManager.pushState(manager);
 				}
 			}
 		});
@@ -77,6 +79,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 				{
 					selectedElement.getSelectedFace().setTexture(null);
 				}
+				StateManager.pushState(manager);
 			}
 		});
 		btnClear.setFont(defaultFont);
@@ -116,6 +119,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 						face.setTexture(texture.getTexture());
 						face.setTextureLocation(texture.getLocation());
 					}
+					StateManager.pushState(manager);
 				}
 			}
 		});
@@ -140,6 +144,7 @@ public class TexturePanel extends JPanel implements TextureCallback
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().setTexture(texture);
+				StateManager.pushState(manager);
 			}
 		}
 	}

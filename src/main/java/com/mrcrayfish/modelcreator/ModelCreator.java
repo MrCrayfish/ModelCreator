@@ -56,6 +56,7 @@ public class ModelCreator extends JFrame
     private int lastMouseX, lastMouseY;
     private boolean grabbing = false;
     private boolean closeRequested = false;
+    private boolean performedChange = false;
 
     /* Sidebar Variables */
     private final int SIDEBAR_WIDTH = 130;
@@ -544,8 +545,13 @@ public class ModelCreator extends JFrame
                 grabbing = true;
             }
         }
-        else
+        else if(grabbing)
         {
+            if(grabbed != null && performedChange)
+            {
+                StateManager.pushState(manager);
+                performedChange = false;
+            }
             grabbing = false;
             grabbed = null;
         }
@@ -675,6 +681,8 @@ public class ModelCreator extends JFrame
 
                         manager.updateValues();
                         element.updateEndUVs();
+
+                        performedChange = true;
                     }
                 }
             }

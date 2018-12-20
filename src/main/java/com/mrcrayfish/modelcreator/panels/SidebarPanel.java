@@ -61,19 +61,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 		btnRemove.setIcon(Icons.bin);
 		btnRemove.setToolTipText("Remove Element");
-		btnRemove.addActionListener(e ->
-		{
-			int selected = list.getSelectedIndex();
-			if (selected != -1)
-			{
-				model.remove(selected);
-				name.setText("");
-				name.setEnabled(false);
-				tabbedPane.updateValues();
-				list.setSelectedIndex(selected);
-				StateManager.pushState(creator.getElementManager());
-			}
-		});
+		btnRemove.addActionListener(e -> this.deleteElement());
 		btnRemove.setPreferredSize(new Dimension(30, 30));
 		btnContainer.add(btnRemove);
 
@@ -324,6 +312,27 @@ public class SidebarPanel extends JPanel implements ElementManager
 		model.addElement(new ElementEntry(new Element(1, 1, 1)));
 		list.setSelectedIndex(model.size() - 1);
 		StateManager.pushState(creator.getElementManager());
+	}
+
+	public void deleteElement()
+	{
+		int selected = list.getSelectedIndex();
+		if (selected != -1)
+		{
+			model.remove(selected);
+			name.setText("");
+			name.setEnabled(false);
+			tabbedPane.updateValues();
+			if(selected >= list.getModel().getSize())
+			{
+				list.setSelectedIndex(list.getModel().getSize() - 1);
+			}
+			else
+			{
+				list.setSelectedIndex(selected);
+			}
+			StateManager.pushState(creator.getElementManager());
+		}
 	}
 
 	private Rectangle expandRectangle(Rectangle r, int amount)

@@ -240,6 +240,18 @@ public class ModelCreator extends JFrame
                 Menu.optimizeModel(this);
             }
         }));
+        this.keyActions.add(new KeyAction(KeyEvent.VK_F, Keyboard.KEY_F, (modifiers, pressed) ->
+        {
+            if(pressed && modifiers == InputEvent.CTRL_MASK)
+            {
+                SidebarPanel.ElementEntry entry = manager.getSelectedElementEntry();
+                if(entry != null)
+                {
+                    entry.toggleVisibility();
+                    manager.getList().repaint();
+                }
+            }
+        }));
     }
 
     private List<Image> getIcons()

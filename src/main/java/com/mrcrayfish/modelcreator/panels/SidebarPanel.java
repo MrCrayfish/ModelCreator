@@ -166,12 +166,25 @@ public class SidebarPanel extends JPanel implements ElementManager
 		layout.putConstraint(SpringLayout.NORTH, tabbedPane, 250, SpringLayout.NORTH, this);
 	}
 
+	public JList<ElementEntry> getList()
+	{
+		return list;
+	}
+
 	@Override
 	public Element getSelectedElement()
 	{
 		int i = list.getSelectedIndex();
 		if (model.getSize() > 0 && i >= 0 && i < model.getSize())
 			return model.getElementAt(i).element;
+		return null;
+	}
+
+	public ElementEntry getSelectedElementEntry()
+	{
+		int i = list.getSelectedIndex();
+		if (model.getSize() > 0 && i >= 0 && i < model.getSize())
+			return model.getElementAt(i);
 		return null;
 	}
 

@@ -209,6 +209,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	@Override
 	public Element getElement(int index)
 	{
+		//TODO null pointer exception
 		return model.getElementAt(index).element;
 	}
 

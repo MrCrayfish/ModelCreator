@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.Properties;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -194,7 +195,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartX(1.0F);
 				}
 				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_X);
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -215,7 +216,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartY(1.0F);
 				}
 				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_Y);
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -236,7 +237,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartZ(1.0F);
 				}
 				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_Z);
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -257,7 +258,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartX(-1.0F);
 				}
 				xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_X);
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -278,7 +279,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartY(-1.0F);
 				}
 				yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_Y);
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -299,7 +300,7 @@ public class PositionPanel extends JPanel implements IValueUpdater
 					selectedElement.addStartZ(-1.0F);
 				}
 				zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.POS_Z);
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

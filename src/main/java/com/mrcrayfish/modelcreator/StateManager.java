@@ -15,6 +15,7 @@ public class StateManager
     /* Undo/Redo Stack */
     private static Stack<ElementManagerState> states = new Stack<>();
     private static int tailIndex = -1;
+    private static int lastId = -1;
     private static Timer timer;
 
     public static void pushState(ElementManager manager)
@@ -105,16 +106,32 @@ public class StateManager
         return tailIndex;
     }
 
-    public static void pushStateDelayed(ElementManager manager)
+    public static void pushStateDelayed(ElementManager manager, int id)
     {
-        if(timer != null && timer.isRunning())
+        if(lastId != id)
         {
-            timer.stop();
+            if(timer != null && timer.isRunning())
+            {
+                for(ActionListener listener : timer.getActionListeners())
+                {
+                    listener.actionPerformed(null);
+                }
+                timer.stop();
+            }
         }
+        else
+        {
+            if(timer != null && timer.isRunning())
+            {
+                timer.stop();
+            }
+        }
+
         ElementManagerState state = manager.createState();
         ActionListener listener = e -> pushManagerState(state);
-        timer = new Timer(300, listener);
+        timer = new Timer(400, listener);
         timer.setRepeats(false);
         timer.start();
+        lastId = id;
     }
 }

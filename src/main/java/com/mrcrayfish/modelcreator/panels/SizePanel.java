@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.Properties;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -185,7 +186,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_X);
 			}
 		});
 		btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -211,7 +212,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_Y);
 			}
 		});
 		btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -237,7 +238,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_Z);
 			}
 		});
 		btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -263,7 +264,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_X);
 			}
 		});
 		btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -289,7 +290,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_Y);
 			}
 		});
 		btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -315,7 +316,7 @@ public class SizePanel extends JPanel implements IValueUpdater
 				}
 				selectedElement.updateEndUVs();
 				manager.updateValues();
-				StateManager.pushStateDelayed(manager);
+				StateManager.pushStateDelayed(manager, Properties.SIZE_Z);
 			}
 		});
 		btnNegZ.setPreferredSize(new Dimension(62, 30));

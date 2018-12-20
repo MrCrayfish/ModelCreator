@@ -67,7 +67,7 @@ public class ModelCreator extends JFrame
     private Set<Integer> keyDown = new HashSet<>();
     private List<KeyAction> keyActions = new ArrayList<>();
 
-    private boolean showHistory = false;
+    private boolean debugMode = false;
 
     private HashMap<KeyStroke, Action> actionMap = new HashMap<KeyStroke, Action>();
 
@@ -210,7 +210,7 @@ public class ModelCreator extends JFrame
         {
             if(pressed && (modifiers & InputEvent.CTRL_MASK) != 0 && (modifiers & InputEvent.SHIFT_MASK) != 0 && (modifiers & InputEvent.ALT_MASK) != 0)
             {
-                showHistory = !showHistory;
+                debugMode = !debugMode;
             }
         }));
         this.keyActions.add(new KeyAction(KeyEvent.VK_N, Keyboard.KEY_N, (modifiers, pressed) ->
@@ -457,7 +457,7 @@ public class ModelCreator extends JFrame
         }
         glPopMatrix();
 
-        if(showHistory)
+        if(debugMode)
         {
             glPushMatrix();
             {
@@ -468,7 +468,7 @@ public class ModelCreator extends JFrame
                     String text = "No Elements";
                     if(managerState.getElements().size() > 0)
                     {
-                        text = managerState.getElements().get(0).toString();
+                        text = managerState.getElements().toString();
                     }
 
                     if(StateManager.getTailIndex() == i)

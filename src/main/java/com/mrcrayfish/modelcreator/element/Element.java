@@ -487,7 +487,7 @@ public class Element
 	@Override
 	public String toString()
 	{
-		return name + "(width:" + width + ",height:" + height + ",depth:" + depth + ")";
+		return name + "(w:" + width + ",h:" + height + ",d:" + depth + ")";
 	}
 
 	public void updateStartUVs()

@@ -71,19 +71,16 @@ public class RotationPanel extends JPanel implements IValueUpdater
 		axisList = new JComboBox<String>();
 		axisList.setModel(model);
 		axisList.setToolTipText("The axis the element will rotate around");
-		axisList.addActionListener(e ->
-		{
-			Element selectedElement = manager.getSelectedElement();
-			if(selectedElement != null)
-			{
-				selectedElement.setPrevAxis(axisList.getSelectedIndex());
-			}
-		});
 		axisList.addItemListener(e ->
 		{
 			if(e.getStateChange() == ItemEvent.SELECTED)
 			{
-				StateManager.pushState(manager);
+				Element selectedElement = manager.getSelectedElement();
+				if(selectedElement != null && selectedElement.getPrevAxis() != axisList.getSelectedIndex())
+				{
+					selectedElement.setPrevAxis(axisList.getSelectedIndex());
+					StateManager.pushState(manager);
+				}
 			}
 		});
 		axisList.setMaximumSize(new Dimension(186, 55));

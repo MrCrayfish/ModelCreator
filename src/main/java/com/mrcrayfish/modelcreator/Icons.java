@@ -23,8 +23,8 @@ public class Icons
 	public static Icon disk;
 	public static Icon exit;
 	public static Icon cube;
-	public static Icon light_on;
 	public static Icon light_off;
+	public static Icon light_on;
 	public static Icon arrow_up;
 	public static Icon arrow_down;
 	public static Icon facebook;
@@ -60,8 +60,8 @@ public class Icons
 		disk = new ImageIcon(loader.getResource("icons/disk.png"));
 		exit = new ImageIcon(loader.getResource("icons/exit.png"));
 		
-		light_on = new ImageIcon(loader.getResource("icons/box_off.png"));
-		light_off = new ImageIcon(loader.getResource("icons/box_on.png"));
+		light_off = new ImageIcon(loader.getResource("icons/box_off.png"));
+		light_on = new ImageIcon(loader.getResource("icons/box_on.png"));
 		
 		arrow_up = new ImageIcon(loader.getResource("icons/arrow_up.png"));
 		arrow_down = new ImageIcon(loader.getResource("icons/arrow_down.png"));

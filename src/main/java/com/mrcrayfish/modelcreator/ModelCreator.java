@@ -380,15 +380,18 @@ public class ModelCreator extends JFrame
         glTranslatef(-8, 0, -8);
         for(int i = 0; i < manager.getElementCount(); i++)
         {
-            GL11.glLoadName(i + 1);
             Element cube = manager.getElement(i);
-            cube.draw();
-            GL11.glLoadName(0);
-            cube.drawExtras(manager);
+            if(cube.isVisible())
+            {
+                GL11.glLoadName(i + 1);
+                cube.draw();
+                GL11.glLoadName(0);
+                cube.drawExtras(manager);
+            }
         }
 
         Element selectedElement = manager.getSelectedElement();
-        if(selectedElement != null)
+        if(selectedElement != null && selectedElement.isVisible())
         {
             selectedElement.drawOutline();
         }

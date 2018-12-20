@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Element
 {
 	private String name = "Cube";
+	private boolean visible = true;
 
 	// Face Variables
 	private int selectedFace = 0;
@@ -547,6 +548,16 @@ public class Element
 			return 2;
 		}
 		return 0;
+	}
+
+	public boolean isVisible()
+	{
+		return visible;
+	}
+
+	public void setVisible(boolean visible)
+	{
+		this.visible = visible;
 	}
 
 	public Element copy()

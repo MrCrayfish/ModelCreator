@@ -1,18 +1,13 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.StateManager;
+import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.ElementManagerState;
@@ -29,8 +24,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 	// Swing Variables
 	private SpringLayout layout;
-	private DefaultListModel<Element> model = new DefaultListModel<Element>();
-	private JList<Element> list = new JList<Element>();
+	private DefaultListModel<ElementEntry> model = new DefaultListModel<>();
+	private JList<ElementEntry> list = new JElementList();
 	private JScrollPane scrollPane;
 	private JPanel btnContainer;
 	private JButton btnAdd = new JButton();
@@ -89,7 +84,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 			int selected = list.getSelectedIndex();
 			if (selected != -1)
 			{
-				model.addElement(new Element(model.getElementAt(selected)));
+				model.addElement(new ElementEntry(new Element(model.getElementAt(selected).element)));
 				list.setSelectedIndex(model.getSize() - 1);
 				StateManager.pushState(creator.getElementManager());
 			}
@@ -123,6 +118,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 		});
 		add(name);
 
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setFixedCellHeight(26);
 		list.setModel(model);
 		list.addListSelectionListener(e ->
 		{
@@ -132,8 +129,10 @@ public class SidebarPanel extends JPanel implements ElementManager
 				tabbedPane.updateValues();
 				name.setEnabled(true);
 				name.setText(selectedElement.getName());
+				list.ensureIndexIsVisible(list.getSelectedIndex());
 			}
 		});
+		list.setCellRenderer(new ElementCellRenderer());
 
 		scrollPane = new JScrollPane(list);
 		scrollPane.setPreferredSize(new Dimension(190, 170));
@@ -172,7 +171,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	{
 		int i = list.getSelectedIndex();
 		if (model.getSize() > 0 && i >= 0 && i < model.getSize())
-			return model.getElementAt(i);
+			return model.getElementAt(i).element;
 		return null;
 	}
 
@@ -199,7 +198,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		List<Element> list = new ArrayList<Element>();
 		for (int i = 0; i < model.size(); i++)
 		{
-			list.add(model.getElementAt(i));
+			list.add(model.getElementAt(i).element);
 		}
 		return list;
 	}
@@ -207,7 +206,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	@Override
 	public Element getElement(int index)
 	{
-		return model.getElementAt(index);
+		return model.getElementAt(index).element;
 	}
 
 	@Override
@@ -227,7 +226,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		{
 			selectedElement.setName(newName);
 			name.setText(newName);
-			list.updateUI();
+			list.repaint();
 			StateManager.pushState(creator.getElementManager());
 		}
 	}
@@ -270,7 +269,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 	@Override
 	public void addElement(Element e)
 	{
-		model.addElement(e);
+		model.addElement(new ElementEntry(e));
 	}
 
 	@Override
@@ -299,7 +298,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 		this.reset();
 		for(Element element : state.getElements())
 		{
-			this.model.addElement(new Element(element));
+			this.model.addElement(new ElementEntry(new Element(element)));
 		}
 		this.setSelectedElement(state.getSelectedIndex());
 		this.ambientOcc = state.isAmbientOcclusion();
@@ -309,8 +308,66 @@ public class SidebarPanel extends JPanel implements ElementManager
 
 	public void newElement()
 	{
-		model.addElement(new Element(1, 1, 1));
+		model.addElement(new ElementEntry(new Element(1, 1, 1)));
 		list.setSelectedIndex(model.size() - 1);
 		StateManager.pushState(creator.getElementManager());
+	}
+
+	private Rectangle expandRectangle(Rectangle r, int amount)
+	{
+		return new Rectangle(r.x - amount, r.y - amount, r.width + amount * 2, r.height + amount * 2);
+	}
+
+	public static class ElementEntry
+	{
+		private Element element;
+		private JPanel panel;
+		private JLabel visibility;
+		private JLabel name;
+
+		public ElementEntry(Element element)
+		{
+			this.element = element;
+			this.createPanel();
+		}
+
+		private void createPanel()
+		{
+			panel = new JPanel();
+			panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+			visibility = new JLabel();
+			visibility.setIcon(element.isVisible() ? Icons.light_on : Icons.light_off);
+			panel.add(visibility);
+
+			name = new JLabel(element.getName());
+			panel.add(name);
+		}
+
+		public Element getElement()
+		{
+			return element;
+		}
+
+		public JPanel getPanel()
+		{
+			return panel;
+		}
+
+		public JLabel getVisibility()
+		{
+			return visibility;
+		}
+
+		public JLabel getName()
+		{
+			return name;
+		}
+
+		public void toggleVisibility()
+		{
+			element.setVisible(!element.isVisible());
+			visibility.setIcon(element.isVisible() ? Icons.light_on : Icons.light_off);
+		}
 	}
 }

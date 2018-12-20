@@ -3,10 +3,7 @@ package com.mrcrayfish.modelcreator.panels.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -112,7 +109,14 @@ public class FacePanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.getSelectedFace().setRotation(rotation.getValue());
-				StateManager.pushStateDelayed(manager);
+			}
+		});
+		rotation.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				StateManager.pushState(manager);
 			}
 		});
 		rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");

@@ -3,6 +3,9 @@ package com.mrcrayfish.modelcreator.panels.tabs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -74,6 +77,12 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setPrevAxis(axisList.getSelectedIndex());
+			}
+		});
+		axisList.addItemListener(e ->
+		{
+			if(e.getStateChange() == ItemEvent.SELECTED)
+			{
 				StateManager.pushState(manager);
 			}
 		});
@@ -101,7 +110,14 @@ public class RotationPanel extends JPanel implements IValueUpdater
 			if(selectedElement != null)
 			{
 				selectedElement.setRotation(rotation.getValue() * 22.5D);
-				StateManager.pushStateDelayed(manager);
+			}
+		});
+		rotation.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				StateManager.pushState(manager);
 			}
 		});
 		rotation.setToolTipText("<html>The rotation of the element<br>Default: 0</html>");

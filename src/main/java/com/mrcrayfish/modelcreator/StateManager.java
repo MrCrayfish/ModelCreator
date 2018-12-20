@@ -89,6 +89,7 @@ public class StateManager
         if(timer != null && timer.isRunning())
         {
             timer.stop();
+            timer = null;
         }
         states.clear();
         tailIndex = -1;

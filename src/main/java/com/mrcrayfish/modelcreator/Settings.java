@@ -8,6 +8,7 @@ public class Settings
 	private static final String SCREENSHOT_DIR = "screenshotdir";
 	private static final String MODEL_DIR = "modeldir";
 	private static final String JSON_DIR = "jsondir";
+	private static final String EXPORT_JSON_DIR = "exportjsondir";
 	private static final String TRANSPARENCY_MODE = "transparency_mode";
 
 	public static String getImageImportDir()
@@ -68,6 +69,18 @@ public class Settings
 	{
 		Preferences prefs = getPreferences();
 		prefs.put(TRANSPARENCY_MODE, value ? "1" : "0");
+	}
+
+	public static String getExportJSONDir()
+	{
+		Preferences prefs = getPreferences();
+		return prefs.get(EXPORT_JSON_DIR, null);
+	}
+
+	public static void setExportJSONDir(String dir)
+	{
+		Preferences prefs = getPreferences();
+		prefs.put(EXPORT_JSON_DIR, dir);
 	}
 
 	private static Preferences getPreferences()

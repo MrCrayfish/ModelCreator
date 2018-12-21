@@ -25,6 +25,9 @@ public class Exporter
 	}
 
 	private List<String> textureList = new ArrayList<String>();
+	private boolean optimize = true;
+	private boolean includeNames = true;
+	private boolean displayProps = true;
 
 	// Model Variables
 	private ElementManager manager;
@@ -33,6 +36,21 @@ public class Exporter
 	{
 		this.manager = manager;
 		compileTextureList();
+	}
+
+	public void setOptimize(boolean optimize)
+	{
+		this.optimize = optimize;
+	}
+
+	public void setIncludeNames(boolean includeNames)
+	{
+		this.includeNames = includeNames;
+	}
+
+	public void setDisplayProps(boolean displayProps)
+	{
+		this.displayProps = displayProps;
 	}
 
 	public File export(File file)
@@ -72,7 +90,7 @@ public class Exporter
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
-				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled())
+				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled() && !optimize || face.isVisible(manager))
 				{
 					if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
 					{
@@ -87,17 +105,25 @@ public class Exporter
 	{
 		writer.write("{");
 		writer.newLine();
+
 		writer.write(space(1) + "\"__comment\": \"Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)\",");
 		writer.newLine();
+
 		if (!manager.getAmbientOcc())
 		{
 			writer.write("\"ambientocclusion\": " + manager.getAmbientOcc() + ",");
 			writer.newLine();
 		}
+
 		writeTextures(writer);
 		writer.newLine();
-		writeDisplay(writer);
-		writer.newLine();
+
+		if(displayProps)
+		{
+			writeDisplay(writer);
+			writer.newLine();
+		}
+
 		writer.write(space(1) + "\"elements\": [");
 		for (int i = 0; i < manager.getElementCount(); i++)
 		{
@@ -143,8 +169,11 @@ public class Exporter
 
 	private void writeElement(BufferedWriter writer, Element cuboid) throws IOException
 	{
-		writer.write(space(3) + "\"name\": \"" + cuboid.getName() + "\",");
-		writer.newLine();
+		if(includeNames)
+		{
+			writer.write(space(3) + "\"name\": \"" + cuboid.getName() + "\",");
+			writer.newLine();
+		}
 		writeBounds(writer, cuboid);
 		writer.newLine();
 		if (!cuboid.isShaded())
@@ -192,7 +221,7 @@ public class Exporter
 		writer.newLine();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if (face.isEnabled() && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1)
+			if (face.isEnabled() && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1 && !optimize || face.isVisible(manager))
 			{
 				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
 				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");

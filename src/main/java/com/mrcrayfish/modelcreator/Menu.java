@@ -1,16 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
-import javax.swing.*;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -20,6 +10,18 @@ import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
+
+import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class Menu extends JMenuBar
 {
@@ -599,7 +601,214 @@ public class Menu extends JMenuBar
 
 	public static void exportJson(ModelCreator creator)
 	{
-		JFileChooser chooser = new JFileChooser();
+		JDialog dialog = new JDialog(creator, "Export JSON Model", Dialog.ModalityType.APPLICATION_MODAL);
+
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setPreferredSize(new Dimension(500, 225));
+
+		SpringLayout springLayout = new SpringLayout();
+		JPanel exportDir = new JPanel(springLayout);
+
+		JLabel labelName = new JLabel("Name");
+		labelName.setHorizontalAlignment(SwingConstants.RIGHT);
+		exportDir.add(labelName);
+
+		JTextField textFieldName = new JTextField();
+		textFieldName.setPreferredSize(new Dimension(100, 24));
+		textFieldName.setCaretPosition(0);
+		exportDir.add(textFieldName);
+
+		JTextField textFieldDestination = new JTextField();
+		textFieldDestination.setPreferredSize(new Dimension(100, 24));
+
+		String exportJsonDir = Settings.getExportJSONDir();
+		if(exportJsonDir != null)
+		{
+			textFieldDestination.setText(exportJsonDir);
+		}
+		else
+		{
+			String userHome = System.getProperty("user.home", ".");
+			textFieldDestination.setText(userHome);
+		}
+
+		textFieldDestination.setEditable(false);
+		textFieldDestination.setFocusable(false);
+		textFieldDestination.setCaretPosition(0);
+		exportDir.add(textFieldDestination);
+
+		JButton btnBrowserDir = new JButton("Browse");
+		btnBrowserDir.setPreferredSize(new Dimension(80, 24));
+		btnBrowserDir.setIcon(Icons.load);
+		btnBrowserDir.addActionListener(e -> {
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Export Destination");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setApproveButtonText("Select");
+			int returnVal = chooser.showOpenDialog(dialog);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = chooser.getSelectedFile();
+				if(file != null)
+				{
+					textFieldDestination.setText(file.getAbsolutePath());
+				}
+			}
+		});
+		exportDir.add(btnBrowserDir);
+
+		JLabel labelExportDir = new JLabel("Destination");
+		exportDir.add(labelExportDir);
+
+		JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
+		exportDir.add(optionSeparator);
+
+		JCheckBox checkBoxOptimize = new JCheckBox("Optimize model");
+		checkBoxOptimize.setToolTipText("Removes unnecessary faces that can't been seen in the model");
+		checkBoxOptimize.setSelected(true);
+		checkBoxOptimize.setIcon(Icons.light_off);
+		checkBoxOptimize.setRolloverIcon(Icons.light_off);
+		checkBoxOptimize.setSelectedIcon(Icons.light_on);
+		checkBoxOptimize.setRolloverSelectedIcon(Icons.light_on);
+		exportDir.add(checkBoxOptimize);
+
+		JCheckBox checkBoxDisplayProps = new JCheckBox("Add display properties");
+		checkBoxDisplayProps.setToolTipText("Adds the display definitions (first-person, third-person, etc) to the model file");
+		checkBoxDisplayProps.setSelected(true);
+		checkBoxDisplayProps.setIcon(Icons.light_off);
+		checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
+		checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
+		checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
+		exportDir.add(checkBoxDisplayProps);
+
+		JCheckBox checkBoxElementNames = new JCheckBox("Add element names");
+		checkBoxElementNames.setToolTipText("The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names");
+		checkBoxElementNames.setSelected(true);
+		checkBoxElementNames.setIcon(Icons.light_off);
+		checkBoxElementNames.setRolloverIcon(Icons.light_off);
+		checkBoxElementNames.setSelectedIcon(Icons.light_on);
+		checkBoxElementNames.setRolloverSelectedIcon(Icons.light_on);
+		exportDir.add(checkBoxElementNames);
+
+		JSeparator separator = new JSeparator();
+		exportDir.add(separator);
+
+		/* Constraints */
+
+		springLayout.putConstraint(SpringLayout.NORTH, labelName, 3, SpringLayout.NORTH, textFieldName);
+		springLayout.putConstraint(SpringLayout.WEST, labelName, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.EAST, labelName, -5, SpringLayout.WEST, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.NORTH, textFieldName, 10, SpringLayout.NORTH, exportDir);;
+		springLayout.putConstraint(SpringLayout.WEST, textFieldName, 0, SpringLayout.WEST, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.EAST, textFieldName, 0, SpringLayout.EAST, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.WEST, optionSeparator, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.EAST, optionSeparator, -10, SpringLayout.EAST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, optionSeparator, 10, SpringLayout.SOUTH, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.EAST, btnBrowserDir, -10, SpringLayout.EAST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, textFieldDestination, 10, SpringLayout.SOUTH, textFieldName);
+		springLayout.putConstraint(SpringLayout.WEST, textFieldDestination, 5, SpringLayout.EAST, labelExportDir);
+		springLayout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
+		springLayout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
+		springLayout.putConstraint(SpringLayout.WEST, labelExportDir, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, checkBoxOptimize, 5, SpringLayout.SOUTH, optionSeparator);
+		springLayout.putConstraint(SpringLayout.WEST, checkBoxOptimize, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, checkBoxDisplayProps, 0, SpringLayout.SOUTH, checkBoxOptimize);
+		springLayout.putConstraint(SpringLayout.WEST, checkBoxDisplayProps, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, checkBoxElementNames, 0, SpringLayout.SOUTH, checkBoxDisplayProps);
+		springLayout.putConstraint(SpringLayout.WEST, checkBoxElementNames, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.WEST, separator, 10, SpringLayout.WEST, exportDir);
+		springLayout.putConstraint(SpringLayout.EAST, separator, -10, SpringLayout.EAST, exportDir);
+		springLayout.putConstraint(SpringLayout.NORTH, separator, 5, SpringLayout.SOUTH, checkBoxElementNames);
+		springLayout.putConstraint(SpringLayout.SOUTH, separator, 5, SpringLayout.SOUTH, exportDir);
+
+		panel.setPreferredSize(panel.getPreferredSize());
+		panel.add(exportDir, BorderLayout.CENTER);
+
+
+		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				dialog.dispose();
+			}
+		});
+		buttons.add(btnCancel);
+
+		JButton btnExport = new JButton("Export");
+		btnExport.addActionListener(e ->
+		{
+			String name = textFieldName.getText().trim();
+			if(!textFieldDestination.getText().isEmpty() && !name.isEmpty())
+			{
+				File destination = new File(textFieldDestination.getText());
+				destination.mkdirs();
+
+				File modelFile = new File(destination, textFieldName.getText() + ".json");
+				if(modelFile.exists())
+				{
+					int returnVal = JOptionPane.showConfirmDialog(dialog, "A file for that name already exists in the directory. Are you sure you want to override it?", "Warning", JOptionPane.YES_NO_OPTION);
+					if(returnVal != JOptionPane.YES_OPTION)
+					{
+						return;
+					}
+				}
+
+				try
+				{
+					modelFile.createNewFile();
+				}
+				catch(IOException e1)
+				{
+					JOptionPane.showMessageDialog(dialog, "Unable to create the file. Check that your destination folder is writable", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+
+				dialog.dispose();
+
+				Exporter exporter = new Exporter(creator.getElementManager());
+				exporter.setOptimize(checkBoxOptimize.isSelected());
+				exporter.setDisplayProps(checkBoxDisplayProps.isSelected());
+				exporter.setIncludeNames(checkBoxElementNames.isSelected());
+				if(exporter.writeJSONFile(modelFile) == null)
+				{
+					modelFile.delete();
+					JOptionPane.showMessageDialog(dialog, "An error occured while exporting the model. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					Settings.setExportJSONDir(textFieldDestination.getText());
+					int returnVal = JOptionPane.showOptionDialog(dialog, "Model exported successfully!", "Success", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[] { "Open Folder", "Close" }, "Close");
+					if(returnVal == 0)
+					{
+						Desktop desktop = Desktop.getDesktop();
+						try
+						{
+							desktop.open(destination);
+						}
+						catch(IOException e1)
+						{
+							e1.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+		buttons.add(btnExport);
+
+		panel.add(buttons, BorderLayout.SOUTH);
+
+		dialog.add(panel);
+
+		dialog.pack();
+		dialog.setResizable(false);
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
+
+		/*JFileChooser chooser = new JFileChooser();
 		chooser.setDialogTitle("Export JSON Model");
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		chooser.setApproveButtonText("Export");
@@ -632,6 +841,6 @@ public class Menu extends JMenuBar
 				Exporter exporter = new Exporter(creator.getElementManager());
 				exporter.export(chooser.getSelectedFile());
 			}
-		}
+		}*/
 	}
 }

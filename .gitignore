@@ -59,3 +59,4 @@ src/META-INF/MANIFEST.MF
 /build/
 .settings/
 .project
+classes/

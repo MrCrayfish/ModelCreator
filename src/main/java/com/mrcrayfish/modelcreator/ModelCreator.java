@@ -17,6 +17,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.AWTGLCanvas;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import org.newdawn.slick.Color;
 
@@ -142,13 +143,11 @@ public class ModelCreator extends JFrame
         setVisible(true);
         setLocationRelativeTo(null);
 
-        initDisplay();
+        createDisplay();
 
         try
         {
-            Display.create();
-
-            WelcomeDialog.show(ModelCreator.this);
+            SwingUtilities.invokeLater(() -> WelcomeDialog.show(ModelCreator.this));
 
             loop();
 
@@ -278,13 +277,38 @@ public class ModelCreator extends JFrame
         setJMenuBar(new Menu(this));
     }
 
-    public void initDisplay()
+    public void createDisplay()
     {
         try
         {
             Display.setParent(canvas);
             Display.setVSyncEnabled(true);
             Display.setInitialBackground(0.92F, 0.92F, 0.93F);
+        }
+        catch(LWJGLException e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            Display.create((new PixelFormat()).withDepthBits(24));
+            return;
+        }
+        catch (LWJGLException e)
+        {
+            e.printStackTrace();
+        }
+
+        try
+        {
+            Thread.sleep(1000L);
+        }
+        catch (InterruptedException ignored) { }
+
+        try
+        {
+            Display.create();
         }
         catch(LWJGLException e)
         {

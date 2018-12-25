@@ -29,6 +29,8 @@ public class WelcomeDialog
 		JPanel dialogContent = getDialogContent(parent);
 		JDialog welcomeDialog = getWelcomeDialog(parent, dialogContent);
 		showDialog(welcomeDialog);
+		welcomeDialog.setAlwaysOnTop(true);
+		welcomeDialog.requestFocus();
 	}
 
 	private static JPanel getDialogContent(JFrame parent)

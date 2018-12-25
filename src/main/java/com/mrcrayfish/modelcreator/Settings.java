@@ -4,12 +4,13 @@ import java.util.prefs.Preferences;
 
 public class Settings
 {
-	private static final String IMAGE_IMPORT_DIR = "imageimportdir";
-	private static final String SCREENSHOT_DIR = "screenshotdir";
-	private static final String MODEL_DIR = "modeldir";
-	private static final String JSON_DIR = "jsondir";
-	private static final String EXPORT_JSON_DIR = "exportjsondir";
+	private static final String IMAGE_IMPORT_DIR = "image_import_dir";
+	private static final String SCREENSHOT_DIR = "screenshot_dir";
+	private static final String MODEL_DIR = "model_dir";
+	private static final String JSON_DIR = "json_dir";
+	private static final String EXPORT_JSON_DIR = "export_json_dir";
 	private static final String TRANSPARENCY_MODE = "transparency_mode";
+	private static final String UNDO_LIMIT = "undo_limit";
 
 	public static String getImageImportDir()
 	{
@@ -83,8 +84,40 @@ public class Settings
 		prefs.put(EXPORT_JSON_DIR, dir);
 	}
 
+	public static int getUndoLimit()
+	{
+		Preferences prefs = getPreferences();
+		String s = prefs.get(UNDO_LIMIT, null);
+		try
+		{
+			return Math.max(1, Integer.parseInt(s));
+		}
+		catch(NumberFormatException e)
+		{
+			return 50;
+		}
+	}
+
+	public static void setUndoLimit(int limit)
+	{
+		Preferences prefs = getPreferences();
+		prefs.put(UNDO_LIMIT, Integer.toString(Math.max(1, limit)));
+	}
+
 	private static Preferences getPreferences()
 	{
 		return Preferences.userNodeForPackage(Settings.class);
+	}
+
+	public static int parseInt(String number, int def)
+	{
+		try
+		{
+			return Integer.parseInt(number);
+		}
+		catch(NumberFormatException e)
+		{
+			return def;
+		}
 	}
 }

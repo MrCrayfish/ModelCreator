@@ -12,14 +12,14 @@ import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -37,6 +37,7 @@ public class Menu extends JMenuBar
 	private JMenuItem itemImport;
 	private JMenuItem itemExport;
 	private JMenuItem itemTexturePath;
+	private JMenuItem itemSettings;
 	private JMenuItem itemExit;
 
 	/* Edit */
@@ -83,6 +84,7 @@ public class Menu extends JMenuBar
 			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
 			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
 			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, Icons.texture);
+			itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
 			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
 		}
 
@@ -169,7 +171,7 @@ public class Menu extends JMenuBar
 		menuFile.add(itemImport);
 		menuFile.add(itemExport);
 		menuFile.addSeparator();
-		menuFile.add(itemTexturePath);
+		menuFile.add(itemSettings);
 		menuFile.addSeparator();
 		menuFile.add(itemExit);
 
@@ -205,6 +207,8 @@ public class Menu extends JMenuBar
 				ModelCreator.texturePath = chooser.getSelectedFile().getAbsolutePath();
 			}
 		});
+
+		itemSettings.addActionListener(e -> Menu.settings(creator));
 
 		itemExit.addActionListener(e ->
 		{
@@ -807,40 +811,124 @@ public class Menu extends JMenuBar
 		dialog.setResizable(false);
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
+	}
 
-		/*JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Export JSON Model");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setApproveButtonText("Export");
+	public static void settings(ModelCreator creator)
+	{
+		JDialog dialog = new JDialog(creator, "Settings", Dialog.ModalityType.APPLICATION_MODAL);
 
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-		chooser.setFileFilter(filter);
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setPreferredSize(new Dimension(500, 300));
+		dialog.add(panel);
 
-		String dir = Settings.getJSONDir();
+		JTabbedPane tabbedPane = new JTabbedPane();
+		panel.add(tabbedPane, BorderLayout.CENTER);
 
-		if (dir != null)
+		SpringLayout generalSpringLayout = new SpringLayout();
+		JPanel generalPanel = new JPanel(generalSpringLayout);
+		tabbedPane.addTab("General", generalPanel);
+
+		JLabel labelUndoLimit = new JLabel("Undo / Redo Limit");
+		generalPanel.add(labelUndoLimit);
+
+		final Boolean[] changed = {false};
+		SpinnerNumberModel undoSpinnerNumberModel = new SpinnerNumberModel();
+		undoSpinnerNumberModel.setMinimum(1);
+		JSpinner undoLimitSpinner = new JSpinner(undoSpinnerNumberModel);
+		undoLimitSpinner.setPreferredSize(new Dimension(40, 24));
+		undoLimitSpinner.setValue(Settings.getUndoLimit());
+		undoLimitSpinner.addChangeListener(e ->
 		{
-			chooser.setCurrentDirectory(new File(dir));
-		}
+            if(!changed[0])
+			{
+				JOptionPane.showMessageDialog(dialog, "Increasing the undo/redo limit will increase the amount of memory the program use. Change this setting with caution.", "Warning", JOptionPane.WARNING_MESSAGE);
+				changed[0] = true;
+			}
+        });
+		generalPanel.add(undoLimitSpinner);
 
-		int returnVal = chooser.showSaveDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION)
+		JSeparator separator = new JSeparator();
+		generalPanel.add(separator);
+
+		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, "");
+		generalPanel.add(texturePathPanel);
+
+		generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.WEST, undoLimitSpinner, 5, SpringLayout.EAST, labelUndoLimit);
+		generalSpringLayout.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, separator, 10, SpringLayout.SOUTH, undoLimitSpinner);
+		generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
+
+		tabbedPane.addTab("Appearance", createDirectorySelector("Texture Path", dialog, ""));
+
+		dialog.addWindowListener(new WindowAdapter()
 		{
-			if (chooser.getSelectedFile().exists())
+			@Override
+			public void windowClosed(WindowEvent e)
 			{
-				returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+				Settings.setUndoLimit((int) undoLimitSpinner.getValue());
 			}
-			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-			{
-				File location = chooser.getSelectedFile().getParentFile();
-				Settings.setJSONDir(location.toString());
+		});
 
-				String filePath = chooser.getSelectedFile().getAbsolutePath();
-				if (!filePath.endsWith(".json"))
-					chooser.setSelectedFile(new File(filePath + ".json"));
-				Exporter exporter = new Exporter(creator.getElementManager());
-				exporter.export(chooser.getSelectedFile());
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		dialog.requestFocus();
+		dialog.pack();
+		dialog.setResizable(false);
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
+	}
+
+	private static JPanel createDirectorySelector(String label, Component parent, String defaultDir)
+	{
+		SpringLayout layout = new SpringLayout();
+		JPanel panel = new JPanel(layout);
+		panel.setPreferredSize(new Dimension(100, 50));
+
+		JTextField textFieldDestination = new JTextField();
+		textFieldDestination.setPreferredSize(new Dimension(100, 24));
+		textFieldDestination.setText(defaultDir);
+		textFieldDestination.setEditable(false);
+		textFieldDestination.setFocusable(false);
+		textFieldDestination.setCaretPosition(0);
+		panel.add(textFieldDestination);
+
+		JButton btnBrowserDir = new JButton("Browse");
+		btnBrowserDir.setPreferredSize(new Dimension(80, 24));
+		btnBrowserDir.setIcon(Icons.load);
+		btnBrowserDir.addActionListener(e ->
+		{
+			JFileChooser chooser = new JFileChooser();
+			chooser.setDialogTitle("Select a Folder");
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			chooser.setApproveButtonText("Select");
+			int returnVal = chooser.showOpenDialog(parent);
+			if (returnVal == JFileChooser.APPROVE_OPTION)
+			{
+				File file = chooser.getSelectedFile();
+				if(file != null)
+				{
+					textFieldDestination.setText(file.getAbsolutePath());
+				}
 			}
-		}*/
+		});
+		panel.add(btnBrowserDir);
+
+		JLabel labelExportDir = new JLabel(label);
+		panel.add(labelExportDir);
+
+		layout.putConstraint(SpringLayout.NORTH, textFieldDestination, 0, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.WEST, textFieldDestination, 10, SpringLayout.EAST, labelExportDir);
+		layout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
+		layout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
+		layout.putConstraint(SpringLayout.WEST, labelExportDir, 0, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
+		layout.putConstraint(SpringLayout.EAST, btnBrowserDir, 0, SpringLayout.EAST, panel);
+
+		return panel;
 	}
 }

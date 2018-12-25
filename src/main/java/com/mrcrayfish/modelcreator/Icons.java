@@ -22,6 +22,7 @@ public class Icons
 	public static Icon load;
 	public static Icon disk;
 	public static Icon exit;
+	public static Icon settings;
 	public static Icon cube;
 	public static Icon light_off;
 	public static Icon light_on;
@@ -59,6 +60,7 @@ public class Icons
 		load = new ImageIcon(loader.getResource("icons/load.png"));
 		disk = new ImageIcon(loader.getResource("icons/disk.png"));
 		exit = new ImageIcon(loader.getResource("icons/exit.png"));
+		settings = new ImageIcon(loader.getResource("icons/settings.png"));
 		
 		light_off = new ImageIcon(loader.getResource("icons/box_off.png"));
 		light_on = new ImageIcon(loader.getResource("icons/box_on.png"));

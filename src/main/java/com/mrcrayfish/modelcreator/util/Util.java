@@ -155,6 +155,7 @@ public class Util
         panel.add(labelFile);
 
         JProgressBar progressBar = new JProgressBar();
+        progressBar.setForeground(new Color(129, 192, 0));
         panel.add(progressBar);
 
         layout.putConstraint(SpringLayout.NORTH, labelProcessing, 10, SpringLayout.NORTH, panel);

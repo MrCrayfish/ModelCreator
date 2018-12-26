@@ -45,8 +45,6 @@ public class Start
 			e.printStackTrace();
 		}
 
-		System.out.println(Util.getMinecraftDirectory().getAbsolutePath());
-
 		new ModelCreator(Constants.NAME + " - " + Constants.VERSION);
 	}
 }

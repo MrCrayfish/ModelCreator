@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 
 import com.jtattoo.plaf.fast.FastLookAndFeel;
 import com.mrcrayfish.modelcreator.util.SharedLibraryLoader;
+import com.mrcrayfish.modelcreator.util.Util;
 
 public class Start
 {
@@ -43,6 +44,8 @@ public class Start
 		{
 			e.printStackTrace();
 		}
+
+		System.out.println(Util.getMinecraftDirectory().getAbsolutePath());
 
 		new ModelCreator(Constants.NAME + " - " + Constants.VERSION);
 	}

@@ -853,6 +853,22 @@ public class Menu extends JMenuBar
 		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, "");
 		generalPanel.add(texturePathPanel);
 
+		JLabel labelMinecraftAssets = new JLabel("Minecraft Assets");
+		generalPanel.add(labelMinecraftAssets);
+
+		JComboBox<String> comboBoxMinecraftVersions = new JComboBox<>();
+		comboBoxMinecraftVersions.setPreferredSize(new Dimension(40, 24));
+		Util.getMinecraftVersions().forEach(comboBoxMinecraftVersions::addItem);
+		generalPanel.add(comboBoxMinecraftVersions);
+
+		JButton btnExtract = new JButton("Extract");
+		btnExtract.setIcon(Icons.extract);
+		btnExtract.setPreferredSize(new Dimension(80, 24));
+		btnExtract.addActionListener(e -> {
+			Util.extractMinecraftAssets((String) comboBoxMinecraftVersions.getSelectedItem(), dialog);
+		});
+		generalPanel.add(btnExtract);
+
 		generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
@@ -863,6 +879,13 @@ public class Menu extends JMenuBar
 		generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelMinecraftAssets, 2, SpringLayout.NORTH, comboBoxMinecraftVersions);
+		generalSpringLayout.putConstraint(SpringLayout.WEST, labelMinecraftAssets, 10, SpringLayout.WEST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, comboBoxMinecraftVersions, 10, SpringLayout.SOUTH, texturePathPanel);
+		generalSpringLayout.putConstraint(SpringLayout.WEST, comboBoxMinecraftVersions, 10, SpringLayout.EAST, labelMinecraftAssets);
+		generalSpringLayout.putConstraint(SpringLayout.EAST, comboBoxMinecraftVersions, -10, SpringLayout.WEST, btnExtract);
+		generalSpringLayout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, generalPanel);
+		generalSpringLayout.putConstraint(SpringLayout.NORTH, btnExtract, 10, SpringLayout.SOUTH, texturePathPanel);
 
 		tabbedPane.addTab("Appearance", createDirectorySelector("Texture Path", dialog, ""));
 
@@ -887,7 +910,7 @@ public class Menu extends JMenuBar
 	{
 		SpringLayout layout = new SpringLayout();
 		JPanel panel = new JPanel(layout);
-		panel.setPreferredSize(new Dimension(100, 50));
+		panel.setPreferredSize(new Dimension(100, 24));
 
 		JTextField textFieldDestination = new JTextField();
 		textFieldDestination.setPreferredSize(new Dimension(100, 24));

@@ -38,6 +38,7 @@ public class Icons
 	public static Icon github;
 	public static Icon model_cauldron;
 	public static Icon model_chair;
+	public static Icon extract;
 	
 	public static void init(Class<?> clazz)
 	{	
@@ -61,6 +62,7 @@ public class Icons
 		disk = new ImageIcon(loader.getResource("icons/disk.png"));
 		exit = new ImageIcon(loader.getResource("icons/exit.png"));
 		settings = new ImageIcon(loader.getResource("icons/settings.png"));
+		extract = new ImageIcon(loader.getResource("icons/extract.png"));
 		
 		light_off = new ImageIcon(loader.getResource("icons/box_off.png"));
 		light_on = new ImageIcon(loader.getResource("icons/box_on.png"));

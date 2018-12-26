@@ -7,8 +7,6 @@ public class Icons
     public static Icon add;
     public static Icon add_rollover;
     public static Icon bin;
-    public static Icon bin_open;
-    public static Icon remove_rollover;
     public static Icon new_;
     public static Icon import_;
     public static Icon export;
@@ -45,7 +43,6 @@ public class Icons
 
         cube = new ImageIcon(loader.getResource("icons/cube.png"));
         bin = new ImageIcon(loader.getResource("icons/bin.png"));
-        bin_open = new ImageIcon(loader.getResource("icons/bin_open.png"));
         add = new ImageIcon(loader.getResource("icons/add.png"));
         add_rollover = new ImageIcon(loader.getResource("icons/add_rollover.png"));
         new_ = new ImageIcon(loader.getResource("icons/new.png"));
@@ -62,13 +59,10 @@ public class Icons
         exit = new ImageIcon(loader.getResource("icons/exit.png"));
         settings = new ImageIcon(loader.getResource("icons/settings.png"));
         extract = new ImageIcon(loader.getResource("icons/extract.png"));
-
         light_off = new ImageIcon(loader.getResource("icons/box_off.png"));
         light_on = new ImageIcon(loader.getResource("icons/box_on.png"));
-
         arrow_up = new ImageIcon(loader.getResource("icons/arrow_up.png"));
         arrow_down = new ImageIcon(loader.getResource("icons/arrow_down.png"));
-
         facebook = new ImageIcon(loader.getResource("icons/facebook.png"));
         twitter = new ImageIcon(loader.getResource("icons/twitter.png"));
         reddit = new ImageIcon(loader.getResource("icons/reddit.png"));
@@ -77,7 +71,6 @@ public class Icons
         planet_minecraft = new ImageIcon(loader.getResource("icons/planet_minecraft.png"));
         minecraft_forum = new ImageIcon(loader.getResource("icons/minecraft_forum.png"));
         github = new ImageIcon(loader.getResource("icons/github.png"));
-
         model_cauldron = new ImageIcon(loader.getResource("icons/model_cauldron.png"));
         model_chair = new ImageIcon(loader.getResource("icons/model_chair.png"));
     }

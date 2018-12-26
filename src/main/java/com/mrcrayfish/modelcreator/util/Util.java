@@ -10,15 +10,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -116,7 +112,9 @@ public class Util
     public static void extractMinecraftAssets(String version, Window window)
     {
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Extract Destination");
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setApproveButtonText("Select");
         int returnVal = chooser.showOpenDialog(window);
         if(returnVal == JFileChooser.APPROVE_OPTION)
         {
@@ -197,10 +195,7 @@ public class Util
 
             if(entries.size() > 0)
             {
-                SwingUtilities.invokeLater(() -> {
-                    progressBar.setMaximum(entries.size());
-                    dialog.setVisible(true);
-                });
+                SwingUtilities.invokeLater(() -> progressBar.setMaximum(entries.size()));
             }
 
             if(cancelled[0])
@@ -235,13 +230,15 @@ public class Util
                     final int value = i;
                     SwingUtilities.invokeLater(() -> progressBar.setValue(value + 1));
                 }
-                SwingUtilities.invokeLater(dialog::dispose);
+                SwingUtilities.invokeLater(window::dispose);
             }
             catch(IOException e)
             {
                 e.printStackTrace();
             }
         }).start();
+
+        dialog.setVisible(true);
     }
 
     public static File getMinecraftDirectory()

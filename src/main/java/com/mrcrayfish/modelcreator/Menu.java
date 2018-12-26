@@ -57,6 +57,7 @@ public class Menu extends JMenuBar
 
 	/* Extras */
 	private JMenu menuHelp;
+	private JMenuItem itemExtractAssets;
 	private JMenu menuExamples;
 	private JMenuItem itemModelCauldron;
 	private JMenuItem itemModelChair;
@@ -107,6 +108,7 @@ public class Menu extends JMenuBar
 
 		menuHelp = new JMenu("More");
 		{
+			itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_O, Icons.extract);
 			menuExamples = new JMenu("Examples");
 			menuExamples.setIcon(Icons.new_);
 			{
@@ -124,6 +126,8 @@ public class Menu extends JMenuBar
 		menuExamples.add(itemModelCauldron);
 		menuExamples.add(itemModelChair);
 
+		menuHelp.add(itemExtractAssets);
+		menuHelp.addSeparator();
 		menuHelp.add(menuExamples);
 		menuHelp.addSeparator();
 		menuHelp.add(itemPM);
@@ -373,6 +377,8 @@ public class Menu extends JMenuBar
 		{
 			Util.openUrl(Constants.URL_DONATE);
 		});
+
+		itemExtractAssets.addActionListener(a -> extractAssets(creator));
 
 		itemModelCauldron.addActionListener(a ->
 		{
@@ -832,22 +838,6 @@ public class Menu extends JMenuBar
 		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, path);
 		generalPanel.add(texturePathPanel);
 
-		JLabel labelMinecraftAssets = new JLabel("Minecraft Assets");
-		generalPanel.add(labelMinecraftAssets);
-
-		JComboBox<String> comboBoxMinecraftVersions = new JComboBox<>();
-		comboBoxMinecraftVersions.setPreferredSize(new Dimension(40, 24));
-		Util.getMinecraftVersions().forEach(comboBoxMinecraftVersions::addItem);
-		generalPanel.add(comboBoxMinecraftVersions);
-
-		JButton btnExtract = new JButton("Extract");
-		btnExtract.setIcon(Icons.extract);
-		btnExtract.setPreferredSize(new Dimension(80, 24));
-		btnExtract.addActionListener(e -> {
-			Util.extractMinecraftAssets((String) comboBoxMinecraftVersions.getSelectedItem(), dialog);
-		});
-		generalPanel.add(btnExtract);
-
 		generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
@@ -858,18 +848,10 @@ public class Menu extends JMenuBar
 		generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelMinecraftAssets, 2, SpringLayout.NORTH, comboBoxMinecraftVersions);
-		generalSpringLayout.putConstraint(SpringLayout.WEST, labelMinecraftAssets, 10, SpringLayout.WEST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, comboBoxMinecraftVersions, 10, SpringLayout.SOUTH, texturePathPanel);
-		generalSpringLayout.putConstraint(SpringLayout.WEST, comboBoxMinecraftVersions, 10, SpringLayout.EAST, labelMinecraftAssets);
-		generalSpringLayout.putConstraint(SpringLayout.EAST, comboBoxMinecraftVersions, -10, SpringLayout.WEST, btnExtract);
-		generalSpringLayout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, btnExtract, 10, SpringLayout.SOUTH, texturePathPanel);
 
 		JLabel labelComingSoon = new JLabel("Coming soon!");
 		labelComingSoon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		tabbedPane.addTab("Appearance", labelComingSoon);
-
 
 		dialog.addWindowListener(new WindowAdapter()
 		{
@@ -949,5 +931,53 @@ public class Menu extends JMenuBar
 			}
 		}
 		return "";
+	}
+
+	public static void extractAssets(ModelCreator creator)
+	{
+		JDialog dialog = new JDialog(creator, "Extract Assets", Dialog.ModalityType.APPLICATION_MODAL);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+		SpringLayout layout = new SpringLayout();
+		JPanel panel = new JPanel(layout);
+		panel.setPreferredSize(new Dimension(300, 150));
+		dialog.add(panel);
+
+		JLabel labelInfo = new JLabel("<html>This tool allows you to extract Minecraft's assets. The versions listed below are the ones you have downloaded with the Java edition of the game.</html>");
+		panel.add(labelInfo);
+
+		JLabel labelMinecraftAssets = new JLabel("Minecraft Version");
+		panel.add(labelMinecraftAssets);
+
+		JComboBox<String> comboBoxMinecraftVersions = new JComboBox<>();
+		comboBoxMinecraftVersions.setPreferredSize(new Dimension(40, 24));
+		Util.getMinecraftVersions().forEach(comboBoxMinecraftVersions::addItem);
+		panel.add(comboBoxMinecraftVersions);
+
+		JButton btnExtract = new JButton("Extract");
+		btnExtract.setIcon(Icons.extract);
+		btnExtract.setPreferredSize(new Dimension(80, 24));
+		btnExtract.addActionListener(e -> {
+			Util.extractMinecraftAssets((String) comboBoxMinecraftVersions.getSelectedItem(), dialog);
+			dialog.dispose();
+		});
+		panel.add(btnExtract);
+
+		layout.putConstraint(SpringLayout.NORTH, labelInfo, 10, SpringLayout.NORTH, panel);
+		layout.putConstraint(SpringLayout.EAST, labelInfo, -10, SpringLayout.EAST, panel);
+		layout.putConstraint(SpringLayout.WEST, labelInfo, 10, SpringLayout.WEST, panel);
+
+		layout.putConstraint(SpringLayout.NORTH, labelMinecraftAssets, 2, SpringLayout.NORTH, comboBoxMinecraftVersions);
+		layout.putConstraint(SpringLayout.WEST, labelMinecraftAssets, 10, SpringLayout.WEST, panel);
+		layout.putConstraint(SpringLayout.NORTH, comboBoxMinecraftVersions, 15, SpringLayout.SOUTH, labelInfo);
+		layout.putConstraint(SpringLayout.WEST, comboBoxMinecraftVersions, 10, SpringLayout.EAST, labelMinecraftAssets);
+		layout.putConstraint(SpringLayout.EAST, comboBoxMinecraftVersions, -10, SpringLayout.EAST, panel);
+		layout.putConstraint(SpringLayout.SOUTH, btnExtract, -10, SpringLayout.SOUTH, panel);
+		layout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, panel);
+
+		dialog.pack();
+		dialog.setResizable(false);
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
 	}
 }

@@ -45,6 +45,7 @@ public class Element
 
 	public Element(Element cuboid)
 	{
+		this.name = cuboid.getName();
 		this.width = cuboid.getWidth();
 		this.height = cuboid.getHeight();
 		this.depth = cuboid.getDepth();

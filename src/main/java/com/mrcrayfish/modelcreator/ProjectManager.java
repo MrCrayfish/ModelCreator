@@ -160,7 +160,9 @@ public class ProjectManager
 
 	private static File getSaveFile(ElementManager manager)
 	{
-		return new Exporter(manager).writeJSONFile(new File("model.json"));
+		Exporter exporter = new Exporter(manager);
+		exporter.setOptimize(false);
+		return exporter.writeJSONFile(new File("model.json"));
 	}
 
 	private static void addToZipFile(File file, ZipOutputStream zos) throws FileNotFoundException, IOException

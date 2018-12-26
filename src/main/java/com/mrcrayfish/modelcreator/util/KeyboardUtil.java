@@ -12,7 +12,8 @@ public class KeyboardUtil
     {
         String shortcutText = "";
         int modifiers = keyStroke.getModifiers();
-        if (modifiers > 0) {
+        if(modifiers > 0)
+        {
             shortcutText = KeyEvent.getKeyModifiersText(modifiers);
             shortcutText += "+";
         }

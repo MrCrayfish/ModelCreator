@@ -38,7 +38,7 @@ public class ModelCreator extends JFrame
     public static boolean transparent = Settings.getTransparencyMode();
 
     // Canvas Variables
-    private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<Dimension>();
+    private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<>();
     private Canvas canvas;
     private int width = 990, height = 800;
 
@@ -49,7 +49,7 @@ public class ModelCreator extends JFrame
     private Element grabbed = null;
 
     // Texture Loading Cache
-    public List<PendingTexture> pendingTextures = new ArrayList<PendingTexture>();
+    public List<PendingTexture> pendingTextures = new ArrayList<>();
     private PendingScreenshot screenshot = null;
 
     private int lastMouseX, lastMouseY;
@@ -67,8 +67,6 @@ public class ModelCreator extends JFrame
     private List<KeyAction> keyActions = new ArrayList<>();
 
     private boolean debugMode = false;
-
-    private HashMap<KeyStroke, Action> actionMap = new HashMap<KeyStroke, Action>();
 
     public ModelCreator(String title)
     {
@@ -159,7 +157,7 @@ public class ModelCreator extends JFrame
         }
     }
 
-    public void initComponents()
+    private void initComponents()
     {
         Icons.init(getClass());
         setupMenuBar();
@@ -172,7 +170,7 @@ public class ModelCreator extends JFrame
         canvas.requestFocus();
 
         manager = new SidebarPanel(this);
-        scroll = new JScrollPane((JPanel) manager);
+        scroll = new JScrollPane(manager);
         scroll.setBorder(BorderFactory.createEmptyBorder());
         scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -261,7 +259,7 @@ public class ModelCreator extends JFrame
 
     private List<Image> getIcons()
     {
-        List<Image> icons = new ArrayList<Image>();
+        List<Image> icons = new ArrayList<>();
         icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_16x.png"));
         icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_32x.png"));
         icons.add(Toolkit.getDefaultToolkit().getImage("res/icons/set/icon_64x.png"));
@@ -275,7 +273,7 @@ public class ModelCreator extends JFrame
         setJMenuBar(new Menu(this));
     }
 
-    public void createDisplay()
+    private void createDisplay()
     {
         try
         {
@@ -293,7 +291,7 @@ public class ModelCreator extends JFrame
             Display.create((new PixelFormat()).withDepthBits(24));
             return;
         }
-        catch (LWJGLException e)
+        catch(LWJGLException e)
         {
             e.printStackTrace();
         }
@@ -302,7 +300,9 @@ public class ModelCreator extends JFrame
         {
             Thread.sleep(1000L);
         }
-        catch (InterruptedException ignored) { }
+        catch(InterruptedException ignored)
+        {
+        }
 
         try
         {
@@ -395,14 +395,19 @@ public class ModelCreator extends JFrame
             if(screenshot != null)
             {
                 if(screenshot.getFile() != null)
+                {
                     Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
-                else Screenshot.getScreenshot(width, height, screenshot.getCallback());
+                }
+                else
+                {
+                    Screenshot.getScreenshot(width, height, screenshot.getCallback());
+                }
                 screenshot = null;
             }
         }
     }
 
-    public void draw()
+    private void draw()
     {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
@@ -414,7 +419,7 @@ public class ModelCreator extends JFrame
         drawPerspective();
     }
 
-    public void drawPerspective()
+    private void drawPerspective()
     {
         glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
         drawGrid();
@@ -458,7 +463,7 @@ public class ModelCreator extends JFrame
         GL11.glPopMatrix();
     }
 
-    public void drawOverlay(int offset)
+    private void drawOverlay(int offset)
     {
         glPushMatrix();
         {
@@ -507,7 +512,10 @@ public class ModelCreator extends JFrame
             glPopMatrix();
         }
 
-        if(activeSidebar != null) activeSidebar.draw(offset, width, height, getHeight());
+        if(activeSidebar != null)
+        {
+            activeSidebar.draw(offset, width, height, getHeight());
+        }
 
         glPushMatrix();
         {
@@ -554,7 +562,7 @@ public class ModelCreator extends JFrame
         glPopMatrix();
     }
 
-    public void handleInput(int offset)
+    private void handleInput(int offset)
     {
         final float cameraMod = Math.abs(camera.getZ());
 
@@ -612,8 +620,8 @@ public class ModelCreator extends JFrame
                     int newMouseX = Mouse.getX();
                     int newMouseY = Mouse.getY();
 
-                    int xMovement = (int) ((newMouseX - lastMouseX) / 20);
-                    int yMovement = (int) ((newMouseY - lastMouseY) / 20);
+                    int xMovement = (newMouseX - lastMouseX) / 20;
+                    int yMovement = (newMouseY - lastMouseY) / 20;
 
                     if(xMovement != 0 | yMovement != 0)
                     {
@@ -698,8 +706,14 @@ public class ModelCreator extends JFrame
                             }
                         }
 
-                        if(xMovement != 0) lastMouseX = newMouseX;
-                        if(yMovement != 0) lastMouseY = newMouseY;
+                        if(xMovement != 0)
+                        {
+                            lastMouseX = newMouseX;
+                        }
+                        if(yMovement != 0)
+                        {
+                            lastMouseY = newMouseY;
+                        }
 
                         manager.updateValues();
                         element.updateEndUVs();
@@ -713,15 +727,15 @@ public class ModelCreator extends JFrame
                 if(Mouse.isButtonDown(0))
                 {
                     final float modifier = (cameraMod * 0.05f);
-                    camera.addX((float) (Mouse.getDX() * 0.01F) * modifier);
-                    camera.addY((float) (Mouse.getDY() * 0.01F) * modifier);
+                    camera.addX(Mouse.getDX() * 0.01F * modifier);
+                    camera.addY(Mouse.getDY() * 0.01F * modifier);
                 }
                 else if(Mouse.isButtonDown(1))
                 {
                     final float modifier = applyLimit(cameraMod * 0.1f);
-                    camera.rotateX(-(float) (Mouse.getDY() * 0.5F) * modifier);
+                    camera.rotateX(-(Mouse.getDY() * 0.5F) * modifier);
                     final float rxAbs = Math.abs(camera.getRX());
-                    camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * (float) (Mouse.getDX() * 0.5F) * modifier);
+                    camera.rotateY((rxAbs >= 90 && rxAbs < 270 ? -1 : 1) * Mouse.getDX() * 0.5F * modifier);
                 }
 
                 final float wheel = Mouse.getDWheel();
@@ -733,7 +747,7 @@ public class ModelCreator extends JFrame
         }
     }
 
-    public int select(int x, int y)
+    private int select(int x, int y)
     {
         IntBuffer selBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder()).asIntBuffer();
         int[] buffer = new int[256];
@@ -787,7 +801,7 @@ public class ModelCreator extends JFrame
         return -1;
     }
 
-    public float applyLimit(float value)
+    private float applyLimit(float value)
     {
         if(value > 0.4F)
         {
@@ -800,7 +814,7 @@ public class ModelCreator extends JFrame
         return value;
     }
 
-    public int getCameraState(Camera camera)
+    private int getCameraState(Camera camera)
     {
         int cameraRotY = (int) (camera.getRY() >= 0 ? camera.getRY() : 360 + camera.getRY());
         int state = (int) ((cameraRotY * 4.0F / 360.0F) + 0.5D) & 3;
@@ -816,7 +830,7 @@ public class ModelCreator extends JFrame
         return state;
     }
 
-    public void drawGrid()
+    private void drawGrid()
     {
         glPushMatrix();
         {
@@ -879,12 +893,12 @@ public class ModelCreator extends JFrame
         this.closeRequested = true;
     }
 
-    public boolean getCloseRequested()
+    private boolean getCloseRequested()
     {
         return closeRequested;
     }
 
-    public static boolean isCtrlKeyDown()
+    private static boolean isCtrlKeyDown()
     {
        /* if(Minecraft.IS_RUNNING_ON_MAC)
         {
@@ -896,12 +910,12 @@ public class ModelCreator extends JFrame
         }
     }
 
-    public static boolean isShiftKeyDown()
+    private static boolean isShiftKeyDown()
     {
         return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
     }
 
-    public static boolean isAltKeyDown()
+    private static boolean isAltKeyDown()
     {
         return Keyboard.isKeyDown(56) || Keyboard.isKeyDown(184);
     }
@@ -926,8 +940,6 @@ public class ModelCreator extends JFrame
             }
         });
     }
-
-
 
     private static class KeyAction
     {

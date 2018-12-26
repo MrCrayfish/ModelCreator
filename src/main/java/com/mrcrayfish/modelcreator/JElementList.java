@@ -18,7 +18,9 @@ public class JElementList extends JList<SidebarPanel.ElementEntry>
     protected void processMouseEvent(MouseEvent e)
     {
         if(e.getID() == MouseEvent.MOUSE_FIRST)
+        {
             return;
+        }
 
         if(e.getID() == MouseEvent.MOUSE_RELEASED)
         {
@@ -27,7 +29,9 @@ public class JElementList extends JList<SidebarPanel.ElementEntry>
         }
 
         if(!processInput)
+        {
             return;
+        }
 
         if(e.getButton() == MouseEvent.BUTTON1)
         {

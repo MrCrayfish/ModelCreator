@@ -99,10 +99,6 @@ public class Util
 
             ProjectManager.loadProject(manager, file.getAbsolutePath());
         }
-        catch(FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
         catch(IOException e)
         {
             e.printStackTrace();
@@ -178,18 +174,22 @@ public class Util
             {
                 ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
                 ZipEntry ze;
-                while ((ze = zis.getNextEntry()) != null)
+                while((ze = zis.getNextEntry()) != null)
                 {
                     if(cancelled[0])
+                    {
                         return;
+                    }
                     if(conditions != null && !conditions.test(ze))
+                    {
                         continue;
+                    }
                     entries.add(ze);
                 }
                 zis.closeEntry();
                 zis.close();
             }
-            catch (IOException e)
+            catch(IOException e)
             {
                 e.printStackTrace();
             }
@@ -200,7 +200,9 @@ public class Util
             }
 
             if(cancelled[0])
+            {
                 return;
+            }
 
             try
             {
@@ -208,7 +210,9 @@ public class Util
                 for(int i = 0; i < entries.size(); i++)
                 {
                     if(cancelled[0])
+                    {
                         return;
+                    }
 
                     ZipEntry entry = entries.get(i);
                     SwingUtilities.invokeLater(() -> labelFile.setText(entry.getName()));
@@ -266,12 +270,30 @@ public class Util
     public static OperatingSystem getOS()
     {
         String name = System.getProperty("os.name").toLowerCase();
-        if(name.contains("win")) return OperatingSystem.WINDOWS;
-        if(name.contains("mac")) return OperatingSystem.MAC;
-        if(name.contains("solaris")) return OperatingSystem.SOLARIS;
-        if(name.contains("sunos")) return OperatingSystem.SOLARIS;
-        if(name.contains("linux")) return OperatingSystem.LINUX;
-        if(name.contains("unix")) return OperatingSystem.LINUX;
+        if(name.contains("win"))
+        {
+            return OperatingSystem.WINDOWS;
+        }
+        if(name.contains("mac"))
+        {
+            return OperatingSystem.MAC;
+        }
+        if(name.contains("solaris"))
+        {
+            return OperatingSystem.SOLARIS;
+        }
+        if(name.contains("sunos"))
+        {
+            return OperatingSystem.SOLARIS;
+        }
+        if(name.contains("linux"))
+        {
+            return OperatingSystem.LINUX;
+        }
+        if(name.contains("unix"))
+        {
+            return OperatingSystem.LINUX;
+        }
         return OperatingSystem.UNKNOWN;
     }
 

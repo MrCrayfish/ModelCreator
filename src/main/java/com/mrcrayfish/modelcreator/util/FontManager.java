@@ -1,46 +1,41 @@
 package com.mrcrayfish.modelcreator.util;
 
-import java.awt.Font;
-import java.io.InputStream;
-
+import com.mrcrayfish.modelcreator.ModelCreator;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 
-import com.mrcrayfish.modelcreator.ModelCreator;
+import java.awt.*;
+import java.io.InputStream;
 
 public enum FontManager
 {
-	BEBAS_NEUE_20("bebas_neue.otf", 20), BEBAS_NEUE_50("bebas_neue.otf", 50);
+    BEBAS_NEUE_20("bebas_neue.otf", 20),
+    BEBAS_NEUE_50("bebas_neue.otf", 50);
 
-	private TrueTypeFont font;
+    private TrueTypeFont font;
 
-	FontManager(String name, float size)
-	{
-		loadFont(name, size);
-	}
+    FontManager(String name, float size)
+    {
+        loadFont(name, size);
+    }
 
-	private void loadFont(String name, float size)
-	{
-		try
-		{
-			InputStream is = ModelCreator.class.getClassLoader().getResourceAsStream(name);
-			Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-			this.font = new TrueTypeFont(font.deriveFont(size), true);
+    private void loadFont(String name, float size)
+    {
+        try
+        {
+            InputStream is = ModelCreator.class.getClassLoader().getResourceAsStream(name);
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+            this.font = new TrueTypeFont(font.deriveFont(size), true);
 
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
-	public void drawString(int x, int y, String text)
-	{
-		font.drawString(x, y, text);
-	}
-
-	public void drawString(int x, int y, String text, Color color)
-	{
-		font.drawString(x, y, text, color);
-	}
+    public void drawString(int x, int y, String text, Color color)
+    {
+        font.drawString(x, y, text, color);
+    }
 }

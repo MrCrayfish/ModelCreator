@@ -23,922 +23,921 @@ import java.io.IOException;
 
 public class Menu extends JMenuBar
 {
-	private static final long serialVersionUID = 1L;
+    private ModelCreator creator;
 
-	private ModelCreator creator;
+    /* File */
+    private JMenu menuFile;
+    private JMenuItem itemNew;
+    private JMenuItem itemLoad;
+    private JMenuItem itemSave;
+    private JMenuItem itemImport;
+    private JMenuItem itemExport;
+    private JMenuItem itemSettings;
+    private JMenuItem itemExit;
 
-	/* File */
-	private JMenu menuFile;
-	private JMenuItem itemNew;
-	private JMenuItem itemLoad;
-	private JMenuItem itemSave;
-	private JMenuItem itemImport;
-	private JMenuItem itemExport;
-	private JMenuItem itemSettings;
-	private JMenuItem itemExit;
+    /* Edit */
+    private JMenu menuEdit;
+    private JMenuItem itemUndo;
+    private JMenuItem itemRedo;
 
-	/* Edit */
-	private JMenu menuEdit;
-	private JMenuItem itemUndo;
-	private JMenuItem itemRedo;
+    /* Options */
+    private JMenu menuOptions;
+    private JMenuItem itemTransparency;
+    private JMenuItem itemOptimise;
 
-	/* Options */
-	private JMenu menuOptions;
-	private JMenuItem itemTransparency;
-	private JMenuItem itemOptimise;
+    /* Share */
+    private JMenu menuScreenshot;
+    private JMenuItem itemSaveToDisk;
+    private JMenuItem itemShareFacebook;
+    private JMenuItem itemShareTwitter;
+    private JMenuItem itemShareReddit;
+    private JMenuItem itemImgurLink;
 
-	/* Share */
-	private JMenu menuScreenshot;
-	private JMenuItem itemSaveToDisk;
-	private JMenuItem itemShareFacebook;
-	private JMenuItem itemShareTwitter;
-	private JMenuItem itemShareReddit;
-	private JMenuItem itemImgurLink;
+    /* Extras */
+    private JMenu menuHelp;
+    private JMenuItem itemExtractAssets;
+    private JMenu menuExamples;
+    private JMenuItem itemModelCauldron;
+    private JMenuItem itemModelChair;
+    private JMenuItem itemDonate;
+    private JMenuItem itemGitHub;
 
-	/* Extras */
-	private JMenu menuHelp;
-	private JMenuItem itemExtractAssets;
-	private JMenu menuExamples;
-	private JMenuItem itemModelCauldron;
-	private JMenuItem itemModelChair;
-	private JMenuItem itemDonate;
-	private JMenuItem itemGitHub;
+    public Menu(ModelCreator creator)
+    {
+        this.creator = creator;
+        initMenu();
+    }
 
-	public Menu(ModelCreator creator)
-	{
-		this.creator = creator;
-		initMenu();
-	}
+    private void initMenu()
+    {
+        menuFile = new JMenu("File");
+        {
+            itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
+            itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+            itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+            itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
+            itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
+            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
+            itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
+        }
 
-	private void initMenu()
-	{
-		menuFile = new JMenu("File");
-		{
-			itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-			itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
-			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
-			itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
-			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
-		}
+        menuEdit = new JMenu("Edit");
+        {
+            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
+            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+        }
 
-		menuEdit = new JMenu("Edit");
-		{
-			itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
-			itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
-		}
+        menuOptions = new JMenu("Options");
+        {
+            itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
+            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+        }
 
-		menuOptions = new JMenu("Options");
-		{
-			itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
-			itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
-		}
+        menuScreenshot = new JMenu("Screenshot");
+        {
+            itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
+            itemShareFacebook = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
+            itemShareTwitter = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
+            itemShareReddit = createItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
+            itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_G, Icons.imgur);
+        }
 
-		menuScreenshot = new JMenu("Screenshot");
-		{
-			itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
-			itemShareFacebook = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
-			itemShareTwitter = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
-			itemShareReddit = createItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
-			itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_G, Icons.imgur);
-		}
-
-		menuHelp = new JMenu("More");
-		{
-			itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_O, Icons.extract);
-			menuExamples = new JMenu("Examples");
-			menuExamples.setIcon(Icons.new_);
-			{
-				itemModelCauldron = createItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
-				itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
-			}
-			itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
-			itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_G, Icons.github);
-		}
-
-		initActions();
-
-		menuExamples.add(itemModelCauldron);
-		menuExamples.add(itemModelChair);
-
-		menuHelp.add(itemExtractAssets);
-		menuHelp.addSeparator();
-		menuHelp.add(menuExamples);
-		menuHelp.addSeparator();
-		menuHelp.add(itemGitHub);
-		menuHelp.add(itemDonate);
-
-		menuEdit.add(itemUndo);
-		menuEdit.add(itemRedo);
-		menuEdit.addMenuListener(new MenuListener()
-		{
-			@Override
-			public void menuSelected(MenuEvent e)
-			{
-				itemRedo.setEnabled(StateManager.canRestoreNextState());
-				itemUndo.setEnabled(StateManager.canRestorePreviousState());
-			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {}
-		});
-
-		menuOptions.add(itemTransparency);
-		menuOptions.add(itemOptimise);
-
-		menuScreenshot.add(itemSaveToDisk);
-		menuScreenshot.add(itemShareFacebook);
-		menuScreenshot.add(itemShareTwitter);
-		menuScreenshot.add(itemShareReddit);
-		menuScreenshot.add(itemImgurLink);
-
-		menuFile.add(itemNew);
-		menuFile.addSeparator();
-		menuFile.add(itemLoad);
-		menuFile.add(itemSave);
-		menuFile.addSeparator();
-		menuFile.add(itemImport);
-		menuFile.add(itemExport);
-		menuFile.addSeparator();
-		menuFile.add(itemSettings);
-		menuFile.addSeparator();
-		menuFile.add(itemExit);
-
-		add(menuFile);
-		add(menuEdit);
-		add(menuOptions);
-		add(menuScreenshot);
-		add(menuHelp);
-	}
-
-	private void initActions()
-	{
-		itemNew.addActionListener(a -> Menu.newProject(creator));
-
-		itemLoad.addActionListener(a -> Menu.loadProject(creator));
-
-		itemSave.addActionListener(a -> Menu.saveProject(creator));
-
-		itemImport.addActionListener(e -> Menu.importJson(creator));
-
-		itemExport.addActionListener(e -> Menu.exportJson(creator));
-
-		itemSettings.addActionListener(e -> Menu.settings(creator));
-
-		itemExit.addActionListener(e -> creator.close());
-
-		itemTransparency.addActionListener(a ->
-		{
-			ModelCreator.transparent = itemTransparency.isSelected();
-			Settings.setTransparencyMode(ModelCreator.transparent);
-			if (ModelCreator.transparent)
-				JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
-			else
-				JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
-		});
-
-		itemOptimise.addActionListener(a -> Menu.optimizeModel(creator));
-
-		itemSaveToDisk.addActionListener(a ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Output Directory");
-			chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			chooser.setApproveButtonText("Save");
-
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG (.png)", "png");
-			chooser.setFileFilter(filter);
-
-			String dir = Settings.getScreenshotDir();
-
-			if (dir != null)
-			{
-				chooser.setCurrentDirectory(new File(dir));
-			}
-
-			int returnVal = chooser.showSaveDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				if (chooser.getSelectedFile().exists())
-				{
-					returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
-				}
-				if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-				{
-					File location = chooser.getSelectedFile().getParentFile();
-					Settings.setScreenshotDir(location.toString());
-
-					String filePath = chooser.getSelectedFile().getAbsolutePath();
-					if (!filePath.endsWith(".png"))
-						chooser.setSelectedFile(new File(filePath + ".png"));
-					creator.activeSidebar = null;
-					creator.startScreenshot(new PendingScreenshot(chooser.getSelectedFile(), null));
-				}
-			}
-		});
-
-		itemShareFacebook.addActionListener(a ->
-		{
-			creator.activeSidebar = null;
-			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
-			{
-				@Override
-				public void callback(File file)
-				{
-					try
-					{
-						String url = Uploader.upload(file);
-						Screenshot.shareToFacebook(url);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}));
-		});
-
-		itemShareTwitter.addActionListener(a ->
-		{
-			creator.activeSidebar = null;
-			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
-			{
-				@Override
-				public void callback(File file)
-				{
-					try
-					{
-						String url = Uploader.upload(file);
-						Screenshot.shareToTwitter(url);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}));
-		});
-
-		itemShareReddit.addActionListener(a ->
-		{
-			creator.activeSidebar = null;
-			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
-			{
-				@Override
-				public void callback(File file)
-				{
-					try
-					{
-						String url = Uploader.upload(file);
-						Screenshot.shareToReddit(url);
-					}
-					catch (Exception e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}));
-		});
-
-		itemImgurLink.addActionListener(a ->
-		{
-			creator.activeSidebar = null;
-			creator.startScreenshot(new PendingScreenshot(null, file -> SwingUtilities.invokeLater(() ->
+        menuHelp = new JMenu("More");
+        {
+            itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_O, Icons.extract);
+            menuExamples = new JMenu("Examples");
+            menuExamples.setIcon(Icons.new_);
             {
-				try
-				{
-					String url = Uploader.upload(file);
+                itemModelCauldron = createItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
+                itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
+            }
+            itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
+            itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_G, Icons.github);
+        }
 
-					JOptionPane message = new JOptionPane();
-					String title;
+        initActions();
 
-					if(url != null && !url.equals("null"))
-					{
-						StringSelection text = new StringSelection(url);
-						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
-						title = "Success";
-						message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
-					}
-					else
-					{
-						title = "Error";
-						message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
-					}
+        menuExamples.add(itemModelCauldron);
+        menuExamples.add(itemModelChair);
 
-					JDialog dialog = message.createDialog(Menu.this, title);
-					dialog.setLocationRelativeTo(null);
-					dialog.setModal(false);
-					dialog.setVisible(true);
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-			})));
-		});
+        menuHelp.add(itemExtractAssets);
+        menuHelp.addSeparator();
+        menuHelp.add(menuExamples);
+        menuHelp.addSeparator();
+        menuHelp.add(itemGitHub);
+        menuHelp.add(itemDonate);
 
-		itemGitHub.addActionListener(a -> Util.openUrl(Constants.URL_GITHUB));
+        menuEdit.add(itemUndo);
+        menuEdit.add(itemRedo);
+        menuEdit.addMenuListener(new MenuListener()
+        {
+            @Override
+            public void menuSelected(MenuEvent e)
+            {
+                itemRedo.setEnabled(StateManager.canRestoreNextState());
+                itemUndo.setEnabled(StateManager.canRestorePreviousState());
+            }
 
-		itemDonate.addActionListener(a -> Util.openUrl(Constants.URL_DONATE));
+            @Override
+            public void menuDeselected(MenuEvent e)
+            {
+            }
 
-		itemExtractAssets.addActionListener(a -> extractAssets(creator));
+            @Override
+            public void menuCanceled(MenuEvent e)
+            {
+            }
+        });
 
-		itemModelCauldron.addActionListener(a ->
-		{
-			StateManager.clear();
-			Util.loadModelFromJar(creator.getElementManager(), getClass(), "models/cauldron");
-			StateManager.pushState(creator.getElementManager());
-		});
+        menuOptions.add(itemTransparency);
+        menuOptions.add(itemOptimise);
 
-		itemModelChair.addActionListener(a ->
-		{
-			StateManager.clear();
-			Util.loadModelFromJar(creator.getElementManager(), getClass(), "models/modern_chair");
-			StateManager.pushState(creator.getElementManager());
-		});
+        menuScreenshot.add(itemSaveToDisk);
+        menuScreenshot.add(itemShareFacebook);
+        menuScreenshot.add(itemShareTwitter);
+        menuScreenshot.add(itemShareReddit);
+        menuScreenshot.add(itemImgurLink);
 
-		itemUndo.addActionListener(a -> StateManager.restorePreviousState(creator.getElementManager()));
+        menuFile.add(itemNew);
+        menuFile.addSeparator();
+        menuFile.add(itemLoad);
+        menuFile.add(itemSave);
+        menuFile.addSeparator();
+        menuFile.add(itemImport);
+        menuFile.add(itemExport);
+        menuFile.addSeparator();
+        menuFile.add(itemSettings);
+        menuFile.addSeparator();
+        menuFile.add(itemExit);
 
-		itemRedo.addActionListener(a -> StateManager.restoreNextState(creator.getElementManager()));
-	}
+        add(menuFile);
+        add(menuEdit);
+        add(menuOptions);
+        add(menuScreenshot);
+        add(menuHelp);
+    }
 
-	private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)
-	{
-		return createItem(name, tooltip, mnemonic, icon, null);
-	}
+    private void initActions()
+    {
+        itemNew.addActionListener(a -> Menu.newProject(creator));
 
-	private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, KeyStroke shortcut)
-	{
-		JMenuItem item = new JMenuItem(name);
-		item.setToolTipText(tooltip);
-		item.setMnemonic(mnemonic);
-		item.setIcon(icon);
+        itemLoad.addActionListener(a -> Menu.loadProject(creator));
 
-		if(shortcut != null)
-		{
-			String shortcutText = KeyboardUtil.convertKeyStokeToString(shortcut);
-			item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-			JLabel label = new JLabel("<html><p style='color:#666666;font-size:9px'>" + shortcutText + "<p></html>");
-			item.add(label);
-			Dimension size = new Dimension((int) Math.ceil(item.getPreferredSize().getWidth() + label.getPreferredSize().getWidth()) + 10, 20);
-			item.setPreferredSize(size);
-		}
+        itemSave.addActionListener(a -> Menu.saveProject(creator));
 
-		return item;
-	}
+        itemImport.addActionListener(e -> Menu.importJson(creator));
 
-	private JMenuItem createCheckboxItem(String name, String tooltip, int mnemonic, boolean checked, Icon icon)
-	{
-		JMenuItem item = new JCheckBoxMenuItem(name, checked);
-		item.setToolTipText(tooltip);
-		item.setMnemonic(mnemonic);
-		item.setIcon(icon);
-		return item;
-	}
+        itemExport.addActionListener(e -> Menu.exportJson(creator));
 
-	public static void newProject(ModelCreator creator)
-	{
-		int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
-		if (returnVal == JOptionPane.YES_OPTION)
-		{
-			StateManager.clear();
-			creator.getElementManager().reset();
-			creator.getElementManager().updateValues();
-			StateManager.pushState(creator.getElementManager());
-		}
-	}
+        itemSettings.addActionListener(e -> Menu.settings(creator));
 
-	public static void loadProject(ModelCreator creator)
-	{
-		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Load Project");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setApproveButtonText("Load");
+        itemExit.addActionListener(e -> creator.close());
 
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
-		chooser.setFileFilter(filter);
+        itemTransparency.addActionListener(a ->
+        {
+            ModelCreator.transparent = itemTransparency.isSelected();
+            Settings.setTransparencyMode(ModelCreator.transparent);
+            if(ModelCreator.transparent)
+            {
+                JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
 
-		String dir = Settings.getModelDir();
+        itemOptimise.addActionListener(a -> Menu.optimizeModel(creator));
 
-		if (dir != null)
-		{
-			chooser.setCurrentDirectory(new File(dir));
-		}
+        itemSaveToDisk.addActionListener(a ->
+        {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Output Directory");
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setApproveButtonText("Save");
 
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION)
-		{
-			if (creator.getElementManager().getElementCount() > 0)
-			{
-				returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-			}
-			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-			{
-				File location = chooser.getSelectedFile().getParentFile();
-				Settings.setModelDir(location.toString());
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG (.png)", "png");
+            chooser.setFileFilter(filter);
 
-				StateManager.clear();
-				ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
-				StateManager.pushState(creator.getElementManager());
-			}
-		}
-	}
+            String dir = Settings.getScreenshotDir();
 
-	public static void saveProject(ModelCreator creator)
-	{
-		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Save Project");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setApproveButtonText("Save");
+            if(dir != null)
+            {
+                chooser.setCurrentDirectory(new File(dir));
+            }
 
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
-		chooser.setFileFilter(filter);
-		String dir = Settings.getModelDir();
+            int returnVal = chooser.showSaveDialog(null);
+            if(returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                if(chooser.getSelectedFile().exists())
+                {
+                    returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+                }
+                if(returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+                {
+                    File location = chooser.getSelectedFile().getParentFile();
+                    Settings.setScreenshotDir(location.toString());
 
-		if (dir != null)
-		{
-			chooser.setCurrentDirectory(new File(dir));
-		}
+                    String filePath = chooser.getSelectedFile().getAbsolutePath();
+                    if(!filePath.endsWith(".png"))
+                    {
+                        chooser.setSelectedFile(new File(filePath + ".png"));
+                    }
+                    creator.activeSidebar = null;
+                    creator.startScreenshot(new PendingScreenshot(chooser.getSelectedFile(), null));
+                }
+            }
+        });
 
-		int returnVal = chooser.showSaveDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION)
-		{
-			if (chooser.getSelectedFile().exists())
-			{
-				returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
-			}
-			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-			{
-				File location = chooser.getSelectedFile().getParentFile();
-				Settings.setModelDir(location.toString());
+        itemShareFacebook.addActionListener(a ->
+        {
+            creator.activeSidebar = null;
+            creator.startScreenshot(new PendingScreenshot(null, file ->
+            {
+                try
+                {
+                    String url = Uploader.upload(file);
+                    Screenshot.shareToFacebook(url);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }));
+        });
 
-				String filePath = chooser.getSelectedFile().getAbsolutePath();
-				if (!filePath.endsWith(".model"))
-					filePath += ".model";
-				ProjectManager.saveProject(creator.getElementManager(), filePath);
-			}
-		}
-	}
+        itemShareTwitter.addActionListener(a ->
+        {
+            creator.activeSidebar = null;
+            creator.startScreenshot(new PendingScreenshot(null, file ->
+            {
+                try
+                {
+                    String url = Uploader.upload(file);
+                    Screenshot.shareToTwitter(url);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }));
+        });
 
-	public static void optimizeModel(ModelCreator creator)
-	{
-		int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
-		if(result == JOptionPane.YES_OPTION)
-		{
-			int count = 0;
-			ElementManager manager = creator.getElementManager();
-			for(Element element : manager.getAllElements())
-			{
-				for(Face face : element.getAllFaces())
-				{
-					if(face.isEnabled() && !face.isVisible(manager))
-					{
-						count++;
-						face.setEnabled(false);
-					}
-				}
-			}
-			if(count > 0)
-			{
-				StateManager.pushState(manager);
-			}
-			JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
-		}
-	}
+        itemShareReddit.addActionListener(a ->
+        {
+            creator.activeSidebar = null;
+            creator.startScreenshot(new PendingScreenshot(null, file ->
+            {
+                try
+                {
+                    String url = Uploader.upload(file);
+                    Screenshot.shareToReddit(url);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }));
+        });
 
-	public static void importJson(ModelCreator creator)
-	{
-		JFileChooser chooser = new JFileChooser();
-		chooser.setDialogTitle("Import JSON Model");
-		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		chooser.setApproveButtonText("Import");
+        itemImgurLink.addActionListener(a ->
+        {
+            creator.activeSidebar = null;
+            creator.startScreenshot(new PendingScreenshot(null, file -> SwingUtilities.invokeLater(() ->
+            {
+                try
+                {
+                    String url = Uploader.upload(file);
 
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
-		chooser.setFileFilter(filter);
+                    JOptionPane message = new JOptionPane();
+                    String title;
 
-		String dir = Settings.getJSONDir();
+                    if(url != null && !url.equals("null"))
+                    {
+                        StringSelection text = new StringSelection(url);
+                        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+                        title = "Success";
+                        message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
+                    }
+                    else
+                    {
+                        title = "Error";
+                        message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
+                    }
 
-		if (dir != null)
-		{
-			chooser.setCurrentDirectory(new File(dir));
-		}
+                    JDialog dialog = message.createDialog(Menu.this, title);
+                    dialog.setLocationRelativeTo(null);
+                    dialog.setModal(false);
+                    dialog.setVisible(true);
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            })));
+        });
 
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION)
-		{
-			if (creator.getElementManager().getElementCount() > 0)
-			{
-				returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
-			}
-			if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
-			{
-				File location = chooser.getSelectedFile().getParentFile();
-				Settings.setJSONDir(location.toString());
+        itemGitHub.addActionListener(a -> Util.openUrl(Constants.URL_GITHUB));
 
-				StateManager.clear();
-				Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
-				importer.importFromJSON();
-				StateManager.pushState(creator.getElementManager());
-			}
-			creator.getElementManager().updateValues();
-		}
-	}
+        itemDonate.addActionListener(a -> Util.openUrl(Constants.URL_DONATE));
 
-	public static void exportJson(ModelCreator creator)
-	{
-		JDialog dialog = new JDialog(creator, "Export JSON Model", Dialog.ModalityType.APPLICATION_MODAL);
+        itemExtractAssets.addActionListener(a -> extractAssets(creator));
 
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.setPreferredSize(new Dimension(500, 225));
+        itemModelCauldron.addActionListener(a ->
+        {
+            StateManager.clear();
+            Util.loadModelFromJar(creator.getElementManager(), getClass(), "models/cauldron");
+            StateManager.pushState(creator.getElementManager());
+        });
 
-		SpringLayout springLayout = new SpringLayout();
-		JPanel exportDir = new JPanel(springLayout);
+        itemModelChair.addActionListener(a ->
+        {
+            StateManager.clear();
+            Util.loadModelFromJar(creator.getElementManager(), getClass(), "models/modern_chair");
+            StateManager.pushState(creator.getElementManager());
+        });
 
-		JLabel labelName = new JLabel("Name");
-		labelName.setHorizontalAlignment(SwingConstants.RIGHT);
-		exportDir.add(labelName);
+        itemUndo.addActionListener(a -> StateManager.restorePreviousState(creator.getElementManager()));
 
-		JTextField textFieldName = new JTextField();
-		textFieldName.setPreferredSize(new Dimension(100, 24));
-		textFieldName.setCaretPosition(0);
-		exportDir.add(textFieldName);
+        itemRedo.addActionListener(a -> StateManager.restoreNextState(creator.getElementManager()));
+    }
 
-		JTextField textFieldDestination = new JTextField();
-		textFieldDestination.setPreferredSize(new Dimension(100, 24));
+    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)
+    {
+        return createItem(name, tooltip, mnemonic, icon, null);
+    }
 
-		String exportJsonDir = Settings.getExportJSONDir();
-		if(exportJsonDir != null)
-		{
-			textFieldDestination.setText(exportJsonDir);
-		}
-		else
-		{
-			String userHome = System.getProperty("user.home", ".");
-			textFieldDestination.setText(userHome);
-		}
+    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, KeyStroke shortcut)
+    {
+        JMenuItem item = new JMenuItem(name);
+        item.setToolTipText(tooltip);
+        item.setMnemonic(mnemonic);
+        item.setIcon(icon);
 
-		textFieldDestination.setEditable(false);
-		textFieldDestination.setFocusable(false);
-		textFieldDestination.setCaretPosition(0);
-		exportDir.add(textFieldDestination);
+        if(shortcut != null)
+        {
+            String shortcutText = KeyboardUtil.convertKeyStokeToString(shortcut);
+            item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+            JLabel label = new JLabel("<html><p style='color:#666666;font-size:9px'>" + shortcutText + "<p></html>");
+            item.add(label);
+            Dimension size = new Dimension((int) Math.ceil(item.getPreferredSize().getWidth() + label.getPreferredSize().getWidth()) + 10, 20);
+            item.setPreferredSize(size);
+        }
 
-		JButton btnBrowserDir = new JButton("Browse");
-		btnBrowserDir.setPreferredSize(new Dimension(80, 24));
-		btnBrowserDir.setIcon(Icons.load);
-		btnBrowserDir.addActionListener(e -> {
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Export Destination");
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			chooser.setApproveButtonText("Select");
-			int returnVal = chooser.showOpenDialog(dialog);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				File file = chooser.getSelectedFile();
-				if(file != null)
-				{
-					textFieldDestination.setText(file.getAbsolutePath());
-				}
-			}
-		});
-		exportDir.add(btnBrowserDir);
+        return item;
+    }
 
-		JLabel labelExportDir = new JLabel("Destination");
-		exportDir.add(labelExportDir);
+    private JMenuItem createCheckboxItem(String name, String tooltip, int mnemonic, boolean checked, Icon icon)
+    {
+        JMenuItem item = new JCheckBoxMenuItem(name, checked);
+        item.setToolTipText(tooltip);
+        item.setMnemonic(mnemonic);
+        item.setIcon(icon);
+        return item;
+    }
 
-		JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
-		exportDir.add(optionSeparator);
+    public static void newProject(ModelCreator creator)
+    {
+        int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
+        if(returnVal == JOptionPane.YES_OPTION)
+        {
+            StateManager.clear();
+            creator.getElementManager().reset();
+            creator.getElementManager().updateValues();
+            StateManager.pushState(creator.getElementManager());
+        }
+    }
 
-		JCheckBox checkBoxOptimize = new JCheckBox("Optimize Model");
-		checkBoxOptimize.setToolTipText("Removes unnecessary faces that can't been seen in the model");
-		checkBoxOptimize.setSelected(true);
-		checkBoxOptimize.setIcon(Icons.light_off);
-		checkBoxOptimize.setRolloverIcon(Icons.light_off);
-		checkBoxOptimize.setSelectedIcon(Icons.light_on);
-		checkBoxOptimize.setRolloverSelectedIcon(Icons.light_on);
-		exportDir.add(checkBoxOptimize);
+    public static void loadProject(ModelCreator creator)
+    {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Load Project");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setApproveButtonText("Load");
 
-		JCheckBox checkBoxDisplayProps = new JCheckBox("Include Display Properties");
-		checkBoxDisplayProps.setToolTipText("Adds the display definitions (first-person, third-person, etc) to the model file");
-		checkBoxDisplayProps.setSelected(true);
-		checkBoxDisplayProps.setIcon(Icons.light_off);
-		checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
-		checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
-		checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
-		exportDir.add(checkBoxDisplayProps);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
+        chooser.setFileFilter(filter);
 
-		JCheckBox checkBoxElementNames = new JCheckBox("Include Element Names");
-		checkBoxElementNames.setToolTipText("The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names");
-		checkBoxElementNames.setSelected(true);
-		checkBoxElementNames.setIcon(Icons.light_off);
-		checkBoxElementNames.setRolloverIcon(Icons.light_off);
-		checkBoxElementNames.setSelectedIcon(Icons.light_on);
-		checkBoxElementNames.setRolloverSelectedIcon(Icons.light_on);
-		exportDir.add(checkBoxElementNames);
+        String dir = Settings.getModelDir();
 
-		JSeparator separator = new JSeparator();
-		exportDir.add(separator);
+        if(dir != null)
+        {
+            chooser.setCurrentDirectory(new File(dir));
+        }
+
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            if(creator.getElementManager().getElementCount() > 0)
+            {
+                returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+            }
+            if(returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+            {
+                File location = chooser.getSelectedFile().getParentFile();
+                Settings.setModelDir(location.toString());
+
+                StateManager.clear();
+                ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+                StateManager.pushState(creator.getElementManager());
+            }
+        }
+    }
+
+    public static void saveProject(ModelCreator creator)
+    {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save Project");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setApproveButtonText("Save");
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Model (.model)", "model");
+        chooser.setFileFilter(filter);
+        String dir = Settings.getModelDir();
+
+        if(dir != null)
+        {
+            chooser.setCurrentDirectory(new File(dir));
+        }
+
+        int returnVal = chooser.showSaveDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            if(chooser.getSelectedFile().exists())
+            {
+                returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+            }
+            if(returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+            {
+                File location = chooser.getSelectedFile().getParentFile();
+                Settings.setModelDir(location.toString());
+
+                String filePath = chooser.getSelectedFile().getAbsolutePath();
+                if(!filePath.endsWith(".model"))
+                {
+                    filePath += ".model";
+                }
+                ProjectManager.saveProject(creator.getElementManager(), filePath);
+            }
+        }
+    }
+
+    public static void optimizeModel(ModelCreator creator)
+    {
+        int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
+        if(result == JOptionPane.YES_OPTION)
+        {
+            int count = 0;
+            ElementManager manager = creator.getElementManager();
+            for(Element element : manager.getAllElements())
+            {
+                for(Face face : element.getAllFaces())
+                {
+                    if(face.isEnabled() && !face.isVisible(manager))
+                    {
+                        count++;
+                        face.setEnabled(false);
+                    }
+                }
+            }
+            if(count > 0)
+            {
+                StateManager.pushState(manager);
+            }
+            JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    public static void importJson(ModelCreator creator)
+    {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Import JSON Model");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setApproveButtonText("Import");
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("JSON (.json)", "json");
+        chooser.setFileFilter(filter);
+
+        String dir = Settings.getJSONDir();
+
+        if(dir != null)
+        {
+            chooser.setCurrentDirectory(new File(dir));
+        }
+
+        int returnVal = chooser.showOpenDialog(null);
+        if(returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            if(creator.getElementManager().getElementCount() > 0)
+            {
+                returnVal = JOptionPane.showConfirmDialog(null, "Your current project will be cleared, are you sure you want to continue?", "Warning", JOptionPane.YES_NO_OPTION);
+            }
+            if(returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+            {
+                File location = chooser.getSelectedFile().getParentFile();
+                Settings.setJSONDir(location.toString());
+
+                StateManager.clear();
+                Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+                importer.importFromJSON();
+                StateManager.pushState(creator.getElementManager());
+            }
+            creator.getElementManager().updateValues();
+        }
+    }
+
+    public static void exportJson(ModelCreator creator)
+    {
+        JDialog dialog = new JDialog(creator, "Export JSON Model", Dialog.ModalityType.APPLICATION_MODAL);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(500, 225));
+
+        SpringLayout springLayout = new SpringLayout();
+        JPanel exportDir = new JPanel(springLayout);
+
+        JLabel labelName = new JLabel("Name");
+        labelName.setHorizontalAlignment(SwingConstants.RIGHT);
+        exportDir.add(labelName);
+
+        JTextField textFieldName = new JTextField();
+        textFieldName.setPreferredSize(new Dimension(100, 24));
+        textFieldName.setCaretPosition(0);
+        exportDir.add(textFieldName);
+
+        JTextField textFieldDestination = new JTextField();
+        textFieldDestination.setPreferredSize(new Dimension(100, 24));
+
+        String exportJsonDir = Settings.getExportJSONDir();
+        if(exportJsonDir != null)
+        {
+            textFieldDestination.setText(exportJsonDir);
+        }
+        else
+        {
+            String userHome = System.getProperty("user.home", ".");
+            textFieldDestination.setText(userHome);
+        }
+
+        textFieldDestination.setEditable(false);
+        textFieldDestination.setFocusable(false);
+        textFieldDestination.setCaretPosition(0);
+        exportDir.add(textFieldDestination);
+
+        JButton btnBrowserDir = new JButton("Browse");
+        btnBrowserDir.setPreferredSize(new Dimension(80, 24));
+        btnBrowserDir.setIcon(Icons.load);
+        btnBrowserDir.addActionListener(e ->
+        {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Export Destination");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setApproveButtonText("Select");
+            int returnVal = chooser.showOpenDialog(dialog);
+            if(returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                File file = chooser.getSelectedFile();
+                if(file != null)
+                {
+                    textFieldDestination.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        exportDir.add(btnBrowserDir);
+
+        JLabel labelExportDir = new JLabel("Destination");
+        exportDir.add(labelExportDir);
+
+        JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
+        exportDir.add(optionSeparator);
+
+        JCheckBox checkBoxOptimize = new JCheckBox("Optimize Model");
+        checkBoxOptimize.setToolTipText("Removes unnecessary faces that can't been seen in the model");
+        checkBoxOptimize.setSelected(true);
+        checkBoxOptimize.setIcon(Icons.light_off);
+        checkBoxOptimize.setRolloverIcon(Icons.light_off);
+        checkBoxOptimize.setSelectedIcon(Icons.light_on);
+        checkBoxOptimize.setRolloverSelectedIcon(Icons.light_on);
+        exportDir.add(checkBoxOptimize);
+
+        JCheckBox checkBoxDisplayProps = new JCheckBox("Include Display Properties");
+        checkBoxDisplayProps.setToolTipText("Adds the display definitions (first-person, third-person, etc) to the model file");
+        checkBoxDisplayProps.setSelected(true);
+        checkBoxDisplayProps.setIcon(Icons.light_off);
+        checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
+        checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
+        checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
+        exportDir.add(checkBoxDisplayProps);
+
+        JCheckBox checkBoxElementNames = new JCheckBox("Include Element Names");
+        checkBoxElementNames.setToolTipText("The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names");
+        checkBoxElementNames.setSelected(true);
+        checkBoxElementNames.setIcon(Icons.light_off);
+        checkBoxElementNames.setRolloverIcon(Icons.light_off);
+        checkBoxElementNames.setSelectedIcon(Icons.light_on);
+        checkBoxElementNames.setRolloverSelectedIcon(Icons.light_on);
+        exportDir.add(checkBoxElementNames);
+
+        JSeparator separator = new JSeparator();
+        exportDir.add(separator);
 
 		/* Constraints */
 
-		springLayout.putConstraint(SpringLayout.NORTH, labelName, 3, SpringLayout.NORTH, textFieldName);
-		springLayout.putConstraint(SpringLayout.WEST, labelName, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.EAST, labelName, -5, SpringLayout.WEST, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.NORTH, textFieldName, 10, SpringLayout.NORTH, exportDir);;
-		springLayout.putConstraint(SpringLayout.WEST, textFieldName, 0, SpringLayout.WEST, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.EAST, textFieldName, 0, SpringLayout.EAST, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.WEST, optionSeparator, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.EAST, optionSeparator, -10, SpringLayout.EAST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, optionSeparator, 10, SpringLayout.SOUTH, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.EAST, btnBrowserDir, -10, SpringLayout.EAST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, textFieldDestination, 10, SpringLayout.SOUTH, textFieldName);
-		springLayout.putConstraint(SpringLayout.WEST, textFieldDestination, 5, SpringLayout.EAST, labelExportDir);
-		springLayout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
-		springLayout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
-		springLayout.putConstraint(SpringLayout.WEST, labelExportDir, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, checkBoxOptimize, 5, SpringLayout.SOUTH, optionSeparator);
-		springLayout.putConstraint(SpringLayout.WEST, checkBoxOptimize, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, checkBoxDisplayProps, 0, SpringLayout.SOUTH, checkBoxOptimize);
-		springLayout.putConstraint(SpringLayout.WEST, checkBoxDisplayProps, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, checkBoxElementNames, 0, SpringLayout.SOUTH, checkBoxDisplayProps);
-		springLayout.putConstraint(SpringLayout.WEST, checkBoxElementNames, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.WEST, separator, 10, SpringLayout.WEST, exportDir);
-		springLayout.putConstraint(SpringLayout.EAST, separator, -10, SpringLayout.EAST, exportDir);
-		springLayout.putConstraint(SpringLayout.NORTH, separator, 5, SpringLayout.SOUTH, checkBoxElementNames);
-		springLayout.putConstraint(SpringLayout.SOUTH, separator, 5, SpringLayout.SOUTH, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, labelName, 3, SpringLayout.NORTH, textFieldName);
+        springLayout.putConstraint(SpringLayout.WEST, labelName, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.EAST, labelName, -5, SpringLayout.WEST, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.NORTH, textFieldName, 10, SpringLayout.NORTH, exportDir);
+        springLayout.putConstraint(SpringLayout.WEST, textFieldName, 0, SpringLayout.WEST, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.EAST, textFieldName, 0, SpringLayout.EAST, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.WEST, optionSeparator, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.EAST, optionSeparator, -10, SpringLayout.EAST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, optionSeparator, 10, SpringLayout.SOUTH, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.EAST, btnBrowserDir, -10, SpringLayout.EAST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, textFieldDestination, 10, SpringLayout.SOUTH, textFieldName);
+        springLayout.putConstraint(SpringLayout.WEST, textFieldDestination, 5, SpringLayout.EAST, labelExportDir);
+        springLayout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
+        springLayout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
+        springLayout.putConstraint(SpringLayout.WEST, labelExportDir, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, checkBoxOptimize, 5, SpringLayout.SOUTH, optionSeparator);
+        springLayout.putConstraint(SpringLayout.WEST, checkBoxOptimize, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, checkBoxDisplayProps, 0, SpringLayout.SOUTH, checkBoxOptimize);
+        springLayout.putConstraint(SpringLayout.WEST, checkBoxDisplayProps, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, checkBoxElementNames, 0, SpringLayout.SOUTH, checkBoxDisplayProps);
+        springLayout.putConstraint(SpringLayout.WEST, checkBoxElementNames, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.WEST, separator, 10, SpringLayout.WEST, exportDir);
+        springLayout.putConstraint(SpringLayout.EAST, separator, -10, SpringLayout.EAST, exportDir);
+        springLayout.putConstraint(SpringLayout.NORTH, separator, 5, SpringLayout.SOUTH, checkBoxElementNames);
+        springLayout.putConstraint(SpringLayout.SOUTH, separator, 5, SpringLayout.SOUTH, exportDir);
 
-		panel.setPreferredSize(panel.getPreferredSize());
-		panel.add(exportDir, BorderLayout.CENTER);
+        panel.setPreferredSize(panel.getPreferredSize());
+        panel.add(exportDir, BorderLayout.CENTER);
 
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
 
-		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
-
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new AbstractAction()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				dialog.dispose();
-			}
-		});
-		buttons.add(btnCancel);
-
-		JButton btnExport = new JButton("Export");
-		btnExport.addActionListener(e ->
-		{
-			String name = textFieldName.getText().trim();
-			if(!textFieldDestination.getText().isEmpty() && !name.isEmpty())
-			{
-				File destination = new File(textFieldDestination.getText());
-				destination.mkdirs();
-
-				File modelFile = new File(destination, textFieldName.getText() + ".json");
-				if(modelFile.exists())
-				{
-					int returnVal = JOptionPane.showConfirmDialog(dialog, "A file for that name already exists in the directory. Are you sure you want to override it?", "Warning", JOptionPane.YES_NO_OPTION);
-					if(returnVal != JOptionPane.YES_OPTION)
-					{
-						return;
-					}
-				}
-
-				try
-				{
-					modelFile.createNewFile();
-				}
-				catch(IOException e1)
-				{
-					JOptionPane.showMessageDialog(dialog, "Unable to create the file. Check that your destination folder is writable", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-
-				dialog.dispose();
-
-				Exporter exporter = new Exporter(creator.getElementManager());
-				exporter.setOptimize(checkBoxOptimize.isSelected());
-				exporter.setDisplayProps(checkBoxDisplayProps.isSelected());
-				exporter.setIncludeNames(checkBoxElementNames.isSelected());
-				if(exporter.writeJSONFile(modelFile) == null)
-				{
-					modelFile.delete();
-					JOptionPane.showMessageDialog(dialog, "An error occured while exporting the model. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				else
-				{
-					Settings.setExportJSONDir(textFieldDestination.getText());
-					int returnVal = JOptionPane.showOptionDialog(dialog, "Model exported successfully!", "Success", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[] { "Open Folder", "Close" }, "Close");
-					if(returnVal == 0)
-					{
-						Desktop desktop = Desktop.getDesktop();
-						try
-						{
-							desktop.open(destination);
-						}
-						catch(IOException e1)
-						{
-							e1.printStackTrace();
-						}
-					}
-				}
-			}
-		});
-		buttons.add(btnExport);
-
-		panel.add(buttons, BorderLayout.SOUTH);
-
-		dialog.add(panel);
-
-		dialog.pack();
-		dialog.setResizable(false);
-		dialog.setLocationRelativeTo(null);
-		dialog.setVisible(true);
-	}
-
-	public static void settings(ModelCreator creator)
-	{
-		JDialog dialog = new JDialog(creator, "Settings", Dialog.ModalityType.APPLICATION_MODAL);
-
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.setPreferredSize(new Dimension(500, 300));
-		dialog.add(panel);
-
-		JTabbedPane tabbedPane = new JTabbedPane();
-		panel.add(tabbedPane, BorderLayout.CENTER);
-
-		SpringLayout generalSpringLayout = new SpringLayout();
-		JPanel generalPanel = new JPanel(generalSpringLayout);
-		tabbedPane.addTab("General", generalPanel);
-
-		JLabel labelUndoLimit = new JLabel("Undo / Redo Limit");
-		generalPanel.add(labelUndoLimit);
-
-		final Boolean[] changed = {false};
-		SpinnerNumberModel undoSpinnerNumberModel = new SpinnerNumberModel();
-		undoSpinnerNumberModel.setMinimum(1);
-		JSpinner undoLimitSpinner = new JSpinner(undoSpinnerNumberModel);
-		undoLimitSpinner.setPreferredSize(new Dimension(40, 24));
-		undoLimitSpinner.setValue(Settings.getUndoLimit());
-		undoLimitSpinner.addChangeListener(e ->
-		{
-            if(!changed[0])
-			{
-				JOptionPane.showMessageDialog(dialog, "Increasing the undo/redo limit will increase the amount of memory the program use. Change this setting with caution.", "Warning", JOptionPane.WARNING_MESSAGE);
-				changed[0] = true;
-			}
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.addActionListener(new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                dialog.dispose();
+            }
         });
-		generalPanel.add(undoLimitSpinner);
+        buttons.add(btnCancel);
 
-		JSeparator separator = new JSeparator();
-		generalPanel.add(separator);
+        JButton btnExport = new JButton("Export");
+        btnExport.addActionListener(e ->
+        {
+            String name = textFieldName.getText().trim();
+            if(!textFieldDestination.getText().isEmpty() && !name.isEmpty())
+            {
+                File destination = new File(textFieldDestination.getText());
+                destination.mkdirs();
 
-		String path = Settings.getAssetsDir() != null ? Settings.getAssetsDir() : "";
-		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, path);
-		generalPanel.add(texturePathPanel);
+                File modelFile = new File(destination, textFieldName.getText() + ".json");
+                if(modelFile.exists())
+                {
+                    int returnVal = JOptionPane.showConfirmDialog(dialog, "A file for that name already exists in the directory. Are you sure you want to override it?", "Warning", JOptionPane.YES_NO_OPTION);
+                    if(returnVal != JOptionPane.YES_OPTION)
+                    {
+                        return;
+                    }
+                }
 
-		generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.WEST, undoLimitSpinner, 5, SpringLayout.EAST, labelUndoLimit);
-		generalSpringLayout.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, separator, 10, SpringLayout.SOUTH, undoLimitSpinner);
-		generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
-		generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
+                try
+                {
+                    modelFile.createNewFile();
+                }
+                catch(IOException e1)
+                {
+                    JOptionPane.showMessageDialog(dialog, "Unable to create the file. Check that your destination folder is writable", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
-		JLabel labelComingSoon = new JLabel("Coming soon!");
-		labelComingSoon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		tabbedPane.addTab("Appearance", labelComingSoon);
+                dialog.dispose();
 
-		dialog.addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosed(WindowEvent e)
-			{
-				Settings.setAssetsDir(getDirectoryFromSelector(texturePathPanel));
-				Settings.setUndoLimit((int) undoLimitSpinner.getValue());
-			}
-		});
+                Exporter exporter = new Exporter(creator.getElementManager());
+                exporter.setOptimize(checkBoxOptimize.isSelected());
+                exporter.setDisplayProps(checkBoxDisplayProps.isSelected());
+                exporter.setIncludeNames(checkBoxElementNames.isSelected());
+                if(exporter.writeJSONFile(modelFile) == null)
+                {
+                    modelFile.delete();
+                    JOptionPane.showMessageDialog(dialog, "An error occured while exporting the model. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else
+                {
+                    Settings.setExportJSONDir(textFieldDestination.getText());
+                    int returnVal = JOptionPane.showOptionDialog(dialog, "Model exported successfully!", "Success", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{"Open Folder", "Close"}, "Close");
+                    if(returnVal == 0)
+                    {
+                        Desktop desktop = Desktop.getDesktop();
+                        try
+                        {
+                            desktop.open(destination);
+                        }
+                        catch(IOException e1)
+                        {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+        buttons.add(btnExport);
 
-		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		dialog.requestFocus();
-		dialog.pack();
-		dialog.setResizable(false);
-		dialog.setLocationRelativeTo(null);
-		dialog.setVisible(true);
-	}
+        panel.add(buttons, BorderLayout.SOUTH);
 
-	private static JPanel createDirectorySelector(String label, Component parent, String defaultDir)
-	{
-		SpringLayout layout = new SpringLayout();
-		JPanel panel = new JPanel(layout);
-		panel.setPreferredSize(new Dimension(100, 24));
+        dialog.add(panel);
 
-		JTextField textFieldDestination = new JTextField();
-		textFieldDestination.setPreferredSize(new Dimension(100, 24));
-		textFieldDestination.setText(defaultDir);
-		textFieldDestination.setEditable(false);
-		textFieldDestination.setFocusable(false);
-		textFieldDestination.setCaretPosition(0);
-		panel.add(textFieldDestination);
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 
-		JButton btnBrowserDir = new JButton("Browse");
-		btnBrowserDir.setPreferredSize(new Dimension(80, 24));
-		btnBrowserDir.setIcon(Icons.load);
-		btnBrowserDir.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Select a Folder");
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			chooser.setApproveButtonText("Select");
-			chooser.setCurrentDirectory(new File(defaultDir));
-			int returnVal = chooser.showOpenDialog(parent);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				File file = chooser.getSelectedFile();
-				if(file != null)
-				{
-					textFieldDestination.setText(file.getAbsolutePath());
-				}
-			}
-		});
-		panel.add(btnBrowserDir);
+    public static void settings(ModelCreator creator)
+    {
+        JDialog dialog = new JDialog(creator, "Settings", Dialog.ModalityType.APPLICATION_MODAL);
 
-		JLabel labelExportDir = new JLabel(label);
-		panel.add(labelExportDir);
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(500, 300));
+        dialog.add(panel);
 
-		layout.putConstraint(SpringLayout.NORTH, textFieldDestination, 0, SpringLayout.NORTH, panel);
-		layout.putConstraint(SpringLayout.WEST, textFieldDestination, 10, SpringLayout.EAST, labelExportDir);
-		layout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
-		layout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
-		layout.putConstraint(SpringLayout.WEST, labelExportDir, 0, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
-		layout.putConstraint(SpringLayout.EAST, btnBrowserDir, 0, SpringLayout.EAST, panel);
+        JTabbedPane tabbedPane = new JTabbedPane();
+        panel.add(tabbedPane, BorderLayout.CENTER);
 
-		return panel;
-	}
+        SpringLayout generalSpringLayout = new SpringLayout();
+        JPanel generalPanel = new JPanel(generalSpringLayout);
+        tabbedPane.addTab("General", generalPanel);
 
-	public static String getDirectoryFromSelector(JPanel panel)
-	{
-		for(Component component : panel.getComponents())
-		{
-			if(component instanceof JTextField)
-			{
-				return ((JTextField) component).getText();
-			}
-		}
-		return "";
-	}
+        JLabel labelUndoLimit = new JLabel("Undo / Redo Limit");
+        generalPanel.add(labelUndoLimit);
 
-	public static void extractAssets(ModelCreator creator)
-	{
-		JDialog dialog = new JDialog(creator, "Extract Assets", Dialog.ModalityType.APPLICATION_MODAL);
-		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        final Boolean[] changed = {false};
+        SpinnerNumberModel undoSpinnerNumberModel = new SpinnerNumberModel();
+        undoSpinnerNumberModel.setMinimum(1);
+        JSpinner undoLimitSpinner = new JSpinner(undoSpinnerNumberModel);
+        undoLimitSpinner.setPreferredSize(new Dimension(40, 24));
+        undoLimitSpinner.setValue(Settings.getUndoLimit());
+        undoLimitSpinner.addChangeListener(e ->
+        {
+            if(!changed[0])
+            {
+                JOptionPane.showMessageDialog(dialog, "Increasing the undo/redo limit will increase the amount of memory the program use. Change this setting with caution.", "Warning", JOptionPane.WARNING_MESSAGE);
+                changed[0] = true;
+            }
+        });
+        generalPanel.add(undoLimitSpinner);
 
-		SpringLayout layout = new SpringLayout();
-		JPanel panel = new JPanel(layout);
-		panel.setPreferredSize(new Dimension(300, 150));
-		dialog.add(panel);
+        JSeparator separator = new JSeparator();
+        generalPanel.add(separator);
 
-		JLabel labelInfo = new JLabel("<html>This tool allows you to extract Minecraft's assets. The versions listed below are the ones you have downloaded with the Java edition of the game.</html>");
-		panel.add(labelInfo);
+        String path = Settings.getAssetsDir() != null ? Settings.getAssetsDir() : "";
+        JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, path);
+        generalPanel.add(texturePathPanel);
 
-		JLabel labelMinecraftAssets = new JLabel("Minecraft Version");
-		panel.add(labelMinecraftAssets);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, undoLimitSpinner, 5, SpringLayout.EAST, labelUndoLimit);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, separator, 10, SpringLayout.SOUTH, undoLimitSpinner);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
 
-		JComboBox<String> comboBoxMinecraftVersions = new JComboBox<>();
-		comboBoxMinecraftVersions.setPreferredSize(new Dimension(40, 24));
-		Util.getMinecraftVersions().forEach(comboBoxMinecraftVersions::addItem);
-		panel.add(comboBoxMinecraftVersions);
+        JLabel labelComingSoon = new JLabel("Coming soon!");
+        labelComingSoon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tabbedPane.addTab("Appearance", labelComingSoon);
 
-		JButton btnExtract = new JButton("Extract");
-		btnExtract.setIcon(Icons.extract);
-		btnExtract.setPreferredSize(new Dimension(80, 24));
-		btnExtract.addActionListener(e -> {
-			Util.extractMinecraftAssets((String) comboBoxMinecraftVersions.getSelectedItem(), dialog);
-			dialog.dispose();
-		});
-		panel.add(btnExtract);
+        dialog.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosed(WindowEvent e)
+            {
+                Settings.setAssetsDir(getDirectoryFromSelector(texturePathPanel));
+                Settings.setUndoLimit((int) undoLimitSpinner.getValue());
+            }
+        });
 
-		layout.putConstraint(SpringLayout.NORTH, labelInfo, 10, SpringLayout.NORTH, panel);
-		layout.putConstraint(SpringLayout.EAST, labelInfo, -10, SpringLayout.EAST, panel);
-		layout.putConstraint(SpringLayout.WEST, labelInfo, 10, SpringLayout.WEST, panel);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.requestFocus();
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 
-		layout.putConstraint(SpringLayout.NORTH, labelMinecraftAssets, 2, SpringLayout.NORTH, comboBoxMinecraftVersions);
-		layout.putConstraint(SpringLayout.WEST, labelMinecraftAssets, 10, SpringLayout.WEST, panel);
-		layout.putConstraint(SpringLayout.NORTH, comboBoxMinecraftVersions, 15, SpringLayout.SOUTH, labelInfo);
-		layout.putConstraint(SpringLayout.WEST, comboBoxMinecraftVersions, 10, SpringLayout.EAST, labelMinecraftAssets);
-		layout.putConstraint(SpringLayout.EAST, comboBoxMinecraftVersions, -10, SpringLayout.EAST, panel);
-		layout.putConstraint(SpringLayout.SOUTH, btnExtract, -10, SpringLayout.SOUTH, panel);
-		layout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, panel);
+    private static JPanel createDirectorySelector(String label, Component parent, String defaultDir)
+    {
+        SpringLayout layout = new SpringLayout();
+        JPanel panel = new JPanel(layout);
+        panel.setPreferredSize(new Dimension(100, 24));
 
-		dialog.pack();
-		dialog.setResizable(false);
-		dialog.setLocationRelativeTo(null);
-		dialog.setVisible(true);
-	}
+        JTextField textFieldDestination = new JTextField();
+        textFieldDestination.setPreferredSize(new Dimension(100, 24));
+        textFieldDestination.setText(defaultDir);
+        textFieldDestination.setEditable(false);
+        textFieldDestination.setFocusable(false);
+        textFieldDestination.setCaretPosition(0);
+        panel.add(textFieldDestination);
+
+        JButton btnBrowserDir = new JButton("Browse");
+        btnBrowserDir.setPreferredSize(new Dimension(80, 24));
+        btnBrowserDir.setIcon(Icons.load);
+        btnBrowserDir.addActionListener(e ->
+        {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setDialogTitle("Select a Folder");
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setApproveButtonText("Select");
+            chooser.setCurrentDirectory(new File(defaultDir));
+            int returnVal = chooser.showOpenDialog(parent);
+            if(returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                File file = chooser.getSelectedFile();
+                if(file != null)
+                {
+                    textFieldDestination.setText(file.getAbsolutePath());
+                }
+            }
+        });
+        panel.add(btnBrowserDir);
+
+        JLabel labelExportDir = new JLabel(label);
+        panel.add(labelExportDir);
+
+        layout.putConstraint(SpringLayout.NORTH, textFieldDestination, 0, SpringLayout.NORTH, panel);
+        layout.putConstraint(SpringLayout.WEST, textFieldDestination, 10, SpringLayout.EAST, labelExportDir);
+        layout.putConstraint(SpringLayout.EAST, textFieldDestination, -10, SpringLayout.WEST, btnBrowserDir);
+        layout.putConstraint(SpringLayout.NORTH, labelExportDir, 3, SpringLayout.NORTH, textFieldDestination);
+        layout.putConstraint(SpringLayout.WEST, labelExportDir, 0, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, btnBrowserDir, 0, SpringLayout.NORTH, textFieldDestination);
+        layout.putConstraint(SpringLayout.EAST, btnBrowserDir, 0, SpringLayout.EAST, panel);
+
+        return panel;
+    }
+
+    public static String getDirectoryFromSelector(JPanel panel)
+    {
+        for(Component component : panel.getComponents())
+        {
+            if(component instanceof JTextField)
+            {
+                return ((JTextField) component).getText();
+            }
+        }
+        return "";
+    }
+
+    public static void extractAssets(ModelCreator creator)
+    {
+        JDialog dialog = new JDialog(creator, "Extract Assets", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        SpringLayout layout = new SpringLayout();
+        JPanel panel = new JPanel(layout);
+        panel.setPreferredSize(new Dimension(300, 150));
+        dialog.add(panel);
+
+        JLabel labelInfo = new JLabel("<html>This tool allows you to extract Minecraft's assets. The versions listed below are the ones you have downloaded with the Java edition of the game.</html>");
+        panel.add(labelInfo);
+
+        JLabel labelMinecraftAssets = new JLabel("Minecraft Version");
+        panel.add(labelMinecraftAssets);
+
+        JComboBox<String> comboBoxMinecraftVersions = new JComboBox<>();
+        comboBoxMinecraftVersions.setPreferredSize(new Dimension(40, 24));
+        Util.getMinecraftVersions().forEach(comboBoxMinecraftVersions::addItem);
+        panel.add(comboBoxMinecraftVersions);
+
+        JButton btnExtract = new JButton("Extract");
+        btnExtract.setIcon(Icons.extract);
+        btnExtract.setPreferredSize(new Dimension(80, 24));
+        btnExtract.addActionListener(e ->
+        {
+            Util.extractMinecraftAssets((String) comboBoxMinecraftVersions.getSelectedItem(), dialog);
+            dialog.dispose();
+        });
+        panel.add(btnExtract);
+
+        layout.putConstraint(SpringLayout.NORTH, labelInfo, 10, SpringLayout.NORTH, panel);
+        layout.putConstraint(SpringLayout.EAST, labelInfo, -10, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.WEST, labelInfo, 10, SpringLayout.WEST, panel);
+
+        layout.putConstraint(SpringLayout.NORTH, labelMinecraftAssets, 2, SpringLayout.NORTH, comboBoxMinecraftVersions);
+        layout.putConstraint(SpringLayout.WEST, labelMinecraftAssets, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, comboBoxMinecraftVersions, 15, SpringLayout.SOUTH, labelInfo);
+        layout.putConstraint(SpringLayout.WEST, comboBoxMinecraftVersions, 10, SpringLayout.EAST, labelMinecraftAssets);
+        layout.putConstraint(SpringLayout.EAST, comboBoxMinecraftVersions, -10, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, btnExtract, -10, SpringLayout.SOUTH, panel);
+        layout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, panel);
+
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
 }

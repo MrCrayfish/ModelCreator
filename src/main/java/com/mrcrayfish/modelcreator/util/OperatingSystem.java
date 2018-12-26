@@ -5,5 +5,9 @@ package com.mrcrayfish.modelcreator.util;
  */
 public enum OperatingSystem
 {
-    WINDOWS, MAC, LINUX, SOLARIS, UNKNOWN
+    WINDOWS,
+    MAC,
+    LINUX,
+    SOLARIS,
+    UNKNOWN
 }

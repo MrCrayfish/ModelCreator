@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public class Importer
 {
-    private Map<String, String> textureMap = new HashMap<String, String>();
+    private Map<String, String> textureMap = new HashMap<>();
     private String[] faceNames = {"north", "east", "south", "west", "up", "down"};
 
     // Input File
@@ -28,17 +28,10 @@ public class Importer
     // Model Variables
     private ElementManager manager;
 
-    private boolean ignoreTextures = false;
-
     public Importer(ElementManager manager, String outputPath)
     {
         this.manager = manager;
         this.inputPath = outputPath;
-    }
-
-    public void ignoreTextureLoading()
-    {
-        this.ignoreTextures = true;
     }
 
     public void importFromJSON()

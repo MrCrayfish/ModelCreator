@@ -4,22 +4,22 @@ import java.io.File;
 
 public class PendingScreenshot
 {
-	private File file = null;
-	private ScreenshotCallback callback;
-	
-	public PendingScreenshot(File file, ScreenshotCallback callback)
-	{
-		this.file = file;
-		this.callback = callback;
-	}
+    private File file = null;
+    private ScreenshotCallback callback;
 
-	public File getFile()
-	{
-		return file;
-	}
+    public PendingScreenshot(File file, ScreenshotCallback callback)
+    {
+        this.file = file;
+        this.callback = callback;
+    }
 
-	public ScreenshotCallback getCallback()
-	{
-		return callback;
-	}
+    public File getFile()
+    {
+        return file;
+    }
+
+    public ScreenshotCallback getCallback()
+    {
+        return callback;
+    }
 }

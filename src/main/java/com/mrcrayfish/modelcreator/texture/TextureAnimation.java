@@ -7,151 +7,157 @@ import java.util.Map;
 
 public class TextureAnimation
 {
-	private int width = 16, height = 16;
-	
-	private List<Integer> frames = new ArrayList<Integer>();
-	private Map<Integer, Integer> customTimes = new HashMap<Integer, Integer>();
-	private int frametime = 1;
-	private boolean interpolate = false;
+    private int width = 16, height = 16;
 
-	public void setSize(int width, int height)
-	{
-		this.width = width;
-		this.height = height;
-	}
+    private List<Integer> frames = new ArrayList<>();
+    private Map<Integer, Integer> customTimes = new HashMap<>();
+    private int frametime = 1;
+    private boolean interpolate = false;
 
-	public int getWidth()
-	{
-		return width;
-	}
+    public void setSize(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+    }
 
-	public int getHeight()
-	{
-		return height;
-	}
+    public int getWidth()
+    {
+        return width;
+    }
 
-	public void setFrameTime(int frametime)
-	{
-		this.frametime = frametime;
-	}
+    public int getHeight()
+    {
+        return height;
+    }
 
-	public void setFrames(List<Integer> frameList)
-	{
-		frames = new ArrayList<Integer>();
-		frames.addAll(frameList);
-	}
+    public void setFrameTime(int frametime)
+    {
+        this.frametime = frametime;
+    }
 
-	public void setCustomTimes(Map<Integer, Integer> times)
-	{
-		customTimes = new HashMap<Integer, Integer>();
-		customTimes.putAll(times);
-	}
+    public void setFrames(List<Integer> frameList)
+    {
+        frames = new ArrayList<>();
+        frames.addAll(frameList);
+    }
 
-	public void setInterpolate(boolean interpolate)
-	{
-		this.interpolate = interpolate;
-	}
+    public void setCustomTimes(Map<Integer, Integer> times)
+    {
+        customTimes = new HashMap<>();
+        customTimes.putAll(times);
+    }
 
-	public boolean isInterpolated()
-	{
-		return interpolate;
-	}
+    public void setInterpolate(boolean interpolate)
+    {
+        this.interpolate = interpolate;
+    }
 
-	public int getFrameCount()
-	{
-		return frames.size();
-	}
+    public boolean isInterpolated()
+    {
+        return interpolate;
+    }
 
-	public int getCurrentAnimationFrame()
-	{
-		long maxTime = 0;
-		for (int i = 0; i < frames.size(); i++)
-		{
-			maxTime += getFrameTime(i);
-		}
+    public int getFrameCount()
+    {
+        return frames.size();
+    }
 
-		if (maxTime != 0) {
-			long animTime = System.currentTimeMillis() % maxTime;
+    public int getCurrentAnimationFrame()
+    {
+        long maxTime = 0;
+        for(int i = 0; i < frames.size(); i++)
+        {
+            maxTime += getFrameTime(i);
+        }
 
-			for (int i = 0; i < frames.size(); i++) {
-				if (animTime <= getFrameTime(i)) {
-					return frames.get(i);
-				}
-				animTime -= getFrameTime(i);
-			}
-		}
+        if(maxTime != 0)
+        {
+            long animTime = System.currentTimeMillis() % maxTime;
 
-		return 0;
-	}
+            for(int i = 0; i < frames.size(); i++)
+            {
+                if(animTime <= getFrameTime(i))
+                {
+                    return frames.get(i);
+                }
+                animTime -= getFrameTime(i);
+            }
+        }
 
-	public int getNextAnimationFrame()
-	{
-		if (frames.size() < 1)
-		{
-			return 0;
-		}
+        return 0;
+    }
 
-		long maxTime = 0;
-		for (int i = 0; i < frames.size(); i++)
-		{
-			maxTime += getFrameTime(i);
-		}
+    public int getNextAnimationFrame()
+    {
+        if(frames.size() < 1)
+        {
+            return 0;
+        }
 
-		long animTime = System.currentTimeMillis() % maxTime;
+        long maxTime = 0;
+        for(int i = 0; i < frames.size(); i++)
+        {
+            maxTime += getFrameTime(i);
+        }
 
-		for (int i = 0; i < frames.size(); i++)
-		{
-			if (animTime <= getFrameTime(i))
-			{
-				if (i < frames.size() - 1)
-					return frames.get(i + 1);
-				else
-					return frames.get(0);
-			}
-			animTime -= getFrameTime(i);
-		}
+        long animTime = System.currentTimeMillis() % maxTime;
 
-		return 0;
-	}
+        for(int i = 0; i < frames.size(); i++)
+        {
+            if(animTime <= getFrameTime(i))
+            {
+                if(i < frames.size() - 1)
+                {
+                    return frames.get(i + 1);
+                }
+                else
+                {
+                    return frames.get(0);
+                }
+            }
+            animTime -= getFrameTime(i);
+        }
 
-	public long getFrameTime(int frame)
-	{
-		if (customTimes != null && customTimes.containsKey(frame))
-		{
-			return customTimes.get(frame) * 50L;
-		}
-		return frametime * 50L;
-	}
+        return 0;
+    }
 
-	public double getFrameInterpolation()
-	{
-		long maxTime = 0;
-		for (int i = 0; i < frames.size(); i++)
-		{
-			maxTime += getFrameTime(i);
-		}
+    public long getFrameTime(int frame)
+    {
+        if(customTimes != null && customTimes.containsKey(frame))
+        {
+            return customTimes.get(frame) * 50L;
+        }
+        return frametime * 50L;
+    }
 
-		long animTime = System.currentTimeMillis() % maxTime;
+    public double getFrameInterpolation()
+    {
+        long maxTime = 0;
+        for(int i = 0; i < frames.size(); i++)
+        {
+            maxTime += getFrameTime(i);
+        }
 
-		for (int i = 0; i < frames.size(); i++)
-		{
-			if (animTime <= getFrameTime(i))
-			{
-				double percent = animTime / (double) getFrameTime(i);
-				return percent;
-			}
-			animTime -= getFrameTime(i);
-		}
+        long animTime = System.currentTimeMillis() % maxTime;
 
-		return 0;
-	}
+        for(int i = 0; i < frames.size(); i++)
+        {
+            if(animTime <= getFrameTime(i))
+            {
+                return animTime / (double) getFrameTime(i);
+            }
+            animTime -= getFrameTime(i);
+        }
 
-	public int getPasses()
-	{
-		if (isInterpolated() && getFrameCount() > 1)
-		{
-			return 2;
-		}
-		return 1;
-	}
+        return 0;
+    }
+
+    public int getPasses()
+    {
+        if(isInterpolated() && getFrameCount() > 1)
+        {
+            return 2;
+        }
+        return 1;
+    }
 }

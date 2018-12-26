@@ -105,19 +105,6 @@ public class Element
 		return faces;
 	}
 
-	public int getLastValidFace()
-	{
-		int id = 0;
-		for (Face face : faces)
-		{
-			if (face.isEnabled() && face.getTexture() != null)
-			{
-				id = face.getSide();
-			}
-		}
-		return id;
-	}
-
 	public FaceDimension getFaceDimension(int side)
 	{
 		switch (side)

@@ -162,6 +162,7 @@ public class ProjectManager
 	{
 		Exporter exporter = new Exporter(manager);
 		exporter.setOptimize(false);
+		exporter.setIncludeNonTexturedFaces(true);
 		return exporter.writeJSONFile(new File("model.json"));
 	}
 

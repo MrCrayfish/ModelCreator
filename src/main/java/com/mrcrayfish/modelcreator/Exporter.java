@@ -28,6 +28,7 @@ public class Exporter
 	private boolean optimize = true;
 	private boolean includeNames = true;
 	private boolean displayProps = true;
+	private boolean includeNonTexturedFaces = false;
 
 	// Model Variables
 	private ElementManager manager;
@@ -51,6 +52,11 @@ public class Exporter
 	public void setDisplayProps(boolean displayProps)
 	{
 		this.displayProps = displayProps;
+	}
+
+	public void setIncludeNonTexturedFaces(boolean includeNonTexturedFaces)
+	{
+		this.includeNonTexturedFaces = includeNonTexturedFaces;
 	}
 
 	public File export(File file)
@@ -90,7 +96,7 @@ public class Exporter
 		{
 			for (Face face : cuboid.getAllFaces())
 			{
-				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled() && !optimize || face.isVisible(manager))
+				if (face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled() && (!optimize || face.isVisible(manager)))
 				{
 					if (!textureList.contains(face.getTextureLocation() + face.getTextureName()))
 					{
@@ -219,27 +225,44 @@ public class Exporter
 	{
 		writer.write(space(3) + "\"faces\": {");
 		writer.newLine();
+
+		/* Creates a list of all the valid faces to export */
+		List<Face> validFaces = new ArrayList<>();
 		for (Face face : cuboid.getAllFaces())
 		{
-			if (face.isEnabled() && textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1 && !optimize || face.isVisible(manager))
+			if (face.isEnabled() && (includeNonTexturedFaces || textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1) && !optimize || face.isVisible(manager))
 			{
-				writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
-				writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-				writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
-				if (face.getRotation() > 0)
-					writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
-				if (face.isCullfaced())
-					writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
-				writer.write(" }");
-				if (face.getSide() != cuboid.getLastValidFace())
-				{
-					writer.write(",");
-					writer.newLine();
-				}
+				validFaces.add(face);
 			}
 		}
+
+		/* Writes the valid faces to the writer */
+		for(int i = 0; i < validFaces.size() - 1; i++)
+		{
+			Face face = validFaces.get(i);
+			writeFace(writer, face);
+			writer.write(",");
+			writer.newLine();
+		}
+		if(validFaces.size() > 0)
+		{
+			writeFace(writer, validFaces.get(validFaces.size() - 1));
+		}
+
 		writer.newLine();
 		writer.write(space(3) + "}");
+	}
+
+	private void writeFace(BufferedWriter writer, Face face) throws IOException
+	{
+		writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
+		writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
+		writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
+		if (face.getRotation() > 0)
+			writer.write(", \"rotation\": " + (int) face.getRotation() * 90);
+		if (face.isCullfaced())
+			writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
+		writer.write(" }");
 	}
 
 	private void writeDisplay(BufferedWriter writer) throws IOException

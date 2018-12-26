@@ -45,6 +45,6 @@ public class Start
 			e.printStackTrace();
 		}
 
-		new ModelCreator(Constants.NAME + " - " + Constants.VERSION);
+		new ModelCreator(Constants.NAME + " v" + Constants.VERSION);
 	}
 }

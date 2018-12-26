@@ -11,6 +11,7 @@ public class Settings
 	private static final String EXPORT_JSON_DIR = "export_json_dir";
 	private static final String TRANSPARENCY_MODE = "transparency_mode";
 	private static final String UNDO_LIMIT = "undo_limit";
+	private static final String ASSESTS_DIR = "assets_dir";
 
 	public static String getImageImportDir()
 	{
@@ -82,6 +83,18 @@ public class Settings
 	{
 		Preferences prefs = getPreferences();
 		prefs.put(EXPORT_JSON_DIR, dir);
+	}
+
+	public static String getAssetsDir()
+	{
+		Preferences prefs = getPreferences();
+		return prefs.get(ASSESTS_DIR, null);
+	}
+
+	public static void setAssetsDir(String dir)
+	{
+		Preferences prefs = getPreferences();
+		prefs.put(ASSESTS_DIR, dir);
 	}
 
 	public static int getUndoLimit()

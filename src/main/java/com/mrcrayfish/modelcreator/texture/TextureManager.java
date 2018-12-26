@@ -41,8 +41,7 @@ public class TextureManager
 {
 	private static List<TextureEntry> textureCache = new ArrayList<TextureEntry>();
 
-	public static Texture cobblestone;
-	public static Texture dirt;
+	private static String texture = null;
 
 	public static File lastLocation = null;
 
@@ -172,8 +171,6 @@ public class TextureManager
 		return null;
 	}
 
-	private static String texture = null;
-
 	public static String display(ElementManager manager)
 	{
 		Font defaultFont = new Font("SansSerif", Font.BOLD, 18);
@@ -221,17 +218,22 @@ public class TextureManager
 					lastLocation = new File(dir);
 			}
 			
-			if (lastLocation != null) {
+			if (lastLocation != null)
+			{
 				chooser.setCurrentDirectory(lastLocation);
 			}
 			else
 			{
 				try
 				{
-					chooser.setCurrentDirectory(new File(ModelCreator.texturePath));
+					if(Settings.getAssetsDir() != null)
+					{
+						chooser.setCurrentDirectory(new File(Settings.getAssetsDir()));
+					}
 				}
-				catch (Exception e1) {
-					e1.printStackTrace();
+				catch (Exception e)
+				{
+					e.printStackTrace();
 				}
 			}
 

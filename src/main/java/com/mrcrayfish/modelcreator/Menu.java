@@ -12,8 +12,6 @@ import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -36,7 +34,6 @@ public class Menu extends JMenuBar
 	private JMenuItem itemSave;
 	private JMenuItem itemImport;
 	private JMenuItem itemExport;
-	private JMenuItem itemTexturePath;
 	private JMenuItem itemSettings;
 	private JMenuItem itemExit;
 
@@ -83,7 +80,6 @@ public class Menu extends JMenuBar
 			itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 			itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
 			itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
-			itemTexturePath = createItem("Set Texture Path...", "Set the base path to look for textures", KeyEvent.VK_S, Icons.texture);
 			itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
 			itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
 		}
@@ -189,24 +185,6 @@ public class Menu extends JMenuBar
 		itemSave.addActionListener(a -> Menu.saveProject(creator));
 		itemImport.addActionListener(e -> Menu.importJson(creator));
 		itemExport.addActionListener(e -> Menu.exportJson(creator));
-
-		itemTexturePath.addActionListener(e ->
-		{
-			JFileChooser chooser = new JFileChooser();
-			chooser.setDialogTitle("Texture Path");
-			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-			if (ModelCreator.texturePath != null)
-			{
-				chooser.setCurrentDirectory(new File(ModelCreator.texturePath));
-			}
-
-			int returnVal = chooser.showOpenDialog(null);
-			if (returnVal == JFileChooser.APPROVE_OPTION)
-			{
-				ModelCreator.texturePath = chooser.getSelectedFile().getAbsolutePath();
-			}
-		});
 
 		itemSettings.addActionListener(e -> Menu.settings(creator));
 
@@ -850,7 +828,8 @@ public class Menu extends JMenuBar
 		JSeparator separator = new JSeparator();
 		generalPanel.add(separator);
 
-		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, "");
+		String path = Settings.getAssetsDir() != null ? Settings.getAssetsDir() : "";
+		JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, path);
 		generalPanel.add(texturePathPanel);
 
 		JLabel labelMinecraftAssets = new JLabel("Minecraft Assets");
@@ -887,13 +866,17 @@ public class Menu extends JMenuBar
 		generalSpringLayout.putConstraint(SpringLayout.EAST, btnExtract, -10, SpringLayout.EAST, generalPanel);
 		generalSpringLayout.putConstraint(SpringLayout.NORTH, btnExtract, 10, SpringLayout.SOUTH, texturePathPanel);
 
-		tabbedPane.addTab("Appearance", createDirectorySelector("Texture Path", dialog, ""));
+		JLabel labelComingSoon = new JLabel("Coming soon!");
+		labelComingSoon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		tabbedPane.addTab("Appearance", labelComingSoon);
+
 
 		dialog.addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosed(WindowEvent e)
 			{
+				Settings.setAssetsDir(getDirectoryFromSelector(texturePathPanel));
 				Settings.setUndoLimit((int) undoLimitSpinner.getValue());
 			}
 		});
@@ -929,6 +912,7 @@ public class Menu extends JMenuBar
 			chooser.setDialogTitle("Select a Folder");
 			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			chooser.setApproveButtonText("Select");
+			chooser.setCurrentDirectory(new File(defaultDir));
 			int returnVal = chooser.showOpenDialog(parent);
 			if (returnVal == JFileChooser.APPROVE_OPTION)
 			{
@@ -953,5 +937,17 @@ public class Menu extends JMenuBar
 		layout.putConstraint(SpringLayout.EAST, btnBrowserDir, 0, SpringLayout.EAST, panel);
 
 		return panel;
+	}
+
+	public static String getDirectoryFromSelector(JPanel panel)
+	{
+		for(Component component : panel.getComponents())
+		{
+			if(component instanceof JTextField)
+			{
+				return ((JTextField) component).getText();
+			}
+		}
+		return "";
 	}
 }

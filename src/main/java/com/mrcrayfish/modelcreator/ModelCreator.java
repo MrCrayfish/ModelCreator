@@ -35,8 +35,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ModelCreator extends JFrame
 {
-    // TODO remove static instance
-    public static String texturePath = ".";
     public static boolean transparent = Settings.getTransparencyMode();
 
     // Canvas Variables

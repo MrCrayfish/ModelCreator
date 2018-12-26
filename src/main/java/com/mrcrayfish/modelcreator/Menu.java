@@ -62,8 +62,6 @@ public class Menu extends JMenuBar
 	private JMenuItem itemModelCauldron;
 	private JMenuItem itemModelChair;
 	private JMenuItem itemDonate;
-	private JMenuItem itemPM;
-	private JMenuItem itemMF;
 	private JMenuItem itemGitHub;
 
 	public Menu(ModelCreator creator)
@@ -116,9 +114,7 @@ public class Menu extends JMenuBar
 				itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
 			}
 			itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
-			itemPM = createItem("Planet Minecraft", "Open PMC Post", KeyEvent.VK_P, Icons.planet_minecraft);
-			itemMF = createItem("Minecraft Forum", "Open MF Post", KeyEvent.VK_M, Icons.minecraft_forum);
-			itemGitHub = createItem("Github", "View Source Code", KeyEvent.VK_G, Icons.github);
+			itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_G, Icons.github);
 		}
 
 		initActions();
@@ -130,10 +126,7 @@ public class Menu extends JMenuBar
 		menuHelp.addSeparator();
 		menuHelp.add(menuExamples);
 		menuHelp.addSeparator();
-		menuHelp.add(itemPM);
-		menuHelp.add(itemMF);
 		menuHelp.add(itemGitHub);
-		menuHelp.addSeparator();
 		menuHelp.add(itemDonate);
 
 		menuEdit.add(itemUndo);
@@ -185,17 +178,18 @@ public class Menu extends JMenuBar
 	private void initActions()
 	{
 		itemNew.addActionListener(a -> Menu.newProject(creator));
+
 		itemLoad.addActionListener(a -> Menu.loadProject(creator));
+
 		itemSave.addActionListener(a -> Menu.saveProject(creator));
+
 		itemImport.addActionListener(e -> Menu.importJson(creator));
+
 		itemExport.addActionListener(e -> Menu.exportJson(creator));
 
 		itemSettings.addActionListener(e -> Menu.settings(creator));
 
-		itemExit.addActionListener(e ->
-		{
-			creator.close();
-		});
+		itemExit.addActionListener(e -> creator.close());
 
 		itemTransparency.addActionListener(a ->
 		{
@@ -313,70 +307,43 @@ public class Menu extends JMenuBar
 		itemImgurLink.addActionListener(a ->
 		{
 			creator.activeSidebar = null;
-			creator.startScreenshot(new PendingScreenshot(null, new ScreenshotCallback()
-			{
-				@Override
-				public void callback(File file)
+			creator.startScreenshot(new PendingScreenshot(null, file -> SwingUtilities.invokeLater(() ->
+            {
+				try
 				{
-					SwingUtilities.invokeLater(new Runnable()
+					String url = Uploader.upload(file);
+
+					JOptionPane message = new JOptionPane();
+					String title;
+
+					if(url != null && !url.equals("null"))
 					{
-						@Override
-						public void run()
-						{
-							try
-							{
-								String url = Uploader.upload(file);
+						StringSelection text = new StringSelection(url);
+						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+						title = "Success";
+						message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
+					}
+					else
+					{
+						title = "Error";
+						message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
+					}
 
-								JOptionPane message = new JOptionPane();
-								String title;
-
-								if (url != null && !url.equals("null"))
-								{
-									StringSelection text = new StringSelection(url);
-									Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
-									title = "Success";
-									message.setMessage("<html><b>" + url + "</b> has been copied to your clipboard.</html>");
-								}
-								else
-								{
-									title = "Error";
-									message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
-								}
-
-								JDialog dialog = message.createDialog(Menu.this, title);
-								dialog.setLocationRelativeTo(null);
-								dialog.setModal(false);
-								dialog.setVisible(true);
-							}
-							catch (Exception e)
-							{
-								e.printStackTrace();
-							}
-						}
-					});
+					JDialog dialog = message.createDialog(Menu.this, title);
+					dialog.setLocationRelativeTo(null);
+					dialog.setModal(false);
+					dialog.setVisible(true);
 				}
-			}));
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			})));
 		});
 
-		itemMF.addActionListener(a ->
-		{
-			JOptionPane.showMessageDialog(null, "This option has not been added yet. Please wait until the next preview.");
-		});
+		itemGitHub.addActionListener(a -> Util.openUrl(Constants.URL_GITHUB));
 
-		itemPM.addActionListener(a ->
-		{
-			JOptionPane.showMessageDialog(null, "This option has not been added yet. Please wait until the next preview.");
-		});
-
-		itemGitHub.addActionListener(a ->
-		{
-			Util.openUrl(Constants.URL_GITHUB);
-		});
-
-		itemDonate.addActionListener(a ->
-		{
-			Util.openUrl(Constants.URL_DONATE);
-		});
+		itemDonate.addActionListener(a -> Util.openUrl(Constants.URL_DONATE));
 
 		itemExtractAssets.addActionListener(a -> extractAssets(creator));
 
@@ -394,15 +361,9 @@ public class Menu extends JMenuBar
 			StateManager.pushState(creator.getElementManager());
 		});
 
-		itemUndo.addActionListener(a ->
-		{
-			StateManager.restorePreviousState(creator.getElementManager());
-		});
+		itemUndo.addActionListener(a -> StateManager.restorePreviousState(creator.getElementManager()));
 
-		itemRedo.addActionListener(a ->
-		{
-			StateManager.restoreNextState(creator.getElementManager());
-		});
+		itemRedo.addActionListener(a -> StateManager.restoreNextState(creator.getElementManager()));
 	}
 
 	private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)

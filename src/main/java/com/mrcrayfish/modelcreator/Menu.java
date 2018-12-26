@@ -667,7 +667,7 @@ public class Menu extends JMenuBar
 		JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
 		exportDir.add(optionSeparator);
 
-		JCheckBox checkBoxOptimize = new JCheckBox("Optimize model");
+		JCheckBox checkBoxOptimize = new JCheckBox("Optimize Model");
 		checkBoxOptimize.setToolTipText("Removes unnecessary faces that can't been seen in the model");
 		checkBoxOptimize.setSelected(true);
 		checkBoxOptimize.setIcon(Icons.light_off);
@@ -676,7 +676,7 @@ public class Menu extends JMenuBar
 		checkBoxOptimize.setRolloverSelectedIcon(Icons.light_on);
 		exportDir.add(checkBoxOptimize);
 
-		JCheckBox checkBoxDisplayProps = new JCheckBox("Add display properties");
+		JCheckBox checkBoxDisplayProps = new JCheckBox("Include Display Properties");
 		checkBoxDisplayProps.setToolTipText("Adds the display definitions (first-person, third-person, etc) to the model file");
 		checkBoxDisplayProps.setSelected(true);
 		checkBoxDisplayProps.setIcon(Icons.light_off);
@@ -685,7 +685,7 @@ public class Menu extends JMenuBar
 		checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
 		exportDir.add(checkBoxDisplayProps);
 
-		JCheckBox checkBoxElementNames = new JCheckBox("Add element names");
+		JCheckBox checkBoxElementNames = new JCheckBox("Include Element Names");
 		checkBoxElementNames.setToolTipText("The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names");
 		checkBoxElementNames.setSelected(true);
 		checkBoxElementNames.setIcon(Icons.light_off);

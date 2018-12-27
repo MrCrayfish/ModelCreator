@@ -6,7 +6,6 @@ import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
-import com.mrcrayfish.modelcreator.screenshot.ScreenshotCallback;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
@@ -808,9 +807,19 @@ public class Menu extends JMenuBar
         generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
 
-        JLabel labelComingSoon = new JLabel("Coming soon!");
-        labelComingSoon.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        tabbedPane.addTab("Appearance", labelComingSoon);
+        JPanel colorGrid = new JPanel();
+        colorGrid.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JScrollPane colorScrollPane = new JScrollPane(colorGrid);
+        colorScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tabbedPane.addTab("Appearance", colorScrollPane);
+
+        colorGrid.add(createColorSelector(dialog, "North Face", Face.getFaceColour(Face.NORTH), createFaceColorProcessor(Face.NORTH)));
+        colorGrid.add(createColorSelector(dialog, "East Face", Face.getFaceColour(Face.EAST), createFaceColorProcessor(Face.EAST)));
+        colorGrid.add(createColorSelector(dialog, "South Face", Face.getFaceColour(Face.SOUTH), createFaceColorProcessor(Face.SOUTH)));
+        colorGrid.add(createColorSelector(dialog, "West Face", Face.getFaceColour(Face.WEST), createFaceColorProcessor(Face.WEST)));
+        colorGrid.add(createColorSelector(dialog, "Up Face", Face.getFaceColour(Face.UP), createFaceColorProcessor(Face.UP)));
+        colorGrid.add(createColorSelector(dialog, "Down Face", Face.getFaceColour(Face.DOWN), createFaceColorProcessor(Face.DOWN)));
+        colorGrid.setLayout(new GridLayout(colorGrid.getComponentCount(), 1, 20, 5));
 
         dialog.addWindowListener(new WindowAdapter()
         {
@@ -819,6 +828,7 @@ public class Menu extends JMenuBar
             {
                 Settings.setAssetsDir(getDirectoryFromSelector(texturePathPanel));
                 Settings.setUndoLimit((int) undoLimitSpinner.getValue());
+                Settings.setFaceColors(Face.getFaceColors());
             }
         });
 
@@ -939,5 +949,86 @@ public class Menu extends JMenuBar
         dialog.setResizable(false);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+    }
+
+    public static JPanel createColorSelector(Window parent, String labelText, int startColor, Processor<Integer> processor)
+    {
+        SpringLayout layout = new SpringLayout();
+        JPanel panel = new JPanel(layout);
+        panel.setPreferredSize(new Dimension(200, 30));
+        panel.setBackground(new Color(0, 0, 0, 0));
+
+        JLabel label = new JLabel(labelText);
+        panel.add(label);
+
+        JPanel colorPanel = new JPanel();
+        colorPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1));
+        colorPanel.setBackground(new Color(startColor));
+        colorPanel.setPreferredSize(new Dimension(24, 24));
+        panel.add(colorPanel);
+
+        JButton button = new JButton("Change");
+        button.setPreferredSize(new Dimension(80, 24));
+        button.addActionListener(e ->
+        {
+            int color = selectColor(parent, startColor);
+            if(processor.run(color))
+            {
+                colorPanel.setBackground(new Color(color));
+            }
+        });
+        panel.add(button);
+
+        layout.putConstraint(SpringLayout.WEST, label, 0, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, label, 0, SpringLayout.VERTICAL_CENTER, panel);
+        layout.putConstraint(SpringLayout.EAST, label, 5, SpringLayout.WEST, colorPanel);
+        layout.putConstraint(SpringLayout.WEST, colorPanel, 80, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, colorPanel, 0, SpringLayout.VERTICAL_CENTER, panel);
+        layout.putConstraint(SpringLayout.EAST, colorPanel, -10, SpringLayout.WEST, button);
+        layout.putConstraint(SpringLayout.EAST, button, 0, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.VERTICAL_CENTER, button, 0, SpringLayout.VERTICAL_CENTER, panel);
+        return panel;
+    }
+
+    private static int selectColor(Window parent, int startColor)
+    {
+        JDialog dialog = new JDialog(parent, "Select a Color", Dialog.ModalityType.APPLICATION_MODAL);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel(new BorderLayout());
+        dialog.add(panel);
+
+        JColorChooser colorChooser = new JColorChooser();
+        colorChooser.setColor(startColor);
+        panel.add(colorChooser, BorderLayout.CENTER);
+
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.add(buttons, BorderLayout.SOUTH);
+
+        JButton btnExtract = new JButton("Select");
+        btnExtract.setIcon(Icons.extract);
+        btnExtract.setPreferredSize(new Dimension(80, 24));
+        btnExtract.addActionListener(e -> dialog.dispose());
+        buttons.add(btnExtract);
+
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+
+        return colorChooser.getColor().getRGB();
+    }
+
+    private static Processor<Integer> createFaceColorProcessor(int side)
+    {
+        return integer ->
+        {
+            if(Face.getFaceColour(side) != integer)
+            {
+                Face.setFaceColors(side, integer);
+                return true;
+            }
+            return false;
+        };
     }
 }

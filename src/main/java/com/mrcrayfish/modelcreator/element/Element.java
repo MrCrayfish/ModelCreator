@@ -163,42 +163,36 @@ public class Element
             // North
             if(faces[0].isEnabled())
             {
-                GL11.glColor3f(1, 0, 0);
                 faces[0].renderNorth();
             }
 
             // East
             if(faces[1].isEnabled())
             {
-                GL11.glColor3f(0, 1, 0);
                 faces[1].renderEast();
             }
 
             // South
             if(faces[2].isEnabled())
             {
-                GL11.glColor3f(0, 0, 1);
                 faces[2].renderSouth();
             }
 
             // West
             if(faces[3].isEnabled())
             {
-                GL11.glColor3f(1, 1, 0);
                 faces[3].renderWest();
             }
 
             // Top
             if(faces[4].isEnabled())
             {
-                GL11.glColor3f(0, 1, 1);
                 faces[4].renderUp();
             }
 
             // Bottom
             if(faces[5].isEnabled())
             {
-                GL11.glColor3f(1, 0, 1);
                 faces[5].renderDown();
             }
         }

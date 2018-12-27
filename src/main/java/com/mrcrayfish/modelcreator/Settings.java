@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
+import java.awt.*;
 import java.util.prefs.Preferences;
 
 public class Settings
@@ -12,6 +13,9 @@ public class Settings
     private static final String TRANSPARENCY_MODE = "transparency_mode";
     private static final String UNDO_LIMIT = "undo_limit";
     private static final String ASSESTS_DIR = "assets_dir";
+    private static final String FACE_COLORS = "face_colors";
+
+    public static final int[] DEFAULT_FACE_COLORS = {16711680, 65280, 255, 16776960, 16711935, 65535};
 
     public static String getImageImportDir()
     {
@@ -115,6 +119,37 @@ public class Settings
     {
         Preferences prefs = getPreferences();
         prefs.put(UNDO_LIMIT, Integer.toString(Math.max(1, limit)));
+    }
+
+    public static int[] getFaceColors()
+    {
+        Preferences prefs = getPreferences();
+        String s = prefs.get(FACE_COLORS, "");
+        String[] values = s.split(",");
+        if(values.length == 6)
+        {
+            int[] colors = new int[6];
+            for(int i = 0; i < values.length; i++)
+            {
+                int color = Integer.parseInt(values[i]);
+                colors[i] = color;
+            }
+            return colors;
+        }
+        return DEFAULT_FACE_COLORS;
+    }
+
+    public static void setFaceColors(int[] colors)
+    {
+        StringBuilder builder = new StringBuilder();
+        for(int value : colors)
+        {
+            builder.append(value);
+            builder.append(",");
+        }
+        builder.setLength(builder.length() - 1);
+        Preferences prefs = getPreferences();
+        prefs.put(FACE_COLORS, builder.toString());
     }
 
     private static Preferences getPreferences()

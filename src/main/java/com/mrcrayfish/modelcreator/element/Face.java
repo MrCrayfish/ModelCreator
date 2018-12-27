@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.element;
 
+import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
 import org.lwjgl.BufferUtils;
@@ -14,19 +15,19 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Face
 {
-    private static final int NORTH = 0;
-    private static final int EAST = 1;
-    private static final int SOUTH = 2;
-    private static final int WEST = 3;
-    private static final int UP = 4;
-    private static final int DOWN = 5;
+    private static int[] colors;
 
-    private static final Color RED = new Color(1, 0, 0);
-    private static final Color GREEN = new Color(0, 1, 0);
-    private static final Color BLUE = new Color(0, 0, 1);
-    private static final Color YELLOW = new Color(1, 1, 0);
-    private static final Color MAGENTA = new Color(1, 0, 1);
-    private static final Color CYAN = new Color(0, 1, 1);
+    static
+    {
+        colors = Settings.getFaceColors();
+    }
+
+    public static final int NORTH = 0;
+    public static final int EAST = 1;
+    public static final int SOUTH = 2;
+    public static final int WEST = 3;
+    public static final int UP = 4;
+    public static final int DOWN = 5;
 
     private String texture = null;
     private String textureLocation = "blocks/";
@@ -413,6 +414,11 @@ public class Face
 
     private void startRender(int pass)
     {
+        int color = Face.colors[side];
+        float b = (float) (color & 0xFF) / 0xFF;
+        float g = (float) ((color >>> 8) & 0xFF) / 0xFF;
+        float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
+        GL11.glColor3f(r, g, b);
         GL11.glEnable(GL_TEXTURE_2D);
         GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         bindTexture(pass);
@@ -729,24 +735,23 @@ public class Face
         return -1;
     }
 
-    public static Color getFaceColour(int side)
+    public static int getFaceColour(int side)
     {
-        switch(side)
+        if(side >= 0 && side < colors.length)
         {
-            case 0:
-                return RED;
-            case 1:
-                return GREEN;
-            case 2:
-                return BLUE;
-            case 3:
-                return YELLOW;
-            case 4:
-                return CYAN;
-            case 5:
-                return MAGENTA;
+            return colors[side];
         }
-        return RED;
+        return 0;
+    }
+
+    public static int[] getFaceColors()
+    {
+        return colors;
+    }
+
+    public static void setFaceColors(int side, int color)
+    {
+        Face.colors[side] = color;
     }
 
     public int getRotation()

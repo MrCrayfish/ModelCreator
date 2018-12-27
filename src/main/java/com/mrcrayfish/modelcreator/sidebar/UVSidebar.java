@@ -56,8 +56,11 @@ public class UVSidebar extends Sidebar
                         startY[i] = i * (LENGTH + 10) + 40;
                     }
 
-                    Color color = Face.getFaceColour(i);
-                    glColor3f(color.getRed(), color.getGreen(), color.getBlue());
+                    int color = Face.getFaceColour(i);
+                    float b = (float) (color & 0xFF) / 0xFF;
+                    float g = (float) ((color >>> 8) & 0xFF) / 0xFF;
+                    float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
+                    glColor3f(r, g, b);
 
                     Face[] faces = null;
                     Element selectedElement = manager.getSelectedElement();

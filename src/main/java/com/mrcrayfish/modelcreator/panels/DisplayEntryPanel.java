@@ -16,7 +16,7 @@ import java.awt.event.KeyEvent;
  */
 public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
 {
-    private DisplayProperties.Entry entry;
+    private DisplayProperties.Entry entry; //TODO remove instance
     private JSlider sliderRotationX;
     private JSlider sliderRotationY;
     private JSlider sliderRotationZ;

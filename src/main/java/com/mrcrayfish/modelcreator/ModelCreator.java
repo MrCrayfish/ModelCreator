@@ -3,6 +3,7 @@ package com.mrcrayfish.modelcreator;
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
+import com.mrcrayfish.modelcreator.display.render.HeadDisplay;
 import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -67,6 +68,7 @@ public class ModelCreator extends JFrame
     private Set<Integer> keyDown = new HashSet<>();
     private List<KeyAction> keyActions = new ArrayList<>();
 
+    public static DisplayProperties.Entry displayEntry;
     public static DisplayPropertyRender displayRenderer;
 
     private boolean debugMode = false;
@@ -428,14 +430,11 @@ public class ModelCreator extends JFrame
     {
         glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
 
-        displayRenderer = new ThirdPersonDisplay();
-
-        DisplayProperties.Entry entry = manager.getDisplayProperties().getEntry("thirdperson_righthand");
-        if(Menu.isDisplayPropsShowing && displayRenderer != null)
+        if(Menu.isDisplayPropsShowing && displayRenderer != null && displayEntry != null)
         {
             displayRenderer.onPreRenderElements();
-            displayRenderer.onRender(entry, manager);
-            displayRenderer.onPreRenderModel(entry);
+            displayRenderer.onRender(displayEntry, manager);
+            displayRenderer.onPreRenderModel(displayEntry);
         }
 
         drawGrid();
@@ -478,9 +477,9 @@ public class ModelCreator extends JFrame
         }
         GL11.glPopMatrix();
 
-        if(Menu.isDisplayPropsShowing && displayRenderer != null)
+        if(Menu.isDisplayPropsShowing && displayRenderer != null && displayEntry != null)
         {
-            displayRenderer.onPostRenderModel(entry);
+            displayRenderer.onPostRenderModel(displayEntry);
         }
     }
 

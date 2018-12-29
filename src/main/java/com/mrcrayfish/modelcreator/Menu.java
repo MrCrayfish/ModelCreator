@@ -1069,6 +1069,7 @@ public class Menu extends JMenuBar
                 DisplayPropertyRender render = DisplayProperties.RENDER_MAP.get(entryPanel.getEntry().getId());
                 if(render != null)
                 {
+                    ModelCreator.displayEntry = entryPanel.getEntry();
                     ModelCreator.displayRenderer = render;
                 }
             }

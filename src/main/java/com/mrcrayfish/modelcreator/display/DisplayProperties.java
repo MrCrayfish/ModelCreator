@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.display;
 
+import com.mrcrayfish.modelcreator.display.render.HeadDisplay;
 import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class DisplayProperties
         DEFAULT_ITEM.add("thirdperson_righthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
         DEFAULT_ITEM.add("thirdperson_lefthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
 
+        RENDER_MAP.put("head", new HeadDisplay());
         RENDER_MAP.put("thirdperson_righthand", new ThirdPersonDisplay());
     }
 

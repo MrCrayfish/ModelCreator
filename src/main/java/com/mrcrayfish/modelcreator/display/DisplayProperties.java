@@ -1,4 +1,6 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.display;
+
+import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Map;
  */
 public class DisplayProperties
 {
+    public static final Map<String, DisplayPropertyRender> RENDER_MAP = new HashMap<>();
     public static final DisplayProperties DEFAULT_BLOCK;
     public static final DisplayProperties DEFAULT_ITEM;
 
@@ -20,10 +23,10 @@ public class DisplayProperties
         DEFAULT_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25);
         DEFAULT_BLOCK.add("fixed", 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5);
         DEFAULT_BLOCK.add("head", 0, 0, 0, 0, 0, 0, 1, 1, 1);
-        DEFAULT_BLOCK.add("firstperson_righthand", 75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
-        DEFAULT_BLOCK.add("firstperson_lefthand", 75, 225, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
-        DEFAULT_BLOCK.add("thirdperson_righthand", 30, 45, 0, 0, 0, 0, 0.4, 0.4, 0.4);
-        DEFAULT_BLOCK.add("thirdperson_lefthand", 30, 225, 0, 0, 0, 0, 0.4, 0.4, 0.4);
+        DEFAULT_BLOCK.add("firstperson_righthand", 75, 45, 0, 0, 2.5, 0, 0.4, 0.4, 0.4);
+        DEFAULT_BLOCK.add("firstperson_lefthand", 75, 225, 0, 0, 2.5, 0, 0.4, 0.4, 0.4);
+        DEFAULT_BLOCK.add("thirdperson_righthand", 30, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
+        DEFAULT_BLOCK.add("thirdperson_lefthand", 30, 225, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
 
         DEFAULT_ITEM = new DisplayProperties("Default Item", true);
         DEFAULT_ITEM.add("gui", 0, 0, 0, 0, 0, 0, 1, 1, 1);
@@ -34,6 +37,8 @@ public class DisplayProperties
         DEFAULT_ITEM.add("firstperson_lefthand", 0, -90, 25, 1.13, 3.2, 1.13, 0.68, 0.68, 0.68);
         DEFAULT_ITEM.add("thirdperson_righthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
         DEFAULT_ITEM.add("thirdperson_lefthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
+
+        RENDER_MAP.put("thirdperson_righthand", new ThirdPersonDisplay());
     }
 
     private Map<String, Entry> entries = new HashMap<>();
@@ -60,7 +65,7 @@ public class DisplayProperties
 
     public void add(String id, double rotationX, double rotationY, double rotationZ, double translationX, double translationY, double translationZ, double scaleX, double scaleY, double scaleZ)
     {
-        entries.put(id, new Entry(rotationX, rotationY, rotationZ, translationX, translationY, translationZ, scaleX, scaleY, scaleZ));
+        entries.put(id, new Entry(id, rotationX, rotationY, rotationZ, translationX, translationY, translationZ, scaleX, scaleY, scaleZ));
     }
 
     public String getName()
@@ -92,12 +97,14 @@ public class DisplayProperties
     public static class Entry
     {
         private boolean enabled = true;
+        private String id;
         private double rotationX, rotationY, rotationZ;
         private double translationX, translationY, translationZ;
         private double scaleX, scaleY, scaleZ;
 
-        public Entry(double rotationX, double rotationY, double rotationZ, double translationX, double translationY, double translationZ, double scaleX, double scaleY, double scaleZ)
+        public Entry(String id, double rotationX, double rotationY, double rotationZ, double translationX, double translationY, double translationZ, double scaleX, double scaleY, double scaleZ)
         {
+            this.id = id;
             this.rotationX = rotationX;
             this.rotationY = rotationY;
             this.rotationZ = rotationZ;
@@ -111,6 +118,7 @@ public class DisplayProperties
 
         public Entry(Entry entry)
         {
+            this.id = entry.id;
             this.rotationX = entry.rotationX;
             this.rotationY = entry.rotationY;
             this.rotationZ = entry.rotationZ;
@@ -130,6 +138,11 @@ public class DisplayProperties
         public boolean isEnabled()
         {
             return enabled;
+        }
+
+        public String getId()
+        {
+            return id;
         }
 
         public double getRotationX()

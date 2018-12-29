@@ -1,6 +1,9 @@
 package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
+import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
+import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.ElementManagerState;
@@ -63,6 +66,8 @@ public class ModelCreator extends JFrame
     /* Key Events */
     private Set<Integer> keyDown = new HashSet<>();
     private List<KeyAction> keyActions = new ArrayList<>();
+
+    public static DisplayPropertyRender displayRenderer;
 
     private boolean debugMode = false;
 
@@ -320,6 +325,8 @@ public class ModelCreator extends JFrame
 
         while(!Display.isCloseRequested() && !getCloseRequested())
         {
+            //TODO add sleeping timer
+
             while(Keyboard.next())
             {
                 int modifiers = 0;
@@ -420,9 +427,20 @@ public class ModelCreator extends JFrame
     private void drawPerspective()
     {
         glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
-        drawGrid();
 
+        displayRenderer = new ThirdPersonDisplay();
+
+        DisplayProperties.Entry entry = manager.getDisplayProperties().getEntry("thirdperson_righthand");
+        if(Menu.isDisplayPropsShowing && displayRenderer != null)
+        {
+            displayRenderer.onPreRenderElements();
+            displayRenderer.onRender(entry, manager);
+            displayRenderer.onPreRenderModel(entry);
+        }
+
+        drawGrid();
         glTranslatef(-8, 0, -8);
+
         for(int i = 0; i < manager.getElementCount(); i++)
         {
             Element cube = manager.getElement(i);
@@ -459,6 +477,11 @@ public class ModelCreator extends JFrame
             GL11.glDisable(GL11.GL_BLEND);
         }
         GL11.glPopMatrix();
+
+        if(Menu.isDisplayPropsShowing && displayRenderer != null)
+        {
+            displayRenderer.onPostRenderModel(entry);
+        }
     }
 
     private void drawOverlay(int offset)

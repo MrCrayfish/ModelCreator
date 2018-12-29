@@ -1,14 +1,11 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import com.mrcrayfish.modelcreator.DisplayProperties;
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.util.Parser;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
@@ -29,6 +26,11 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
         this.entry = entry;
         this.setLayout(new SpringLayout());
         this.initComponents();
+    }
+
+    public DisplayProperties.Entry getEntry()
+    {
+        return entry;
     }
 
     private void initComponents()
@@ -201,6 +203,17 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
         textFieldScaleX.setText(Exporter.FORMAT.format(entry.getScaleX()));
         textFieldScaleX.setFont(defaultFont);
         textFieldScaleX.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldScaleX.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setScaleX(Parser.parseDouble(textFieldScaleX.getText(), entry.getScaleX()));
+                }
+            }
+        });
 
         JTextField textFieldScaleY = new JTextField();
         textFieldScaleY.setText(Exporter.FORMAT.format(entry.getScaleY()));

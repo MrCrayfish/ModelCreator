@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;

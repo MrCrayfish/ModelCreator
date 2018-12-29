@@ -431,9 +431,12 @@ public class Face
 
     private void applyShade(float reduction)
     {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-        GL11.glGetFloat(GL11.GL_CURRENT_COLOR, buffer);
-        GL11.glColor3f(buffer.get() - reduction, buffer.get() - reduction, buffer.get() - reduction);
+        if(cuboid.isShaded())
+        {
+            FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+            GL11.glGetFloat(GL11.GL_CURRENT_COLOR, buffer);
+            GL11.glColor3f(buffer.get() - reduction, buffer.get() - reduction, buffer.get() - reduction);
+        }
     }
 
     public void setTexture(String texture)

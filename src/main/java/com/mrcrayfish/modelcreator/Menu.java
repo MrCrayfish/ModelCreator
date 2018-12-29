@@ -1,6 +1,8 @@
 package com.mrcrayfish.modelcreator;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
+import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -62,7 +64,7 @@ public class Menu extends JMenuBar
     private JMenuItem itemDonate;
     private JMenuItem itemGitHub;
 
-    private static boolean isDisplayPropsShowing = false;
+    public static boolean isDisplayPropsShowing = false;
 
     public Menu(ModelCreator creator)
     {
@@ -1026,9 +1028,18 @@ public class Menu extends JMenuBar
     private static void displayProperties(ModelCreator creator)
     {
         Menu.isDisplayPropsShowing = true;
+        ModelCreator.displayRenderer = null; //TODO change to GUI
 
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        dialog.addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosed(WindowEvent e)
+            {
+                Menu.isDisplayPropsShowing = false;
+            }
+        });
 
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
@@ -1049,8 +1060,18 @@ public class Menu extends JMenuBar
         tabbedPane.addTab("Head", new DisplayEntryPanel(properties.getEntry("head")));
         tabbedPane.addTab("First Person", new DisplayEntryPanel(properties.getEntry("firstperson_righthand")));
         tabbedPane.addTab("Third Person", new DisplayEntryPanel(properties.getEntry("thirdperson_righthand")));
-        tabbedPane.addChangeListener(e -> {
-            System.out.println(tabbedPane.getSelectedIndex());
+        tabbedPane.addChangeListener(e ->
+        {
+            Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+            if(c instanceof DisplayEntryPanel)
+            {
+                DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
+                DisplayPropertyRender render = DisplayProperties.RENDER_MAP.get(entryPanel.getEntry().getId());
+                if(render != null)
+                {
+                    ModelCreator.displayRenderer = render;
+                }
+            }
         });
         panel.add(tabbedPane);
 
@@ -1065,9 +1086,8 @@ public class Menu extends JMenuBar
         dialog.pack();
         dialog.setResizable(false);
         dialog.setLocationRelativeTo(null);
+        dialog.setLocation(dialog.getLocation().x - 500, dialog.getLocation().y);
         dialog.requestFocus();
         dialog.setVisible(true);
-
-        Menu.isDisplayPropsShowing = false;
     }
 }

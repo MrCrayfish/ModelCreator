@@ -1,6 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import com.mrcrayfish.modelcreator.DisplayProperties;
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
 
 /**
  * Author: MrCrayfish

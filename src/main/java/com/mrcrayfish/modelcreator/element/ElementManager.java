@@ -1,6 +1,6 @@
 package com.mrcrayfish.modelcreator.element;
 
-import com.mrcrayfish.modelcreator.DisplayProperties;
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 
 import java.util.List;

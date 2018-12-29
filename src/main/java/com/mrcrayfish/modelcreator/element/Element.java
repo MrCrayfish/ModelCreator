@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator.element;
 
-import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.util.FaceDimension;
 import org.lwjgl.opengl.GL11;
@@ -151,10 +150,7 @@ public class Element
     {
         GL11.glPushMatrix();
         {
-            if(ModelCreator.transparent)
-            {
-                GL11.glEnable(GL_BLEND);
-            }
+            GL11.glEnable(GL_BLEND);
             GL11.glEnable(GL_CULL_FACE);
             GL11.glTranslated(getOriginX(), getOriginY(), getOriginZ());
             rotateAxis();

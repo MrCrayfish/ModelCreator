@@ -4,6 +4,7 @@ import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.panels.DisplayEntryPanel;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
@@ -39,9 +40,9 @@ public class Menu extends JMenuBar
     private JMenuItem itemUndo;
     private JMenuItem itemRedo;
 
-    /* Options */
-    private JMenu menuOptions;
-    private JMenuItem itemTransparency;
+    /* Model */
+    private JMenu menuModel;
+    private JMenuItem itemDisplayProps;
     private JMenuItem itemOptimise;
 
     /* Share */
@@ -60,6 +61,8 @@ public class Menu extends JMenuBar
     private JMenuItem itemModelChair;
     private JMenuItem itemDonate;
     private JMenuItem itemGitHub;
+
+    private static boolean isDisplayPropsShowing = false;
 
     public Menu(ModelCreator creator)
     {
@@ -86,10 +89,10 @@ public class Menu extends JMenuBar
             itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
         }
 
-        menuOptions = new JMenu("Options");
+        menuModel = new JMenu("Model");
         {
-            itemTransparency = createCheckboxItem("Transparency", "Enables transparent rendering in program", KeyEvent.VK_E, ModelCreator.transparent, Icons.transparent);
-            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
+            itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
+            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK));
         }
 
         menuScreenshot = new JMenu("Screenshot");
@@ -148,8 +151,8 @@ public class Menu extends JMenuBar
             }
         });
 
-        menuOptions.add(itemTransparency);
-        menuOptions.add(itemOptimise);
+        menuModel.add(itemDisplayProps);
+        menuModel.add(itemOptimise);
 
         menuScreenshot.add(itemSaveToDisk);
         menuScreenshot.add(itemShareFacebook);
@@ -171,7 +174,7 @@ public class Menu extends JMenuBar
 
         add(menuFile);
         add(menuEdit);
-        add(menuOptions);
+        add(menuModel);
         add(menuScreenshot);
         add(menuHelp);
     }
@@ -192,19 +195,7 @@ public class Menu extends JMenuBar
 
         itemExit.addActionListener(e -> creator.close());
 
-        itemTransparency.addActionListener(a ->
-        {
-            ModelCreator.transparent = itemTransparency.isSelected();
-            Settings.setTransparencyMode(ModelCreator.transparent);
-            if(ModelCreator.transparent)
-            {
-                JOptionPane.showMessageDialog(null, "<html>Enabled transparency mode. Transparent textures do not represent the same as in Minecraft.<br> " + "It depends if the model you are overwriting, allows transparent<br>" + "textures in the code. Blocks like Grass and Stone don't allow<br>" + "transparency, where as Glass and Cauldron do. Please take this into<br>" + "consideration when designing. Transparency is now turned on.<html>", "Rendering Warning", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(null, "<html>Disabled transparency mode</html>", "Transparency mode", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
+        itemDisplayProps.addActionListener(a -> Menu.displayProperties(creator));
 
         itemOptimise.addActionListener(a -> Menu.optimizeModel(creator));
 
@@ -1030,5 +1021,53 @@ public class Menu extends JMenuBar
             }
             return false;
         };
+    }
+
+    private static void displayProperties(ModelCreator creator)
+    {
+        Menu.isDisplayPropsShowing = true;
+
+        JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
+        dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        SpringLayout layout = new SpringLayout();
+        JPanel panel = new JPanel(layout);
+        panel.setPreferredSize(new Dimension(400, 430));
+        dialog.add(panel);
+
+        JComboBox<DisplayProperties> comboBoxProperties = new JComboBox<>();
+        comboBoxProperties.addItem(DisplayProperties.DEFAULT_BLOCK);
+        comboBoxProperties.addItem(DisplayProperties.DEFAULT_ITEM);
+        comboBoxProperties.setPreferredSize(new Dimension(0, 24));
+        panel.add(comboBoxProperties);
+
+        DisplayProperties properties = creator.getElementManager().getDisplayProperties();
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("GUI", new DisplayEntryPanel(properties.getEntry("gui")));
+        tabbedPane.addTab("Ground", new DisplayEntryPanel(properties.getEntry("ground")));
+        tabbedPane.addTab("Fixed", new DisplayEntryPanel(properties.getEntry("fixed")));
+        tabbedPane.addTab("Head", new DisplayEntryPanel(properties.getEntry("head")));
+        tabbedPane.addTab("First Person", new DisplayEntryPanel(properties.getEntry("firstperson_righthand")));
+        tabbedPane.addTab("Third Person", new DisplayEntryPanel(properties.getEntry("thirdperson_righthand")));
+        tabbedPane.addChangeListener(e -> {
+            System.out.println(tabbedPane.getSelectedIndex());
+        });
+        panel.add(tabbedPane);
+
+        layout.putConstraint(SpringLayout.EAST, comboBoxProperties, -10, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, comboBoxProperties, 10, SpringLayout.NORTH, panel);
+        layout.putConstraint(SpringLayout.WEST, comboBoxProperties, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.SOUTH, comboBoxProperties);
+        layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, tabbedPane, -10, SpringLayout.SOUTH, panel);
+
+        dialog.pack();
+        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);
+        dialog.requestFocus();
+        dialog.setVisible(true);
+
+        Menu.isDisplayPropsShowing = false;
     }
 }

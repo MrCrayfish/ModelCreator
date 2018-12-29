@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UVPanel extends JPanel implements IValueUpdater
+public class UVPanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
     private JButton btnPlusX;

@@ -21,9 +21,9 @@ public class CuboidTabbedPane extends JTabbedPane
             Component component = getComponentAt(i);
             if(component != null)
             {
-                if(component instanceof IValueUpdater)
+                if(component instanceof IElementUpdater)
                 {
-                    IValueUpdater updater = (IValueUpdater) component;
+                    IElementUpdater updater = (IElementUpdater) component;
                     updater.updateValues(manager.getSelectedElement());
                 }
             }

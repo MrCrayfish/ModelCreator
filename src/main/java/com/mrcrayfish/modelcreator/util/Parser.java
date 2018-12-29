@@ -18,4 +18,17 @@ public class Parser
         }
         return def;
     }
+
+    public static int parseInt(String text, int def)
+    {
+        try
+        {
+            return Integer.parseInt(text);
+        }
+        catch(NumberFormatException e)
+        {
+            e.printStackTrace();
+        }
+        return def;
+    }
 }

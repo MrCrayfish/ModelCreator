@@ -12,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SizePanel extends JPanel implements IValueUpdater
+public class SizePanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
 

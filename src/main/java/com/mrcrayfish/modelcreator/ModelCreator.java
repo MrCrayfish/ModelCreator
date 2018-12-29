@@ -35,8 +35,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ModelCreator extends JFrame
 {
-    public static boolean transparent = Settings.getTransparencyMode();
-
     // Canvas Variables
     private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<>();
     private Canvas canvas;

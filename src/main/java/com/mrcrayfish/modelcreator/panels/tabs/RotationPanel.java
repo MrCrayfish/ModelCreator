@@ -3,7 +3,7 @@ package com.mrcrayfish.modelcreator.panels.tabs;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.panels.IValueUpdater;
+import com.mrcrayfish.modelcreator.panels.IElementUpdater;
 import com.mrcrayfish.modelcreator.panels.OriginPanel;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Hashtable;
 
-public class RotationPanel extends JPanel implements IValueUpdater
+public class RotationPanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
 

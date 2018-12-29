@@ -37,6 +37,8 @@ public class SidebarPanel extends JPanel implements ElementManager
     private String particle = null;
     private boolean ambientOcc = true;
 
+    private DisplayProperties properties = new DisplayProperties(DisplayProperties.DEFAULT_BLOCK);
+
     public SidebarPanel(ModelCreator creator)
     {
         this.creator = creator;
@@ -312,6 +314,18 @@ public class SidebarPanel extends JPanel implements ElementManager
         this.ambientOcc = state.isAmbientOcclusion();
         this.particle = state.getParticleTexture();
         this.updateValues();
+    }
+
+    @Override
+    public void setDisplayProperties(DisplayProperties properties)
+    {
+        this.properties = new DisplayProperties(properties);
+    }
+
+    @Override
+    public DisplayProperties getDisplayProperties()
+    {
+        return properties;
     }
 
     public void newElement()

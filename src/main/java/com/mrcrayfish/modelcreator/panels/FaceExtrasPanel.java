@@ -8,7 +8,7 @@ import com.mrcrayfish.modelcreator.util.ComponentUtil;
 import javax.swing.*;
 import java.awt.*;
 
-public class FaceExtrasPanel extends JPanel implements IValueUpdater
+public class FaceExtrasPanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
 

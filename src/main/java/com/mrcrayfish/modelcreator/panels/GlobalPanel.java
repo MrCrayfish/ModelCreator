@@ -10,7 +10,7 @@ import com.mrcrayfish.modelcreator.util.ComponentUtil;
 import javax.swing.*;
 import java.awt.*;
 
-public class GlobalPanel extends JPanel implements IValueUpdater
+public class GlobalPanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
 

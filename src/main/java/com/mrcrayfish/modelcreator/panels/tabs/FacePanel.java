@@ -4,7 +4,7 @@ import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
-import com.mrcrayfish.modelcreator.panels.IValueUpdater;
+import com.mrcrayfish.modelcreator.panels.IElementUpdater;
 import com.mrcrayfish.modelcreator.panels.TexturePanel;
 import com.mrcrayfish.modelcreator.panels.UVPanel;
 
@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 
-public class FacePanel extends JPanel implements IValueUpdater
+public class FacePanel extends JPanel implements IElementUpdater
 {
     private ElementManager manager;
 

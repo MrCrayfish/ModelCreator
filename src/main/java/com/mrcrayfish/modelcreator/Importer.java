@@ -21,6 +21,7 @@ public class Importer
 {
     private Map<String, String> textureMap = new HashMap<>();
     private String[] faceNames = {"north", "east", "south", "west", "up", "down"};
+    private String[] displayNames = {"gui", "ground", "fixed", "head", "firstperson_righthand", "firstperson_lefthand", "thirdperson_righthand", "thirdperson_lefthand"};
 
     // Input File
     private String inputPath;
@@ -60,6 +61,7 @@ public class Importer
     private void readComponents(BufferedReader reader, ElementManager manager, File dir) throws IOException
     {
         manager.clearElements();
+        manager.setDisplayProperties(DisplayProperties.DEFAULT_BLOCK);
 
         JsonParser parser = new JsonParser();
         JsonElement read = parser.parse(reader);
@@ -96,6 +98,12 @@ public class Importer
 
             // load textures
             loadTextures(dir, obj);
+
+            // load display properties
+            if(obj.has("display") && obj.get("display").isJsonObject())
+            {
+                readDisplayProperties(obj.getAsJsonObject("display"), manager);
+            }
 
             // load elements
             if(obj.has("elements") && obj.get("elements").isJsonArray())
@@ -176,6 +184,56 @@ public class Importer
             if(file.exists())
             {
                 manager.addPendingTexture(new PendingTexture(file));
+            }
+        }
+    }
+
+    private void readDisplayProperties(JsonObject obj, ElementManager manager)
+    {
+        DisplayProperties properties = manager.getDisplayProperties();
+        for(String displayName : displayNames)
+        {
+            if(obj.has(displayName) && obj.get(displayName).isJsonObject())
+            {
+                readEntry(obj.getAsJsonObject(displayName), displayName, properties);
+            }
+        }
+    }
+
+    private void readEntry(JsonObject obj, String id, DisplayProperties properties)
+    {
+        DisplayProperties.Entry entry = properties.getEntry(id);
+        if(entry != null)
+        {
+            if(obj.has("rotation") && obj.get("rotation").isJsonArray())
+            {
+                JsonArray array = obj.get("rotation").getAsJsonArray();
+                if(array.size() == 3)
+                {
+                    entry.setRotationX(array.get(0).getAsDouble());
+                    entry.setRotationY(array.get(1).getAsDouble());
+                    entry.setRotationZ(array.get(2).getAsDouble());
+                }
+            }
+            if(obj.has("translation") && obj.get("translation").isJsonArray())
+            {
+                JsonArray array = obj.get("translation").getAsJsonArray();
+                if(array.size() == 3)
+                {
+                    entry.setTranslationX(array.get(0).getAsDouble());
+                    entry.setTranslationY(array.get(1).getAsDouble());
+                    entry.setTranslationZ(array.get(2).getAsDouble());
+                }
+            }
+            if(obj.has("scale") && obj.get("scale").isJsonArray())
+            {
+                JsonArray array = obj.get("scale").getAsJsonArray();
+                if(array.size() == 3)
+                {
+                    entry.setScaleX(array.get(0).getAsDouble());
+                    entry.setScaleY(array.get(1).getAsDouble());
+                    entry.setScaleZ(array.get(2).getAsDouble());
+                }
             }
         }
     }

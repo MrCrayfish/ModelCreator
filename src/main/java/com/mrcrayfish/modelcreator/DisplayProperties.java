@@ -78,6 +78,11 @@ public class DisplayProperties
         return entries.get(id);
     }
 
+    public Map<String, Entry> getEntries()
+    {
+        return entries;
+    }
+
     @Override
     public String toString()
     {
@@ -86,6 +91,7 @@ public class DisplayProperties
 
     public static class Entry
     {
+        private boolean enabled = true;
         private double rotationX, rotationY, rotationZ;
         private double translationX, translationY, translationZ;
         private double scaleX, scaleY, scaleZ;
@@ -114,6 +120,16 @@ public class DisplayProperties
             this.scaleX = entry.scaleX;
             this.scaleY = entry.scaleY;
             this.scaleZ = entry.scaleZ;
+        }
+
+        public void setEnabled(boolean enabled)
+        {
+            this.enabled = enabled;
+        }
+
+        public boolean isEnabled()
+        {
+            return enabled;
         }
 
         public double getRotationX()

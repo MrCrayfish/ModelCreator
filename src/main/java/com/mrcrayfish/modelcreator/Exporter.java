@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Exporter
 {
@@ -129,7 +130,7 @@ public class Exporter
 
         if(displayProps)
         {
-            writeDisplay(writer);
+            writeDisplayProperties(writer);
             writer.newLine();
         }
 
@@ -274,89 +275,58 @@ public class Exporter
         writer.write(" }");
     }
 
-    private void writeDisplay(BufferedWriter writer) throws IOException
+    private void writeDisplayProperties(BufferedWriter writer) throws IOException
     {
+        Map<String, DisplayProperties.Entry> entries = manager.getDisplayProperties().getEntries();
+        List<String> ids = new ArrayList<>();
+        entries.forEach((s, entry) ->
+        {
+            if(entry.isEnabled())
+            {
+                ids.add(s);
+            }
+        });
+
         writer.write(space(1) + "\"display\": {");
         writer.newLine();
 
-        writer.write(space(2) + "\"gui\": {");
-        writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 30, 225, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 0, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.625, 0.625, 0.625 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
+        for(int i = 0; i < ids.size() - 1; i++)
+        {
+            String key = ids.get(i);
+            writeDisplayEntry(writer, key, entries.get(key));
+            writer.write(",");
+            writer.newLine();
+        }
+        if(ids.size() > 0)
+        {
+            String key = ids.get(ids.size() - 1);
+            writeDisplayEntry(writer, key, entries.get(key));
+        }
 
-        writer.write(space(2) + "\"ground\": {");
         writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 0, 0, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 3, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.25, 0.25, 0.25 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
+        writer.write(space(1) + "},");
+    }
 
-        writer.write(space(2) + "\"fixed\": {"); // Item frames
+    private void writeDisplayEntry(BufferedWriter writer, String id, DisplayProperties.Entry entry) throws IOException
+    {
+        writer.write(space(2) + "\"" + id + "\": {");
         writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 0, 0, 0 ],");
+        writer.write(space(3) + String.format("\"rotation\": [ %s, %s, %s ],",
+                FORMAT.format(entry.getRotationX()),
+                FORMAT.format(entry.getRotationY()),
+                FORMAT.format(entry.getRotationZ())));
         writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 0, 0 ],");
+        writer.write(space(3) + String.format("\"translation\": [ %s, %s, %s ],",
+                FORMAT.format(entry.getTranslationX()),
+                FORMAT.format(entry.getTranslationY()),
+                FORMAT.format(entry.getTranslationZ())));
         writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.5, 0.5, 0.5 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
-
-        writer.write(space(2) + "\"thirdperson_righthand\": {");
-        writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 75, 45, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.375, 0.375, 0.375 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
-
-        writer.write(space(2) + "\"thirdperson_lefthand\": {");
-        writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 75, 255, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.375, 0.375, 0.375 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
-
-        writer.write(space(2) + "\"firstperson_righthand\": {");
-        writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 0, 45, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.4, 0.4, 0.4 ]");
-        writer.newLine();
-        writer.write(space(2) + "},");
-        writer.newLine();
-
-        writer.write(space(2) + "\"firstperson_lefthand\": {");
-        writer.newLine();
-        writer.write(space(3) + "\"rotation\": [ 0, 225, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"translation\": [ 0, 2.5, 0 ],");
-        writer.newLine();
-        writer.write(space(3) + "\"scale\": [ 0.4, 0.4, 0.4 ]");
+        writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ],",
+                FORMAT.format(entry.getScaleX()),
+                FORMAT.format(entry.getScaleY()),
+                FORMAT.format(entry.getScaleZ())));
         writer.newLine();
         writer.write(space(2) + "}");
-        writer.newLine();
-
-        writer.write(space(1) + "},");
     }
 
     private String space(int size)
@@ -364,6 +334,7 @@ public class Exporter
         StringBuilder builder = new StringBuilder();
         for(int i = 0; i < size; i++)
         {
+            //TODO add setting to export with tabs instead
             builder.append("    ");
         }
         return builder.toString();

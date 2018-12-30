@@ -168,12 +168,8 @@ public class ModelCreator extends JFrame
         Icons.init(getClass());
         setupMenuBar();
 
-        canvas.setPreferredSize(new Dimension(1000, 790));
-        add(canvas, BorderLayout.CENTER);
-
         canvas.setFocusable(true);
-        canvas.setVisible(true);
-        canvas.requestFocus();
+        add(canvas, BorderLayout.CENTER);
 
         manager = new SidebarPanel(this);
         scroll = new JScrollPane(manager);
@@ -301,6 +297,8 @@ public class ModelCreator extends JFrame
             Display.setParent(canvas);
             Display.setVSyncEnabled(true);
             Display.setInitialBackground(0.92F, 0.92F, 0.93F);
+            Display.setParent(canvas);
+
         }
         catch(LWJGLException e)
         {
@@ -376,8 +374,43 @@ public class ModelCreator extends JFrame
 
     private void render(float partialTicks)
     {
-        Dimension newDim;
+        Dimension newDim = newCanvasSize.getAndSet(null);
+        if (newDim != null)
+        {
+            width = newDim.width;
+            height = newDim.height;
+        }
 
+        this.handleKeyboardInput();
+
+        for(PendingTexture texture : pendingTextures)
+        {
+            texture.load();
+        }
+        pendingTextures.clear();
+
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+        this.draw();
+
+        Display.update();
+
+        if(screenshot != null)
+        {
+            if(screenshot.getFile() != null)
+            {
+                Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
+            }
+            else
+            {
+                Screenshot.getScreenshot(width, height, screenshot.getCallback());
+            }
+            screenshot = null;
+        }
+    }
+
+    private void handleKeyboardInput()
+    {
         while(Keyboard.next())
         {
             int modifiers = 0;
@@ -404,37 +437,6 @@ public class ModelCreator extends JFrame
             {
                 SwingUtilities.invokeLater(() -> this.handleKeyAction(code, finalModifiers, false, false));
             }
-        }
-
-        for(PendingTexture texture : pendingTextures)
-        {
-            texture.load();
-        }
-        pendingTextures.clear();
-
-        newDim = newCanvasSize.getAndSet(null);
-
-        if(newDim != null)
-        {
-            width = newDim.width;
-            height = newDim.height;
-        }
-
-        this.draw();
-
-        Display.update();
-
-        if(screenshot != null)
-        {
-            if(screenshot.getFile() != null)
-            {
-                Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
-            }
-            else
-            {
-                Screenshot.getScreenshot(width, height, screenshot.getCallback());
-            }
-            screenshot = null;
         }
     }
 

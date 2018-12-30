@@ -70,7 +70,7 @@ public class ModelCreator extends JFrame
     private List<KeyAction> keyActions = new ArrayList<>();
 
     private static CanvasRenderer standardRenderer = new StandardRenderer();
-    private static CanvasRenderer canvasRenderer = new StandardRenderer();
+    private static CanvasRenderer canvasRenderer = standardRenderer;
 
     private boolean debugMode = false;
 

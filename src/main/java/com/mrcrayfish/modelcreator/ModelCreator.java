@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
+import com.mrcrayfish.modelcreator.display.render.FixedPropertyRenderer;
 import com.mrcrayfish.modelcreator.display.render.GroundPropertyRenderer;
 import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
 import com.mrcrayfish.modelcreator.element.Element;

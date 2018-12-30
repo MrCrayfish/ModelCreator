@@ -1,9 +1,6 @@
 package com.mrcrayfish.modelcreator.display;
 
-import com.mrcrayfish.modelcreator.display.render.GroundPropertyRenderer;
-import com.mrcrayfish.modelcreator.display.render.GuiPropertyRenderer;
-import com.mrcrayfish.modelcreator.display.render.HeadPropertyRenderer;
-import com.mrcrayfish.modelcreator.display.render.ThirdPersonPropertyRenderer;
+import com.mrcrayfish.modelcreator.display.render.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +39,7 @@ public class DisplayProperties
         RENDER_MAP.put("head", new HeadPropertyRenderer());
         RENDER_MAP.put("gui", new GuiPropertyRenderer());
         RENDER_MAP.put("ground", new GroundPropertyRenderer());
+        RENDER_MAP.put("fixed", new FixedPropertyRenderer());
         RENDER_MAP.put("thirdperson_righthand", new ThirdPersonPropertyRenderer());
 
     }

@@ -1028,6 +1028,7 @@ public class Menu extends JMenuBar
     private static void displayProperties(ModelCreator creator)
     {
         Menu.isDisplayPropsShowing = true;
+        ModelCreator.setCanvasRenderer(DisplayProperties.RENDER_MAP.get("gui"));
 
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

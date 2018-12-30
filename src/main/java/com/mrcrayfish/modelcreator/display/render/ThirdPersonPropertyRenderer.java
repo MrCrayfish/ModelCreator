@@ -92,7 +92,7 @@ public class ThirdPersonPropertyRenderer extends DisplayPropertyRenderer
             glLoadIdentity();
             camera.useView();
 
-            glScaled(3.0, 3.0, 3.0);
+            glScaled(2.5, 2.5, 2.5);
 
             for(Element element : elements)
             {

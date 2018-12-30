@@ -67,7 +67,8 @@ public class FixedPropertyRenderer extends DisplayPropertyRenderer
             glLoadIdentity();
             camera.useView();
 
-            glScalef(1.25F, 1.25F, 1.25F);
+            glTranslated(0, -5, 0);
+            glScalef(1.75F, 1.75F, 1.75F);
 
             glPushMatrix();
             for(Element element : elements)

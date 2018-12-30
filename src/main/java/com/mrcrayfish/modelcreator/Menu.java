@@ -1038,6 +1038,7 @@ public class Menu extends JMenuBar
             public void windowClosed(WindowEvent e)
             {
                 Menu.isDisplayPropsShowing = false;
+                ModelCreator.restoreStandardRenderer();
             }
         });
 

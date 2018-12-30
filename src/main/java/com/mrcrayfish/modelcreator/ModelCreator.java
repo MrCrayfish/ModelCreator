@@ -294,7 +294,6 @@ public class ModelCreator extends JFrame
     {
         try
         {
-            Display.setParent(canvas);
             Display.setVSyncEnabled(true);
             Display.setInitialBackground(0.92F, 0.92F, 0.93F);
             Display.setParent(canvas);

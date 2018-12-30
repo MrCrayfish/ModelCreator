@@ -12,15 +12,17 @@ import java.net.URL;
  */
 public class TextureAtlas
 {
-    private static final int ATLAS_WIDTH = 256;
-    private static final int ATLAS_HEIGHT = 256;
+    private static final int ATLAS_WIDTH = 1024;
+    private static final int ATLAS_HEIGHT = 1024;
     private static Texture ATLAS;
 
     public static final Entry GUI_SLOT;
+    public static final Entry FIRST_PERSON_PREVIEW;
 
     static
     {
         GUI_SLOT = new Entry(0, 0, 20, 20);
+        FIRST_PERSON_PREVIEW = new Entry(0, 20, 512, 288);
     }
 
     public static void load()

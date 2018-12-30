@@ -40,6 +40,7 @@ public class DisplayProperties
         RENDER_MAP.put("gui", new GuiPropertyRenderer());
         RENDER_MAP.put("ground", new GroundPropertyRenderer());
         RENDER_MAP.put("fixed", new FixedPropertyRenderer());
+        RENDER_MAP.put("firstperson_righthand", new FirstPersonPropertyRenderer());
         RENDER_MAP.put("thirdperson_righthand", new ThirdPersonPropertyRenderer());
 
     }

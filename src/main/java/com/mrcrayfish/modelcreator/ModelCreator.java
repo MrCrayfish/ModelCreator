@@ -466,6 +466,13 @@ public class ModelCreator extends JFrame
 
         canvasRenderer.onRenderOverlay(manager, camera, this);
 
+        glViewport(0, 0, width, height);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        GLU.gluOrtho2D(0, width, height, 0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
         drawOverlay(offset);
     }
 

@@ -1053,7 +1053,7 @@ public class Menu extends JMenuBar
 
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
-        panel.setPreferredSize(new Dimension(400, 430));
+        panel.setPreferredSize(new Dimension(400, 445));
         dialog.add(panel);
 
         JLabel labelProperties = new JLabel("Presets");

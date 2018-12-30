@@ -17,6 +17,7 @@ import java.awt.event.KeyEvent;
 public class DisplayEntryPanel extends JPanel
 {
     private DisplayProperties.Entry entry; //TODO remove instance
+    private JCheckBox checkBoxEnabled;
     private JSlider sliderRotationX;
     private JSlider sliderRotationY;
     private JSlider sliderRotationZ;
@@ -41,10 +42,22 @@ public class DisplayEntryPanel extends JPanel
 
     private void initComponents()
     {
+        JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        this.add(optionsPanel);
+
+        checkBoxEnabled = new JCheckBox("Enabled");
+        checkBoxEnabled.setSelected(entry.isEnabled());
+        checkBoxEnabled.setIcon(Icons.light_off);
+        checkBoxEnabled.setRolloverIcon(Icons.light_off);
+        checkBoxEnabled.setSelectedIcon(Icons.light_on);
+        checkBoxEnabled.setRolloverSelectedIcon(Icons.light_on);
+        checkBoxEnabled.addChangeListener(e -> entry.setEnabled(checkBoxEnabled.isEnabled()));
+        optionsPanel.add(checkBoxEnabled);
+
         JPanel sliderPanel = new JPanel(new GridLayout(3, 1, 0, 5));
         sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 0), "<html><b>Rotation</b></html>"));
         sliderPanel.setPreferredSize(new Dimension(0, 180));
-        this.add(sliderPanel, BorderLayout.CENTER);
+        this.add(sliderPanel);
 
         sliderRotationX = createRotationSlider("X Axis", sliderPanel);
         sliderRotationX.setValue((int) entry.getRotationX());
@@ -407,8 +420,11 @@ public class DisplayEntryPanel extends JPanel
         otherPanel.add(scalePanel);
 
         SpringLayout springLayout = (SpringLayout) this.getLayout();
+        springLayout.putConstraint(SpringLayout.NORTH, optionsPanel, 5, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.WEST, optionsPanel, 10, SpringLayout.WEST, this);
+        springLayout.putConstraint(SpringLayout.EAST, optionsPanel, 10, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, sliderPanel, 10, SpringLayout.WEST, this);
-        springLayout.putConstraint(SpringLayout.NORTH, sliderPanel, 10, SpringLayout.NORTH, this);
+        springLayout.putConstraint(SpringLayout.NORTH, sliderPanel, 5, SpringLayout.SOUTH, optionsPanel);
         springLayout.putConstraint(SpringLayout.EAST, sliderPanel, -10, SpringLayout.EAST, this);
         springLayout.putConstraint(SpringLayout.WEST, otherPanel, 10, SpringLayout.WEST, this);
         springLayout.putConstraint(SpringLayout.NORTH, otherPanel, 10, SpringLayout.SOUTH, sliderPanel);
@@ -418,6 +434,7 @@ public class DisplayEntryPanel extends JPanel
     public void updateValues(DisplayProperties.Entry entry)
     {
         this.entry = entry;
+        checkBoxEnabled.setEnabled(entry.isEnabled());
         sliderRotationX.setValue((int) entry.getRotationX());
         sliderRotationY.setValue((int) entry.getRotationY());
         sliderRotationZ.setValue((int) entry.getRotationZ());

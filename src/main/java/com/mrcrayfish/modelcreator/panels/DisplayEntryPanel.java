@@ -7,9 +7,7 @@ import com.mrcrayfish.modelcreator.util.Parser;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 /**
  * Author: MrCrayfish
@@ -44,15 +42,6 @@ public class DisplayEntryPanel extends JPanel
     {
         JPanel optionsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         this.add(optionsPanel);
-
-        checkBoxEnabled = new JCheckBox("Enabled");
-        checkBoxEnabled.setSelected(entry.isEnabled());
-        checkBoxEnabled.setIcon(Icons.light_off);
-        checkBoxEnabled.setRolloverIcon(Icons.light_off);
-        checkBoxEnabled.setSelectedIcon(Icons.light_on);
-        checkBoxEnabled.setRolloverSelectedIcon(Icons.light_on);
-        checkBoxEnabled.addChangeListener(e -> entry.setEnabled(checkBoxEnabled.isEnabled()));
-        optionsPanel.add(checkBoxEnabled);
 
         JPanel sliderPanel = new JPanel(new GridLayout(3, 1, 0, 5));
         sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 0), "<html><b>Rotation</b></html>"));
@@ -416,8 +405,42 @@ public class DisplayEntryPanel extends JPanel
             textFieldScaleZ.setText(Exporter.FORMAT.format(entry.getScaleZ()));
         });
         scalePanel.add(btnScaleZNeg);
-        
         otherPanel.add(scalePanel);
+
+        checkBoxEnabled = new JCheckBox("Enabled");
+        checkBoxEnabled.setSelected(entry.isEnabled());
+        checkBoxEnabled.setIcon(Icons.light_off);
+        checkBoxEnabled.setRolloverIcon(Icons.light_off);
+        checkBoxEnabled.setSelectedIcon(Icons.light_on);
+        checkBoxEnabled.setRolloverSelectedIcon(Icons.light_on);
+        checkBoxEnabled.addActionListener(e ->
+        {
+            boolean enabled = checkBoxEnabled.isSelected();
+            entry.setEnabled(enabled);
+            sliderRotationX.setEnabled(enabled);
+            sliderRotationY.setEnabled(enabled);
+            sliderRotationZ.setEnabled(enabled);
+            btnTransX.setEnabled(enabled);
+            btnTransY.setEnabled(enabled);
+            btnTransZ.setEnabled(enabled);
+            textFieldTranslationX.setEnabled(enabled);
+            textFieldTranslationY.setEnabled(enabled);
+            textFieldTranslationZ.setEnabled(enabled);
+            btnTransXNeg.setEnabled(enabled);
+            btnTransYNeg.setEnabled(enabled);
+            btnTransZNeg.setEnabled(enabled);
+            btnScaleX.setEnabled(enabled);
+            btnScaleY.setEnabled(enabled);
+            btnScaleZ.setEnabled(enabled);
+            textFieldScaleX.setEnabled(enabled);
+            textFieldScaleY.setEnabled(enabled);
+            textFieldScaleZ.setEnabled(enabled);
+            btnScaleXNeg.setEnabled(enabled);
+            btnScaleYNeg.setEnabled(enabled);
+            btnScaleZNeg.setEnabled(enabled);
+        });
+        optionsPanel.add(checkBoxEnabled);
+
 
         SpringLayout springLayout = (SpringLayout) this.getLayout();
         springLayout.putConstraint(SpringLayout.NORTH, optionsPanel, 5, SpringLayout.NORTH, this);
@@ -434,7 +457,7 @@ public class DisplayEntryPanel extends JPanel
     public void updateValues(DisplayProperties.Entry entry)
     {
         this.entry = entry;
-        checkBoxEnabled.setEnabled(entry.isEnabled());
+        checkBoxEnabled.setSelected(entry.isEnabled());
         sliderRotationX.setValue((int) entry.getRotationX());
         sliderRotationY.setValue((int) entry.getRotationY());
         sliderRotationZ.setValue((int) entry.getRotationZ());
@@ -479,6 +502,10 @@ public class DisplayEntryPanel extends JPanel
         sliderValue.setFocusable(false);
         sliderValue.addChangeListener(e -> {
             textFieldValue.setText(String.valueOf(sliderValue.getValue()));
+        });
+        sliderValue.addPropertyChangeListener("enabled", evt ->
+        {
+            textFieldValue.setEnabled(sliderValue.isEnabled());
         });
         panel.add(sliderValue);
 

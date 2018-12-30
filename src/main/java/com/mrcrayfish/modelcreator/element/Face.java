@@ -752,7 +752,15 @@ public class Face
         return colors;
     }
 
-    public static void setFaceColors(int side, int color)
+    public static void setFaceColors(int[] colors)
+    {
+        if(colors.length == 6)
+        {
+            Face.colors = colors;
+        }
+    }
+
+    public static void setFaceColor(int side, int color)
     {
         Face.colors[side] = color;
     }

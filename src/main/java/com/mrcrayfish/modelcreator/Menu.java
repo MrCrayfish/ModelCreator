@@ -801,9 +801,8 @@ public class Menu extends JMenuBar
         generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
 
         JPanel colorGrid = new JPanel();
-        colorGrid.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        colorGrid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JScrollPane colorScrollPane = new JScrollPane(colorGrid);
-        colorScrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         tabbedPane.addTab("Appearance", colorScrollPane);
 
         colorGrid.add(createColorSelector(dialog, "North Face", Face.getFaceColour(Face.NORTH), createFaceColorProcessor(Face.NORTH)));
@@ -812,7 +811,17 @@ public class Menu extends JMenuBar
         colorGrid.add(createColorSelector(dialog, "West Face", Face.getFaceColour(Face.WEST), createFaceColorProcessor(Face.WEST)));
         colorGrid.add(createColorSelector(dialog, "Up Face", Face.getFaceColour(Face.UP), createFaceColorProcessor(Face.UP)));
         colorGrid.add(createColorSelector(dialog, "Down Face", Face.getFaceColour(Face.DOWN), createFaceColorProcessor(Face.DOWN)));
-        colorGrid.setLayout(new GridLayout(colorGrid.getComponentCount(), 1, 20, 5));
+
+        JButton btnReset = new JButton("Reset Colors");
+        btnReset.addActionListener(a ->
+        {
+            Face.setFaceColors(Settings.DEFAULT_FACE_COLORS);
+            dialog.dispose();
+            JOptionPane.showMessageDialog(creator, "Colors reset");
+        });
+        colorGrid.add(btnReset);
+
+        colorGrid.setLayout(new GridLayout(colorGrid.getComponentCount(), 1, 20, 10));
 
         dialog.addWindowListener(new WindowAdapter()
         {
@@ -1018,7 +1027,7 @@ public class Menu extends JMenuBar
         {
             if(Face.getFaceColour(side) != integer)
             {
-                Face.setFaceColors(side, integer);
+                Face.setFaceColor(side, integer);
                 return true;
             }
             return false;

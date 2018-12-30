@@ -14,9 +14,9 @@ public class WelcomeDialog
     {
         JPanel dialogContent = getDialogContent(parent);
         JDialog welcomeDialog = getWelcomeDialog(parent, dialogContent);
-        showDialog(welcomeDialog);
-        welcomeDialog.setAlwaysOnTop(true);
         welcomeDialog.requestFocus();
+        welcomeDialog.setAlwaysOnTop(true);
+        showDialog(welcomeDialog);
     }
 
     private static JPanel getDialogContent(JFrame parent)
@@ -106,7 +106,7 @@ public class WelcomeDialog
 
     private static JDialog getWelcomeDialog(JFrame parent, JPanel dialogContent)
     {
-        JDialog dialog = new JDialog(parent, "Welcome", false);
+        JDialog dialog = new JDialog(parent, "Welcome", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setResizable(false);
         dialog.setPreferredSize(new Dimension(500, 290));
         dialog.add(dialogContent);

@@ -145,12 +145,12 @@ public class ModelCreator extends JFrame
         setVisible(true);
         setLocationRelativeTo(null);
 
+        SwingUtilities.invokeLater(() -> WelcomeDialog.show(ModelCreator.this));
+
         createDisplay();
 
         try
         {
-            SwingUtilities.invokeLater(() -> WelcomeDialog.show(ModelCreator.this));
-
             loop();
 
             Display.destroy();

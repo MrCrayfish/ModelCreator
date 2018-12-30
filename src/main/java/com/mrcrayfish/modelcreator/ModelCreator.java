@@ -773,7 +773,6 @@ public class ModelCreator extends JFrame
 
     private int select(int x, int y)
     {
-
         IntBuffer selBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder()).asIntBuffer();
         int[] buffer = new int[256];
 
@@ -930,7 +929,7 @@ public class ModelCreator extends JFrame
 
     public static void restoreStandardRenderer()
     {
-        canvasRenderer = standardRenderer;
+        setCanvasRenderer(standardRenderer);
     }
 
     private static class KeyAction

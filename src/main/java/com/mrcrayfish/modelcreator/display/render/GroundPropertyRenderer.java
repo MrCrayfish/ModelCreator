@@ -47,16 +47,17 @@ public class GroundPropertyRenderer extends DisplayPropertyRenderer
                 element.draw();
             }
 
-            double yOffset = (Animation.getCounter() + Animation.getCounter()) / 60F;
-            yOffset = Math.sin(yOffset) + 1.0;
-            glTranslated(0, yOffset * 2, 0);
-            glRotated((Animation.getCounter() + Animation.getPartialTicks()) / 2F, 0, 1, 0);
-            glTranslatef(0, -5, 0);
-
             glTranslated(-entry.getTranslationX(), entry.getTranslationY(), -entry.getTranslationZ());
             glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
+
+            glTranslatef(0, 7, 0);
+
+            double yOffset = (Animation.getCounter() + Animation.getCounter()) / 60F;
+            yOffset = Math.sin(yOffset);
+            glTranslated(0, yOffset * 3, 0);
+            glRotated((Animation.getCounter() + Animation.getPartialTicks()), 0, 1, 0);
+
             glRotatef(180F, 0, 1, 0);
-            glTranslated(0, 8, 0);
             glRotatef((float) entry.getRotationX(), 1, 0, 0);
             glRotatef((float) entry.getRotationY(), 0, 1, 0);
             glRotatef((float) entry.getRotationZ(), 0, 0, 1);

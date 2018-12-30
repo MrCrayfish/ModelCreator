@@ -1,11 +1,10 @@
 package com.mrcrayfish.modelcreator.display;
 
-import com.mrcrayfish.modelcreator.display.render.HeadDisplay;
-import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
+import com.mrcrayfish.modelcreator.display.render.GuiPropertyRenderer;
+import com.mrcrayfish.modelcreator.display.render.HeadPropertyRenderer;
+import com.mrcrayfish.modelcreator.display.render.ThirdPersonPropertyRenderer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +12,7 @@ import java.util.Map;
  */
 public class DisplayProperties
 {
-    public static final Map<String, DisplayPropertyRender> RENDER_MAP = new HashMap<>();
+    public static final Map<String, CanvasRenderer> RENDER_MAP = new HashMap<>();
     public static final DisplayProperties DEFAULT_BLOCK;
     public static final DisplayProperties DEFAULT_ITEM;
 
@@ -39,8 +38,9 @@ public class DisplayProperties
         DEFAULT_ITEM.add("thirdperson_righthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
         DEFAULT_ITEM.add("thirdperson_lefthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
 
-        RENDER_MAP.put("head", new HeadDisplay());
-        RENDER_MAP.put("thirdperson_righthand", new ThirdPersonDisplay());
+        RENDER_MAP.put("head", new HeadPropertyRenderer());
+        RENDER_MAP.put("thirdperson_righthand", new ThirdPersonPropertyRenderer());
+        RENDER_MAP.put("gui", new GuiPropertyRenderer());
     }
 
     private Map<String, Entry> entries = new HashMap<>();

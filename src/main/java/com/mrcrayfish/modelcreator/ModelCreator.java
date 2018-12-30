@@ -1,10 +1,9 @@
 package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
+import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
-import com.mrcrayfish.modelcreator.display.render.HeadDisplay;
-import com.mrcrayfish.modelcreator.display.render.ThirdPersonDisplay;
+import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.ElementManagerState;
@@ -31,8 +30,10 @@ import java.awt.event.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -68,8 +69,8 @@ public class ModelCreator extends JFrame
     private Set<Integer> keyDown = new HashSet<>();
     private List<KeyAction> keyActions = new ArrayList<>();
 
-    public static DisplayProperties.Entry displayEntry;
-    public static DisplayPropertyRender displayRenderer;
+    private static CanvasRenderer standardRenderer = new StandardRenderer();
+    private static CanvasRenderer canvasRenderer = new StandardRenderer();
 
     private boolean debugMode = false;
 
@@ -272,6 +273,21 @@ public class ModelCreator extends JFrame
         return icons;
     }
 
+    public int getCanvasWidth()
+    {
+        return width;
+    }
+
+    public int getCanvasHeight()
+    {
+        return height;
+    }
+
+    public int getCanvasOffset()
+    {
+        return activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
+    }
+
     private void setupMenuBar()
     {
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
@@ -321,6 +337,8 @@ public class ModelCreator extends JFrame
 
     private void loop() throws LWJGLException
     {
+        Textures.load();
+
         camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
 
         Dimension newDim;
@@ -371,31 +389,7 @@ public class ModelCreator extends JFrame
                 height = newDim.height;
             }
 
-            int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
-
-            glViewport(offset, 0, width - offset, height);
-
-            handleInput(offset);
-
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            GLU.gluPerspective(60F, (float) (width - offset) / (float) height, 0.3F, 1000F);
-
-            draw();
-
-            glDisable(GL_DEPTH_TEST);
-            glDisable(GL_CULL_FACE);
-            glDisable(GL_TEXTURE_2D);
-            glDisable(GL_LIGHTING);
-
-            glViewport(0, 0, width, height);
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            GLU.gluOrtho2D(0, width, height, 0);
-            glMatrixMode(GL_MODELVIEW);
-            glLoadIdentity();
-
-            drawOverlay(offset);
+            this.draw();
 
             Display.update();
 
@@ -416,75 +410,34 @@ public class ModelCreator extends JFrame
 
     private void draw()
     {
+        int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
+
+        glViewport(offset, 0, width - offset, height);
+
+        this.handleInput(offset);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        GLU.gluPerspective(60F, (float) (width - offset) / (float) height, 0.3F, 1000F);
+
+        canvasRenderer.onRenderPerspective(this, manager, camera);
+
+        glViewport(0, 0, width, height);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        GLU.gluOrtho2D(0, width, height, 0);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glEnable(GL_DEPTH_TEST);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glLoadIdentity();
-        camera.useView();
 
-        drawPerspective();
-    }
+        canvasRenderer.onRenderOverlay(manager, camera, this);
 
-    private void drawPerspective()
-    {
-        glClearColor(0.92F, 0.92F, 0.93F, 1.0F);
-
-        if(Menu.isDisplayPropsShowing && displayRenderer != null && displayEntry != null)
-        {
-            displayRenderer.onPreRenderElements();
-            displayRenderer.onRender(displayEntry, manager);
-            displayRenderer.onPreRenderModel(displayEntry);
-        }
-
-        drawGrid();
-        glTranslatef(-8, 0, -8);
-
-        for(int i = 0; i < manager.getElementCount(); i++)
-        {
-            Element cube = manager.getElement(i);
-            if(cube.isVisible())
-            {
-                GL11.glLoadName(i + 1);
-                cube.draw();
-                GL11.glLoadName(0);
-                cube.drawExtras(manager);
-            }
-        }
-
-        Element selectedElement = manager.getSelectedElement();
-        if(selectedElement != null && selectedElement.isVisible())
-        {
-            selectedElement.drawOutline();
-        }
-
-        GL11.glPushMatrix();
-        {
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glDisable(GL11.GL_CULL_FACE);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-            GL11.glTranslated(0, 0, 16);
-            GL11.glScaled(0.018, 0.018, 0.018);
-            GL11.glRotated(90, 1, 0, 0);
-            FontManager.BEBAS_NEUE_50.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.6F));
-
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            GL11.glDisable(GL11.GL_BLEND);
-        }
-        GL11.glPopMatrix();
-
-        if(Menu.isDisplayPropsShowing && displayRenderer != null && displayEntry != null)
-        {
-            displayRenderer.onPostRenderModel(displayEntry);
-        }
+        drawOverlay(offset);
     }
 
     private void drawOverlay(int offset)
     {
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_DEPTH_TEST);
         glPushMatrix();
         {
             glColor3f(0.58F, 0.58F, 0.58F);
@@ -612,8 +565,7 @@ public class ModelCreator extends JFrame
         }
         else
         {
-
-            if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+            if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && canvasRenderer == standardRenderer)
             {
                 if(grabbed == null)
                 {
@@ -769,6 +721,7 @@ public class ModelCreator extends JFrame
 
     private int select(int x, int y)
     {
+
         IntBuffer selBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder()).asIntBuffer();
         int[] buffer = new int[256];
 
@@ -791,8 +744,7 @@ public class ModelCreator extends JFrame
 
             int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
             GLU.gluPerspective(60F, (float) (width - offset) / (float) height, 0.3F, 1000F);
-
-            draw();
+            canvasRenderer.onRenderPerspective(this, manager, camera);
         }
         GL11.glPopMatrix();
         hits = GL11.glRenderMode(GL11.GL_RENDER);
@@ -848,49 +800,6 @@ public class ModelCreator extends JFrame
             state += 8;
         }
         return state;
-    }
-
-    private void drawGrid()
-    {
-        glPushMatrix();
-        {
-            glColor3f(0.55F, 0.55F, 0.60F);
-            glTranslatef(-8, 0, -8);
-
-            // Bold outside lines
-            glLineWidth(2F);
-            glBegin(GL_LINES);
-            {
-                glVertex3i(0, 0, 0);
-                glVertex3i(0, 0, 16);
-                glVertex3i(16, 0, 0);
-                glVertex3i(16, 0, 16);
-                glVertex3i(0, 0, 16);
-                glVertex3i(16, 0, 16);
-                glVertex3i(0, 0, 0);
-                glVertex3i(16, 0, 0);
-            }
-            glEnd();
-
-            // Thin inside lines
-            glLineWidth(1F);
-            glBegin(GL_LINES);
-            {
-                for(int i = 1; i <= 16; i++)
-                {
-                    glVertex3i(i, 0, 0);
-                    glVertex3i(i, 0, 16);
-                }
-
-                for(int i = 1; i <= 16; i++)
-                {
-                    glVertex3i(0, 0, i);
-                    glVertex3i(16, 0, i);
-                }
-            }
-            glEnd();
-        }
-        glPopMatrix();
     }
 
     public void startScreenshot(PendingScreenshot screenshot)
@@ -959,6 +868,16 @@ public class ModelCreator extends JFrame
                 }
             }
         });
+    }
+
+    public static void setCanvasRenderer(CanvasRenderer displayRenderer)
+    {
+        canvasRenderer = displayRenderer;
+    }
+
+    public static void restoreStandardRenderer()
+    {
+        canvasRenderer = standardRenderer;
     }
 
     private static class KeyAction

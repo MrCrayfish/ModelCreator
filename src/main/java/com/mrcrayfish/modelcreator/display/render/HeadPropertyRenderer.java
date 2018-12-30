@@ -1,17 +1,19 @@
 package com.mrcrayfish.modelcreator.display.render;
 
+import com.mrcrayfish.modelcreator.Camera;
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
 import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
 
 import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Author: MrCrayfish
  */
-public class HeadDisplay extends DisplayPropertyRender
+public class HeadPropertyRenderer extends DisplayPropertyRenderer
 {
-    public HeadDisplay()
+    public HeadPropertyRenderer()
     {
         this.addElements();
     }
@@ -79,22 +81,47 @@ public class HeadDisplay extends DisplayPropertyRender
     }
 
     @Override
-    public void onPreRenderElements()
+    public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera)
     {
-        glScaled(2.0, 2.0, 2.0);
-    }
+        DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("head");
+        if(entry != null)
+        {
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            glEnable(GL_DEPTH_TEST);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+            camera.useView();
 
-    @Override
-    public void onPreRenderModel(DisplayProperties.Entry entry)
-    {
-        glTranslated(0, 4, 0);
-        glTranslated(-entry.getTranslationX(), entry.getTranslationY(), -entry.getTranslationZ());
-        glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
-        glRotatef(180F, 0, 1, 0);
-        glRotatef((float) entry.getRotationX(), 1, 0, 0);
-        glRotatef((float) entry.getRotationY(), 0, 1, 0);
-        glRotatef((float) entry.getRotationZ(), 0, 0, 1);
-        glTranslated(0, -4, 0);
-        glScalef(0.625F, 0.625F, 0.625F);
+            glScaled(2.0, 2.0, 2.0);
+
+            for(Element element : elements)
+            {
+                element.drawExtras(manager);
+                element.draw();
+            }
+
+            glTranslated(0, 4, 0);
+            glTranslated(-entry.getTranslationX(), entry.getTranslationY(), -entry.getTranslationZ());
+            glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
+            glRotatef(180F, 0, 1, 0);
+            glRotatef((float) entry.getRotationX(), 1, 0, 0);
+            glRotatef((float) entry.getRotationY(), 0, 1, 0);
+            glRotatef((float) entry.getRotationZ(), 0, 0, 1);
+            glTranslated(0, -4, 0);
+            glScalef(0.625F, 0.625F, 0.625F);
+
+            glPushMatrix();
+            {
+                this.drawGrid();
+                this.drawElements(manager);
+            }
+            glPopMatrix();
+
+            glDisable(GL_DEPTH_TEST);
+            glDisable(GL_CULL_FACE);
+            glDisable(GL_TEXTURE_2D);
+            glDisable(GL_LIGHTING);
+        }
     }
 }

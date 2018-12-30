@@ -202,7 +202,7 @@ public class Element
 
     public void drawExtras(ElementManager manager)
     {
-        //if(manager.getSelectedElement() == this)
+        if(manager.getSelectedElement() == this)
         {
             GL11.glPushMatrix();
             {

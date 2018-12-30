@@ -1,8 +1,8 @@
 package com.mrcrayfish.modelcreator;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.display.DisplayPropertyRender;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -1028,7 +1028,6 @@ public class Menu extends JMenuBar
     private static void displayProperties(ModelCreator creator)
     {
         Menu.isDisplayPropsShowing = true;
-        ModelCreator.displayRenderer = null; //TODO change to GUI
 
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -1066,11 +1065,14 @@ public class Menu extends JMenuBar
             if(c instanceof DisplayEntryPanel)
             {
                 DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
-                DisplayPropertyRender render = DisplayProperties.RENDER_MAP.get(entryPanel.getEntry().getId());
+                CanvasRenderer render = DisplayProperties.RENDER_MAP.get(entryPanel.getEntry().getId());
                 if(render != null)
                 {
-                    ModelCreator.displayEntry = entryPanel.getEntry();
-                    ModelCreator.displayRenderer = render;
+                    ModelCreator.setCanvasRenderer(render);
+                }
+                else
+                {
+                    ModelCreator.restoreStandardRenderer();
                 }
             }
         });

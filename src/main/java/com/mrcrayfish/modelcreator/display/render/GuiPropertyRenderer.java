@@ -2,9 +2,10 @@ package com.mrcrayfish.modelcreator.display.render;
 
 import com.mrcrayfish.modelcreator.Camera;
 import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.Textures;
+import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.util.AtlasRenderUtil;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -38,7 +39,7 @@ public class GuiPropertyRenderer extends DisplayPropertyRenderer
 
             glPushMatrix();
             {
-                Textures.guiSlot.bind();
+                TextureAtlas.bind();
                 glEnable(GL_TEXTURE_2D);
                 glEnable(GL_BLEND);
                 glDisable(GL_CULL_FACE);
@@ -54,18 +55,8 @@ public class GuiPropertyRenderer extends DisplayPropertyRenderer
                 glTranslatef(startX, startY, 0);
                 glScalef(scale, scale, 0);
 
-                glBegin(GL_QUADS);
-                {
-                    glTexCoord2d(0, 0);
-                    glVertex2f(0, 0);
-                    glTexCoord2d(0.078125, 0);
-                    glVertex2f(16, 0);
-                    glTexCoord2d(0.078125, 0.078125);
-                    glVertex2f(16, 16);
-                    glTexCoord2d(0, 0.078125);
-                    glVertex2f(0, 16);
-                }
-                glEnd();
+                AtlasRenderUtil.bindTexture(TextureAtlas.GUI_SLOT);
+                AtlasRenderUtil.drawQuad(0, 0, 16, 16);
             }
             glPopMatrix();
 

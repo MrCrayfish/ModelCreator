@@ -2,7 +2,6 @@ package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
-import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -12,6 +11,7 @@ import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
+import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.util.FontManager;
 import org.lwjgl.LWJGLException;
@@ -337,7 +337,7 @@ public class ModelCreator extends JFrame
 
     private void loop() throws LWJGLException
     {
-        Textures.load();
+        TextureAtlas.load();
 
         camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
 

@@ -15,6 +15,8 @@ public abstract class CanvasRenderer
 {
     protected List<Element> elements = new ArrayList<>();
 
+    public void onInit(Camera camera) {}
+
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera) {}
 
     public void onRenderOverlay(ElementManager manager, Camera camera, ModelCreator creator) {}

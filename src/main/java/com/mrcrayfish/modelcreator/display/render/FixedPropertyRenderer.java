@@ -55,6 +55,17 @@ public class FixedPropertyRenderer extends DisplayPropertyRenderer
     }
 
     @Override
+    public void onInit(Camera camera)
+    {
+        camera.setX(0);
+        camera.setY(-9);
+        camera.setZ(-30);
+        camera.setRX(0);
+        camera.setRY(0);
+        camera.setRZ(0);
+    }
+
+    @Override
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera)
     {
         DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("fixed");

@@ -81,6 +81,17 @@ public class HeadPropertyRenderer extends DisplayPropertyRenderer
     }
 
     @Override
+    public void onInit(Camera camera)
+    {
+        camera.setX(0);
+        camera.setY(-5);
+        camera.setZ(-45);
+        camera.setRX(10);
+        camera.setRY(225);
+        camera.setRZ(0);
+    }
+
+    @Override
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera)
     {
         DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("head");

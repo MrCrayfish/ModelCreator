@@ -71,6 +71,7 @@ public class ModelCreator extends JFrame
     private Set<Integer> keyDown = new HashSet<>();
     private List<KeyAction> keyActions = new ArrayList<>();
 
+    private static boolean changedCanvas = false;
     private static CanvasRenderer standardRenderer = new StandardRenderer();
     private static CanvasRenderer canvasRenderer = standardRenderer;
 
@@ -445,6 +446,12 @@ public class ModelCreator extends JFrame
 
     private void draw()
     {
+        if(changedCanvas)
+        {
+            canvasRenderer.onInit(camera);
+            changedCanvas = false;
+        }
+
         int offset = activeSidebar == null ? 0 : getHeight() < 805 ? SIDEBAR_WIDTH * 2 : SIDEBAR_WIDTH;
 
         glViewport(offset, 0, width - offset, height);
@@ -532,49 +539,52 @@ public class ModelCreator extends JFrame
             activeSidebar.draw(offset, width, height, getHeight());
         }
 
-        glPushMatrix();
+        if(canvasRenderer == standardRenderer)
         {
-            glTranslatef(width - 80, height - 80, 0);
-            glLineWidth(2F);
-            glRotated(-camera.getRY(), 0, 0, 1);
-
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            FontManager.BEBAS_NEUE_20.drawString(-5, -75, "N", new Color(1, 1, 1));
-            GL11.glDisable(GL11.GL_BLEND);
-
-            glColor3d(0.6, 0.6, 0.6);
-            glBegin(GL_LINES);
+            glPushMatrix();
             {
-                glVertex2i(0, -50);
-                glVertex2i(0, 50);
-                glVertex2i(-50, 0);
-                glVertex2i(50, 0);
+                glTranslatef(width - 80, height - 80, 0);
+                glLineWidth(2F);
+                glRotated(-camera.getRY(), 0, 0, 1);
+
+                GL11.glEnable(GL11.GL_BLEND);
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                FontManager.BEBAS_NEUE_20.drawString(-5, -75, "N", new Color(1, 1, 1));
+                GL11.glDisable(GL11.GL_BLEND);
+
+                glColor3d(0.6, 0.6, 0.6);
+                glBegin(GL_LINES);
+                {
+                    glVertex2i(0, -50);
+                    glVertex2i(0, 50);
+                    glVertex2i(-50, 0);
+                    glVertex2i(50, 0);
+                }
+                glEnd();
+
+                glColor3d(0.3, 0.3, 0.6);
+                glBegin(GL_TRIANGLES);
+                {
+                    glVertex2i(-5, -45);
+                    glVertex2i(0, -50);
+                    glVertex2i(5, -45);
+
+                    glVertex2i(-5, 45);
+                    glVertex2i(0, 50);
+                    glVertex2i(5, 45);
+
+                    glVertex2i(-45, -5);
+                    glVertex2i(-50, 0);
+                    glVertex2i(-45, 5);
+
+                    glVertex2i(45, -5);
+                    glVertex2i(50, 0);
+                    glVertex2i(45, 5);
+                }
+                glEnd();
             }
-            glEnd();
-
-            glColor3d(0.3, 0.3, 0.6);
-            glBegin(GL_TRIANGLES);
-            {
-                glVertex2i(-5, -45);
-                glVertex2i(0, -50);
-                glVertex2i(5, -45);
-
-                glVertex2i(-5, 45);
-                glVertex2i(0, 50);
-                glVertex2i(5, 45);
-
-                glVertex2i(-45, -5);
-                glVertex2i(-50, 0);
-                glVertex2i(-45, 5);
-
-                glVertex2i(45, -5);
-                glVertex2i(50, 0);
-                glVertex2i(45, 5);
-            }
-            glEnd();
+            glPopMatrix();
         }
-        glPopMatrix();
     }
 
     private void handleInput(int offset)
@@ -915,6 +925,7 @@ public class ModelCreator extends JFrame
     public static void setCanvasRenderer(CanvasRenderer displayRenderer)
     {
         canvasRenderer = displayRenderer;
+        changedCanvas = true;
     }
 
     public static void restoreStandardRenderer()

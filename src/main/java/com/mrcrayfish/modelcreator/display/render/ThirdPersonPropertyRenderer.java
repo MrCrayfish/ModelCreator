@@ -80,6 +80,17 @@ public class ThirdPersonPropertyRenderer extends DisplayPropertyRenderer
     }
 
     @Override
+    public void onInit(Camera camera)
+    {
+        camera.setX(13);
+        camera.setY(-5);
+        camera.setZ(-45);
+        camera.setRX(10);
+        camera.setRY(90);
+        camera.setRZ(0);
+    }
+
+    @Override
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera)
     {
         DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("thirdperson_righthand");

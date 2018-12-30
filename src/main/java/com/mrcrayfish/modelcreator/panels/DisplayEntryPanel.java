@@ -14,12 +14,18 @@ import java.awt.event.KeyEvent;
 /**
  * Author: MrCrayfish
  */
-public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
+public class DisplayEntryPanel extends JPanel
 {
     private DisplayProperties.Entry entry; //TODO remove instance
     private JSlider sliderRotationX;
     private JSlider sliderRotationY;
     private JSlider sliderRotationZ;
+    private JTextField textFieldTranslationX;
+    private JTextField textFieldTranslationY;
+    private JTextField textFieldTranslationZ;
+    private JTextField textFieldScaleX;
+    private JTextField textFieldScaleY;
+    private JTextField textFieldScaleZ;
 
     public DisplayEntryPanel(DisplayProperties.Entry entry)
     {
@@ -61,20 +67,53 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
 
         Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
 
-        JTextField textFieldTransX = new JTextField();
-        textFieldTransX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
-        textFieldTransX.setFont(defaultFont);
-        textFieldTransX.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationX = new JTextField();
+        textFieldTranslationX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
+        textFieldTranslationX.setFont(defaultFont);
+        textFieldTranslationX.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationX.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setTranslationX(Parser.parseDouble(textFieldTranslationX.getText(), entry.getTranslationX()));
+                }
+            }
+        });
 
-        JTextField textFieldTransY = new JTextField();
-        textFieldTransY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
-        textFieldTransY.setFont(defaultFont);
-        textFieldTransY.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationY = new JTextField();
+        textFieldTranslationY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
+        textFieldTranslationY.setFont(defaultFont);
+        textFieldTranslationY.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationY.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setTranslationY(Parser.parseDouble(textFieldTranslationY.getText(), entry.getTranslationY()));
+                }
+            }
+        });
 
-        JTextField textFieldTransZ = new JTextField();
-        textFieldTransZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
-        textFieldTransZ.setFont(defaultFont);
-        textFieldTransZ.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationZ = new JTextField();
+        textFieldTranslationZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
+        textFieldTranslationZ.setFont(defaultFont);
+        textFieldTranslationZ.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldTranslationZ.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setTranslationZ(Parser.parseDouble(textFieldTranslationZ.getText(), entry.getTranslationZ()));
+                }
+            }
+        });
         
         JButton btnTransX = new JButton(Icons.arrow_up);
         btnTransX.addActionListener(e -> 
@@ -91,7 +130,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationX(entry.getTranslationX() + 1.0);
             }
-            textFieldTransX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
+            textFieldTranslationX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
         });
         translatePanel.add(btnTransX);
 
@@ -110,7 +149,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationY(entry.getTranslationY() + 1.0);
             }
-            textFieldTransY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
+            textFieldTranslationY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
         });
         translatePanel.add(btnTransY);
 
@@ -129,13 +168,13 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationZ(entry.getTranslationZ() + 1.0);
             }
-            textFieldTransZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
+            textFieldTranslationZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
         });
         translatePanel.add(btnTransZ);
 
-        translatePanel.add(textFieldTransX);
-        translatePanel.add(textFieldTransY);
-        translatePanel.add(textFieldTransZ);
+        translatePanel.add(textFieldTranslationX);
+        translatePanel.add(textFieldTranslationY);
+        translatePanel.add(textFieldTranslationZ);
 
         JButton btnTransXNeg = new JButton(Icons.arrow_down);
         btnTransXNeg.addActionListener(e ->
@@ -152,7 +191,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationX(entry.getTranslationX() - 1.0);
             }
-            textFieldTransX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
+            textFieldTranslationX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
         });
         translatePanel.add(btnTransXNeg);
 
@@ -171,7 +210,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationY(entry.getTranslationY() - 1.0);
             }
-            textFieldTransY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
+            textFieldTranslationY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
         });
         translatePanel.add(btnTransYNeg);
 
@@ -190,7 +229,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             {
                 entry.setTranslationZ(entry.getTranslationZ() - 1.0);
             }
-            textFieldTransZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
+            textFieldTranslationZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
         });
         translatePanel.add(btnTransZNeg);
         
@@ -199,7 +238,7 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
         JPanel scalePanel = new JPanel(new GridLayout(3, 3, 5, 5));
         scalePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 0), "<html><b>Scale</b></html>"));
 
-        JTextField textFieldScaleX = new JTextField();
+        textFieldScaleX = new JTextField();
         textFieldScaleX.setText(Exporter.FORMAT.format(entry.getScaleX()));
         textFieldScaleX.setFont(defaultFont);
         textFieldScaleX.setHorizontalAlignment(SwingConstants.CENTER);
@@ -215,15 +254,37 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
             }
         });
 
-        JTextField textFieldScaleY = new JTextField();
+        textFieldScaleY = new JTextField();
         textFieldScaleY.setText(Exporter.FORMAT.format(entry.getScaleY()));
         textFieldScaleY.setFont(defaultFont);
         textFieldScaleY.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldScaleY.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setScaleY(Parser.parseDouble(textFieldScaleY.getText(), entry.getScaleY()));
+                }
+            }
+        });
 
-        JTextField textFieldScaleZ = new JTextField();
+        textFieldScaleZ = new JTextField();
         textFieldScaleZ.setText(Exporter.FORMAT.format(entry.getScaleZ()));
         textFieldScaleZ.setFont(defaultFont);
         textFieldScaleZ.setHorizontalAlignment(SwingConstants.CENTER);
+        textFieldScaleZ.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if(e.getKeyCode() == KeyEvent.VK_ENTER)
+                {
+                    entry.setScaleZ(Parser.parseDouble(textFieldScaleZ.getText(), entry.getScaleZ()));
+                }
+            }
+        });
 
         JButton btnScaleX = new JButton(Icons.arrow_up);
         btnScaleX.addActionListener(e ->
@@ -354,12 +415,18 @@ public class DisplayEntryPanel extends JPanel implements IDisplayEntryUpdater
         springLayout.putConstraint(SpringLayout.EAST, otherPanel, -10, SpringLayout.EAST, this);
     }
 
-    @Override
     public void updateValues(DisplayProperties.Entry entry)
     {
+        this.entry = entry;
         sliderRotationX.setValue((int) entry.getRotationX());
         sliderRotationY.setValue((int) entry.getRotationY());
         sliderRotationZ.setValue((int) entry.getRotationZ());
+        textFieldTranslationX.setText(Exporter.FORMAT.format(entry.getTranslationX()));
+        textFieldTranslationY.setText(Exporter.FORMAT.format(entry.getTranslationY()));
+        textFieldTranslationZ.setText(Exporter.FORMAT.format(entry.getTranslationZ()));
+        textFieldScaleX.setText(Exporter.FORMAT.format(entry.getScaleX()));
+        textFieldScaleY.setText(Exporter.FORMAT.format(entry.getScaleY()));
+        textFieldScaleZ.setText(Exporter.FORMAT.format(entry.getScaleZ()));
     }
 
     private JSlider createRotationSlider(String labelText, JComponent parent)

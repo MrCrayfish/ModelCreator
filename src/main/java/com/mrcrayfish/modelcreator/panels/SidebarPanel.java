@@ -38,7 +38,7 @@ public class SidebarPanel extends JPanel implements ElementManager
     private String particle = null;
     private boolean ambientOcc = true;
 
-    private DisplayProperties properties = new DisplayProperties(DisplayProperties.DEFAULT_BLOCK);
+    private DisplayProperties properties = new DisplayProperties(DisplayProperties.MODEL_CREATOR_BLOCK);
 
     public SidebarPanel(ModelCreator creator)
     {

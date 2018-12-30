@@ -1047,7 +1047,11 @@ public class Menu extends JMenuBar
         panel.setPreferredSize(new Dimension(400, 430));
         dialog.add(panel);
 
+        JLabel labelProperties = new JLabel("Presets");
+        panel.add(labelProperties);
+
         JComboBox<DisplayProperties> comboBoxProperties = new JComboBox<>();
+        comboBoxProperties.addItem(DisplayProperties.MODEL_CREATOR_BLOCK);
         comboBoxProperties.addItem(DisplayProperties.DEFAULT_BLOCK);
         comboBoxProperties.addItem(DisplayProperties.DEFAULT_ITEM);
         comboBoxProperties.setPreferredSize(new Dimension(0, 24));
@@ -1080,9 +1084,29 @@ public class Menu extends JMenuBar
         });
         panel.add(tabbedPane);
 
-        layout.putConstraint(SpringLayout.EAST, comboBoxProperties, -10, SpringLayout.EAST, panel);
+        JButton btnApplyProperties = new JButton("Apply");
+        btnApplyProperties.setPreferredSize(new Dimension(80, 24));
+        btnApplyProperties.addActionListener(e ->
+        {
+            creator.getElementManager().setDisplayProperties((DisplayProperties) comboBoxProperties.getSelectedItem());
+            DisplayProperties displayProperties = creator.getElementManager().getDisplayProperties();
+            Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+            if(c instanceof DisplayEntryPanel)
+            {
+                DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
+                DisplayProperties.Entry oldEntry = entryPanel.getEntry();
+                entryPanel.updateValues(displayProperties.getEntry(oldEntry.getId()));
+            }
+        });
+        panel.add(btnApplyProperties);
+
+        layout.putConstraint(SpringLayout.WEST, labelProperties, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, labelProperties, 2, SpringLayout.NORTH, comboBoxProperties);
+        layout.putConstraint(SpringLayout.EAST, comboBoxProperties, -10, SpringLayout.WEST, btnApplyProperties);
         layout.putConstraint(SpringLayout.NORTH, comboBoxProperties, 10, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.WEST, comboBoxProperties, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.WEST, comboBoxProperties, 10, SpringLayout.EAST, labelProperties);
+        layout.putConstraint(SpringLayout.NORTH, btnApplyProperties, 10, SpringLayout.NORTH, panel);
+        layout.putConstraint(SpringLayout.EAST, btnApplyProperties, -10, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.SOUTH, comboBoxProperties);
         layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);

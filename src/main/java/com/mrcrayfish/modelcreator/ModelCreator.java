@@ -11,8 +11,8 @@ import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
-import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.util.FontManager;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -341,70 +341,100 @@ public class ModelCreator extends JFrame
 
         camera = new Camera(60F, (float) Display.getWidth() / (float) Display.getHeight(), 0.3F, 1000F);
 
-        Dimension newDim;
-
+        long lastTime = System.nanoTime();
+        double delta = 0.0;
+        double ns = 1000000000.0 / 60.0;
+        long timer = System.currentTimeMillis();
+        int updates = 0;
+        int frames = 0;
         while(!Display.isCloseRequested() && !getCloseRequested())
         {
-            //TODO add sleeping timer
-
-            while(Keyboard.next())
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            if(delta >= 1.0)
             {
-                int modifiers = 0;
-                if(isCtrlKeyDown())
-                {
-                    modifiers += InputEvent.CTRL_MASK;
-                }
-                if(isShiftKeyDown())
-                {
-                    modifiers += InputEvent.SHIFT_MASK;
-                }
-                if(isAltKeyDown())
-                {
-                    modifiers += InputEvent.ALT_MASK;
-                }
+                tick();
+                updates++;
+                delta--;
+            }
+            render(frames / 60.0F);
+            frames++;
+            if(System.currentTimeMillis() - timer > 1000)
+            {
+                timer += 1000;
+                updates = 0;
+                frames = 0;
+            }
+        }
+    }
 
-                int code = Keyboard.getEventKey();
-                int finalModifiers = modifiers;
-                if(Keyboard.getEventKeyState())
-                {
-                    SwingUtilities.invokeLater(() -> this.handleKeyAction(code, finalModifiers, false, true));
-                }
-                else
-                {
-                    SwingUtilities.invokeLater(() -> this.handleKeyAction(code, finalModifiers, false, false));
-                }
+    private void tick()
+    {
+
+    }
+
+    private void render(float partialTicks)
+    {
+        Dimension newDim;
+
+        while(Keyboard.next())
+        {
+            int modifiers = 0;
+            if(isCtrlKeyDown())
+            {
+                modifiers += InputEvent.CTRL_MASK;
+            }
+            if(isShiftKeyDown())
+            {
+                modifiers += InputEvent.SHIFT_MASK;
+            }
+            if(isAltKeyDown())
+            {
+                modifiers += InputEvent.ALT_MASK;
             }
 
-            for(PendingTexture texture : pendingTextures)
+            int code = Keyboard.getEventKey();
+            int finalModifiers = modifiers;
+            if(Keyboard.getEventKeyState())
             {
-                texture.load();
+                SwingUtilities.invokeLater(() -> this.handleKeyAction(code, finalModifiers, false, true));
             }
-            pendingTextures.clear();
-
-            newDim = newCanvasSize.getAndSet(null);
-
-            if(newDim != null)
+            else
             {
-                width = newDim.width;
-                height = newDim.height;
+                SwingUtilities.invokeLater(() -> this.handleKeyAction(code, finalModifiers, false, false));
             }
+        }
 
-            this.draw();
+        for(PendingTexture texture : pendingTextures)
+        {
+            texture.load();
+        }
+        pendingTextures.clear();
 
-            Display.update();
+        newDim = newCanvasSize.getAndSet(null);
 
-            if(screenshot != null)
+        if(newDim != null)
+        {
+            width = newDim.width;
+            height = newDim.height;
+        }
+
+        this.draw();
+
+        Display.update();
+
+        if(screenshot != null)
+        {
+            if(screenshot.getFile() != null)
             {
-                if(screenshot.getFile() != null)
-                {
-                    Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
-                }
-                else
-                {
-                    Screenshot.getScreenshot(width, height, screenshot.getCallback());
-                }
-                screenshot = null;
+                Screenshot.getScreenshot(width, height, screenshot.getCallback(), screenshot.getFile());
             }
+            else
+            {
+                Screenshot.getScreenshot(width, height, screenshot.getCallback());
+            }
+            screenshot = null;
         }
     }
 

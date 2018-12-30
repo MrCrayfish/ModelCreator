@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
+import com.mrcrayfish.modelcreator.display.render.GroundPropertyRenderer;
 import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -368,11 +369,13 @@ public class ModelCreator extends JFrame
 
     private void tick()
     {
-
+        Animation.tick();
     }
 
     private void render(float partialTicks)
     {
+        Animation.setPartialTicks(partialTicks);
+
         Dimension newDim = newCanvasSize.getAndSet(null);
         if (newDim != null)
         {

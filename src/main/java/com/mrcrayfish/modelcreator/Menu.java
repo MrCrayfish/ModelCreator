@@ -1099,12 +1099,15 @@ public class Menu extends JMenuBar
         {
             creator.getElementManager().setDisplayProperties((DisplayProperties) comboBoxProperties.getSelectedItem());
             DisplayProperties displayProperties = creator.getElementManager().getDisplayProperties();
-            Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-            if(c instanceof DisplayEntryPanel)
+            Component[] components = tabbedPane.getComponents();
+            for(Component c : components)
             {
-                DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
-                DisplayProperties.Entry oldEntry = entryPanel.getEntry();
-                entryPanel.updateValues(displayProperties.getEntry(oldEntry.getId()));
+                if(c instanceof DisplayEntryPanel)
+                {
+                    DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
+                    DisplayProperties.Entry oldEntry = entryPanel.getEntry();
+                    entryPanel.updateValues(displayProperties.getEntry(oldEntry.getId()));
+                }
             }
         });
         panel.add(btnApplyProperties);

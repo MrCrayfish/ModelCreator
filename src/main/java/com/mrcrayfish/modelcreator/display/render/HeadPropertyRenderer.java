@@ -87,7 +87,7 @@ public class HeadPropertyRenderer extends DisplayPropertyRenderer
         camera.setY(-5);
         camera.setZ(-45);
         camera.setRX(10);
-        camera.setRY(225);
+        camera.setRY(45);
         camera.setRZ(0);
     }
 

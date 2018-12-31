@@ -58,6 +58,8 @@ public class Menu extends JMenuBar
     /* Extras */
     private JMenu menuHelp;
     private JMenuItem itemExtractAssets;
+    private JMenu menuDeveloper;
+    private JMenuItem itemExportAABBJavaCode;
     private JMenu menuExamples;
     private JMenuItem itemModelCauldron;
     private JMenuItem itemModelChair;
@@ -109,6 +111,11 @@ public class Menu extends JMenuBar
         menuHelp = new JMenu("More");
         {
             itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_O, Icons.extract);
+            menuDeveloper = new JMenu("Mod Developer");
+            menuDeveloper.setIcon(Icons.mojang);
+            {
+                itemExportAABBJavaCode = createItem("Generate JAVA Code", "Generate AABB fields and bounds, raytracing, & collision methods.", KeyEvent.VK_J, Icons.java);
+            }
             menuExamples = new JMenu("Examples");
             menuExamples.setIcon(Icons.new_);
             {
@@ -124,7 +131,10 @@ public class Menu extends JMenuBar
         menuExamples.add(itemModelCauldron);
         menuExamples.add(itemModelChair);
 
+        menuDeveloper.add(itemExportAABBJavaCode);
+
         menuHelp.add(itemExtractAssets);
+        menuHelp.add(menuDeveloper);
         menuHelp.addSeparator();
         menuHelp.add(menuExamples);
         menuHelp.addSeparator();
@@ -183,23 +193,25 @@ public class Menu extends JMenuBar
 
     private void initActions()
     {
-        itemNew.addActionListener(a -> Menu.newProject(creator));
+        itemNew.addActionListener(a -> newProject(creator));
 
-        itemLoad.addActionListener(a -> Menu.loadProject(creator));
+        itemLoad.addActionListener(a -> loadProject(creator));
 
-        itemSave.addActionListener(a -> Menu.saveProject(creator));
+        itemSave.addActionListener(a -> saveProject(creator));
 
-        itemImport.addActionListener(e -> Menu.importJson(creator));
+        itemImport.addActionListener(a -> importJson(creator));
 
-        itemExport.addActionListener(e -> Menu.exportJson(creator));
+        itemExport.addActionListener(a -> exportJson(creator));
 
-        itemSettings.addActionListener(e -> Menu.settings(creator));
+        itemExportAABBJavaCode.addActionListener(a -> exportJavaCode(creator, a));
 
-        itemExit.addActionListener(e -> creator.close());
+        itemSettings.addActionListener(a -> settings(creator));
 
-        itemDisplayProps.addActionListener(a -> Menu.displayProperties(creator));
+        itemExit.addActionListener(a -> creator.close());
 
-        itemOptimise.addActionListener(a -> Menu.optimizeModel(creator));
+        itemDisplayProps.addActionListener(a -> displayProperties(creator));
+
+        itemOptimise.addActionListener(a -> optimizeModel(creator));
 
         itemSaveToDisk.addActionListener(a ->
         {
@@ -317,7 +329,7 @@ public class Menu extends JMenuBar
                         message.setMessage("Failed to upload screenshot. Check your internet connection then try again.");
                     }
 
-                    JDialog dialog = message.createDialog(Menu.this, title);
+                    JDialog dialog = message.createDialog(this, title);
                     dialog.setLocationRelativeTo(null);
                     dialog.setModal(false);
                     dialog.setVisible(true);
@@ -538,6 +550,18 @@ public class Menu extends JMenuBar
         }
     }
 
+    private static JCheckBox createCheckBox(String text, String tooltip, boolean selected)
+    {
+        JCheckBox checkBoxDisplayProps = new JCheckBox(text);
+        checkBoxDisplayProps.setToolTipText(tooltip);
+        checkBoxDisplayProps.setSelected(selected);
+        checkBoxDisplayProps.setIcon(Icons.light_off);
+        checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
+        checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
+        checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
+        return checkBoxDisplayProps;
+    }
+
     public static void exportJson(ModelCreator creator)
     {
         JDialog dialog = new JDialog(creator, "Export JSON Model", Dialog.ModalityType.APPLICATION_MODAL);
@@ -603,31 +627,13 @@ public class Menu extends JMenuBar
         JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
         exportDir.add(optionSeparator);
 
-        JCheckBox checkBoxOptimize = new JCheckBox("Optimize Model");
-        checkBoxOptimize.setToolTipText("Removes unnecessary faces that can't been seen in the model");
-        checkBoxOptimize.setSelected(true);
-        checkBoxOptimize.setIcon(Icons.light_off);
-        checkBoxOptimize.setRolloverIcon(Icons.light_off);
-        checkBoxOptimize.setSelectedIcon(Icons.light_on);
-        checkBoxOptimize.setRolloverSelectedIcon(Icons.light_on);
+        JCheckBox checkBoxOptimize = createCheckBox("Optimize Model", "Removes unnecessary faces that can't been seen in the model", true);
         exportDir.add(checkBoxOptimize);
 
-        JCheckBox checkBoxDisplayProps = new JCheckBox("Include Display Properties");
-        checkBoxDisplayProps.setToolTipText("Adds the display definitions (first-person, third-person, etc) to the model file");
-        checkBoxDisplayProps.setSelected(true);
-        checkBoxDisplayProps.setIcon(Icons.light_off);
-        checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
-        checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
-        checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
+        JCheckBox checkBoxDisplayProps = createCheckBox("Include Display Properties", "Adds the display definitions (first-person, third-person, etc) to the model file", true);
         exportDir.add(checkBoxDisplayProps);
 
-        JCheckBox checkBoxElementNames = new JCheckBox("Include Element Names");
-        checkBoxElementNames.setToolTipText("The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names");
-        checkBoxElementNames.setSelected(true);
-        checkBoxElementNames.setIcon(Icons.light_off);
-        checkBoxElementNames.setRolloverIcon(Icons.light_off);
-        checkBoxElementNames.setSelectedIcon(Icons.light_on);
-        checkBoxElementNames.setRolloverSelectedIcon(Icons.light_on);
+        JCheckBox checkBoxElementNames = createCheckBox("Include Element Names", "The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names", true);
         exportDir.add(checkBoxElementNames);
 
         JSeparator separator = new JSeparator();
@@ -708,7 +714,7 @@ public class Menu extends JMenuBar
 
                 dialog.dispose();
 
-                Exporter exporter = new Exporter(creator.getElementManager());
+                ExporterModelJSON exporter = new ExporterModelJSON(creator.getElementManager());
                 exporter.setOptimize(checkBoxOptimize.isSelected());
                 exporter.setDisplayProps(checkBoxDisplayProps.isSelected());
                 exporter.setIncludeNames(checkBoxElementNames.isSelected());
@@ -746,6 +752,116 @@ public class Menu extends JMenuBar
         dialog.setResizable(false);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+    }
+
+    private static void exportJavaCode(ModelCreator creator, ActionEvent actionEvent)
+    {
+        JCheckBox includeAABBs = createCheckBox("Include AABBs", "Include decelerations of the AABBs fields that represent the model's elements", true);
+        JCheckBox includeMethods = createCheckBox("Include methods", "Include bounds, raytracing, & collision methods", true);
+        JCheckBox useBoundsHelper = createCheckBox("Use Bounds helper", "Fields and methods use Mr. Crayfish's Bounds helper class, and target his code-base", false);
+        JCheckBox generateRotatedBounds = createCheckBox("Create Rotations", "Use Bounds helper class to create AABB rotation arrays for each element", false);
+
+        JComboBox<String> mcVersion = new JComboBox<>(new String[] {"1.12", "1.13"});
+        mcVersion.setEnabled(false);
+        String mcTooltip = "Seclect Minecraft version";
+        mcVersion.setToolTipText(mcTooltip);
+        JPanel panelMC = new JPanel();
+        panelMC.add(mcVersion);
+        JLabel mcLabel = new JLabel("MC Version");
+        mcLabel.setForeground(Color.GRAY);
+        mcLabel.setToolTipText(mcTooltip);
+        panelMC.add(mcLabel);
+
+        JPanel panelMain = new JPanel();
+        panelMain.setLayout(new GridLayout(1, 3));
+        panelMain.add(includeAABBs);
+        panelMain.add(includeMethods);
+        panelMain.add(panelMC);
+        Object[] controls;
+        if ((actionEvent.getModifiers() & ActionEvent.SHIFT_MASK) == 0)
+        {
+            controls = new Object[] {panelMain};
+        }
+        else
+        {
+            includeMethods.setToolTipText(includeMethods.getToolTipText().replace(", raytracing", ""));
+            useBoundsHelper.setForeground(Color.BLACK);
+            useBoundsHelper.setSelected(true);
+            JPanel panelCray = new JPanel();
+            panelCray.setLayout(new GridLayout(1, 3));
+            panelCray.setAlignmentX(Component.LEFT_ALIGNMENT);
+            panelCray.add(useBoundsHelper);
+            generateRotatedBounds.setSelected(true);
+            panelCray.add(generateRotatedBounds);
+            panelCray.add(new JLabel());
+            controls = new Object[] {panelMain, panelCray};
+        }
+        JLabel infoLabel = new JLabel("<html><body><p style='width: 300px;'>If using this model for a modded block, AxisAlignedBB fields generated\n"
+                                    + "from its non-rotated elements can be passed to methods that generate\n"
+                                    + "a correct bounding box and perform accurate raytracing and collision.\n</p></body></html>");
+        infoLabel.setForeground(Color.BLACK);
+        JLabel questionLabel = new JLabel("<html><body><p style='width: 300px;'>Would you like these generated fields and/or methods to be copied\n"
+                                        + "to your clipboard, or to be saved to a .txt file?</p></body></html>");//, Box.createHorizontalStrut(20)
+        questionLabel.setForeground(Color.BLACK);
+        int returnValDestination = JOptionPane.showOptionDialog(creator, new Object[] {infoLabel, Box.createHorizontalStrut(20), Box.createHorizontalStrut(20), new JSeparator(),
+                                                                                        controls, new JSeparator(), Box.createHorizontalStrut(20), Box.createHorizontalStrut(20),
+                                                                                        questionLabel}, "Code Output Destination", JOptionPane.YES_NO_OPTION,
+                                                                                        JOptionPane.QUESTION_MESSAGE, null, new String[] {"Clipboard", "Text File"}, "Clipboard");
+        if (!includeAABBs.isSelected() && !includeMethods.isSelected())
+        {
+            JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.OK_OPTION);
+            return;
+        }
+        ExporterJavaCodeTXT exporter = new ExporterJavaCodeTXT(creator, includeAABBs.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
+        if (returnValDestination == JOptionPane.CLOSED_OPTION)
+            return;
+
+        if (returnValDestination == JOptionPane.OK_OPTION)
+        {
+            try
+            {
+                exporter.writeComponentsToClipboard();
+            }
+            catch (Exception exception)
+            {
+                JOptionPane.showMessageDialog(creator, "An error occured while copying code to your clipboard.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return;
+        }
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Output Directory");
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setApproveButtonText("Export");
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("TXT (.txt)", "txt");
+        chooser.setFileFilter(filter);
+
+        String dir = Settings.getJSONDir();
+
+        if (dir != null)
+        {
+            chooser.setCurrentDirectory(new File(dir));
+        }
+
+        int returnVal = chooser.showSaveDialog(null);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            if (chooser.getSelectedFile().exists())
+            {
+                returnVal = JOptionPane.showConfirmDialog(null, "A file already exists with that name, are you sure you want to override?", "Warning", JOptionPane.YES_NO_OPTION);
+            }
+            if (returnVal != JOptionPane.NO_OPTION && returnVal != JOptionPane.CLOSED_OPTION)
+            {
+                File location = chooser.getSelectedFile().getParentFile();
+                Settings.setJSONDir(location.toString());
+                String filePath = chooser.getSelectedFile().getAbsolutePath();
+                if (!filePath.endsWith(".txt"))
+                    chooser.setSelectedFile(new File(filePath + ".txt"));
+
+                exporter.export(chooser.getSelectedFile());
+            }
+        }
     }
 
     public static void settings(ModelCreator creator)
@@ -1036,7 +1152,7 @@ public class Menu extends JMenuBar
 
     private static void displayProperties(ModelCreator creator)
     {
-        Menu.isDisplayPropsShowing = true;
+        isDisplayPropsShowing = true;
         ModelCreator.setCanvasRenderer(DisplayProperties.RENDER_MAP.get("gui"));
 
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
@@ -1046,7 +1162,7 @@ public class Menu extends JMenuBar
             @Override
             public void windowClosed(WindowEvent e)
             {
-                Menu.isDisplayPropsShowing = false;
+                isDisplayPropsShowing = false;
                 ModelCreator.restoreStandardRenderer();
             }
         });

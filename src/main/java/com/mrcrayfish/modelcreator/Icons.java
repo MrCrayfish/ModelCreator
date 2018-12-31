@@ -36,6 +36,8 @@ public class Icons
     public static Icon model_cauldron;
     public static Icon model_chair;
     public static Icon extract;
+    public static Icon mojang;
+    public static Icon java;
 
     public static void init(Class<?> clazz)
     {
@@ -73,5 +75,7 @@ public class Icons
         github = new ImageIcon(loader.getResource("icons/github.png"));
         model_cauldron = new ImageIcon(loader.getResource("icons/model_cauldron.png"));
         model_chair = new ImageIcon(loader.getResource("icons/model_chair.png"));
+        mojang = new ImageIcon(loader.getResource("icons/mojang.png"));
+        java = new ImageIcon(loader.getResource("icons/java.png"));
     }
 }

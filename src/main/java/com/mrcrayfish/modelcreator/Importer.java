@@ -387,15 +387,16 @@ public class Importer
             if(obj.has("texture") && obj.get("texture").isJsonPrimitive())
             {
                 String loc = obj.get("texture").getAsString().replace("#", "");
-
                 if(textureMap.containsKey(loc))
                 {
                     String tloc = textureMap.get(loc);
-                    String location = tloc.substring(0, tloc.lastIndexOf('/') + 1);
-                    String tname = tloc.replace(location, "");
-
-                    face.setTextureLocation(location);
-                    face.setTexture(tname);
+                    if(tloc != null)
+                    {
+                        String location = tloc.substring(0, tloc.lastIndexOf('/') + 1);
+                        String tname = tloc.replace(location, "");
+                        face.setTextureLocation(location);
+                        face.setTexture(tname);
+                    }
                 }
             }
 

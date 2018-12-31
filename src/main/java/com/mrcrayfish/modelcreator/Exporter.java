@@ -20,7 +20,7 @@ public class Exporter
     /**
      * decimalformatter for rounding
      */
-    public static final DecimalFormat FORMAT = new DecimalFormat("#.##");
+    public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
 
     static
     {
@@ -291,6 +291,8 @@ public class Exporter
         writer.write(space(1) + "\"display\": {");
         writer.newLine();
 
+        //TODO manually order
+
         for(int i = 0; i < ids.size() - 1; i++)
         {
             String key = ids.get(i);
@@ -322,7 +324,7 @@ public class Exporter
                 FORMAT.format(entry.getTranslationY()),
                 FORMAT.format(entry.getTranslationZ())));
         writer.newLine();
-        writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ],",
+        writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ]",
                 FORMAT.format(entry.getScaleX()),
                 FORMAT.format(entry.getScaleY()),
                 FORMAT.format(entry.getScaleZ())));

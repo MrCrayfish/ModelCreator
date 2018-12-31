@@ -67,7 +67,7 @@ public class DisplayEntryPanel extends JPanel
         JPanel translatePanel = new JPanel(new GridLayout(3, 3, 5, 5));
         translatePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 0), "<html><b>Translation</b></html>"));
 
-        Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
+        Font defaultFont = new Font("SansSerif", Font.BOLD, 16);
 
         textFieldTranslationX = new JTextField();
         textFieldTranslationX.setText(Exporter.FORMAT.format(entry.getTranslationX()));

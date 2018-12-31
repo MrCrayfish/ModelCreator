@@ -91,11 +91,12 @@ public class FixedPropertyRenderer extends DisplayPropertyRenderer
 
             glTranslated(0, 8, 0);
             glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
+            glRotatef(180F, 0, 1, 0);
+            glScalef(0.5F, 0.5F, 0.5F);
             glTranslated(entry.getTranslationX(), entry.getTranslationY(), entry.getTranslationZ());
             glRotatef((float) entry.getRotationX(), 1, 0, 0);
             glRotatef((float) entry.getRotationY(), 0, 1, 0);
             glRotatef((float) entry.getRotationZ(), 0, 0, 1);
-            glScalef(0.5F, 0.5F, 0.5F);
             glTranslated(0, -8, 0);
 
             glPushMatrix();

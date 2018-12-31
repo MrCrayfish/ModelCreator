@@ -20,8 +20,8 @@ public class DisplayProperties
         MODEL_CREATOR_BLOCK = new DisplayProperties("Model Creator Block", true);
         MODEL_CREATOR_BLOCK.add("gui", 30, 45, 0, 0, 0, 0, 0.625, 0.625, 0.625);
         MODEL_CREATOR_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25);
-        MODEL_CREATOR_BLOCK.add("fixed", 0, 0, 0, 0, 0, 0, 1, 1, 1);
-        MODEL_CREATOR_BLOCK.add("head", 0, 0, 0, 0, 0, 0, 1, 1, 1);
+        MODEL_CREATOR_BLOCK.add("fixed", 0, 180, 0, 0, 0, 0, 1, 1, 1);
+        MODEL_CREATOR_BLOCK.add("head", 0, 180, 0, 0, 0, 0, 1, 1, 1);
         MODEL_CREATOR_BLOCK.add("firstperson_righthand", 0, 315, 0, 0, 2.5, 0, 0.4, 0.4, 0.4);
         MODEL_CREATOR_BLOCK.add("firstperson_lefthand", 0, 0, 45, 0, 2.5, 0, 0.4, 0.4, 0.4);
         MODEL_CREATOR_BLOCK.add("thirdperson_righthand", 75, 315, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);

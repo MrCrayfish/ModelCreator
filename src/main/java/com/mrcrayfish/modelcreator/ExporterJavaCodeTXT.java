@@ -13,7 +13,6 @@ import com.mrcrayfish.modelcreator.element.Element;
 
 public class ExporterJavaCodeTXT extends Exporter
 {
-    private DecimalFormat format = new DecimalFormat("#.######");
     private ModelCreator creator;
     private boolean includeAABBs, includeMethods, useBoundsHelper, generateRotatedBounds;
 
@@ -24,8 +23,7 @@ public class ExporterJavaCodeTXT extends Exporter
         this.includeAABBs = includeAABBs;
         this.includeMethods = includeMethods;
         this.useBoundsHelper = useBoundsHelper;
-        this.generateRotatedBounds = generateRotatedBounds;
-        format.setDecimalFormatSymbols(SYMBOLS);
+        this.generateRotatedBounds = useBoundsHelper && generateRotatedBounds;
     }
 
     public void writeComponentsToClipboard() throws IOException
@@ -163,7 +161,7 @@ public class ExporterJavaCodeTXT extends Exporter
 
     private String format(double value)
     {
-        return format.format(useBoundsHelper ? value : value * 0.0625);
+        return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
     }
 
     private void writeElement(BufferedWriter writer, ModelBounds bounds, String name, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) throws IOException

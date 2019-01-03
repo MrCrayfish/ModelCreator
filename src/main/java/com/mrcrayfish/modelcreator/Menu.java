@@ -59,7 +59,7 @@ public class Menu extends JMenuBar
     private JMenu menuHelp;
     private JMenuItem itemExtractAssets;
     private JMenu menuDeveloper;
-    private JMenuItem itemExportAABBJavaCode;
+    private JMenuItem itemJavaCode;
     private JMenu menuExamples;
     private JMenuItem itemModelCauldron;
     private JMenuItem itemModelChair;
@@ -114,7 +114,7 @@ public class Menu extends JMenuBar
             menuDeveloper = new JMenu("Mod Developer");
             menuDeveloper.setIcon(Icons.mojang);
             {
-                itemExportAABBJavaCode = createItem("Generate JAVA Code", "Generate AABB fields and bounds, raytracing, & collision methods.", KeyEvent.VK_J, Icons.java);
+                itemJavaCode = createItem("Generate Java Code...", "Generate Java code for selection and collisions boxes", KeyEvent.VK_J, Icons.java);
             }
             menuExamples = new JMenu("Examples");
             menuExamples.setIcon(Icons.new_);
@@ -131,7 +131,7 @@ public class Menu extends JMenuBar
         menuExamples.add(itemModelCauldron);
         menuExamples.add(itemModelChair);
 
-        menuDeveloper.add(itemExportAABBJavaCode);
+        menuDeveloper.add(itemJavaCode);
 
         menuHelp.add(itemExtractAssets);
         menuHelp.add(menuDeveloper);
@@ -203,7 +203,7 @@ public class Menu extends JMenuBar
 
         itemExport.addActionListener(a -> exportJson(creator));
 
-        itemExportAABBJavaCode.addActionListener(a -> exportJavaCode(creator, a));
+        itemJavaCode.addActionListener(a -> exportJavaCode(creator, a));
 
         itemSettings.addActionListener(a -> settings(creator));
 
@@ -756,57 +756,71 @@ public class Menu extends JMenuBar
 
     private static void exportJavaCode(ModelCreator creator, ActionEvent actionEvent)
     {
-        JCheckBox includeAABBs = createCheckBox("Include AABBs", "Include decelerations of the AABBs fields that represent the model's elements", true);
-        JCheckBox includeMethods = createCheckBox("Include methods", "Include bounds, raytracing, & collision methods", true);
-        JCheckBox useBoundsHelper = createCheckBox("Use Bounds helper", "Fields and methods use Mr. Crayfish's Bounds helper class, and target his code-base", false);
-        JCheckBox generateRotatedBounds = createCheckBox("Create Rotations", "Use Bounds helper class to create AABB rotation arrays for each element", false);
+        JCheckBox includeAABBs = createCheckBox("Generate AABB Fields", "Include decelerations of the AABBs fields that represent the model's elements", true);
+        JCheckBox includeMethods = createCheckBox("Generate Methods", "Include bounds, raytracing, & collision methods", true);
+        JCheckBox useBoundsHelper = createCheckBox("Use Bounds Helper", "Fields and methods use MrCrayfish's Bounds helper class, and target his code-base", false);
+        JCheckBox generateRotatedBounds = createCheckBox("Make Rotatable", "Use Bounds helper class to create AABB rotation arrays for each element", false);
 
-        JComboBox<String> mcVersion = new JComboBox<>(new String[] {"1.12", "1.13"});
-        mcVersion.setEnabled(false);
+        useBoundsHelper.addActionListener(e -> generateRotatedBounds.setEnabled(useBoundsHelper.isSelected()));
+
         String mcTooltip = "Seclect Minecraft version";
-        mcVersion.setToolTipText(mcTooltip);
-        JPanel panelMC = new JPanel();
-        panelMC.add(mcVersion);
+        JPanel panelMC = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
         JLabel mcLabel = new JLabel("MC Version");
         mcLabel.setForeground(Color.GRAY);
         mcLabel.setToolTipText(mcTooltip);
         panelMC.add(mcLabel);
 
+        JComboBox<String> mcVersion = new JComboBox<>(new String[]{"1.12", "1.13"});
+        mcVersion.setEnabled(false);
+        mcVersion.setToolTipText(mcTooltip);
+        mcVersion.setPreferredSize(new Dimension(60, 24));
+        panelMC.add(mcVersion);
+
         JPanel panelMain = new JPanel();
-        panelMain.setLayout(new GridLayout(1, 3));
+        panelMain.setLayout(new GridLayout(1, 2));
         panelMain.add(includeAABBs);
         panelMain.add(includeMethods);
-        panelMain.add(panelMC);
-        Object[] controls;
-        if ((actionEvent.getModifiers() & ActionEvent.SHIFT_MASK) == 0)
-        {
-            controls = new Object[] {panelMain};
-        }
-        else
+
+        JPanel parent = new JPanel();
+        parent.setLayout(new BoxLayout(parent, BoxLayout.Y_AXIS));
+        parent.add(panelMC);
+
+        JPanel controls = new JPanel(new GridLayout(1, 1));
+        controls.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "<html><b>Options</b></html>"));
+        controls.add(panelMain);
+        parent.add(controls);
+
+        if((actionEvent.getModifiers() & ActionEvent.SHIFT_MASK) > 0 && (actionEvent.getModifiers() & ActionEvent.CTRL_MASK) > 0)
         {
             includeMethods.setToolTipText(includeMethods.getToolTipText().replace(", raytracing", ""));
             useBoundsHelper.setForeground(Color.BLACK);
             useBoundsHelper.setSelected(true);
-            JPanel panelCray = new JPanel();
-            panelCray.setLayout(new GridLayout(1, 3));
-            panelCray.setAlignmentX(Component.LEFT_ALIGNMENT);
-            panelCray.add(useBoundsHelper);
             generateRotatedBounds.setSelected(true);
+
+            JPanel panelCray = new JPanel();
+            panelCray.setLayout(new GridLayout(1, 2));
+            panelCray.add(useBoundsHelper);
             panelCray.add(generateRotatedBounds);
-            panelCray.add(new JLabel());
-            controls = new Object[] {panelMain, panelCray};
+
+            controls.setLayout(new GridLayout(2, 1));
+            controls.add(panelCray);
         }
-        JLabel infoLabel = new JLabel("<html><body><p style='width: 300px;'>If using this model for a modded block, AxisAlignedBB fields generated\n"
-                                    + "from its non-rotated elements can be passed to methods that generate\n"
-                                    + "a correct bounding box and perform accurate raytracing and collision.\n</p></body></html>");
-        infoLabel.setForeground(Color.BLACK);
-        JLabel questionLabel = new JLabel("<html><body><p style='width: 300px;'>Would you like these generated fields and/or methods to be copied\n"
-                                        + "to your clipboard, or to be saved to a .txt file?</p></body></html>");//, Box.createHorizontalStrut(20)
-        questionLabel.setForeground(Color.BLACK);
+
+        JLabel infoLabel = new JLabel("<html><body><p style='width:260px'>" +
+                "Use this tool to generate Java code for selection and collision boxes. " +
+                "This includes AxisAlignedBB fields and the required methods for the " +
+                "Block class to apply them. It should be noted that elements in the model " +
+                "that have been rotated will be ignored when generating." +
+                "</p></body></html>");
+        JLabel questionLabel = new JLabel("<html><body><p style='width:260px'>" +
+                "Would you like the code to be copied to your clipboard or saved to a text file?" +
+                "</p></body></html>");
+
         int returnValDestination = JOptionPane.showOptionDialog(creator, new Object[] {infoLabel, Box.createHorizontalStrut(20), Box.createHorizontalStrut(20), new JSeparator(),
-                                                                                        controls, new JSeparator(), Box.createHorizontalStrut(20), Box.createHorizontalStrut(20),
-                                                                                        questionLabel}, "Code Output Destination", JOptionPane.YES_NO_OPTION,
-                                                                                        JOptionPane.QUESTION_MESSAGE, null, new String[] {"Clipboard", "Text File"}, "Clipboard");
+                        parent, new JSeparator(), Box.createHorizontalStrut(20), Box.createHorizontalStrut(20),
+                        questionLabel}, "Generate Java Code", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Clipboard", "Text File"}, "Clipboard");
         if (!includeAABBs.isSelected() && !includeMethods.isSelected())
         {
             JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.OK_OPTION);

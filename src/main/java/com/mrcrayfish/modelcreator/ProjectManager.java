@@ -147,7 +147,7 @@ public class ProjectManager
 
     private static File getSaveFile(ElementManager manager)
     {
-        Exporter exporter = new Exporter(manager);
+        ExporterModelJSON exporter = new ExporterModelJSON(manager);
         exporter.setOptimize(false);
         exporter.setIncludeNonTexturedFaces(true);
         return exporter.writeJSONFile(new File("model.json"));

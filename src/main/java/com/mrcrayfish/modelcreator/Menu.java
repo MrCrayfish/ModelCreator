@@ -106,8 +106,8 @@ public class Menu extends JMenuBar
             menuRotate.setMnemonic(KeyEvent.VK_R);
             menuRotate.setIcon(Icons.rotate);
             {
-                itemRotateClockwise = createItem("90° Clockwise", "Rotates all elements clockwise by 90°", KeyEvent.VK_C, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
-                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "Rotates all elements counter clockwise by 90°", KeyEvent.VK_C, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
+                itemRotateClockwise = createItem("90\u00B0 Clockwise", "Rotates all elements clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
+                itemRotateCounterClockwise = createItem("90\u00B0 Counter Clockwise", "Rotates all elements counter clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
             }
         }
 

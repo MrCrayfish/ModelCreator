@@ -38,6 +38,9 @@ public class Icons
     public static Icon extract;
     public static Icon mojang;
     public static Icon java;
+    public static Icon undo;
+    public static Icon redo;
+    public static Icon optimize;
 
     public static void init(Class<?> clazz)
     {
@@ -77,5 +80,8 @@ public class Icons
         model_chair = new ImageIcon(loader.getResource("icons/model_chair.png"));
         mojang = new ImageIcon(loader.getResource("icons/mojang.png"));
         java = new ImageIcon(loader.getResource("icons/java.png"));
+        undo = new ImageIcon(loader.getResource("icons/undo.png"));
+        redo = new ImageIcon(loader.getResource("icons/redo.png"));
+        optimize = new ImageIcon(loader.getResource("icons/optimize.png"));
     }
 }

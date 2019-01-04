@@ -90,14 +90,14 @@ public class Menu extends JMenuBar
 
         menuEdit = new JMenu("Edit");
         {
-            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
-            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.undo, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
+            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.redo, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
         }
 
         menuModel = new JMenu("Model");
         {
             itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
-            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.coin, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK));
+            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK));
         }
 
         menuScreenshot = new JMenu("Screenshot");

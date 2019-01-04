@@ -416,19 +416,19 @@ public class Face
         int coord = corner + rotation;
         if(coord == 0 | coord == 4)
         {
-            GL11.glTexCoord2d(fitTexture | forceFit ? 0 : (textureU / 16), fitTexture | forceFit ? 1 : (textureVEnd / 16));
+            GL11.glTexCoord2d(fitTexture || forceFit ? 0 : (textureU / 16), fitTexture || forceFit ? 1 : (textureVEnd / 16));
         }
         if(coord == 1 | coord == 5)
         {
-            GL11.glTexCoord2d(fitTexture | forceFit ? 1 : (textureUEnd / 16), fitTexture | forceFit ? 1 : (textureVEnd / 16));
+            GL11.glTexCoord2d(fitTexture || forceFit ? 1 : (textureUEnd / 16), fitTexture || forceFit ? 1 : (textureVEnd / 16));
         }
         if(coord == 2 | coord == 6)
         {
-            GL11.glTexCoord2d(fitTexture | forceFit ? 1 : (textureUEnd / 16), fitTexture | forceFit ? 0 : (textureV / 16));
+            GL11.glTexCoord2d(fitTexture || forceFit ? 1 : (textureUEnd / 16), fitTexture || forceFit ? 0 : (textureV / 16));
         }
         if(coord == 3)
         {
-            GL11.glTexCoord2d(fitTexture | forceFit ? 0 : (textureU / 16), fitTexture | forceFit ? 0 : (textureV / 16));
+            GL11.glTexCoord2d(fitTexture || forceFit ? 0 : (textureU / 16), fitTexture || forceFit ? 0 : (textureV / 16));
         }
     }
 
@@ -792,7 +792,7 @@ public class Face
 
     public void setRotation(int rotation)
     {
-        this.rotation = rotation % 4;
+        this.rotation = rotation;
     }
 
     public boolean isVisible(ElementManager manager)

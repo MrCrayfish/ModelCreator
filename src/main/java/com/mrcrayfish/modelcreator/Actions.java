@@ -59,8 +59,8 @@ public class Actions
         faces[clockwise ? 0 : 3].copyProperties(tempFace);
 
         /* Rotates the textures on the top so they match the original when rotated */
-        faces[Face.UP].setRotation(faces[Face.UP].getRotation() + (clockwise ? 1 : -1));
-        faces[Face.DOWN].setRotation(faces[Face.DOWN].getRotation() + (clockwise ? 1 : -1));
+        faces[Face.UP].setRotation(getNextFaceRotation(element, Face.UP, clockwise));
+        faces[Face.DOWN].setRotation(getNextFaceRotation(element, Face.DOWN, clockwise));
 
         /* Rotates the rotation axis. This only applies to horizontal axis */
         if(element.getRotationAxis() == 0)
@@ -95,5 +95,19 @@ public class Actions
         }
         element.setOriginX(newOriginX);
         element.setOriginZ(newOriginZ);
+    }
+
+    private static int getNextFaceRotation(Element element, int side, boolean clockwise)
+    {
+        Face[] faces = element.getAllFaces();
+        if(clockwise)
+        {
+            return (faces[side].getRotation() + 1) % 4;
+        }
+        else if(faces[side].getRotation() - 1 >= 0)
+        {
+            return faces[side].getRotation() - 1;
+        }
+        return 3;
     }
 }

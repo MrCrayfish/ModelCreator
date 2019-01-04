@@ -67,6 +67,7 @@ public class Menu extends JMenuBar
     private JMenuItem itemGitHub;
 
     public static boolean isDisplayPropsShowing = false;
+    public static boolean shouldRenderGrid = false;
 
     public Menu(ModelCreator creator)
     {
@@ -1183,7 +1184,7 @@ public class Menu extends JMenuBar
 
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
-        panel.setPreferredSize(new Dimension(400, 445));
+        panel.setPreferredSize(new Dimension(400, 475));
         dialog.add(panel);
 
         JLabel labelProperties = new JLabel("Presets");
@@ -1242,6 +1243,10 @@ public class Menu extends JMenuBar
         });
         panel.add(btnApplyProperties);
 
+        JCheckBox checkBoxShowGrid = createCheckBox("Show Grid", "Determines whether the grid should render", shouldRenderGrid);
+        checkBoxShowGrid.addActionListener(e -> shouldRenderGrid = checkBoxShowGrid.isSelected());
+        panel.add(checkBoxShowGrid);
+
         layout.putConstraint(SpringLayout.WEST, labelProperties, 10, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, labelProperties, 2, SpringLayout.NORTH, comboBoxProperties);
         layout.putConstraint(SpringLayout.EAST, comboBoxProperties, -10, SpringLayout.WEST, btnApplyProperties);
@@ -1252,7 +1257,8 @@ public class Menu extends JMenuBar
         layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.SOUTH, comboBoxProperties);
         layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.SOUTH, tabbedPane, -10, SpringLayout.SOUTH, panel);
+        layout.putConstraint(SpringLayout.WEST, checkBoxShowGrid, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, checkBoxShowGrid, 10, SpringLayout.SOUTH, tabbedPane);
 
         dialog.pack();
         dialog.setResizable(false);

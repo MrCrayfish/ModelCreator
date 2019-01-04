@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.display.render;
 
 import com.mrcrayfish.modelcreator.Camera;
+import com.mrcrayfish.modelcreator.Menu;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
@@ -68,6 +69,11 @@ public class StandardRenderer extends CanvasRenderer
 
     protected void drawGrid()
     {
+        if(Menu.isDisplayPropsShowing && !Menu.shouldRenderGrid)
+        {
+            return;
+        }
+
         glPushMatrix();
         {
             glColor3f(0.55F, 0.55F, 0.60F);

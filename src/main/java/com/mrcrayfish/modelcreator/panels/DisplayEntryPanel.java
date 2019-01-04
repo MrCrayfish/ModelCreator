@@ -29,6 +29,7 @@ public class DisplayEntryPanel extends JPanel
     public DisplayEntryPanel(DisplayProperties.Entry entry)
     {
         this.entry = entry;
+        this.setPreferredSize(new Dimension(200, 345));
         this.setLayout(new SpringLayout());
         this.initComponents();
     }

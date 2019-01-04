@@ -88,14 +88,14 @@ public class Menu extends JMenuBar
             itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK);
             itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
             itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
-            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
+            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_S, Icons.settings, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
             itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
         }
 
         menuEdit = new JMenu("Edit");
         {
-            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.undo, KeyEvent.VK_Z, Keyboard.KEY_Z, InputEvent.CTRL_MASK);
-            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.redo, KeyEvent.VK_Y, Keyboard.KEY_Y, InputEvent.CTRL_MASK);
+            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_U, Icons.undo, KeyEvent.VK_Z, Keyboard.KEY_Z, InputEvent.CTRL_MASK);
+            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_R, Icons.redo, KeyEvent.VK_Y, Keyboard.KEY_Y, InputEvent.CTRL_MASK);
         }
 
         menuModel = new JMenu("Model");
@@ -103,38 +103,40 @@ public class Menu extends JMenuBar
             itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
             itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             menuRotate = new JMenu("Rotate");
+            menuRotate.setMnemonic(KeyEvent.VK_R);
             menuRotate.setIcon(Icons.rotate);
             {
-                itemRotateClockwise = createItem("90° Clockwise", "", KeyEvent.VK_O, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
-                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "", KeyEvent.VK_O, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
+                itemRotateClockwise = createItem("90° Clockwise", "", KeyEvent.VK_C, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
+                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "", KeyEvent.VK_C, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
             }
         }
 
         menuScreenshot = new JMenu("Screenshot");
         {
-            itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_S, Icons.disk);
             itemShareFacebook = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
             itemShareTwitter = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
             itemShareReddit = createItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
-            itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_G, Icons.imgur);
+            itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_I, Icons.imgur);
         }
 
         menuHelp = new JMenu("More");
         {
-            itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_O, Icons.extract);
+            itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_E, Icons.extract);
             menuDeveloper = new JMenu("Mod Developer");
+            menuDeveloper.setMnemonic(KeyEvent.VK_M);
             menuDeveloper.setIcon(Icons.mojang);
             {
                 itemJavaCode = createItem("Generate Java Code...", "Generate Java code for selection and collisions boxes", KeyEvent.VK_J, Icons.java);
             }
             menuExamples = new JMenu("Examples");
+            menuExamples.setMnemonic(KeyEvent.VK_E);
             menuExamples.setIcon(Icons.new_);
             {
                 itemModelCauldron = createItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
                 itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
             }
             itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
-            itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_G, Icons.github);
+            itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_S, Icons.github);
         }
 
         initActions();

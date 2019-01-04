@@ -1254,11 +1254,11 @@ public class Menu extends JMenuBar
         layout.putConstraint(SpringLayout.WEST, comboBoxProperties, 10, SpringLayout.EAST, labelProperties);
         layout.putConstraint(SpringLayout.NORTH, btnApplyProperties, 10, SpringLayout.NORTH, panel);
         layout.putConstraint(SpringLayout.EAST, btnApplyProperties, -10, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.SOUTH, comboBoxProperties);
-        layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.WEST, checkBoxShowGrid, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, checkBoxShowGrid, 10, SpringLayout.SOUTH, tabbedPane);
+        layout.putConstraint(SpringLayout.NORTH, checkBoxShowGrid, 5, SpringLayout.SOUTH, comboBoxProperties);
+        layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, tabbedPane, 5, SpringLayout.SOUTH, checkBoxShowGrid);
+        layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);
 
         dialog.pack();
         dialog.setResizable(false);

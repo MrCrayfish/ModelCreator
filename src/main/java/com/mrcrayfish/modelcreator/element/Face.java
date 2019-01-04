@@ -51,6 +51,26 @@ public class Face
         this.side = side;
     }
 
+    public Face(Face face)
+    {
+        this.copyProperties(face);
+    }
+
+    public void copyProperties(Face face)
+    {
+        this.fitTexture = face.fitTexture;
+        this.texture = face.texture;
+        this.textureLocation = face.textureLocation;
+        this.textureU = face.textureU;
+        this.textureV = face.textureV;
+        this.textureUEnd = face.textureUEnd;
+        this.textureVEnd = face.textureVEnd;
+        this.rotation = face.rotation;
+        this.cullface = face.cullface;
+        this.enabled = face.enabled;
+        this.autoUV = face.autoUV;
+    }
+
     public void renderNorth()
     {
         TextureEntry entry = TextureManager.getTextureEntry(texture);
@@ -772,7 +792,7 @@ public class Face
 
     public void setRotation(int rotation)
     {
-        this.rotation = rotation;
+        this.rotation = rotation % 4;
     }
 
     public boolean isVisible(ElementManager manager)

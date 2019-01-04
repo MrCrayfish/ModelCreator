@@ -301,7 +301,7 @@ public class Importer
 
                 if(rot.has("axis") && rot.get("axis").isJsonPrimitive())
                 {
-                    element.setPrevAxis(Element.parseAxisString(rot.get("axis").getAsString()));
+                    element.setRotationAxis(Element.parseAxisString(rot.get("axis").getAsString()));
                 }
 
                 if(rot.has("angle") && rot.get("angle").isJsonPrimitive())

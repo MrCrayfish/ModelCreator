@@ -41,6 +41,9 @@ public class Icons
     public static Icon undo;
     public static Icon redo;
     public static Icon optimize;
+    public static Icon rotate;
+    public static Icon rotate_clockwise;
+    public static Icon rotate_counter_clockwise;
 
     public static void init(Class<?> clazz)
     {
@@ -83,5 +86,8 @@ public class Icons
         undo = new ImageIcon(loader.getResource("icons/undo.png"));
         redo = new ImageIcon(loader.getResource("icons/redo.png"));
         optimize = new ImageIcon(loader.getResource("icons/optimize.png"));
+        rotate = new ImageIcon(loader.getResource("icons/rotate.png"));
+        rotate_clockwise = new ImageIcon(loader.getResource("icons/rotate_clockwise.png"));
+        rotate_counter_clockwise = new ImageIcon(loader.getResource("icons/rotate_anticlockwise.png"));
     }
 }

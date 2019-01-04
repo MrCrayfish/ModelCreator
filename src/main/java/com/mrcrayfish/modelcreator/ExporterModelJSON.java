@@ -170,7 +170,7 @@ public class ExporterModelJSON extends Exporter
     {
         writer.write(space(3) + "\"rotation\": { ");
         writer.write("\"origin\": [ " + cuboid.getOriginX() + ", " + cuboid.getOriginY() + ", " + cuboid.getOriginZ() + " ], ");
-        writer.write("\"axis\": \"" + Element.parseAxis(cuboid.getPrevAxis()) + "\", ");
+        writer.write("\"axis\": \"" + Element.parseAxis(cuboid.getRotationAxis()) + "\", ");
         writer.write("\"angle\": " + cuboid.getRotation());
         if(cuboid.shouldRescale())
         {

@@ -63,9 +63,9 @@ public class RotationPanel extends JPanel implements IElementUpdater
             if(e.getStateChange() == ItemEvent.SELECTED)
             {
                 Element selectedElement = manager.getSelectedElement();
-                if(selectedElement != null && selectedElement.getPrevAxis() != axisList.getSelectedIndex())
+                if(selectedElement != null && selectedElement.getRotationAxis() != axisList.getSelectedIndex())
                 {
-                    selectedElement.setPrevAxis(axisList.getSelectedIndex());
+                    selectedElement.setRotationAxis(axisList.getSelectedIndex());
                     StateManager.pushState(manager);
                 }
             }
@@ -140,7 +140,7 @@ public class RotationPanel extends JPanel implements IElementUpdater
         panelOrigin.updateValues(cube);
         if(cube != null)
         {
-            axisList.setSelectedIndex(cube.getPrevAxis());
+            axisList.setSelectedIndex(cube.getRotationAxis());
             rotation.setEnabled(true);
             rotation.setValue((int) (cube.getRotation() / 22.5));
             btnRescale.setEnabled(true);

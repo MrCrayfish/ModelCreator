@@ -46,6 +46,9 @@ public class Menu extends JMenuBar
     private JMenu menuModel;
     private JMenuItem itemDisplayProps;
     private JMenuItem itemOptimise;
+    private JMenu menuRotate;
+    private JMenuItem itemRotateClockwise;
+    private JMenuItem itemRotateCounterClockwise;
 
     /* Share */
     private JMenu menuScreenshot;
@@ -98,6 +101,12 @@ public class Menu extends JMenuBar
         {
             itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
             itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK));
+            menuRotate = new JMenu("Rotate");
+            menuRotate.setIcon(Icons.rotate);
+            {
+                itemRotateClockwise = createItem("90° Clockwise", "", KeyEvent.VK_O, Icons.rotate_clockwise, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK));
+                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "", KeyEvent.VK_O, Icons.rotate_counter_clockwise, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK));
+            }
         }
 
         menuScreenshot = new JMenu("Screenshot");
@@ -166,6 +175,11 @@ public class Menu extends JMenuBar
 
         menuModel.add(itemDisplayProps);
         menuModel.add(itemOptimise);
+        menuModel.addSeparator();
+
+        menuRotate.add(itemRotateClockwise);
+        menuRotate.add(itemRotateCounterClockwise);
+        menuModel.add(menuRotate);
 
         menuScreenshot.add(itemSaveToDisk);
         menuScreenshot.add(itemShareFacebook);
@@ -213,6 +227,10 @@ public class Menu extends JMenuBar
         itemDisplayProps.addActionListener(a -> displayProperties(creator));
 
         itemOptimise.addActionListener(a -> optimizeModel(creator));
+
+        itemRotateClockwise.addActionListener(a -> Actions.rotateModel(creator.getElementManager(), true));
+
+        itemRotateCounterClockwise.addActionListener(a -> Actions.rotateModel(creator.getElementManager(), false));
 
         itemSaveToDisk.addActionListener(a ->
         {

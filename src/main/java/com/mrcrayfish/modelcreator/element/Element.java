@@ -54,7 +54,7 @@ public class Element
         this.originY = cuboid.getOriginY();
         this.originZ = cuboid.getOriginZ();
         this.rotation = cuboid.getRotation();
-        this.axis = cuboid.getPrevAxis();
+        this.axis = cuboid.getRotationAxis();
         this.rescale = cuboid.shouldRescale();
         this.shade = cuboid.isShaded();
         this.selectedFace = cuboid.getSelectedFaceIndex();
@@ -423,14 +423,14 @@ public class Element
         this.rotation = rotation;
     }
 
-    public int getPrevAxis()
+    public int getRotationAxis()
     {
         return axis;
     }
 
-    public void setPrevAxis(int prevAxis)
+    public void setRotationAxis(int axis)
     {
-        this.axis = prevAxis;
+        this.axis = axis;
     }
 
     public void setRescale(boolean rescale)

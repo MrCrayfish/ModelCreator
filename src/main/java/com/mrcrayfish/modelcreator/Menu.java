@@ -12,6 +12,7 @@ import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
+import org.lwjgl.input.Keyboard;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
@@ -82,30 +83,30 @@ public class Menu extends JMenuBar
     {
         menuFile = new JMenu("File");
         {
-            itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-            itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-            itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+            itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK);
+            itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyEvent.VK_O, Keyboard.KEY_O, InputEvent.CTRL_MASK);
+            itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK);
             itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
             itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
-            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
+            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_M, Icons.settings, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
             itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
         }
 
         menuEdit = new JMenu("Edit");
         {
-            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.undo, KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK));
-            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.redo, KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_Z, Icons.undo, KeyEvent.VK_Z, Keyboard.KEY_Z, InputEvent.CTRL_MASK);
+            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_Y, Icons.redo, KeyEvent.VK_Y, Keyboard.KEY_Y, InputEvent.CTRL_MASK);
         }
 
         menuModel = new JMenu("Model");
         {
-            itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK));
-            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK));
+            itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
+            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             menuRotate = new JMenu("Rotate");
             menuRotate.setIcon(Icons.rotate);
             {
-                itemRotateClockwise = createItem("90° Clockwise", "", KeyEvent.VK_O, Icons.rotate_clockwise, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK));
-                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "", KeyEvent.VK_O, Icons.rotate_counter_clockwise, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK));
+                itemRotateClockwise = createItem("90° Clockwise", "", KeyEvent.VK_O, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
+                itemRotateCounterClockwise = createItem("90° Counter Clockwise", "", KeyEvent.VK_O, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
             }
         }
 
@@ -387,24 +388,42 @@ public class Menu extends JMenuBar
 
     private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)
     {
-        return createItem(name, tooltip, mnemonic, icon, null);
+        return createItem(name, tooltip, mnemonic, icon, -1, -1, -1);
     }
 
-    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, KeyStroke shortcut)
+    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, int awtCode, int keyCode, int modifiers)
     {
         JMenuItem item = new JMenuItem(name);
         item.setToolTipText(tooltip);
         item.setMnemonic(mnemonic);
         item.setIcon(icon);
 
-        if(shortcut != null)
+        if(awtCode != -1 && keyCode != -1 && modifiers != -1)
         {
-            String shortcutText = KeyboardUtil.convertKeyStokeToString(shortcut);
-            item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-            JLabel label = new JLabel("<html><p style='color:#666666;font-size:9px'>" + shortcutText + "<p></html>");
-            item.add(label);
-            Dimension size = new Dimension((int) Math.ceil(item.getPreferredSize().getWidth() + label.getPreferredSize().getWidth()) + 10, 20);
-            item.setPreferredSize(size);
+            KeyStroke shortcut = KeyStroke.getKeyStroke(awtCode, modifiers);
+            if(shortcut != null)
+            {
+                String shortcutText = KeyboardUtil.convertKeyStokeToString(shortcut);
+                item.setLayout(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+                JLabel label = new JLabel("<html><p style='color:#666666;font-size:9px'>" + shortcutText + "<p></html>");
+                item.add(label);
+                Dimension size = new Dimension((int) Math.ceil(item.getPreferredSize().getWidth() + label.getPreferredSize().getWidth()) + 10, 20);
+                item.setPreferredSize(size);
+            }
+
+            if(shortcut != null)
+            {
+                creator.registerKeyAction(new ModelCreator.KeyAction(awtCode, keyCode, (modifier, pressed) ->
+                {
+                    if(pressed && modifier == modifiers)
+                    {
+                        for(ActionListener listener : item.getActionListeners())
+                        {
+                            listener.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, item.getActionCommand(), modifier));
+                        }
+                    }
+                }));
+            }
         }
 
         return item;
@@ -1185,9 +1204,6 @@ public class Menu extends JMenuBar
 
     private static void displayProperties(ModelCreator creator)
     {
-        isDisplayPropsShowing = true;
-        ModelCreator.setCanvasRenderer(DisplayProperties.RENDER_MAP.get("gui"));
-
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter()
@@ -1284,5 +1300,8 @@ public class Menu extends JMenuBar
         dialog.setLocation(dialog.getLocation().x - 500, dialog.getLocation().y);
         dialog.requestFocus();
         dialog.setVisible(true);
+
+        isDisplayPropsShowing = true;
+        ModelCreator.setCanvasRenderer(DisplayProperties.RENDER_MAP.get("gui"));
     }
 }

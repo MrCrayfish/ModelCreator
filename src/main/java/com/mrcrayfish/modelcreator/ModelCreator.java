@@ -185,20 +185,6 @@ public class ModelCreator extends JFrame
 
     private void registerShortcuts()
     {
-        this.keyActions.add(new KeyAction(KeyEvent.VK_Z, Keyboard.KEY_Z, (modifiers, pressed) ->
-        {
-            if(pressed && modifiers == InputEvent.CTRL_MASK)
-            {
-                StateManager.restorePreviousState(manager);
-            }
-        }));
-        this.keyActions.add(new KeyAction(KeyEvent.VK_Y, Keyboard.KEY_Y, (modifiers, pressed) ->
-        {
-            if(pressed && modifiers == InputEvent.CTRL_MASK)
-            {
-                StateManager.restoreNextState(manager);
-            }
-        }));
         this.keyActions.add(new KeyAction(KeyEvent.VK_E, Keyboard.KEY_E, (modifiers, pressed) ->
         {
             if(pressed && modifiers == InputEvent.CTRL_MASK)
@@ -211,34 +197,6 @@ public class ModelCreator extends JFrame
             if(pressed && (modifiers & InputEvent.CTRL_MASK) != 0 && (modifiers & InputEvent.SHIFT_MASK) != 0 && (modifiers & InputEvent.ALT_MASK) != 0)
             {
                 debugMode = !debugMode;
-            }
-        }));
-        this.keyActions.add(new KeyAction(KeyEvent.VK_N, Keyboard.KEY_N, (modifiers, pressed) ->
-        {
-            if(pressed && modifiers == InputEvent.CTRL_MASK)
-            {
-                Menu.newProject(this);
-            }
-        }));
-        this.keyActions.add(new KeyAction(KeyEvent.VK_S, Keyboard.KEY_S, (modifiers, pressed) ->
-        {
-            if(pressed && modifiers == InputEvent.CTRL_MASK)
-            {
-                Menu.saveProject(this);
-            }
-        }));
-        this.keyActions.add(new KeyAction(KeyEvent.VK_O, Keyboard.KEY_O, (modifiers, pressed) ->
-        {
-            if(pressed && modifiers == InputEvent.CTRL_MASK)
-            {
-                Menu.loadProject(this);
-            }
-        }));
-        this.keyActions.add(new KeyAction(KeyEvent.VK_O, Keyboard.KEY_O, (modifiers, pressed) ->
-        {
-            if(pressed && (modifiers & InputEvent.CTRL_MASK) != 0 && (modifiers & InputEvent.SHIFT_MASK) != 0)
-            {
-                Menu.optimizeModel(this);
             }
         }));
         this.keyActions.add(new KeyAction(KeyEvent.VK_F, Keyboard.KEY_F, (modifiers, pressed) ->
@@ -932,7 +890,12 @@ public class ModelCreator extends JFrame
         setCanvasRenderer(standardRenderer);
     }
 
-    private static class KeyAction
+    public void registerKeyAction(KeyAction keyAction)
+    {
+        this.keyActions.add(keyAction);
+    }
+
+    public static class KeyAction
     {
         private final int awtCode;
         private final int keyboardCode;

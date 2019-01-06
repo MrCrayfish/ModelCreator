@@ -84,6 +84,7 @@ public class Util
         {
             InputStream is = clazz.getClassLoader().getResourceAsStream(name + ".model");
             File file = File.createTempFile(name + ".model", "");
+            file.deleteOnExit();
             FileOutputStream fos = new FileOutputStream(file);
 
             byte[] buffer = new byte[1024];

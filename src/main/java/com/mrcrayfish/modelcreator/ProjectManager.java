@@ -42,6 +42,7 @@ public class ProjectManager
             {
                 File file = File.createTempFile(ze.getName(), "");
                 file.mkdirs();
+                file.deleteOnExit();
 
                 byte[] buffer = new byte[1024];
                 FileOutputStream fos = new FileOutputStream(file);

@@ -26,7 +26,7 @@ public class TextureManager
 
     private static File lastLocation = null;
 
-    public static boolean loadExternalTexture(File image, File meta) throws IOException
+    public static boolean loadExternalTexture(File file, File meta) throws IOException
     {
         TextureMeta textureMeta = TextureMeta.parse(meta);
 
@@ -34,39 +34,39 @@ public class TextureManager
         {
             if(textureMeta.getAnimation() != null)
             {
-                BufferedImage bimage = ImageIO.read(image);
+                BufferedImage image = ImageIO.read(file);
 
-                int fWidth = textureMeta.getAnimation().getWidth();
-                int fHeight = textureMeta.getAnimation().getHeight();
+                int width = textureMeta.getAnimation().getWidth();
+                int height = textureMeta.getAnimation().getHeight();
 
                 ImageIcon icon = null;
 
                 List<Texture> textures = new ArrayList<>();
 
-                int xpos = 0;
-                while(xpos + fWidth <= bimage.getWidth())
+                int x = 0;
+                while(x + width <= image.getWidth())
                 {
-                    int ypos = 0;
-                    while(ypos + fHeight <= bimage.getHeight())
+                    int y = 0;
+                    while(y + height <= image.getHeight())
                     {
-                        BufferedImage subImage = bimage.getSubimage(xpos, ypos, fWidth, fHeight);
+                        BufferedImage subImage = image.getSubimage(x, y, width, height);
                         if(icon == null)
                         {
                             icon = TextureManager.upscale(new ImageIcon(subImage), 256);
                         }
                         Texture texture = BufferedImageUtil.getTexture("", subImage);
                         textures.add(texture);
-                        ypos += fHeight;
+                        y += height;
                     }
-                    xpos += fWidth;
+                    x += width;
                 }
-                String imageName = image.getName();
-                textureCache.add(new TextureEntry(image.getName().substring(0, imageName.indexOf(".png")), textures, icon, image.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
+                String imageName = file.getName();
+                textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
                 return true;
             }
-            return loadTexture(image, textureMeta, meta.getAbsolutePath());
+            return loadTexture(file, textureMeta, meta.getAbsolutePath());
         }
-        return loadTexture(image, null, null);
+        return loadTexture(file, null, null);
     }
 
     private static boolean loadTexture(File image, TextureMeta meta, String location) throws IOException
@@ -87,9 +87,8 @@ public class TextureManager
 
     private static ImageIcon upscale(ImageIcon source, int length)
     {
-        Image img = source.getImage();
-        Image newimg = img.getScaledInstance(length, length, java.awt.Image.SCALE_FAST);
-        return new ImageIcon(newimg);
+        Image scaledImage = source.getImage().getScaledInstance(length, length, java.awt.Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
     }
 
     public static TextureEntry getTextureEntry(String name)

@@ -1,6 +1,6 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.component;
 
-import com.mrcrayfish.modelcreator.panels.SidebarPanel;
+import com.mrcrayfish.modelcreator.element.ElementCellEntry;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 import javax.swing.*;
@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 /**
  * Author: MrCrayfish
  */
-public class JElementList extends JList<SidebarPanel.ElementEntry>
+public class JElementList extends JList<ElementCellEntry>
 {
     private boolean processInput;
 
@@ -42,7 +42,7 @@ public class JElementList extends JList<SidebarPanel.ElementEntry>
                 if(rectangle.contains(e.getPoint()))
                 {
                     Point relativePoint = new Point((int) e.getPoint().getX(), (int) (e.getPoint().getY() - rectangle.getY()));
-                    SidebarPanel.ElementEntry entry = this.getModel().getElementAt(index);
+                    ElementCellEntry entry = this.getModel().getElementAt(index);
                     Rectangle buttonBounds = ComponentUtil.expandRectangle(entry.getVisibility().getBounds(), 4);
                     if(buttonBounds.contains(relativePoint))
                     {

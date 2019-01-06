@@ -1,17 +1,17 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.display.DisplayProperties;
+import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.element.Face;
-
-public class ExporterModelJSON extends Exporter
+public class ExporterModel extends Exporter
 {
     private List<String> textureList = new ArrayList<>();
     private boolean optimize = true;
@@ -19,7 +19,7 @@ public class ExporterModelJSON extends Exporter
     private boolean displayProps = true;
     private boolean includeNonTexturedFaces = false;
 
-    public ExporterModelJSON(ElementManager manager)
+    public ExporterModel(ElementManager manager)
     {
         super(manager);
         compileTextureList();
@@ -63,7 +63,7 @@ public class ExporterModelJSON extends Exporter
     }
 
     @Override
-    protected void writeComponents(BufferedWriter writer) throws IOException
+    protected void write(BufferedWriter writer) throws IOException
     {
         writer.write("{");
         writer.newLine();
@@ -87,19 +87,17 @@ public class ExporterModelJSON extends Exporter
         }
 
         writer.write(space(1) + "\"elements\": [");
-        for(int i = 0; i < manager.getElementCount(); i++)
+
+        for(int i = 0; i < manager.getElementCount() - 1; i++)
         {
-            writer.newLine();
-            writer.write(space(2) + "{");
-            writer.newLine();
             writeElement(writer, manager.getElement(i));
-            writer.newLine();
-            writer.write(space(2) + "}");
-            if(i != manager.getElementCount() - 1)
-            {
-                writer.write(",");
-            }
+            writer.write(",");
         }
+        if(manager.getElementCount() > 0)
+        {
+            writeElement(writer, manager.getElement(manager.getElementCount() - 1));
+        }
+
         writer.newLine();
         writer.write(space(1) + "]");
         writer.newLine();
@@ -133,6 +131,9 @@ public class ExporterModelJSON extends Exporter
 
     private void writeElement(BufferedWriter writer, Element cuboid) throws IOException
     {
+        writer.newLine();
+        writer.write(space(2) + "{");
+        writer.newLine();
         if(includeNames)
         {
             writer.write(space(3) + "\"name\": \"" + cuboid.getName() + "\",");
@@ -151,7 +152,8 @@ public class ExporterModelJSON extends Exporter
             writer.newLine();
         }
         writeFaces(writer, cuboid);
-
+        writer.newLine();
+        writer.write(space(2) + "}");
     }
 
     private void writeBounds(BufferedWriter writer, Element cuboid) throws IOException
@@ -265,20 +267,11 @@ public class ExporterModelJSON extends Exporter
     {
         writer.write(space(2) + "\"" + id + "\": {");
         writer.newLine();
-        writer.write(space(3) + String.format("\"rotation\": [ %s, %s, %s ],",
-                FORMAT.format(entry.getRotationX()),
-                FORMAT.format(entry.getRotationY()),
-                FORMAT.format(entry.getRotationZ())));
+        writer.write(space(3) + String.format("\"rotation\": [ %s, %s, %s ],", FORMAT.format(entry.getRotationX()), FORMAT.format(entry.getRotationY()), FORMAT.format(entry.getRotationZ())));
         writer.newLine();
-        writer.write(space(3) + String.format("\"translation\": [ %s, %s, %s ],",
-                FORMAT.format(entry.getTranslationX()),
-                FORMAT.format(entry.getTranslationY()),
-                FORMAT.format(entry.getTranslationZ())));
+        writer.write(space(3) + String.format("\"translation\": [ %s, %s, %s ],", FORMAT.format(entry.getTranslationX()), FORMAT.format(entry.getTranslationY()), FORMAT.format(entry.getTranslationZ())));
         writer.newLine();
-        writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ]",
-                FORMAT.format(entry.getScaleX()),
-                FORMAT.format(entry.getScaleY()),
-                FORMAT.format(entry.getScaleZ())));
+        writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ]", FORMAT.format(entry.getScaleX()), FORMAT.format(entry.getScaleY()), FORMAT.format(entry.getScaleZ())));
         writer.newLine();
         writer.write(space(2) + "}");
     }

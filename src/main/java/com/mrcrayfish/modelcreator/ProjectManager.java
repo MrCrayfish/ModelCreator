@@ -75,8 +75,8 @@ public class ProjectManager
             ZipOutputStream zos = new ZipOutputStream(fos);
 
             File file = getSaveFile(manager);
-            addToZipFile(file, zos);
-            file.delete();
+            addToZipFile(file, zos, "model.json");
+            file.deleteOnExit();
 
             for(String textureLocation : getTextureLocations(manager))
             {
@@ -85,7 +85,7 @@ public class ProjectManager
                     File texture = new File(textureLocation);
                     if(texture.exists())
                     {
-                        addToZipFile(texture, zos, "textures/");
+                        addToZipFile(texture, zos, "textures/", texture.getName());
                     }
                 }
             }
@@ -97,7 +97,7 @@ public class ProjectManager
                     File texture = new File(metaLocation);
                     if(texture.exists())
                     {
-                        addToZipFile(texture, zos, "textures/");
+                        addToZipFile(texture, zos, "textures/", texture.getName());
                     }
                 }
             }
@@ -145,23 +145,23 @@ public class ProjectManager
         return locations.toArray(new String[0]);
     }
 
-    private static File getSaveFile(ElementManager manager)
+    private static File getSaveFile(ElementManager manager) throws IOException
     {
-        ExporterModelJSON exporter = new ExporterModelJSON(manager);
+        ExporterModel exporter = new ExporterModel(manager);
         exporter.setOptimize(false);
         exporter.setIncludeNonTexturedFaces(true);
-        return exporter.writeJSONFile(new File("model.json"));
+        return exporter.writeFile(File.createTempFile("model.json", ""));
     }
 
-    private static void addToZipFile(File file, ZipOutputStream zos) throws IOException
+    private static void addToZipFile(File file, ZipOutputStream zos, String name) throws IOException
     {
-        addToZipFile(file, zos, "");
+        addToZipFile(file, zos, "", name);
     }
 
-    private static void addToZipFile(File file, ZipOutputStream zos, String folder) throws IOException
+    private static void addToZipFile(File file, ZipOutputStream zos, String folder, String name) throws IOException
     {
         FileInputStream fis = new FileInputStream(file);
-        ZipEntry zipEntry = new ZipEntry(folder + file.getName());
+        ZipEntry zipEntry = new ZipEntry(folder + name);
         zos.putNextEntry(zipEntry);
 
         byte[] bytes = new byte[1024];

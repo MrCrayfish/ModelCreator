@@ -1,6 +1,4 @@
-package com.mrcrayfish.modelcreator.util;
-
-import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
+package com.mrcrayfish.modelcreator.texture;
 
 public class Clipboard
 {

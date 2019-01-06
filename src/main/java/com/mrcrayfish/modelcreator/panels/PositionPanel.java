@@ -2,7 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.Properties;
+import com.mrcrayfish.modelcreator.PropertyIdentifiers;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -181,7 +181,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartX(1.0F);
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
-                StateManager.pushStateDelayed(manager, Properties.POS_X);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
             }
         });
         btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -202,7 +202,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartY(1.0F);
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
-                StateManager.pushStateDelayed(manager, Properties.POS_Y);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
             }
         });
         btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -223,7 +223,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartZ(1.0F);
                 }
                 zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
-                StateManager.pushStateDelayed(manager, Properties.POS_Z);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
             }
         });
         btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -244,7 +244,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartX(-1.0F);
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
-                StateManager.pushStateDelayed(manager, Properties.POS_X);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
             }
         });
         btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -265,7 +265,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartY(-1.0F);
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
-                StateManager.pushStateDelayed(manager, Properties.POS_Y);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
             }
         });
         btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -286,7 +286,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     selectedElement.addStartZ(-1.0F);
                 }
                 zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
-                StateManager.pushStateDelayed(manager, Properties.POS_Z);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
             }
         });
         btnNegZ.setPreferredSize(new Dimension(62, 30));

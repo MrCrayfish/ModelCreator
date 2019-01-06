@@ -1,7 +1,7 @@
 package com.mrcrayfish.modelcreator.element;
 
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
-import com.mrcrayfish.modelcreator.util.FaceDimension;
+import com.mrcrayfish.modelcreator.object.FaceDimension;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 

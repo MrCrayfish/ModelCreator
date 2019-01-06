@@ -3,7 +3,7 @@ package com.mrcrayfish.modelcreator;
 /**
  * Author: MrCrayfish
  */
-public class Properties
+public class PropertyIdentifiers
 {
     public static final int SIZE_X = 0;
     public static final int SIZE_Y = 1;

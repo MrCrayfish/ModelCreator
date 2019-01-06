@@ -2,10 +2,9 @@ package com.mrcrayfish.modelcreator;
 
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
-import com.mrcrayfish.modelcreator.display.render.FixedPropertyRenderer;
-import com.mrcrayfish.modelcreator.display.render.GroundPropertyRenderer;
 import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
+import com.mrcrayfish.modelcreator.element.ElementCellEntry;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.ElementManagerState;
 import com.mrcrayfish.modelcreator.panels.SidebarPanel;
@@ -203,7 +202,7 @@ public class ModelCreator extends JFrame
         {
             if(pressed && modifiers == InputEvent.CTRL_MASK)
             {
-                SidebarPanel.ElementEntry entry = manager.getSelectedElementEntry();
+                ElementCellEntry entry = manager.getSelectedElementEntry();
                 if(entry != null)
                 {
                     entry.toggleVisibility();
@@ -248,7 +247,7 @@ public class ModelCreator extends JFrame
     private void setupMenuBar()
     {
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-        setJMenuBar(new Menu(this));
+        setJMenuBar(new com.mrcrayfish.modelcreator.component.Menu(this));
     }
 
     private void createDisplay()

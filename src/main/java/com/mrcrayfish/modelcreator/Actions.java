@@ -9,6 +9,27 @@ import com.mrcrayfish.modelcreator.element.Face;
  */
 public class Actions
 {
+    public static int optimiseModel(ElementManager manager)
+    {
+        int count = 0;
+        for(Element element : manager.getAllElements())
+        {
+            for(Face face : element.getAllFaces())
+            {
+                if(face.isEnabled() && !face.isVisible(manager))
+                {
+                    count++;
+                    face.setEnabled(false);
+                }
+            }
+        }
+        if(count > 0)
+        {
+            StateManager.pushState(manager);
+        }
+        return count;
+    }
+
     public static void rotateModel(ElementManager manager, boolean clockwise)
     {
         manager.getAllElements().forEach(element -> rotateElement(element, clockwise));

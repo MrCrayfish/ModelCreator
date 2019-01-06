@@ -1,22 +1,24 @@
-package com.mrcrayfish.modelcreator;
+package com.mrcrayfish.modelcreator.component;
 
 import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.ExporterJavaCode;
+import com.mrcrayfish.modelcreator.ExporterModel;
+import com.mrcrayfish.modelcreator.Importer;
 import com.mrcrayfish.modelcreator.panels.DisplayEntryPanel;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.screenshot.Uploader;
+import com.mrcrayfish.modelcreator.util.ComponentUtil;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import com.mrcrayfish.modelcreator.util.Util;
 import org.lwjgl.input.Keyboard;
 
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -60,7 +62,7 @@ public class Menu extends JMenuBar
     private JMenuItem itemImgurLink;
 
     /* Extras */
-    private JMenu menuHelp;
+    private JMenu menuMore;
     private JMenuItem itemExtractAssets;
     private JMenu menuDeveloper;
     private JMenuItem itemJavaCode;
@@ -76,121 +78,73 @@ public class Menu extends JMenuBar
     public Menu(ModelCreator creator)
     {
         this.creator = creator;
-        initMenu();
+        this.initMenu();
     }
 
     private void initMenu()
     {
         menuFile = new JMenu("File");
         {
-            itemNew = createItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK);
-            itemLoad = createItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyEvent.VK_O, Keyboard.KEY_O, InputEvent.CTRL_MASK);
-            itemSave = createItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK);
-            itemImport = createItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
-            itemExport = createItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
-            itemSettings = createItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_S, Icons.settings, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
-            itemExit = createItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
+            itemNew = createMenuItem("New", "New Model", KeyEvent.VK_N, Icons.new_, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK);
+            itemLoad = createMenuItem("Load Project...", "Load Project from File", KeyEvent.VK_S, Icons.load, KeyEvent.VK_O, Keyboard.KEY_O, InputEvent.CTRL_MASK);
+            itemSave = createMenuItem("Save Project...", "Save Project to File", KeyEvent.VK_S, Icons.disk, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK);
+            itemImport = createMenuItem("Import JSON...", "Import Model from JSON", KeyEvent.VK_I, Icons.import_);
+            itemExport = createMenuItem("Export JSON...", "Export Model to JSON", KeyEvent.VK_E, Icons.export);
+            itemSettings = createMenuItem("Settings", "Change the settings of the Model Creator", KeyEvent.VK_S, Icons.settings, KeyEvent.VK_S, Keyboard.KEY_S, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
+            itemExit = createMenuItem("Exit", "Exit Application", KeyEvent.VK_E, Icons.exit);
         }
 
         menuEdit = new JMenu("Edit");
         {
-            itemUndo = createItem("Undo", "Undos the previous action", KeyEvent.VK_U, Icons.undo, KeyEvent.VK_Z, Keyboard.KEY_Z, InputEvent.CTRL_MASK);
-            itemRedo = createItem("Redo", "Redos the previous action", KeyEvent.VK_R, Icons.redo, KeyEvent.VK_Y, Keyboard.KEY_Y, InputEvent.CTRL_MASK);
+            itemUndo = createMenuItem("Undo", "Undos the previous action", KeyEvent.VK_U, Icons.undo, KeyEvent.VK_Z, Keyboard.KEY_Z, InputEvent.CTRL_MASK);
+            itemRedo = createMenuItem("Redo", "Redos the previous action", KeyEvent.VK_R, Icons.redo, KeyEvent.VK_Y, Keyboard.KEY_Y, InputEvent.CTRL_MASK);
         }
 
         menuModel = new JMenu("Model");
         {
-            itemDisplayProps = createItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
-            itemOptimise = createItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
+            itemDisplayProps = createMenuItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
+            itemOptimise = createMenuItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             menuRotate = new JMenu("Rotate");
             menuRotate.setMnemonic(KeyEvent.VK_R);
             menuRotate.setIcon(Icons.rotate);
             {
-                itemRotateClockwise = createItem("90\u00B0 Clockwise", "Rotates all elements clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
-                itemRotateCounterClockwise = createItem("90\u00B0 Counter Clockwise", "Rotates all elements counter clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
+                itemRotateClockwise = createMenuItem("90\u00B0 Clockwise", "Rotates all elements clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_clockwise, KeyEvent.VK_RIGHT, Keyboard.KEY_RIGHT, InputEvent.CTRL_MASK);
+                itemRotateCounterClockwise = createMenuItem("90\u00B0 Counter Clockwise", "Rotates all elements counter clockwise by 90\u00B0", KeyEvent.VK_C, Icons.rotate_counter_clockwise, KeyEvent.VK_LEFT, Keyboard.KEY_LEFT, InputEvent.CTRL_MASK);
             }
         }
 
         menuScreenshot = new JMenu("Screenshot");
         {
-            itemSaveToDisk = createItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_D, Icons.disk);
-            itemShareFacebook = createItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
-            itemShareTwitter = createItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
-            itemShareReddit = createItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
-            itemImgurLink = createItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_I, Icons.imgur);
+            itemSaveToDisk = createMenuItem("Save to Disk...", "Save screenshot to disk.", KeyEvent.VK_D, Icons.disk);
+            itemShareFacebook = createMenuItem("Share to Facebook", "Share a screenshot of your model Facebook.", KeyEvent.VK_S, Icons.facebook);
+            itemShareTwitter = createMenuItem("Share to Twitter", "Share a screenshot of your model to Twitter.", KeyEvent.VK_S, Icons.twitter);
+            itemShareReddit = createMenuItem("Share to Minecraft Subreddit", "Share a screenshot of your model to Minecraft Reddit.", KeyEvent.VK_S, Icons.reddit);
+            itemImgurLink = createMenuItem("Get Imgur Link", "Get an Imgur link of your screenshot to share.", KeyEvent.VK_I, Icons.imgur);
         }
 
-        menuHelp = new JMenu("More");
+        menuMore = new JMenu("More");
         {
-            itemExtractAssets = createItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_E, Icons.extract);
+            itemExtractAssets = createMenuItem("Extract Assets...", "Extract Minecraft assets so you can get access to block and item textures", KeyEvent.VK_E, Icons.extract);
             menuDeveloper = new JMenu("Mod Developer");
             menuDeveloper.setMnemonic(KeyEvent.VK_M);
             menuDeveloper.setIcon(Icons.mojang);
             {
-                itemJavaCode = createItem("Generate Java Code...", "Generate Java code for selection and collisions boxes", KeyEvent.VK_J, Icons.java);
+                itemJavaCode = createMenuItem("Generate Java Code...", "Generate Java code for selection and collisions boxes", KeyEvent.VK_J, Icons.java);
             }
             menuExamples = new JMenu("Examples");
             menuExamples.setMnemonic(KeyEvent.VK_E);
             menuExamples.setIcon(Icons.new_);
             {
-                itemModelCauldron = createItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
-                itemModelChair = createItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
+                itemModelCauldron = createMenuItem("Cauldron", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_cauldron);
+                itemModelChair = createMenuItem("Chair", "<html>Model by MrCrayfish<br><b>Private use only</b></html>", KeyEvent.VK_C, Icons.model_chair);
             }
-            itemDonate = createItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
-            itemGitHub = createItem("Source Code", "View Source Code", KeyEvent.VK_S, Icons.github);
+            itemDonate = createMenuItem("Donate (Patreon)", "Pledge to MrCrayfish", KeyEvent.VK_D, Icons.patreon);
+            itemGitHub = createMenuItem("Source Code", "View Source Code", KeyEvent.VK_S, Icons.github);
         }
 
-        initActions();
+        this.initActions();
 
-        menuExamples.add(itemModelCauldron);
-        menuExamples.add(itemModelChair);
-
-        menuDeveloper.add(itemJavaCode);
-
-        menuHelp.add(itemExtractAssets);
-        menuHelp.add(menuDeveloper);
-        menuHelp.addSeparator();
-        menuHelp.add(menuExamples);
-        menuHelp.addSeparator();
-        menuHelp.add(itemGitHub);
-        menuHelp.add(itemDonate);
-
-        menuEdit.add(itemUndo);
-        menuEdit.add(itemRedo);
-        menuEdit.addMenuListener(new MenuListener()
-        {
-            @Override
-            public void menuSelected(MenuEvent e)
-            {
-                itemRedo.setEnabled(StateManager.canRestoreNextState());
-                itemUndo.setEnabled(StateManager.canRestorePreviousState());
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e)
-            {
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e)
-            {
-            }
-        });
-
-        menuModel.add(itemDisplayProps);
-        menuModel.add(itemOptimise);
-        menuModel.addSeparator();
-
-        menuRotate.add(itemRotateClockwise);
-        menuRotate.add(itemRotateCounterClockwise);
-        menuModel.add(menuRotate);
-
-        menuScreenshot.add(itemSaveToDisk);
-        menuScreenshot.add(itemShareFacebook);
-        menuScreenshot.add(itemShareTwitter);
-        menuScreenshot.add(itemShareReddit);
-        menuScreenshot.add(itemImgurLink);
-
+        /* Menu File */
         menuFile.add(itemNew);
         menuFile.addSeparator();
         menuFile.add(itemLoad);
@@ -202,12 +156,55 @@ public class Menu extends JMenuBar
         menuFile.add(itemSettings);
         menuFile.addSeparator();
         menuFile.add(itemExit);
+        this.add(menuFile);
 
-        add(menuFile);
-        add(menuEdit);
-        add(menuModel);
-        add(menuScreenshot);
-        add(menuHelp);
+        /* Menu Edit */
+        menuEdit.add(itemUndo);
+        menuEdit.add(itemRedo);
+        menuEdit.addMenuListener(new MenuAdapter()
+        {
+            @Override
+            public void menuSelected(MenuEvent e)
+            {
+                itemRedo.setEnabled(StateManager.canRestoreNextState());
+                itemUndo.setEnabled(StateManager.canRestorePreviousState());
+            }
+        });
+        this.add(menuEdit);
+
+        /* Menu Model Sub Menus */
+        menuRotate.add(itemRotateClockwise);
+        menuRotate.add(itemRotateCounterClockwise);
+
+        /* Menu Model */
+        menuModel.add(itemDisplayProps);
+        menuModel.add(itemOptimise);
+        menuModel.addSeparator();
+        menuModel.add(menuRotate);
+        this.add(menuModel);
+
+        /* Menu Screenshots */
+        menuScreenshot.add(itemSaveToDisk);
+        menuScreenshot.add(itemShareFacebook);
+        menuScreenshot.add(itemShareTwitter);
+        menuScreenshot.add(itemShareReddit);
+        menuScreenshot.add(itemImgurLink);
+        this.add(menuScreenshot);
+
+        /* Menu More Sub Menus */
+        menuDeveloper.add(itemJavaCode);
+        menuExamples.add(itemModelCauldron);
+        menuExamples.add(itemModelChair);
+
+        /* Menu More */
+        menuMore.add(itemExtractAssets);
+        menuMore.add(menuDeveloper);
+        menuMore.addSeparator();
+        menuMore.add(menuExamples);
+        menuMore.addSeparator();
+        menuMore.add(itemGitHub);
+        menuMore.add(itemDonate);
+        this.add(menuMore);
     }
 
     private void initActions()
@@ -218,17 +215,17 @@ public class Menu extends JMenuBar
 
         itemSave.addActionListener(a -> saveProject(creator));
 
-        itemImport.addActionListener(a -> importJson(creator));
+        itemImport.addActionListener(a -> showImportJson(creator));
 
-        itemExport.addActionListener(a -> exportJson(creator));
+        itemExport.addActionListener(a -> showExportJson(creator));
 
-        itemJavaCode.addActionListener(a -> exportJavaCode(creator, a));
+        itemJavaCode.addActionListener(a -> showExportJavaCode(creator, a));
 
-        itemSettings.addActionListener(a -> settings(creator));
+        itemSettings.addActionListener(a -> showSettings(creator));
 
         itemExit.addActionListener(a -> creator.close());
 
-        itemDisplayProps.addActionListener(a -> displayProperties(creator));
+        itemDisplayProps.addActionListener(a -> showDisplayProperties(creator));
 
         itemOptimise.addActionListener(a -> optimizeModel(creator));
 
@@ -368,7 +365,7 @@ public class Menu extends JMenuBar
 
         itemDonate.addActionListener(a -> Util.openUrl(Constants.URL_DONATE));
 
-        itemExtractAssets.addActionListener(a -> extractAssets(creator));
+        itemExtractAssets.addActionListener(a -> showExtractAssets(creator));
 
         itemModelCauldron.addActionListener(a ->
         {
@@ -389,12 +386,12 @@ public class Menu extends JMenuBar
         itemRedo.addActionListener(a -> StateManager.restoreNextState(creator.getElementManager()));
     }
 
-    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon)
+    private JMenuItem createMenuItem(String name, String tooltip, int mnemonic, Icon icon)
     {
-        return createItem(name, tooltip, mnemonic, icon, -1, -1, -1);
+        return createMenuItem(name, tooltip, mnemonic, icon, -1, -1, -1);
     }
 
-    private JMenuItem createItem(String name, String tooltip, int mnemonic, Icon icon, int awtCode, int keyCode, int modifiers)
+    private JMenuItem createMenuItem(String name, String tooltip, int mnemonic, Icon icon, int awtCode, int keyCode, int modifiers)
     {
         JMenuItem item = new JMenuItem(name);
         item.setToolTipText(tooltip);
@@ -429,15 +426,6 @@ public class Menu extends JMenuBar
             }
         }
 
-        return item;
-    }
-
-    private JMenuItem createCheckboxItem(String name, String tooltip, int mnemonic, boolean checked, Icon icon)
-    {
-        JMenuItem item = new JCheckBoxMenuItem(name, checked);
-        item.setToolTipText(tooltip);
-        item.setMnemonic(mnemonic);
-        item.setIcon(icon);
         return item;
     }
 
@@ -532,28 +520,12 @@ public class Menu extends JMenuBar
         int result = JOptionPane.showConfirmDialog(null, "<html>Are you sure you want to optimize the model?<br/>It is recommended you save the project before running this<br/>action, otherwise you will have to re-enable the disabled faces.<html>", "Optimize Confirmation", JOptionPane.YES_NO_OPTION);
         if(result == JOptionPane.YES_OPTION)
         {
-            int count = 0;
-            ElementManager manager = creator.getElementManager();
-            for(Element element : manager.getAllElements())
-            {
-                for(Face face : element.getAllFaces())
-                {
-                    if(face.isEnabled() && !face.isVisible(manager))
-                    {
-                        count++;
-                        face.setEnabled(false);
-                    }
-                }
-            }
-            if(count > 0)
-            {
-                StateManager.pushState(manager);
-            }
+            int count = Actions.optimiseModel(creator.getElementManager());
             JOptionPane.showMessageDialog(null, "<html>Optimizing the model disabled <b>" + count + "</b> faces</html>", "Optimization Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
-    public static void importJson(ModelCreator creator)
+    public static void showImportJson(ModelCreator creator)
     {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Import JSON Model");
@@ -591,19 +563,7 @@ public class Menu extends JMenuBar
         }
     }
 
-    private static JCheckBox createCheckBox(String text, String tooltip, boolean selected)
-    {
-        JCheckBox checkBoxDisplayProps = new JCheckBox(text);
-        checkBoxDisplayProps.setToolTipText(tooltip);
-        checkBoxDisplayProps.setSelected(selected);
-        checkBoxDisplayProps.setIcon(Icons.light_off);
-        checkBoxDisplayProps.setRolloverIcon(Icons.light_off);
-        checkBoxDisplayProps.setSelectedIcon(Icons.light_on);
-        checkBoxDisplayProps.setRolloverSelectedIcon(Icons.light_on);
-        return checkBoxDisplayProps;
-    }
-
-    public static void exportJson(ModelCreator creator)
+    public static void showExportJson(ModelCreator creator)
     {
         JDialog dialog = new JDialog(creator, "Export JSON Model", Dialog.ModalityType.APPLICATION_MODAL);
 
@@ -668,13 +628,13 @@ public class Menu extends JMenuBar
         JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
         exportDir.add(optionSeparator);
 
-        JCheckBox checkBoxOptimize = createCheckBox("Optimize Model", "Removes unnecessary faces that can't been seen in the model", true);
+        JCheckBox checkBoxOptimize = ComponentUtil.createCheckBox("Optimize Model", "Removes unnecessary faces that can't been seen in the model", true);
         exportDir.add(checkBoxOptimize);
 
-        JCheckBox checkBoxDisplayProps = createCheckBox("Include Display Properties", "Adds the display definitions (first-person, third-person, etc) to the model file", true);
+        JCheckBox checkBoxDisplayProps = ComponentUtil.createCheckBox("Include Display Properties", "Adds the display definitions (first-person, third-person, etc) to the model file", true);
         exportDir.add(checkBoxDisplayProps);
 
-        JCheckBox checkBoxElementNames = createCheckBox("Include Element Names", "The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names", true);
+        JCheckBox checkBoxElementNames = ComponentUtil.createCheckBox("Include Element Names", "The name of each element will be added to it's entry in the json model elements array. Useful for identifying elements, and when importing back into Model Creator, it will use those names", true);
         exportDir.add(checkBoxElementNames);
 
         JSeparator separator = new JSeparator();
@@ -755,11 +715,11 @@ public class Menu extends JMenuBar
 
                 dialog.dispose();
 
-                ExporterModelJSON exporter = new ExporterModelJSON(creator.getElementManager());
+                ExporterModel exporter = new ExporterModel(creator.getElementManager());
                 exporter.setOptimize(checkBoxOptimize.isSelected());
                 exporter.setDisplayProps(checkBoxDisplayProps.isSelected());
                 exporter.setIncludeNames(checkBoxElementNames.isSelected());
-                if(exporter.writeJSONFile(modelFile) == null)
+                if(exporter.writeFile(modelFile) == null)
                 {
                     modelFile.delete();
                     JOptionPane.showMessageDialog(dialog, "An error occured while exporting the model. Please try again", "Error", JOptionPane.ERROR_MESSAGE);
@@ -795,12 +755,12 @@ public class Menu extends JMenuBar
         dialog.setVisible(true);
     }
 
-    private static void exportJavaCode(ModelCreator creator, ActionEvent actionEvent)
+    private static void showExportJavaCode(ModelCreator creator, ActionEvent actionEvent)
     {
-        JCheckBox includeAABBs = createCheckBox("Generate AABB Fields", "Include decelerations of the AABBs fields that represent the model's elements", true);
-        JCheckBox includeMethods = createCheckBox("Generate Methods", "Include bounds, raytracing, & collision methods", true);
-        JCheckBox useBoundsHelper = createCheckBox("Use Bounds Helper", "Fields and methods use MrCrayfish's Bounds helper class, and target his code-base", false);
-        JCheckBox generateRotatedBounds = createCheckBox("Make Rotatable", "Use Bounds helper class to create AABB rotation arrays for each element", false);
+        JCheckBox includeAABBs = ComponentUtil.createCheckBox("Generate AABB Fields", "Include decelerations of the AABBs fields that represent the model's elements", true);
+        JCheckBox includeMethods = ComponentUtil.createCheckBox("Generate Methods", "Include bounds, raytracing, & collision methods", true);
+        JCheckBox useBoundsHelper = ComponentUtil.createCheckBox("Use Bounds Helper", "Fields and methods use MrCrayfish's Bounds helper class, and target his code-base", false);
+        JCheckBox generateRotatedBounds = ComponentUtil.createCheckBox("Make Rotatable", "Use Bounds helper class to create AABB rotation arrays for each element", false);
 
         useBoundsHelper.addActionListener(e -> generateRotatedBounds.setEnabled(useBoundsHelper.isSelected()));
 
@@ -867,7 +827,7 @@ public class Menu extends JMenuBar
             JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.OK_OPTION);
             return;
         }
-        ExporterJavaCodeTXT exporter = new ExporterJavaCodeTXT(creator, includeAABBs.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
+        ExporterJavaCode exporter = new ExporterJavaCode(creator, includeAABBs.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
         if (returnValDestination == JOptionPane.CLOSED_OPTION)
             return;
 
@@ -875,7 +835,7 @@ public class Menu extends JMenuBar
         {
             try
             {
-                exporter.writeComponentsToClipboard();
+                exporter.writeCodeToClipboard();
             }
             catch (Exception exception)
             {
@@ -919,7 +879,7 @@ public class Menu extends JMenuBar
         }
     }
 
-    public static void settings(ModelCreator creator)
+    public static void showSettings(ModelCreator creator)
     {
         JDialog dialog = new JDialog(creator, "Settings", Dialog.ModalityType.APPLICATION_MODAL);
 
@@ -1075,7 +1035,7 @@ public class Menu extends JMenuBar
         return "";
     }
 
-    public static void extractAssets(ModelCreator creator)
+    public static void showExtractAssets(ModelCreator creator)
     {
         JDialog dialog = new JDialog(creator, "Extract Assets", Dialog.ModalityType.APPLICATION_MODAL);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -1205,7 +1165,7 @@ public class Menu extends JMenuBar
         };
     }
 
-    private static void displayProperties(ModelCreator creator)
+    private static void showDisplayProperties(ModelCreator creator)
     {
         JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -1280,7 +1240,7 @@ public class Menu extends JMenuBar
         });
         panel.add(btnApplyProperties);
 
-        JCheckBox checkBoxShowGrid = createCheckBox("Show Grid", "Determines whether the grid should render", shouldRenderGrid);
+        JCheckBox checkBoxShowGrid = ComponentUtil.createCheckBox("Show Grid", "Determines whether the grid should render", shouldRenderGrid);
         checkBoxShowGrid.addActionListener(e -> shouldRenderGrid = checkBoxShowGrid.isSelected());
         panel.add(checkBoxShowGrid);
 

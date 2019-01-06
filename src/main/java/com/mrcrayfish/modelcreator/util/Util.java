@@ -249,7 +249,7 @@ public class Util
     public static File getMinecraftDirectory()
     {
         String userHome = System.getProperty("user.home", ".");
-        OperatingSystem os = getOS();
+        OperatingSystem os = OperatingSystem.get();
         switch(os)
         {
             case WINDOWS:
@@ -265,36 +265,6 @@ public class Util
             default:
                 return null;
         }
-    }
-
-    public static OperatingSystem getOS()
-    {
-        String name = System.getProperty("os.name").toLowerCase();
-        if(name.contains("win"))
-        {
-            return OperatingSystem.WINDOWS;
-        }
-        if(name.contains("mac"))
-        {
-            return OperatingSystem.MAC;
-        }
-        if(name.contains("solaris"))
-        {
-            return OperatingSystem.SOLARIS;
-        }
-        if(name.contains("sunos"))
-        {
-            return OperatingSystem.SOLARIS;
-        }
-        if(name.contains("linux"))
-        {
-            return OperatingSystem.LINUX;
-        }
-        if(name.contains("unix"))
-        {
-            return OperatingSystem.LINUX;
-        }
-        return OperatingSystem.UNKNOWN;
     }
 
     private static File[] getSubFolders(File parent)

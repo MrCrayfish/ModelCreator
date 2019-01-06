@@ -1,5 +1,7 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.element.ElementManager;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,15 +9,13 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
-import com.mrcrayfish.modelcreator.element.ElementManager;
-
 public abstract class Exporter
 {
     /**
      * decimalformatter for rounding
      */
     public static final DecimalFormat FORMAT = new DecimalFormat("#.###");
-    protected static final DecimalFormatSymbols SYMBOLS = new DecimalFormatSymbols();
+    private static final DecimalFormatSymbols SYMBOLS = new DecimalFormatSymbols();
 
     static
     {
@@ -36,14 +36,14 @@ public abstract class Exporter
         File path = file.getParentFile();
         if(path.exists() && path.isDirectory())
         {
-            writeJSONFile(file);
+            this.writeFile(file);
         }
         return file;
     }
 
-    protected abstract void writeComponents(BufferedWriter writer) throws IOException;
+    protected abstract void write(BufferedWriter writer) throws IOException;
 
-    public File writeJSONFile(File file)
+    public File writeFile(File file)
     {
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
         {
@@ -51,16 +51,13 @@ public abstract class Exporter
             {
                 file.createNewFile();
             }
-
-            writeComponents(writer);
-
+            this.write(writer);
             return file;
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
-
         return null;
     }
 

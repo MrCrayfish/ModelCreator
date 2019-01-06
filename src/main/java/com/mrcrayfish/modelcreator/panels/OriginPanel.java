@@ -2,7 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.Properties;
+import com.mrcrayfish.modelcreator.PropertyIdentifiers;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -169,7 +169,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginX(1.0F);
                 }
                 xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_X);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_X);
             }
         });
         btnPlusX.setPreferredSize(new Dimension(62, 30));
@@ -190,7 +190,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginY(1.0F);
                 }
                 yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_Y);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Y);
             }
         });
         btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -211,7 +211,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginZ(1.0F);
                 }
                 zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_Z);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);
             }
         });
         btnPlusZ.setPreferredSize(new Dimension(62, 30));
@@ -232,7 +232,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginX(-1.0F);
                 }
                 xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_Z);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);
             }
         });
         btnNegX.setPreferredSize(new Dimension(62, 30));
@@ -253,7 +253,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginY(-1.0F);
                 }
                 yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_Y);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Y);
             }
         });
         btnNegY.setPreferredSize(new Dimension(62, 30));
@@ -274,7 +274,7 @@ public class OriginPanel extends JPanel implements IElementUpdater
                     selectedElement.addOriginZ(-1.0F);
                 }
                 zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
-                StateManager.pushStateDelayed(manager, Properties.ORIGIN_Z);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);
             }
         });
         btnNegZ.setPreferredSize(new Dimension(62, 30));

@@ -1,22 +1,20 @@
 package com.mrcrayfish.modelcreator;
 
-import java.awt.Toolkit;
+import com.mrcrayfish.modelcreator.element.Element;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.text.DecimalFormat;
 
-import javax.swing.JOptionPane;
-
-import com.mrcrayfish.modelcreator.element.Element;
-
-public class ExporterJavaCodeTXT extends Exporter
+public class ExporterJavaCode extends Exporter
 {
     private ModelCreator creator;
     private boolean includeAABBs, includeMethods, useBoundsHelper, generateRotatedBounds;
 
-    public ExporterJavaCodeTXT(ModelCreator creator, boolean includeAABBs, boolean includeMethods, boolean useBoundsHelper, boolean generateRotatedBounds)
+    public ExporterJavaCode(ModelCreator creator, boolean includeAABBs, boolean includeMethods, boolean useBoundsHelper, boolean generateRotatedBounds)
     {
         super(creator.getElementManager());
         this.creator = creator;
@@ -26,43 +24,39 @@ public class ExporterJavaCodeTXT extends Exporter
         this.generateRotatedBounds = useBoundsHelper && generateRotatedBounds;
     }
 
-    public void writeComponentsToClipboard() throws IOException
+    public void writeCodeToClipboard() throws IOException
     {
-        BufferedWriter writer = null;
-        try
+        StringWriter writerFile = new StringWriter();
+        try(BufferedWriter writer = new BufferedWriter(writerFile))
         {
-            StringWriter writerFile = new StringWriter();
-            writer = new BufferedWriter(writerFile);
-            writeComponents(writer);
+            write(writer);
             writer.flush();
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(writerFile.toString()), null);
-        }
-        finally
-        {
-            writer.close();
         }
     }
 
     @Override
-    protected void writeComponents(BufferedWriter writer) throws IOException
+    protected void write(BufferedWriter writer) throws IOException
     {
-        if (includeAABBs)
+        if(includeAABBs)
         {
             StringBuilder boxList = new StringBuilder("private static final List<AxisAlignedBB>");
             boxList.append(generateRotatedBounds ? "[] COLLISION_BOXES = Bounds.getRotatedBoundLists(" : " COLLISION_BOXES = Lists.newArrayList(");
             ModelBounds bounds = useBoundsHelper ? null : new ModelBounds();
             String name = null;
             double x, y, z;
-            for (Element element : manager.getAllElements())
+            for(Element element : manager.getAllElements())
             {
-                if (element.getRotation() != 0)
+                if(element.getRotation() != 0)
                 {
                     writer.write(String.format("// Skipped '%s', as it has roatation", element.getName()));
                 }
                 else
                 {
-                    if (name != null)
+                    if(name != null)
+                    {
                         boxList.append(", ");
+                    }
 
                     x = element.getStartX();
                     y = element.getStartY();
@@ -70,56 +64,73 @@ public class ExporterJavaCodeTXT extends Exporter
                     name = element.getName();
                     name = name.toUpperCase().replaceAll(" ", "_");
                     boxList.append(name);
-                    writeElement(writer, bounds, name, x, y, z, x + element.getWidth(), y + element.getHeight(), z + element.getDepth());
+                    writeField(writer, bounds, name, x, y, z, x + element.getWidth(), y + element.getHeight(), z + element.getDepth());
                 }
                 writer.newLine();
             }
-            if (name == null)
+
+            if(name == null)
             {
-                JOptionPane.showMessageDialog(creator, "No non-rotated elements were found.", "None Found", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(creator, "No non-rotated elements were found.", "None Found", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            if (useBoundsHelper)
+
+            if(useBoundsHelper)
+            {
                 writer.newLine();
+            }
             else
             {
                 writeNewLine(writer, "/**");
-                writeNewLine(writer, String.format("* %s generated using MrCrayfish's Model Creator <a href=\"https://mrcrayfish.com/tools?id=mc\">https://mrcrayfish.com/tools?id=mc</a>",
-                        includeMethods ? "AxisAlignedBBs and methods getBoundingBox, collisionRayTrace, and collisionRayTrace" : "AxisAlignedBBs"));
+                writeNewLine(writer, String.format("* %s generated using MrCrayfish's Model Creator <a href=\"https://mrcrayfish.com/tools?id=mc\">https://mrcrayfish.com/tools?id=mc</a>", includeMethods ? "AxisAlignedBBs and methods getBoundingBox, collisionRayTrace, and collisionRayTrace" : "AxisAlignedBBs"));
                 writeNewLine(writer, "*/");
             }
+
             writer.write(boxList.append(");").toString());
             writer.newLine();
-            if (bounds != null)
-                bounds.write(writer);
-            else if (generateRotatedBounds)
-                writer.write("private static final AxisAlignedBB[] BOUNDING_BOX = Bounds.getBoundingBoxes(COLLISION_BOXES);");
-            else
-                writer.write("private static final AxisAlignedBB BOUNDING_BOX = Bounds.getBoundingBox(COLLISION_BOXES);");
-        }
-        if (!includeMethods)
-            return;
 
-        if (includeAABBs)
+            if(bounds != null)
+            {
+                bounds.write(writer);
+            }
+            else if(generateRotatedBounds)
+            {
+                writer.write("private static final AxisAlignedBB[] BOUNDING_BOX = Bounds.getBoundingBoxes(COLLISION_BOXES);");
+            }
+            else
+            {
+                writer.write("private static final AxisAlignedBB BOUNDING_BOX = Bounds.getBoundingBox(COLLISION_BOXES);");
+            }
+        }
+
+        if(!includeMethods)
+        {
+            return;
+        }
+
+        if(includeAABBs)
         {
             writer.newLine();
             writer.newLine();
         }
+
         writeNewLine(writer, "@Override");
         writeNewLine(writer, "public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)");
         writeNewLine(writer, "{");
         writeNewLine(writer, "    return BOUNDING_BOX%s", generateRotatedBounds ? "[state.getValue(FACING).getHorizontalIndex()];" : ";");
         writeNewLine(writer, "}");
-        if (useBoundsHelper)
+
+        if(useBoundsHelper)
         {
             writer.newLine();
             writeNewLine(writer, "@Override");
             writeNewLine(writer, "protected List<AxisAlignedBB> getCollisionBoxes(IBlockState state, World world, BlockPos pos, @Nullable Entity entity, boolean isActualState)");
             writeNewLine(writer, "{");
             writeNewLine(writer, "    return COLLISION_BOXES%s", generateRotatedBounds ? "[state.getValue(FACING).getHorizontalIndex()];" : ";");
-                    writer.write("}");
+            writer.write("}");
             return;
         }
+
         writer.newLine();
         writeNewLine(writer, "@Override");
         writeNewLine(writer, "public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entity, boolean isActualState)");
@@ -156,7 +167,7 @@ public class ExporterJavaCodeTXT extends Exporter
         writeNewLine(writer, "        }");
         writeNewLine(writer, "    }");
         writeNewLine(writer, "    return resultClosest == null ? null : new RayTraceResult(RayTraceResult.Type.BLOCK, resultClosest.hitVec.addVector(pos.getX(), pos.getY(), pos.getZ()), resultClosest.sideHit, pos);");
-                writer.write("}");
+        writer.write("}");
     }
 
     private String format(double value)
@@ -164,19 +175,28 @@ public class ExporterJavaCodeTXT extends Exporter
         return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
     }
 
-    private void writeElement(BufferedWriter writer, ModelBounds bounds, String name, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) throws IOException
+    private void writeField(BufferedWriter writer, ModelBounds bounds, String name, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) throws IOException
     {
         StringBuilder builder = new StringBuilder("private static final AxisAlignedBB");
-        if (generateRotatedBounds)
+
+        if(generateRotatedBounds)
+        {
             builder.append("[]");
+        }
 
         builder.append(" %s = new ").append(useBoundsHelper ? "Bounds" : "AxisAlignedBB").append("(%s, %s, %s, %s, %s, %s)");
-        if (useBoundsHelper)
+
+        if(useBoundsHelper)
+        {
             builder.append(generateRotatedBounds ? ".getRotatedBounds()" : ".toAABB()");
+        }
 
         writer.write(String.format(builder.append(";").toString(), name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
-        if (bounds != null)
+
+        if(bounds != null)
+        {
             bounds.union(minX, minY, minZ, maxX, maxY, maxZ);
+        }
     }
 
     private void writeNewLine(BufferedWriter writer, String line, Object... args) throws IOException
@@ -189,7 +209,7 @@ public class ExporterJavaCodeTXT extends Exporter
     {
         private double minX, minY, minZ, maxX, maxY, maxZ;
 
-        public ModelBounds()
+        private ModelBounds()
         {
             minX = minY = minZ = Double.MAX_VALUE;
             maxX = maxY = maxZ = Double.MIN_VALUE;
@@ -197,10 +217,10 @@ public class ExporterJavaCodeTXT extends Exporter
 
         public void write(BufferedWriter writer) throws IOException
         {
-            writeElement(writer, this, "BOUNDING_BOX", minX, minY, minZ, maxX, maxY, maxZ);
+            writeField(writer, this, "BOUNDING_BOX", minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public void union(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
+        private void union(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
         {
             this.minX = Math.min(this.minX, minX);
             this.minY = Math.min(this.minY, minY);

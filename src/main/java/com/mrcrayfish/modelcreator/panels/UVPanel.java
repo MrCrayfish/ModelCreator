@@ -2,7 +2,7 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Exporter;
 import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.Properties;
+import com.mrcrayfish.modelcreator.PropertyIdentifiers;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -236,7 +236,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateEndUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.START_U);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_U);
             }
         });
 
@@ -264,7 +264,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateEndUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.START_V);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_V);
             }
         });
         btnPlusY.setPreferredSize(new Dimension(62, 30));
@@ -291,7 +291,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateEndUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.START_U);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_U);
             }
         });
         btnNegX.setSize(new Dimension(62, 30));
@@ -318,7 +318,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateEndUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.START_V);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_V);
             }
         });
         btnNegY.setSize(new Dimension(62, 30));
@@ -345,7 +345,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateStartUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.END_U);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_U);
             }
         });
         btnPlusXEnd.setSize(new Dimension(62, 30));
@@ -372,7 +372,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateStartUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.END_V);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_V);
             }
         });
         btnPlusYEnd.setPreferredSize(new Dimension(62, 30));
@@ -399,7 +399,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateStartUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.END_U);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_U);
             }
         });
         btnNegXEnd.setSize(new Dimension(62, 30));
@@ -426,7 +426,7 @@ public class UVPanel extends JPanel implements IElementUpdater
                 }
                 selectedElement.updateStartUVs();
                 manager.updateValues();
-                StateManager.pushStateDelayed(manager, Properties.END_V);
+                StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_V);
             }
         });
         btnNegYEnd.setSize(new Dimension(62, 30));

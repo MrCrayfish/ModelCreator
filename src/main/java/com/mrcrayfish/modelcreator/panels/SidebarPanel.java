@@ -1,10 +1,9 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.*;
+import com.mrcrayfish.modelcreator.component.JElementList;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.element.Element;
-import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.element.ElementManagerState;
+import com.mrcrayfish.modelcreator.element.*;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
@@ -25,8 +24,8 @@ public class SidebarPanel extends JPanel implements ElementManager
 
     // Swing Variables
     private SpringLayout layout;
-    private DefaultListModel<ElementEntry> model = new DefaultListModel<>();
-    private JList<ElementEntry> list = new JElementList();
+    private DefaultListModel<ElementCellEntry> model = new DefaultListModel<>();
+    private JList<ElementCellEntry> list = new JElementList();
     private JScrollPane scrollPane;
     private JPanel btnContainer;
     private JButton btnAdd = new JButton();
@@ -75,7 +74,7 @@ public class SidebarPanel extends JPanel implements ElementManager
             int selected = list.getSelectedIndex();
             if(selected != -1)
             {
-                model.addElement(new ElementEntry(new Element(model.getElementAt(selected).element)));
+                model.addElement(new ElementCellEntry(new Element(model.getElementAt(selected).getElement())));
                 list.setSelectedIndex(model.getSize() - 1);
                 StateManager.pushState(creator.getElementManager());
             }
@@ -157,7 +156,7 @@ public class SidebarPanel extends JPanel implements ElementManager
         layout.putConstraint(SpringLayout.NORTH, tabbedPane, 250, SpringLayout.NORTH, this);
     }
 
-    public JList<ElementEntry> getList()
+    public JList<ElementCellEntry> getList()
     {
         return list;
     }
@@ -168,12 +167,12 @@ public class SidebarPanel extends JPanel implements ElementManager
         int i = list.getSelectedIndex();
         if(model.getSize() > 0 && i >= 0 && i < model.getSize())
         {
-            return model.getElementAt(i).element;
+            return model.getElementAt(i).getElement();
         }
         return null;
     }
 
-    public ElementEntry getSelectedElementEntry()
+    public ElementCellEntry getSelectedElementEntry()
     {
         int i = list.getSelectedIndex();
         if(model.getSize() > 0 && i >= 0 && i < model.getSize())
@@ -206,7 +205,7 @@ public class SidebarPanel extends JPanel implements ElementManager
         List<Element> list = new ArrayList<>();
         for(int i = 0; i < model.size(); i++)
         {
-            list.add(model.getElementAt(i).element);
+            list.add(model.getElementAt(i).getElement());
         }
         return list;
     }
@@ -215,7 +214,7 @@ public class SidebarPanel extends JPanel implements ElementManager
     public Element getElement(int index)
     {
         //TODO null pointer exception
-        return model.getElementAt(index).element;
+        return model.getElementAt(index).getElement();
     }
 
     @Override
@@ -280,7 +279,7 @@ public class SidebarPanel extends JPanel implements ElementManager
     @Override
     public void addElement(Element e)
     {
-        model.addElement(new ElementEntry(e));
+        model.addElement(new ElementCellEntry(e));
     }
 
     @Override
@@ -309,7 +308,7 @@ public class SidebarPanel extends JPanel implements ElementManager
         this.reset();
         for(Element element : state.getElements())
         {
-            this.model.addElement(new ElementEntry(new Element(element)));
+            this.model.addElement(new ElementCellEntry(new Element(element)));
         }
         this.setSelectedElement(state.getSelectedIndex());
         this.ambientOcc = state.isAmbientOcclusion();
@@ -331,7 +330,7 @@ public class SidebarPanel extends JPanel implements ElementManager
 
     public void newElement()
     {
-        model.addElement(new ElementEntry(new Element(1, 1, 1)));
+        model.addElement(new ElementCellEntry(new Element(1, 1, 1)));
         list.setSelectedIndex(model.size() - 1);
         StateManager.pushState(creator.getElementManager());
     }
@@ -357,56 +356,4 @@ public class SidebarPanel extends JPanel implements ElementManager
         }
     }
 
-    public static class ElementEntry
-    {
-        private Element element;
-        private JPanel panel;
-        private JLabel visibility;
-        private JLabel name;
-
-        public ElementEntry(Element element)
-        {
-            this.element = element;
-            this.createPanel();
-        }
-
-        private void createPanel()
-        {
-            panel = new JPanel();
-            panel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-            visibility = new JLabel();
-            visibility.setIcon(element.isVisible() ? Icons.light_on : Icons.light_off);
-            panel.add(visibility);
-
-            name = new JLabel(element.getName());
-            panel.add(name);
-        }
-
-        public Element getElement()
-        {
-            return element;
-        }
-
-        public JPanel getPanel()
-        {
-            return panel;
-        }
-
-        public JLabel getVisibility()
-        {
-            return visibility;
-        }
-
-        public JLabel getName()
-        {
-            return name;
-        }
-
-        public void toggleVisibility()
-        {
-            element.setVisible(!element.isVisible());
-            visibility.setIcon(element.isVisible() ? Icons.light_on : Icons.light_off);
-        }
-    }
 }

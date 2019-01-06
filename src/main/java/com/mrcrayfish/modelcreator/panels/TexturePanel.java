@@ -8,7 +8,7 @@ import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.texture.TextureCallback;
 import com.mrcrayfish.modelcreator.texture.TextureManager;
-import com.mrcrayfish.modelcreator.util.Clipboard;
+import com.mrcrayfish.modelcreator.texture.Clipboard;
 
 import javax.swing.*;
 import java.awt.*;

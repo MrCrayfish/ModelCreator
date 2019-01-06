@@ -1,7 +1,7 @@
 package com.mrcrayfish.modelcreator.display.render;
 
 import com.mrcrayfish.modelcreator.Camera;
-import com.mrcrayfish.modelcreator.Menu;
+import com.mrcrayfish.modelcreator.component.Menu;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.element.Element;

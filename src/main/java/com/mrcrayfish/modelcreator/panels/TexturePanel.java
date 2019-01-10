@@ -100,7 +100,7 @@ public class TexturePanel extends JPanel implements TextureCallback
                 ClipboardTexture texture = Clipboard.getTexture();
                 if(texture != null)
                 {
-                    if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                    if((e.getModifiers() & InputEvent.SHIFT_MASK) == 1)
                     {
                         selectedElement.setAllTextures(texture);
                     }

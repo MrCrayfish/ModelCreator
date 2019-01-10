@@ -464,6 +464,12 @@ public class Face
         this.texture = texture;
     }
 
+    public void setTexture(String location, String texture)
+    {
+        this.textureLocation = location;
+        this.texture = texture;
+    }
+
     public void bindTexture(int pass)
     {
         TextureImpl.bindNone();

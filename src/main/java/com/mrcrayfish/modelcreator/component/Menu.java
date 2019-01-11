@@ -759,7 +759,7 @@ public class Menu extends JMenuBar
 
     private static void showExportJavaCode(ModelCreator creator, ActionEvent actionEvent)
     {
-        JCheckBox includeAABBs = ComponentUtil.createCheckBox("Generate AABB Fields", "Include decelerations of the AABBs fields that represent the model's elements", true);
+        JCheckBox includeFields = ComponentUtil.createCheckBox("Generate Fields", "Include decelerations of the AABBs fields that represent the model's elements", true);
         JCheckBox includeMethods = ComponentUtil.createCheckBox("Generate Methods", "Include bounds, raytracing, & collision methods", true);
         JCheckBox useBoundsHelper = ComponentUtil.createCheckBox("Use Bounds Helper", "Fields and methods use MrCrayfish's Bounds helper class, and target his code-base", false);
         JCheckBox generateRotatedBounds = ComponentUtil.createCheckBox("Make Rotatable", "Use Bounds helper class to create AABB rotation arrays for each element", false);
@@ -770,7 +770,6 @@ public class Menu extends JMenuBar
         JPanel panelMC = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel mcLabel = new JLabel("MC Version");
-        mcLabel.setForeground(Color.GRAY);
         mcLabel.setToolTipText(mcTooltip);
         panelMC.add(mcLabel);
 
@@ -794,7 +793,7 @@ public class Menu extends JMenuBar
 
         JPanel panelMain = new JPanel();
         panelMain.setLayout(new GridLayout(1, 2));
-        panelMain.add(includeAABBs);
+        panelMain.add(includeFields);
         panelMain.add(includeMethods);
 
         JPanel parent = new JPanel();
@@ -836,12 +835,12 @@ public class Menu extends JMenuBar
                         parent, new JSeparator(), Box.createHorizontalStrut(20), Box.createHorizontalStrut(20),
                         questionLabel}, "Generate Java Code", JOptionPane.YES_NO_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Clipboard", "Text File"}, "Clipboard");
-        if (!includeAABBs.isSelected() && !includeMethods.isSelected())
+        if (!includeFields.isSelected() && !includeMethods.isSelected())
         {
             JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.OK_OPTION);
             return;
         }
-        ExporterJavaCode exporter = new ExporterJavaCode(creator, includeAABBs.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
+        ExporterJavaCode exporter = new ExporterJavaCode(creator, includeFields.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
         exporter.setVersion((ExporterJavaCode.Version) mcVersion.getSelectedItem());
         if (returnValDestination == JOptionPane.CLOSED_OPTION)
             return;

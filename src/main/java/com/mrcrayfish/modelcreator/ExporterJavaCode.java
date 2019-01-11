@@ -13,13 +13,13 @@ public class ExporterJavaCode extends Exporter
 {
     private ModelCreator creator;
     private Version version = Version.V_1_12;
-    private boolean includeAABBs, includeMethods, useBoundsHelper, generateRotatedBounds;
+    private boolean includeFields, includeMethods, useBoundsHelper, generateRotatedBounds;
 
-    public ExporterJavaCode(ModelCreator creator, boolean includeAABBs, boolean includeMethods, boolean useBoundsHelper, boolean generateRotatedBounds)
+    public ExporterJavaCode(ModelCreator creator, boolean includeFields, boolean includeMethods, boolean useBoundsHelper, boolean generateRotatedBounds)
     {
         super(creator.getElementManager());
         this.creator = creator;
-        this.includeAABBs = includeAABBs;
+        this.includeFields = includeFields;
         this.includeMethods = includeMethods;
         this.useBoundsHelper = useBoundsHelper;
         this.generateRotatedBounds = useBoundsHelper && generateRotatedBounds;
@@ -46,30 +46,40 @@ public class ExporterJavaCode extends Exporter
     {
         if(version == Version.V_1_13)
         {
-            writeNewLine(writer, "/* Member variables */");
-            if(generateRotatedBounds)
+            if(includeFields)
             {
-                writeNewLine(writer, "public final ImmutableMap<IBlockState, VoxelShape> SHAPES;");
-            }
-            else
-            {
-                writeNewLine(writer, "public final VoxelShape SHAPE;");
-            }
-            writer.newLine();
+                /* Generates member fields */
+                writeNewLine(writer, "/* Member variables */");
+                if(generateRotatedBounds)
+                {
+                    writeNewLine(writer, "public final ImmutableMap<IBlockState, VoxelShape> SHAPES;");
+                }
+                else
+                {
+                    writeNewLine(writer, "public final VoxelShape SHAPE;");
+                }
+                writer.newLine();
 
-            /* Generates logic which is to be placed into the constructor */
-            writeNewLine(writer, "/* Place in Constructor */");
-            if(generateRotatedBounds)
-            {
-                writeNewLine(writer, "SHAPES = this.generateShapes(this.getStateContainer().getValidStates());");
+                /* Generates logic which is to be placed into the constructor */
+                writeNewLine(writer, "/* Place in Constructor */");
+                if(generateRotatedBounds)
+                {
+                    writeNewLine(writer, "SHAPES = this.generateShapes(this.getStateContainer().getValidStates());");
+                }
+                else
+                {
+                    writeNewLine(writer, "SHAPE = this.generateShape();");
+                }
+                writer.newLine();
             }
-            else
+
+            if(!includeMethods)
             {
-                writeNewLine(writer, "SHAPE = this.generateShape();");
+                return;
             }
-            writer.newLine();
 
             writeNewLine(writer, "/* Methods */");
+
             /* Creates method for generating voxel shapes for rotatable blocks */
             if(generateRotatedBounds)
             {
@@ -187,7 +197,7 @@ public class ExporterJavaCode extends Exporter
         }
         else if(version == Version.V_1_12)
         {
-            if(includeAABBs)
+            if(includeFields)
             {
                 StringBuilder boxList = new StringBuilder("private static final List<AxisAlignedBB>");
                 boxList.append(generateRotatedBounds ? "[] COLLISION_BOXES = Bounds.getRotatedBoundLists(" : " COLLISION_BOXES = Lists.newArrayList(");
@@ -257,7 +267,7 @@ public class ExporterJavaCode extends Exporter
                 return;
             }
 
-            if(includeAABBs)
+            if(includeFields)
             {
                 writer.newLine();
                 writer.newLine();

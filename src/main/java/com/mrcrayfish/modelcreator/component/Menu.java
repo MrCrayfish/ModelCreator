@@ -25,6 +25,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class Menu extends JMenuBar
 {
@@ -764,7 +766,7 @@ public class Menu extends JMenuBar
 
         useBoundsHelper.addActionListener(e -> generateRotatedBounds.setEnabled(useBoundsHelper.isSelected()));
 
-        String mcTooltip = "Seclect Minecraft version";
+        String mcTooltip = "Select Minecraft version";
         JPanel panelMC = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel mcLabel = new JLabel("MC Version");
@@ -772,10 +774,22 @@ public class Menu extends JMenuBar
         mcLabel.setToolTipText(mcTooltip);
         panelMC.add(mcLabel);
 
-        JComboBox<String> mcVersion = new JComboBox<>(new String[]{"1.12", "1.13"});
-        mcVersion.setEnabled(false);
+        JComboBox<ExporterJavaCode.Version> mcVersion = new JComboBox<>(ExporterJavaCode.Version.values());
         mcVersion.setToolTipText(mcTooltip);
         mcVersion.setPreferredSize(new Dimension(60, 24));
+        mcVersion.addActionListener(e ->
+        {
+            ExporterJavaCode.Version version = (ExporterJavaCode.Version) mcVersion.getSelectedItem();
+            switch(version)
+            {
+                case V_1_12:
+                    useBoundsHelper.setText("Use Bounds Helper");
+                    break;
+                default:
+                    useBoundsHelper.setText("Use VoxelShapeHelper");
+                    break;
+            }
+        });
         panelMC.add(mcVersion);
 
         JPanel panelMain = new JPanel();
@@ -828,6 +842,7 @@ public class Menu extends JMenuBar
             return;
         }
         ExporterJavaCode exporter = new ExporterJavaCode(creator, includeAABBs.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());
+        exporter.setVersion((ExporterJavaCode.Version) mcVersion.getSelectedItem());
         if (returnValDestination == JOptionPane.CLOSED_OPTION)
             return;
 

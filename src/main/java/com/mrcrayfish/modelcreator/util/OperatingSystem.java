@@ -11,33 +11,43 @@ public enum OperatingSystem
     SOLARIS,
     UNKNOWN;
 
-    public static OperatingSystem get()
+    private static final OperatingSystem OS;
+
+    static
     {
         String name = System.getProperty("os.name").toLowerCase();
         if(name.contains("win"))
         {
-            return OperatingSystem.WINDOWS;
+            OS = OperatingSystem.WINDOWS;
         }
-        if(name.contains("mac"))
+        else if(name.contains("mac"))
         {
-            return OperatingSystem.MAC;
+            OS = OperatingSystem.MAC;
         }
-        if(name.contains("solaris"))
+        else if(name.contains("solaris"))
         {
-            return OperatingSystem.SOLARIS;
+            OS = OperatingSystem.SOLARIS;
         }
-        if(name.contains("sunos"))
+        else if(name.contains("sunos"))
         {
-            return OperatingSystem.SOLARIS;
+            OS = OperatingSystem.SOLARIS;
         }
-        if(name.contains("linux"))
+        else if(name.contains("linux"))
         {
-            return OperatingSystem.LINUX;
+            OS = OperatingSystem.LINUX;
         }
-        if(name.contains("unix"))
+        else if(name.contains("unix"))
         {
-            return OperatingSystem.LINUX;
+            OS = OperatingSystem.LINUX;
         }
-        return OperatingSystem.UNKNOWN;
+        else
+        {
+            OS = OperatingSystem.UNKNOWN;
+        }
+    }
+
+    public static OperatingSystem get()
+    {
+        return OS;
     }
 }

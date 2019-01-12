@@ -15,6 +15,7 @@ import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.util.FontManager;
+import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -375,15 +376,15 @@ public class ModelCreator extends JFrame
         while(Keyboard.next())
         {
             int modifiers = 0;
-            if(isCtrlKeyDown())
+            if(KeyboardUtil.isCtrlKeyDown())
             {
                 modifiers += InputEvent.CTRL_MASK;
             }
-            if(isShiftKeyDown())
+            if(KeyboardUtil.isShiftKeyDown())
             {
                 modifiers += InputEvent.SHIFT_MASK;
             }
-            if(isAltKeyDown())
+            if(KeyboardUtil.isAltKeyDown())
             {
                 modifiers += InputEvent.ALT_MASK;
             }
@@ -833,28 +834,6 @@ public class ModelCreator extends JFrame
     private boolean getCloseRequested()
     {
         return closeRequested;
-    }
-
-    private static boolean isCtrlKeyDown()
-    {
-       /* if(Minecraft.IS_RUNNING_ON_MAC)
-        {
-            return Keyboard.isKeyDown(219) || Keyboard.isKeyDown(220);
-        }
-        else*/
-        {
-            return Keyboard.isKeyDown(29) || Keyboard.isKeyDown(157);
-        }
-    }
-
-    private static boolean isShiftKeyDown()
-    {
-        return Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54);
-    }
-
-    private static boolean isAltKeyDown()
-    {
-        return Keyboard.isKeyDown(56) || Keyboard.isKeyDown(184);
     }
 
     private void handleKeyAction(int code, int modifiers, boolean awt, boolean pressed)

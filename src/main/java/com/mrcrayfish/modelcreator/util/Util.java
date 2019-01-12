@@ -4,6 +4,10 @@ import com.google.gson.Gson;
 import com.mrcrayfish.modelcreator.ProjectManager;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -14,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
@@ -60,6 +65,37 @@ public class Util
     public static List<String> getMinecraftVersions()
     {
         return minecraftVersions;
+    }
+
+    public static Dimension getImageDimension(File image) throws IOException
+    {
+        int pos = image.getName().lastIndexOf(".");
+        if(pos != -1)
+        {
+            String suffix = image.getName().substring(pos + 1);
+            Iterator<ImageReader> it = ImageIO.getImageReadersBySuffix(suffix);
+            while(it.hasNext())
+            {
+                ImageReader reader = it.next();
+                try
+                {
+                    ImageInputStream stream = new FileImageInputStream(image);
+                    reader.setInput(stream);
+                    int width = reader.getWidth(reader.getMinIndex());
+                    int height = reader.getHeight(reader.getMinIndex());
+                    return new Dimension(width, height);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    reader.dispose();
+                }
+            }
+        }
+        throw new IOException("Not a known image file: " + image.getAbsolutePath());
     }
 
     public static void openUrl(String url)

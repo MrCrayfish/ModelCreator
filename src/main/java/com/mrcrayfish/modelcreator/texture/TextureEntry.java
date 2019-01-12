@@ -1,55 +1,43 @@
 package com.mrcrayfish.modelcreator.texture;
 
+import com.mrcrayfish.modelcreator.util.AssetsUtil;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class TextureEntry
 {
+    private String id;
+    private String modId = "minecraft";
+    private String directory = "blocks";
     private String name;
-    private ImageIcon image;
+
+    private ImageIcon icon;
     private List<Texture> textures;
+
     private String textureLocation;
     private String metaLocation;
 
     private TextureAnimation anim;
     private TextureProperties props;
 
-    public TextureEntry(String name, Texture texture, ImageIcon image, String textureLocation, TextureMeta meta, String metaLocation)
+    public TextureEntry(File texture)
     {
-        this.name = name;
-        this.textures = Collections.singletonList(texture);
-        this.image = image;
-        this.textureLocation = textureLocation;
-        if(meta != null)
-        {
-            this.anim = meta.getAnimation();
-        }
-        if(meta != null)
-        {
-            this.props = meta.getProperties();
-        }
-        this.metaLocation = metaLocation;
-    }
-
-    public TextureEntry(String name, List<Texture> textures, ImageIcon image, String textureLocation, TextureMeta meta, String metaLocation)
-    {
-        this.name = name;
-        this.textures = textures;
-        this.image = image;
-        this.textureLocation = textureLocation;
-        if(meta != null)
-        {
-            this.anim = meta.getAnimation();
-        }
-        if(meta != null)
-        {
-            this.props = meta.getProperties();
-        }
-        this.metaLocation = metaLocation;
+        this.id = texture.getName().substring(0, texture.getName().indexOf("."));
+        this.modId = AssetsUtil.getModId(texture);
+        this.directory = AssetsUtil.getTexturePath(texture);
+        this.name = this.id;
+        this.textureLocation = texture.getAbsolutePath();
+        this.icon = upscale(new ImageIcon(texture.getAbsolutePath()), 256);
     }
 
     public String getName()
@@ -59,7 +47,8 @@ public class TextureEntry
 
     public Texture getTexture()
     {
-        if(isAnimated())
+        this.loadTexture();
+        if(this.isAnimated())
         {
             return textures.get(anim.getCurrentAnimationFrame());
         }
@@ -68,16 +57,17 @@ public class TextureEntry
 
     public Texture getNextTexture()
     {
-        if(isAnimated())
+        this.loadTexture();
+        if(this.isAnimated())
         {
             return textures.get(anim.getNextAnimationFrame());
         }
         return textures.get(0);
     }
 
-    public ImageIcon getImage()
+    public ImageIcon getIcon()
     {
-        return image;
+        return icon;
     }
 
     public String getTextureLocation()
@@ -117,5 +107,28 @@ public class TextureEntry
             return anim.getPasses();
         }
         return 1;
+    }
+
+    private void loadTexture()
+    {
+        try
+        {
+            File image = new File(textureLocation);
+            try(FileInputStream is = new FileInputStream(image))
+            {
+                Texture texture = TextureLoader.getTexture("PNG", is);
+                this.textures = Collections.singletonList(texture);
+            }
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private static ImageIcon upscale(ImageIcon source, int length)
+    {
+        Image scaledImage = source.getImage().getScaledInstance(length, length, java.awt.Image.SCALE_FAST);
+        return new ImageIcon(scaledImage);
     }
 }

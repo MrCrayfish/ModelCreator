@@ -61,7 +61,7 @@ public class TextureManager
                     x += width;
                 }
                 String imageName = file.getName();
-                textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
+                //textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
                 return true;
             }
             return loadTexture(file, textureMeta, meta.getAbsolutePath());
@@ -75,13 +75,13 @@ public class TextureManager
         Texture texture = TextureLoader.getTexture("PNG", is);
         is.close();
 
-        if(texture.getImageHeight() % 16 != 0 | texture.getImageWidth() % 16 != 0)
+        if(texture.getImageHeight() % 16 != 0 || texture.getImageWidth() % 16 != 0)
         {
             texture.release();
             return false;
         }
         ImageIcon icon = upscale(new ImageIcon(image.getAbsolutePath()), 256);
-        textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
+        //textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
         return true;
     }
 
@@ -145,7 +145,7 @@ public class TextureManager
         {
             if(entry.getName().equalsIgnoreCase(name))
             {
-                return entry.getImage();
+                return entry.getIcon();
             }
         }
         return null;

@@ -41,7 +41,7 @@ public class TextureManager extends JDialog
     {
         super(owner, "Texture Manager", type);
         this.manager = manager;
-        this.setPreferredSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(500, 400));
         this.initComponents();
     }
 
@@ -53,6 +53,7 @@ public class TextureManager extends JDialog
 
         textureEntries = new JList<>();
         textureEntries.setModel(new DefaultListModel<>());
+        textureEntries.setCellRenderer(new TextureCellRenderer());
 
         JScrollPane scrollPane = new JScrollPane(textureEntries);
         content.add(scrollPane);
@@ -196,5 +197,41 @@ public class TextureManager extends JDialog
     public void showEditTextureDialog()
     {
 
+    }
+
+    public static class TextureCellRenderer implements ListCellRenderer<TextureEntry>
+    {
+        @Override
+        public Component getListCellRendererComponent(JList<? extends TextureEntry> list, TextureEntry value, int index, boolean isSelected, boolean cellHasFocus)
+        {
+            JPanel panel = new JPanel();
+            panel.setBackground(isSelected ? new Color(186, 193, 211) : new Color(234, 234, 242));
+            panel.setPreferredSize(new Dimension(200, 85));
+            
+            SpringLayout layout = new SpringLayout();
+            panel.setLayout(layout);
+
+            JLabel icon = new JLabel(value.getIcon());
+            panel.add(icon);
+
+            JLabel id = new JLabel("<html><b>" + value.getId() + "</b></html>");
+            panel.add(id);
+
+            JLabel name = new JLabel("<html><span style=\"color:#555555\">" + value.getModId() + ":" + value.getDirectory() + "/" + value.getName() + "</span></html>");
+            panel.add(name);
+
+            layout.putConstraint(SpringLayout.WEST, icon, 10, SpringLayout.WEST, panel);
+            layout.putConstraint(SpringLayout.NORTH, icon, 10, SpringLayout.NORTH, panel);
+
+            layout.putConstraint(SpringLayout.WEST, id, 10, SpringLayout.EAST, icon);
+            layout.putConstraint(SpringLayout.NORTH, id, 10, SpringLayout.NORTH, panel);
+            layout.putConstraint(SpringLayout.EAST, id, -10, SpringLayout.EAST, panel);
+
+            layout.putConstraint(SpringLayout.WEST, name, 10, SpringLayout.EAST, icon);
+            layout.putConstraint(SpringLayout.NORTH, name, 5, SpringLayout.SOUTH, id);
+            layout.putConstraint(SpringLayout.EAST, name, -10, SpringLayout.EAST, panel);
+
+            return panel;
+        }
     }
 }

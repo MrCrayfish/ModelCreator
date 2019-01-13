@@ -24,8 +24,8 @@ public class TextureEntry
     private ImageIcon icon;
     private List<Texture> textures;
 
-    private String textureLocation;
-    private String metaLocation;
+    private File textureFile;
+    private File metaFile;
 
     private TextureAnimation anim;
     private TextureProperties props;
@@ -36,8 +36,28 @@ public class TextureEntry
         this.modId = AssetsUtil.getModId(texture);
         this.directory = AssetsUtil.getTexturePath(texture);
         this.name = this.id;
-        this.textureLocation = texture.getAbsolutePath();
-        this.icon = upscale(new ImageIcon(texture.getAbsolutePath()), 256);
+        this.textureFile = texture;
+        this.icon = upscale(new ImageIcon(texture.getAbsolutePath()), 64);
+        File meta = new File(texture.getAbsolutePath() + ".mcmeta");
+        if(meta.exists())
+        {
+            metaFile = meta;
+        }
+    }
+
+    public String getId()
+    {
+        return id;
+    }
+
+    public String getModId()
+    {
+        return modId;
+    }
+
+    public String getDirectory()
+    {
+        return directory;
     }
 
     public String getName()
@@ -72,7 +92,7 @@ public class TextureEntry
 
     public String getTextureLocation()
     {
-        return textureLocation;
+        return textureFile.getAbsolutePath();
     }
 
     public TextureAnimation getAnimation()
@@ -97,7 +117,7 @@ public class TextureEntry
 
     public String getMetaLocation()
     {
-        return metaLocation;
+        return metaFile.getAbsolutePath();
     }
 
     public int getPasses()
@@ -113,8 +133,7 @@ public class TextureEntry
     {
         try
         {
-            File image = new File(textureLocation);
-            try(FileInputStream is = new FileInputStream(image))
+            try(FileInputStream is = new FileInputStream(textureFile))
             {
                 Texture texture = TextureLoader.getTexture("PNG", is);
                 this.textures = Collections.singletonList(texture);

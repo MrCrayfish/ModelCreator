@@ -1,7 +1,7 @@
 package com.mrcrayfish.modelcreator.element;
 
-import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
 import com.mrcrayfish.modelcreator.object.FaceDimension;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
@@ -63,8 +63,7 @@ public class Element
         {
             Face oldFace = cuboid.getAllFaces()[i];
             faces[i].fitTexture(oldFace.shouldFitTexture());
-            faces[i].setTexture(oldFace.getTextureName());
-            faces[i].setTextureLocation(oldFace.getTextureLocation());
+            faces[i].setTexture(oldFace.getTexture());
             faces[i].setStartU(oldFace.getStartU());
             faces[i].setStartV(oldFace.getStartV());
             faces[i].setEndU(oldFace.getEndU());
@@ -128,21 +127,14 @@ public class Element
         for(Face face : faces)
         {
             face.setTexture(null);
-            face.setTextureLocation("blocks/");
         }
     }
 
-    public void setAllTextures(ClipboardTexture texture)
-    {
-        setAllTextures(texture.getLocation(), texture.getTexture());
-    }
-
-    public void setAllTextures(String location, String texture)
+    public void setAllTextures(TextureEntry entry)
     {
         for(Face face : faces)
         {
-            face.setTexture(texture);
-            face.setTextureLocation(location);
+            face.setTexture(entry);
         }
     }
 

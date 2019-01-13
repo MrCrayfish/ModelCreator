@@ -1,13 +1,15 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import com.mrcrayfish.modelcreator.*;
+import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.component.JElementList;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.*;
 import com.mrcrayfish.modelcreator.panels.tabs.ElementPanel;
 import com.mrcrayfish.modelcreator.panels.tabs.FacePanel;
 import com.mrcrayfish.modelcreator.panels.tabs.RotationPanel;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -245,12 +247,6 @@ public class SidebarPanel extends JPanel implements ElementManager
     public void updateValues()
     {
         tabbedPane.updateValues();
-    }
-
-    @Override
-    public void addPendingTexture(PendingTexture texture)
-    {
-        creator.pendingTextures.add(texture);
     }
 
     public ModelCreator getCreator()

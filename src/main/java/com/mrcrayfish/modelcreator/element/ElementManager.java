@@ -1,7 +1,7 @@
 package com.mrcrayfish.modelcreator.element;
 
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
 import java.util.List;
 
@@ -22,8 +22,6 @@ public interface ElementManager
     void updateName();
 
     void updateValues();
-
-    void addPendingTexture(PendingTexture texture);
 
     boolean getAmbientOcc();
 

@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.dialog.WelcomeDialog;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.render.StandardRenderer;
@@ -12,8 +13,8 @@ import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
 import com.mrcrayfish.modelcreator.texture.TextureAtlas;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.util.FontManager;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import org.lwjgl.LWJGLException;
@@ -54,7 +55,7 @@ public class ModelCreator extends JFrame
     private Element grabbed = null;
 
     // Texture Loading Cache
-    public List<PendingTexture> pendingTextures = new ArrayList<>();
+    public List<TextureEntry> pendingTextures = new ArrayList<>();
     private PendingScreenshot screenshot = null;
 
     private int lastMouseX, lastMouseY;
@@ -335,6 +336,7 @@ public class ModelCreator extends JFrame
     private void render(float partialTicks)
     {
         Animation.setPartialTicks(partialTicks);
+        TextureManager.processPendingTextures();
 
         Dimension newDim = newCanvasSize.getAndSet(null);
         if (newDim != null)
@@ -344,12 +346,6 @@ public class ModelCreator extends JFrame
         }
 
         this.handleKeyboardInput();
-
-        for(PendingTexture texture : pendingTextures)
-        {
-            texture.load();
-        }
-        pendingTextures.clear();
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
@@ -543,6 +539,21 @@ public class ModelCreator extends JFrame
             }
             glPopMatrix();
         }
+
+        /*glColor3f(1.0F, 1.0F, 1.0F);
+        glBindTexture(GL_TEXTURE_2D, 6);
+        glBegin(GL_QUADS);
+        {
+            glTexCoord2d(0.0, 0.0);
+            glVertex2f(0, 0);
+            glTexCoord2d(1.0, 0.0);
+            glVertex2f(300, 0);
+            glTexCoord2d(1.0, 1.0);
+            glVertex2f(300, 300);
+            glTexCoord2d(0.0, 1.0);
+            glVertex2f(0, 300);
+        }
+        glEnd();*/
     }
 
     private void handleInput(int offset)

@@ -4,12 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mrcrayfish.modelcreator.Settings;
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -162,6 +162,7 @@ public class Importer
         }
     }
 
+    //TODO fix loading textures
     private void loadTexture(File dir, String texture)
     {
         File assets = dir.getParentFile().getParentFile();
@@ -173,7 +174,7 @@ public class Importer
                 File textureFile = new File(textureDir, texture + ".png");
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    manager.addPendingTexture(new PendingTexture(textureFile));
+                    //manager.loadTexture(new PendingTexture(textureFile));
                     return;
                 }
             }
@@ -185,7 +186,7 @@ public class Importer
             File file = new File(path);
             if(file.exists())
             {
-                manager.addPendingTexture(new PendingTexture(file));
+                //manager.loadTexture(new PendingTexture(file));
             }
         }
     }
@@ -387,16 +388,29 @@ public class Importer
 
             if(obj.has("texture") && obj.get("texture").isJsonPrimitive())
             {
-                String loc = obj.get("texture").getAsString().replace("#", "");
-                if(textureMap.containsKey(loc))
+                String id = obj.get("texture").getAsString().replace("#", "");
+                if(textureMap.containsKey(id))
                 {
-                    String tloc = textureMap.get(loc);
-                    if(tloc != null)
+                    String texture = textureMap.get(id);
+                    if(texture != null)
                     {
-                        String location = tloc.substring(0, tloc.lastIndexOf('/') + 1);
-                        String tname = tloc.replace(location, "");
-                        face.setTextureLocation(location);
-                        face.setTexture(tname);
+                        String modId = "minecraft";
+                        String[] split = texture.split(":");
+                        if(split.length == 2)
+                        {
+                            String s = split[0].trim();
+                            if(!s.isEmpty())
+                            {
+                                modId = s;
+                            }
+                        }
+                        String directory = split[split.length - 1].replace("/", File.separator);
+                        String path = Settings.getAssetsDir() + File.separator + modId + File.separator + "textures" + File.separator + directory + ".png";
+                        TextureEntry entry = TextureManager.addImage(manager, id, new File(path));
+                        if(entry != null)
+                        {
+                            face.setTexture(entry);
+                        }
                     }
                 }
             }

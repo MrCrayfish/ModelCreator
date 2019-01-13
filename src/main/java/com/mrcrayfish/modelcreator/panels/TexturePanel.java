@@ -1,20 +1,20 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.texture.ClipboardTexture;
-import com.mrcrayfish.modelcreator.texture.TextureCallback;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.texture.Clipboard;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 
-public class TexturePanel extends JPanel implements TextureCallback
+public class TexturePanel extends JPanel
 {
     private ElementManager manager;
 
@@ -44,10 +44,10 @@ public class TexturePanel extends JPanel implements TextureCallback
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                String texture = TextureManager.display(manager);
-                if(texture != null)
+                TextureEntry entry = TextureManager.display(((SidebarPanel) manager).getCreator(), manager, Dialog.ModalityType.APPLICATION_MODAL);
+                if(entry != null)
                 {
-                    selectedElement.getSelectedFace().setTexture(texture);
+                    selectedElement.getSelectedFace().setTexture(entry);
                     StateManager.pushState(manager);
                 }
             }
@@ -64,11 +64,11 @@ public class TexturePanel extends JPanel implements TextureCallback
             {
                 if((e.getModifiers() & InputEvent.SHIFT_MASK) == 1)
                 {
-                    selectedElement.setAllTextures("blocks/", null);
+                    selectedElement.setAllTextures(null);
                 }
                 else
                 {
-                    selectedElement.getSelectedFace().setTexture("blocks/", null);
+                    selectedElement.getSelectedFace().setTexture(null);
                 }
                 StateManager.pushState(manager);
             }
@@ -84,7 +84,7 @@ public class TexturePanel extends JPanel implements TextureCallback
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                Clipboard.copyTexture(face.getTextureLocation(), face.getTextureName());
+                Clipboard.copyTexture(face);
             }
         });
         btnCopy.setFont(defaultFont);
@@ -97,18 +97,17 @@ public class TexturePanel extends JPanel implements TextureCallback
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                ClipboardTexture texture = Clipboard.getTexture();
-                if(texture != null)
+                TextureEntry entry = Clipboard.getTexture();
+                if(entry != null)
                 {
                     if((e.getModifiers() & InputEvent.SHIFT_MASK) == 1)
                     {
-                        selectedElement.setAllTextures(texture);
+                        selectedElement.setAllTextures(entry);
                     }
                     else
                     {
                         Face face = selectedElement.getSelectedFace();
-                        face.setTexture(texture.getTexture());
-                        face.setTextureLocation(texture.getLocation());
+                        face.setTexture(entry);
                     }
                     StateManager.pushState(manager);
                 }
@@ -124,19 +123,5 @@ public class TexturePanel extends JPanel implements TextureCallback
         this.add(btnClear);
         this.add(btnCopy);
         this.add(btnPaste);
-    }
-
-    @Override
-    public void callback(boolean success, String texture)
-    {
-        if(success)
-        {
-            Element selectedElement = manager.getSelectedElement();
-            if(selectedElement != null)
-            {
-                selectedElement.getSelectedFace().setTexture(texture);
-                StateManager.pushState(manager);
-            }
-        }
     }
 }

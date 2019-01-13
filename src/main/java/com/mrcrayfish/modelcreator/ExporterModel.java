@@ -4,16 +4,19 @@ import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
+import javax.xml.soap.Text;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ExporterModel extends Exporter
 {
-    private List<String> textureList = new ArrayList<>();
+    private Map<String, String> textureMap = new HashMap<>();
     private boolean optimize = true;
     private boolean includeNames = true;
     private boolean displayProps = true;
@@ -51,12 +54,10 @@ public class ExporterModel extends Exporter
         {
             for(Face face : cuboid.getAllFaces())
             {
-                if(face.getTextureName() != null && !face.getTextureName().equals("null") && face.isEnabled() && (!optimize || face.isVisible(manager)))
+                if(face.getTexture() != null && face.isEnabled() && (!optimize || face.isVisible(manager)))
                 {
-                    if(!textureList.contains(face.getTextureLocation() + face.getTextureName()))
-                    {
-                        textureList.add(face.getTextureLocation() + face.getTextureName());
-                    }
+                    TextureEntry entry = face.getTexture();
+                    textureMap.put(entry.getId(), entry.getId() + ":" + entry.getDirectory() + "/" + entry.getName());
                 }
             }
         }
@@ -111,21 +112,30 @@ public class ExporterModel extends Exporter
         if(manager.getParticle() != null)
         {
             writer.write(space(2) + "\"particle\": \"blocks/" + manager.getParticle() + "\"");
-            if(textureList.size() > 0)
+            if(textureMap.size() > 0)
             {
                 writer.write(",");
             }
             writer.newLine();
         }
-        for(String texture : textureList)
+
+        List<String> ids = new ArrayList<>(textureMap.keySet());
+        for(int i = 0; i < ids.size() - 1; i++)
         {
-            writer.write(space(2) + "\"" + textureList.indexOf(texture) + "\": \"" + texture + "\"");
-            if(textureList.indexOf(texture) != textureList.size() - 1)
-            {
-                writer.write(",");
-            }
+            String id = ids.get(i);
+            String texture = textureMap.get(id);
+            writer.write(space(2) + "\"" + id + "\": \"" + texture + "\"");
+            writer.write(",");
             writer.newLine();
         }
+        if(ids.size() > 0)
+        {
+            String id = ids.get(ids.size() - 1);
+            String texture = textureMap.get(id);
+            writer.write(space(2) + "\"" + id + "\": \"" + texture + "\"");
+            writer.newLine();
+        }
+
         writer.write(space(1) + "},");
     }
 
@@ -190,7 +200,7 @@ public class ExporterModel extends Exporter
         List<Face> validFaces = new ArrayList<>();
         for(Face face : cuboid.getAllFaces())
         {
-            if(face.isEnabled() && (includeNonTexturedFaces || textureList.indexOf(face.getTextureLocation() + face.getTextureName()) != -1) && !optimize || face.isVisible(manager))
+            if(face.isEnabled() && (includeNonTexturedFaces || face.getTexture() != null) && !optimize || face.isVisible(manager))
             {
                 validFaces.add(face);
             }
@@ -216,15 +226,18 @@ public class ExporterModel extends Exporter
     private void writeFace(BufferedWriter writer, Face face) throws IOException
     {
         writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
-        writer.write("\"texture\": \"#" + textureList.indexOf(face.getTextureLocation() + face.getTextureName()) + "\"");
-        writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
-        if(face.getRotation() > 0)
+        if(face.getTexture() != null)
         {
-            writer.write(", \"rotation\": " + face.getRotation() * 90);
-        }
-        if(face.isCullfaced())
-        {
-            writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
+            writer.write("\"texture\": \"#" + face.getTexture().getId() + "\"");
+            writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
+            if(face.getRotation() > 0)
+            {
+                writer.write(", \"rotation\": " + face.getRotation() * 90);
+            }
+            if(face.isCullfaced())
+            {
+                writer.write(", \"cullface\": \"" + Face.getFaceName(face.getSide()) + "\"");
+            }
         }
         writer.write(" }");
     }

@@ -1,14 +1,22 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.texture.PendingTexture;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
-import java.io.*;
+import javax.imageio.ImageIO;
+import javax.swing.plaf.nimbus.State;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -17,16 +25,16 @@ public class ProjectManager
 {
     public static void loadProject(ElementManager manager, String modelFile)
     {
+        TextureManager.clear();
         manager.clearElements();
 
         Project project = new Project(extractFiles(modelFile));
-
         Importer importer = new Importer(manager, project.getModel().getAbsolutePath());
         importer.importFromJSON();
 
         for(ProjectTexture texture : project.getTextures())
         {
-            manager.addPendingTexture(new PendingTexture(texture.getTexture(), texture.getMeta()));
+            //manager.loadTexture(new PendingTexture(texture.getTexture(), texture.getMeta()));
         }
     }
 
@@ -79,19 +87,17 @@ public class ProjectManager
             addToZipFile(file, zos, "model.json");
             file.deleteOnExit();
 
-            for(String textureLocation : getTextureLocations(manager))
+            for(TextureEntry entry : getAllTextures(manager))
             {
-                if(textureLocation != null)
-                {
-                    File texture = new File(textureLocation);
-                    if(texture.exists())
-                    {
-                        addToZipFile(texture, zos, "textures/", texture.getName());
-                    }
-                }
+                File temp = File.createTempFile(entry.getName(), "");
+                BufferedImage image = entry.getSource();
+                ImageIO.write(image, "PNG", temp);
+                addToZipFile(temp, zos, "textures/" + entry.getDirectory() + "/", entry.getName() + ".png");
+                temp.delete();
             }
 
-            for(String metaLocation : getMetaLocations(manager))
+            //TODO make output animation properties
+            /*for(String metaLocation : getMetaLocations(manager))
             {
                 if(metaLocation != null)
                 {
@@ -101,7 +107,7 @@ public class ProjectManager
                         addToZipFile(texture, zos, "textures/", texture.getName());
                     }
                 }
-            }
+            }*/
 
             zos.close();
             fos.close();
@@ -112,38 +118,20 @@ public class ProjectManager
         }
     }
 
-    private static String[] getTextureLocations(ElementManager manager)
+    private static Set<TextureEntry> getAllTextures(ElementManager manager)
     {
-        List<String> locations = new ArrayList<>();
-        for(Element cuboid : manager.getAllElements())
+        Set<TextureEntry> textureEntries = new HashSet<>();
+        for(Element element : manager.getAllElements())
         {
-            for(Face face : cuboid.getAllFaces())
+            for(Face face : element.getAllFaces())
             {
-                String location = TextureManager.getTextureLocation(face.getTextureName());
-                if(!locations.contains(location))
+                if(face.getTexture() != null)
                 {
-                    locations.add(location);
+                    textureEntries.add(face.getTexture());
                 }
             }
         }
-        return locations.toArray(new String[0]);
-    }
-
-    private static String[] getMetaLocations(ElementManager manager)
-    {
-        List<String> locations = new ArrayList<>();
-        for(Element cuboid : manager.getAllElements())
-        {
-            for(Face face : cuboid.getAllFaces())
-            {
-                String location = TextureManager.getMetaLocation(face.getTextureName());
-                if(!locations.contains(location))
-                {
-                    locations.add(location);
-                }
-            }
-        }
-        return locations.toArray(new String[0]);
+        return textureEntries;
     }
 
     private static File getSaveFile(ElementManager manager) throws IOException

@@ -103,42 +103,6 @@ public class TextureManager
         return null;
     }
 
-    public static Texture getTexture(String name)
-    {
-        for(TextureEntry entry : textureCache)
-        {
-            if(entry.getName().equalsIgnoreCase(name))
-            {
-                return entry.getTexture();
-            }
-        }
-        return null;
-    }
-
-    public static String getTextureLocation(String name)
-    {
-        for(TextureEntry entry : textureCache)
-        {
-            if(entry.getName().equalsIgnoreCase(name))
-            {
-                return entry.getTextureLocation();
-            }
-        }
-        return null;
-    }
-
-    public static String getMetaLocation(String name)
-    {
-        for(TextureEntry entry : textureCache)
-        {
-            if(entry.getName().equalsIgnoreCase(name))
-            {
-                return entry.getMetaLocation();
-            }
-        }
-        return null;
-    }
-
     public static ImageIcon getIcon(String name)
     {
         for(TextureEntry entry : textureCache)
@@ -225,33 +189,7 @@ public class TextureManager
             int returnVal = chooser.showOpenDialog(null);
             if(returnVal == JFileChooser.APPROVE_OPTION)
             {
-                lastLocation = chooser.getSelectedFile().getParentFile();
-                Settings.setImageImportDir(lastLocation.toString());
 
-                try
-                {
-                    File meta = new File(chooser.getSelectedFile().getAbsolutePath() + ".mcmeta");
-                    manager.addPendingTexture(new PendingTexture(chooser.getSelectedFile(), meta, (success, texture) ->
-                    {
-                        if(success)
-                        {
-                            model.insertElementAt(texture.replace(".png", ""), 0);
-                        }
-                        else
-                        {
-                            JOptionPane error = new JOptionPane();
-                            error.setMessage("Width and height must be a multiple of 16.");
-                            JDialog dialog = error.createDialog(btnImport, "Texture Error");
-                            dialog.setLocationRelativeTo(null);
-                            dialog.setModal(false);
-                            dialog.setVisible(true);
-                        }
-                    }));
-                }
-                catch(Exception e1)
-                {
-                    e1.printStackTrace();
-                }
             }
         });
         btnImport.setFont(defaultFont);

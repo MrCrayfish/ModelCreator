@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -24,9 +25,6 @@ public class FacePanel extends JPanel implements IElementUpdater
     private JSlider rotation;
     private TexturePanel panelTexture;
     private FaceExtrasPanel panelProperties;
-
-    private JPanel panelModId;
-    private JTextField modidField;
 
     private final int ROTATION_MIN = 0;
     private final int ROTATION_MAX = 3;
@@ -58,6 +56,7 @@ public class FacePanel extends JPanel implements IElementUpdater
     {
         menuPanel = new JPanel(new GridLayout(1, 1));
         menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Side</b></html>"));
+        menuPanel.setMaximumSize(new Dimension(186, 56));
         menuList = new JComboBox<>();
         menuList.setModel(model);
         menuList.setToolTipText("The face to edit.");
@@ -70,7 +69,6 @@ public class FacePanel extends JPanel implements IElementUpdater
                 updateValues(selectedElement);
             }
         });
-        menuPanel.setPreferredSize(new Dimension(186, 50));
         menuPanel.add(menuList);
 
         panelTexture = new TexturePanel(manager);
@@ -109,41 +107,6 @@ public class FacePanel extends JPanel implements IElementUpdater
         rotation.setToolTipText("<html>The rotation of the texture<br>Default: 0\u00b0</html>");
         sliderPanel.setMaximumSize(new Dimension(190, 80));
         sliderPanel.add(rotation);
-
-        panelModId = new JPanel(new GridLayout(1, 1));
-        panelModId.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Location</b></html>"));
-        modidField = new JTextField();
-        modidField.setSize(new Dimension(190, 30));
-        modidField.addKeyListener(new KeyAdapter()
-        {
-            @Override
-            public void keyPressed(KeyEvent e)
-            {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER)
-                {
-                    Element selectedElement = manager.getSelectedElement();
-                    if(selectedElement != null)
-                    {
-                        selectedElement.getSelectedFace().setTextureLocation(modidField.getText());
-                        StateManager.pushState(manager);
-                    }
-                }
-            }
-        });
-        modidField.addFocusListener(new FocusAdapter()
-        {
-            @Override
-            public void focusLost(FocusEvent e)
-            {
-                Element selectedElement = manager.getSelectedElement();
-                if(selectedElement != null)
-                {
-                    selectedElement.getSelectedFace().setTextureLocation(modidField.getText());
-                }
-            }
-        });
-        modidField.setToolTipText("<html>The specific location of the texture. If you have the<br>" + "texture in a sub folder, write the custom directory<br>" + "here. Can include Mod ID prefix.<br>Default: 'blocks/'</html>");
-        panelModId.add(modidField);
     }
 
     private void addComponents()
@@ -153,7 +116,6 @@ public class FacePanel extends JPanel implements IElementUpdater
         add(panelTexture);
         add(panelUV);
         add(sliderPanel);
-        add(panelModId);
         add(panelProperties);
     }
 
@@ -163,15 +125,11 @@ public class FacePanel extends JPanel implements IElementUpdater
         if(cube != null)
         {
             menuList.setSelectedIndex(cube.getSelectedFaceIndex());
-            modidField.setEnabled(true);
-            modidField.setText(cube.getSelectedFace().getTextureLocation());
             rotation.setEnabled(true);
             rotation.setValue(cube.getSelectedFace().getRotation());
         }
         else
         {
-            modidField.setEnabled(false);
-            modidField.setText("");
             rotation.setEnabled(false);
             rotation.setValue(0);
         }

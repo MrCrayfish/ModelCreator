@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator.component;
 
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
@@ -436,6 +435,7 @@ public class Menu extends JMenuBar
         int returnVal = JOptionPane.showConfirmDialog(creator, "You current work will be cleared, are you sure?", "Note", JOptionPane.YES_NO_OPTION);
         if(returnVal == JOptionPane.YES_OPTION)
         {
+            TextureManager.clear();
             StateManager.clear();
             creator.getElementManager().reset();
             creator.getElementManager().updateValues();
@@ -472,6 +472,7 @@ public class Menu extends JMenuBar
                 File location = chooser.getSelectedFile().getParentFile();
                 Settings.setModelDir(location.toString());
 
+                TextureManager.clear();
                 StateManager.clear();
                 ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
                 StateManager.pushState(creator.getElementManager());
@@ -556,6 +557,7 @@ public class Menu extends JMenuBar
                 File location = chooser.getSelectedFile().getParentFile();
                 Settings.setJSONDir(location.toString());
 
+                TextureManager.clear();
                 StateManager.clear();
                 Importer importer = new Importer(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
                 importer.importFromJSON();
@@ -627,7 +629,8 @@ public class Menu extends JMenuBar
         JLabel labelExportDir = new JLabel("Destination");
         exportDir.add(labelExportDir);
 
-        JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
+        //JComponent optionSeparator = DefaultComponentFactory.getInstance().createSeparator("Export Options");
+        JComponent optionSeparator = new JSeparator();
         exportDir.add(optionSeparator);
 
         JCheckBox checkBoxOptimize = ComponentUtil.createCheckBox("Optimize Model", "Removes unnecessary faces that can't been seen in the model", true);

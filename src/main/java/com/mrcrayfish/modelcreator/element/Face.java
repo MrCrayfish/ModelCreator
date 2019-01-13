@@ -29,8 +29,7 @@ public class Face
     public static final int UP = 4;
     public static final int DOWN = 5;
 
-    private String texture = null;
-    private String textureLocation = "blocks/";
+    private TextureEntry texture = null;
     private double textureU = 0;
     private double textureV = 0;
     private double textureUEnd = 16;
@@ -60,7 +59,6 @@ public class Face
     {
         this.fitTexture = face.fitTexture;
         this.texture = face.texture;
-        this.textureLocation = face.textureLocation;
         this.textureU = face.textureU;
         this.textureV = face.textureV;
         this.textureUEnd = face.textureUEnd;
@@ -73,14 +71,7 @@ public class Face
 
     public void renderNorth()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderNorth(i, GL11.GL_QUADS);
@@ -129,14 +120,7 @@ public class Face
 
     public void renderEast()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderEast(i, GL11.GL_QUADS);
@@ -185,14 +169,7 @@ public class Face
 
     public void renderSouth()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderSouth(i, GL11.GL_QUADS);
@@ -241,14 +218,7 @@ public class Face
 
     public void renderWest()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderWest(i, GL11.GL_QUADS);
@@ -297,14 +267,7 @@ public class Face
 
     public void renderUp()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderUp(i, GL11.GL_QUADS);
@@ -352,14 +315,7 @@ public class Face
 
     public void renderDown()
     {
-        TextureEntry entry = TextureManager.getTextureEntry(texture);
-        int passes = 1;
-
-        if(entry != null)
-        {
-            passes = entry.getPasses();
-        }
-
+        int passes = texture != null ? texture.getPasses() : 1;
         for(int i = 0; i < passes; i++)
         {
             renderDown(i, GL11.GL_QUADS);
@@ -440,7 +396,6 @@ public class Face
         float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
         GL11.glColor3f(r, g, b);
         GL11.glEnable(GL_TEXTURE_2D);
-        GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         bindTexture(pass);
     }
 
@@ -459,54 +414,43 @@ public class Face
         }
     }
 
-    public void setTexture(String texture)
+    public void setTexture(TextureEntry texture)
     {
-        this.texture = texture;
-    }
-
-    public void setTexture(String location, String texture)
-    {
-        this.textureLocation = location;
         this.texture = texture;
     }
 
     public void bindTexture(int pass)
     {
-        TextureImpl.bindNone();
+        GL11.glDisable(GL_TEXTURE_2D);
         if(texture != null)
         {
-            TextureEntry entry = TextureManager.getTextureEntry(texture);
-            if(entry != null)
+            if(pass == 0)
             {
-                if(pass == 0)
-                {
-                    if(entry.getTexture() != null)
-                    {
-                        GL11.glColor3f(1.0F, 1.0F, 1.0F);
-                        entry.getTexture().bind();
-                    }
-                }
-                else if(pass == 1)
-                {
-                    if(entry.isAnimated() && entry.getNextTexture() != null)
-                    {
-                        GL11.glEnable(GL11.GL_BLEND);
-                        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                        GL11.glDepthFunc(GL11.GL_EQUAL);
-
-                        entry.getNextTexture().bind();
-                        GL11.glColor4d(1.0D, 1.0D, 1.0D, entry.getAnimation().getFrameInterpolation());
-                    }
-                }
-
-                if(entry.hasProperties() && entry.getProperties().isBlurred())
-                {
-                    GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                }
-
-                binded = true;
+                GL11.glEnable(GL_TEXTURE_2D);
+                GL11.glColor3f(1.0F, 1.0F, 1.0F);
+                texture.bindTexture();
             }
+            else if(pass == 1)
+            {
+                if(texture.isAnimated())
+                {
+                    GL11.glEnable(GL_TEXTURE_2D);
+                    GL11.glEnable(GL11.GL_BLEND);
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GL11.glDepthFunc(GL11.GL_EQUAL);
+
+                    texture.bindNextTexture();
+                    GL11.glColor4d(1.0D, 1.0D, 1.0D, texture.getAnimation().getFrameInterpolation());
+                }
+            }
+
+            if(texture.hasProperties() && texture.getProperties().isBlurred())
+            {
+                GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            }
+
+            binded = true;
         }
     }
 
@@ -636,24 +580,9 @@ public class Face
         textureVEnd = ve;
     }
 
-    public String getTextureName()
+    public TextureEntry getTexture()
     {
         return texture;
-    }
-
-    public Texture getTexture()
-    {
-        return TextureManager.getTexture(texture);
-    }
-
-    public String getTextureLocation()
-    {
-        return textureLocation;
-    }
-
-    public void setTextureLocation(String textureLocation)
-    {
-        this.textureLocation = textureLocation;
     }
 
     public void fitTexture(boolean fitTexture)

@@ -3,19 +3,14 @@ package com.mrcrayfish.modelcreator.component;
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import com.mrcrayfish.modelcreator.texture.TextureMeta;
-import com.mrcrayfish.modelcreator.util.AssetsUtil;
 import com.mrcrayfish.modelcreator.util.Util;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -26,23 +21,33 @@ import java.util.List;
  */
 public class TextureManager extends JDialog
 {
-    private static List<TextureEntry> loadedTextures = new ArrayList<>();
+    public static final Object LOCK = new Object();
+
+    public static final int CANCELLED = 1;
+    public static final int APPLIED = 1;
+
+    private static final List<TextureEntry> pendingLoad = new ArrayList<>();
+    private static final List<TextureEntry> pendingRemove = new ArrayList<>();
+    private static final List<TextureEntry> textureEntries = new ArrayList<>();
     private static File lastLocation = null;
 
     private ElementManager manager;
-    private JList<TextureEntry> textureEntries;
+    private JList<TextureEntry> textureEntryList;
     private JButton btnApply;
     private JButton btnCancel;
     private JButton btnNew;
     private JButton btnEdit;
     private JButton btnRemove;
+    private int result;
 
     public TextureManager(Frame owner, ElementManager manager, ModalityType type)
     {
         super(owner, "Texture Manager", type);
         this.manager = manager;
         this.setPreferredSize(new Dimension(500, 400));
+        this.setResizable(false);
         this.initComponents();
+        this.pack();
     }
 
     private void initComponents()
@@ -51,11 +56,20 @@ public class TextureManager extends JDialog
         content.setLayout(new SpringLayout());
         this.add(content);
 
-        textureEntries = new JList<>();
-        textureEntries.setModel(new DefaultListModel<>());
-        textureEntries.setCellRenderer(new TextureCellRenderer());
+        textureEntryList = new JList<>();
+        textureEntryList.setModel(new DefaultListModel<>());
+        textureEntryList.setCellRenderer(new TextureCellRenderer());
+        textureEntryList.addListSelectionListener(e ->
+        {
+            if(btnApply != null)
+            {
+                btnApply.setEnabled(true);
+            }
+            btnEdit.setEnabled(true);
+            btnRemove.setEnabled(true);
+        });
 
-        JScrollPane scrollPane = new JScrollPane(textureEntries);
+        JScrollPane scrollPane = new JScrollPane(textureEntryList);
         content.add(scrollPane);
 
         if(this.getModalityType() != ModalityType.MODELESS)
@@ -63,6 +77,11 @@ public class TextureManager extends JDialog
             btnApply = new JButton("Apply");
             btnApply.setPreferredSize(new Dimension(110, 26));
             btnApply.setEnabled(false);
+            btnApply.addActionListener(e ->
+            {
+                result = APPLIED;
+                this.dispose();
+            });
             content.add(btnApply);
 
             btnCancel = new JButton("Cancel");
@@ -87,6 +106,33 @@ public class TextureManager extends JDialog
         btnRemove.setPreferredSize(new Dimension(110, 26));
         btnRemove.setIcon(Icons.bin);
         btnRemove.setEnabled(false);
+        btnRemove.addActionListener(e ->
+        {
+            if(textureEntryList.getSelectedIndex() != -1)
+            {
+                TextureEntry entry = textureEntryList.getSelectedValue();
+                manager.getAllElements().forEach(element ->
+                {
+                    for(Face face : element.getAllFaces())
+                    {
+                        if(face.getTexture() == entry)
+                        {
+                            face.setTexture(null);
+                        }
+                    }
+                });
+                textureEntries.remove(entry);
+                DefaultListModel<TextureEntry> listModel = (DefaultListModel<TextureEntry>) textureEntryList.getModel();
+                listModel.removeElement(entry);
+                TextureManager.removeTexture(entry);
+            }
+            if(btnApply != null)
+            {
+                btnApply.setEnabled(false);
+            }
+            btnEdit.setEnabled(false);
+            btnRemove.setEnabled(false);
+        });
         content.add(btnRemove);
 
         SpringLayout layout = (SpringLayout) content.getLayout();
@@ -109,15 +155,23 @@ public class TextureManager extends JDialog
         layout.putConstraint(SpringLayout.EAST, btnEdit, -10, SpringLayout.EAST, content);
         layout.putConstraint(SpringLayout.NORTH, btnRemove, 10, SpringLayout.SOUTH, btnEdit);
         layout.putConstraint(SpringLayout.EAST, btnRemove, -10, SpringLayout.EAST, content);
+
+        DefaultListModel<TextureEntry> listModel = (DefaultListModel<TextureEntry>) textureEntryList.getModel();
+        textureEntries.forEach(listModel::addElement);
     }
 
     public TextureEntry getSelectedTexture()
     {
-        if(textureEntries != null)
+        if(textureEntryList != null)
         {
-            return textureEntries.getSelectedValue();
+            return textureEntryList.getSelectedValue();
         }
         return null;
+    }
+
+    public int getResult()
+    {
+        return result;
     }
 
     public void showFileChooser()
@@ -178,20 +232,56 @@ public class TextureManager extends JDialog
                     return;
                 }
 
-                System.out.println("Mod ID: " + AssetsUtil.getModId(image));
-                System.out.println("Path: " + AssetsUtil.getTexturePath(image));
-
                 lastLocation = image.getParentFile();
                 Settings.setImageImportDir(lastLocation.toString());
 
-                DefaultListModel<TextureEntry> listModel = (DefaultListModel<TextureEntry>) textureEntries.getModel();
-                listModel.addElement(new TextureEntry(image));
+                DefaultListModel<TextureEntry> listModel = (DefaultListModel<TextureEntry>) textureEntryList.getModel();
+                TextureEntry entry = new TextureEntry(image);
+                listModel.addElement(entry);
+                textureEntries.add(entry);
+                TextureManager.loadTexture(entry);
             }
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
+    }
+
+    public static TextureEntry addImage(ElementManager manager, String id, File image)
+    {
+        for(TextureEntry entry : textureEntries)
+        {
+            if(entry.getId().equals(id))
+            {
+                return entry;
+            }
+        }
+        try
+        {
+            if(image.exists())
+            {
+                String type = Files.probeContentType(image.toPath());
+                if(type.equals("image/png"))
+                {
+                    Dimension dimension = Util.getImageDimension(image);
+                    if(dimension.getWidth() % 16 != 0 || dimension.getHeight() % 16 != 0)
+                    {
+                        JOptionPane.showMessageDialog(null, "Image size must be multiple of 16", "Error", JOptionPane.ERROR_MESSAGE);
+                        return null;
+                    }
+                    TextureEntry entry = new TextureEntry(id, image);
+                    textureEntries.add(entry);
+                    TextureManager.loadTexture(entry);
+                    return entry;
+                }
+            }
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void showEditTextureDialog()
@@ -207,7 +297,7 @@ public class TextureManager extends JDialog
             JPanel panel = new JPanel();
             panel.setBackground(isSelected ? new Color(186, 193, 211) : new Color(234, 234, 242));
             panel.setPreferredSize(new Dimension(200, 85));
-            
+
             SpringLayout layout = new SpringLayout();
             panel.setLayout(layout);
 
@@ -232,6 +322,70 @@ public class TextureManager extends JDialog
             layout.putConstraint(SpringLayout.EAST, name, -10, SpringLayout.EAST, panel);
 
             return panel;
+        }
+    }
+
+    public static TextureEntry display(Frame owner, ElementManager manager, ModalityType modalityType)
+    {
+        TextureManager textureManager = new TextureManager(owner, manager, modalityType);
+        textureManager.setLocationRelativeTo(null);
+        textureManager.setVisible(true);
+        if(textureManager.getResult() == APPLIED)
+        {
+            return textureManager.getSelectedTexture();
+        }
+        return null;
+    }
+
+    public static void loadTexture(TextureEntry entry)
+    {
+        synchronized(LOCK)
+        {
+            pendingLoad.add(entry);
+        }
+    }
+
+    public static void removeTexture(TextureEntry entry)
+    {
+        synchronized(LOCK)
+        {
+            pendingRemove.add(entry);
+        }
+    }
+
+    public static void processPendingTextures()
+    {
+        if(pendingLoad.size() > 0)
+        {
+            synchronized(LOCK)
+            {
+                for(TextureEntry entry : pendingLoad)
+                {
+                    entry.loadTexture();
+                }
+                pendingLoad.clear();
+            }
+        }
+
+        if(pendingRemove.size() > 0)
+        {
+            synchronized(LOCK)
+            {
+                for(TextureEntry entry : pendingRemove)
+                {
+                    entry.deleteTexture();
+                }
+                pendingRemove.clear();
+            }
+        }
+    }
+
+    public static void clear()
+    {
+        synchronized(LOCK)
+        {
+            pendingRemove.addAll(textureEntries);
+            textureEntries.clear();
         }
     }
 }

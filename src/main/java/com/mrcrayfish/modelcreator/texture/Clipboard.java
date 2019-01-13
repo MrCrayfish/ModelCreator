@@ -1,16 +1,18 @@
 package com.mrcrayfish.modelcreator.texture;
 
+import com.mrcrayfish.modelcreator.element.Face;
+
 public class Clipboard
 {
-    private static ClipboardTexture texture;
+    private static TextureEntry entry;
 
-    public static void copyTexture(String location, String texture)
+    public static void copyTexture(Face face)
     {
-        Clipboard.texture = new ClipboardTexture(location, texture);
+        entry = face.getTexture();
     }
 
-    public static ClipboardTexture getTexture()
+    public static TextureEntry getTexture()
     {
-        return Clipboard.texture;
+        return entry;
     }
 }

@@ -53,7 +53,7 @@ public class TextureEntry
         this.id = id;
         this.modId = AssetsUtil.getModId(texture);
         this.directory = AssetsUtil.getTexturePath(texture);
-        this.name = this.id;
+        this.name = texture.getName().substring(0, texture.getName().indexOf("."));
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
         this.icon = resize(this.source, 64);

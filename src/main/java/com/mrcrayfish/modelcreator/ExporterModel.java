@@ -111,7 +111,13 @@ public class ExporterModel extends Exporter
         writer.newLine();
         if(manager.getParticle() != null)
         {
-            writer.write(space(2) + "\"particle\": \"blocks/" + manager.getParticle() + "\"");
+            TextureEntry entry = manager.getParticle();
+            writer.write(space(2) + "\"particle\": \"" + entry.getModId() + ":");
+            if(!entry.getDirectory().isEmpty())
+            {
+                writer.write(entry.getDirectory() + "/");
+            }
+            writer.write(entry.getName() + "\"");
             if(textureMap.size() > 0)
             {
                 writer.write(",");

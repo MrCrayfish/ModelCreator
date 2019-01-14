@@ -144,13 +144,13 @@ public class Importer
                     {
                         if(entry.getKey().equals("particle"))
                         {
-                            manager.setParticle(texture);
+                            manager.setParticle(this.loadTexture(file, entry.getKey(), texture));
                         }
                         else if(!texture.startsWith("#"))
                         {
                             textureMap.put(entry.getKey(), texture);
+                            this.loadTexture(file, entry.getKey(), texture);
                         }
-                        this.loadTexture(file, entry.getKey(), texture);
                     }
                 }
             }
@@ -158,7 +158,7 @@ public class Importer
     }
 
     //TODO fix loading textures
-    private void loadTexture(File project, String id, String texture)
+    private TextureEntry loadTexture(File project, String id, String texture)
     {
         TexturePath texturePath = new TexturePath(texture);
 
@@ -171,8 +171,7 @@ public class Importer
                 File textureFile = new File(path, texturePath.getName() + ".png");
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    TextureManager.addImage(id, texturePath, textureFile);
-                    return;
+                    return TextureManager.addImage(id, texturePath, textureFile);
                 }
             }
 
@@ -183,8 +182,7 @@ public class Importer
                 File textureFile = new File(assets, texturePath.toRelativePath());
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    TextureManager.addImage(id, texturePath, textureFile);
-                    return;
+                    return TextureManager.addImage(id, texturePath, textureFile);
                 }
             }
         }
@@ -198,8 +196,7 @@ public class Importer
                 File textureFile = new File(parent, texturePath.toRelativePath());
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    TextureManager.addImage(id, texturePath, textureFile);
-                    return;
+                    return TextureManager.addImage(id, texturePath, textureFile);
                 }
             }
             else if(parent.getName().equals(texturePath.getModId()))
@@ -207,8 +204,7 @@ public class Importer
                 File textureFile = new File(parent, "textures" + File.separator + texturePath.getDirectory() + File.separator + texturePath.getName() + ".png");
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    TextureManager.addImage(id, texturePath, textureFile);
-                    return;
+                    return TextureManager.addImage(id, texturePath, textureFile);
                 }
             }
         }
@@ -220,9 +216,11 @@ public class Importer
             File textureFile = new File(path);
             if(textureFile.exists())
             {
-                TextureManager.addImage(id, texturePath, textureFile);
+                return TextureManager.addImage(id, texturePath, textureFile);
             }
         }
+
+        return null;
     }
 
     private void readDisplayProperties(JsonObject obj, ElementManager manager)

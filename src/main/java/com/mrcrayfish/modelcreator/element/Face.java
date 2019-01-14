@@ -2,12 +2,8 @@ package com.mrcrayfish.modelcreator.element;
 
 import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureImpl;
 
 import java.nio.FloatBuffer;
 

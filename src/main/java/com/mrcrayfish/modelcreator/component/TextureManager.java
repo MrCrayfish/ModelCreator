@@ -9,8 +9,6 @@ import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.util.Util;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
@@ -125,10 +123,15 @@ public class TextureManager extends JDialog
                         }
                     }
                 });
+                if(manager.getParticle() == entry)
+                {
+                    manager.setParticle(null);
+                }
                 textureEntries.remove(entry);
                 DefaultListModel<TextureEntry> listModel = (DefaultListModel<TextureEntry>) textureEntryList.getModel();
                 listModel.removeElement(entry);
                 TextureManager.removeTexture(entry);
+                manager.updateValues();
             }
             if(btnApply != null)
             {
@@ -408,7 +411,7 @@ public class TextureManager extends JDialog
             textureEntries.clear();
         }
     }
-    
+
     /*
     public static boolean loadExternalTexture(File file, File meta) throws IOException
     {

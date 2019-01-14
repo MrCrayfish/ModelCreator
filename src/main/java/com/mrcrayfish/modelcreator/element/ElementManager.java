@@ -29,9 +29,9 @@ public interface ElementManager
 
     void addElement(Element e);
 
-    void setParticle(String texture);
+    void setParticle(TextureEntry entry);
 
-    String getParticle();
+    TextureEntry getParticle();
 
     void reset();
 

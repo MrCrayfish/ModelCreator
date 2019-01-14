@@ -1,5 +1,7 @@
 package com.mrcrayfish.modelcreator.element;
 
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -11,7 +13,7 @@ public class ElementManagerState
     private final List<Element> elements;
     private final int selectedIndex;
     private final boolean ambientOcclusion;
-    private final String particleTexture;
+    private final TextureEntry particleTexture;
 
     public ElementManagerState(ElementManager manager)
     {
@@ -36,7 +38,7 @@ public class ElementManagerState
         return ambientOcclusion;
     }
 
-    public String getParticleTexture()
+    public TextureEntry getParticleTexture()
     {
         return particleTexture;
     }

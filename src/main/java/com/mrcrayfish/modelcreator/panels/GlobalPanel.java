@@ -2,8 +2,10 @@ package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.StateManager;
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 import javax.swing.*;
@@ -40,13 +42,13 @@ public class GlobalPanel extends JPanel implements IElementUpdater
         btnParticle.setIcon(Icons.texture);
         btnParticle.addActionListener(a ->
         {
-            /*String texture = TextureManager.display(manager);
-            if(texture != null)
+            TextureEntry entry = TextureManager.display(((SidebarPanel) manager).getCreator(), manager, Dialog.ModalityType.APPLICATION_MODAL);
+            if(entry != null)
             {
-                manager.setParticle(texture);
-                btnParticle.setText(texture);
+                manager.setParticle(entry);
+                btnParticle.setText("#" + entry.getId());
                 StateManager.pushState(manager);
-            }*/
+            }
         });
     }
 
@@ -66,7 +68,7 @@ public class GlobalPanel extends JPanel implements IElementUpdater
         }
         else
         {
-            btnParticle.setText(manager.getParticle());
+            btnParticle.setText("#" + manager.getParticle().getId());
         }
     }
 }

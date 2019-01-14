@@ -36,7 +36,7 @@ public class SidebarPanel extends JPanel implements ElementManager
     private JTextField name = new JTextField();
     private CuboidTabbedPane tabbedPane = new CuboidTabbedPane(this);
 
-    private String particle = null;
+    private TextureEntry particle = null;
     private boolean ambientOcc = true;
 
     private DisplayProperties properties = new DisplayProperties(DisplayProperties.MODEL_CREATOR_BLOCK);
@@ -279,13 +279,13 @@ public class SidebarPanel extends JPanel implements ElementManager
     }
 
     @Override
-    public void setParticle(String texture)
+    public void setParticle(TextureEntry particle)
     {
-        this.particle = texture;
+        this.particle = particle;
     }
 
     @Override
-    public String getParticle()
+    public TextureEntry getParticle()
     {
         return particle;
     }

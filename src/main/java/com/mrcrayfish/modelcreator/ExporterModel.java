@@ -57,7 +57,7 @@ public class ExporterModel extends Exporter
                 if(face.getTexture() != null && face.isEnabled() && (!optimize || face.isVisible(manager)))
                 {
                     TextureEntry entry = face.getTexture();
-                    textureMap.put(entry.getId(), entry.getId() + ":" + entry.getDirectory() + "/" + entry.getName());
+                    textureMap.put(entry.getId(), entry.getModId() + ":" + entry.getDirectory() + "/" + entry.getName());
                 }
             }
         }

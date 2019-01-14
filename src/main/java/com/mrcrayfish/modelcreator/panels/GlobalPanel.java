@@ -4,7 +4,6 @@ import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
-import com.mrcrayfish.modelcreator.texture.TextureManager;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 import javax.swing.*;
@@ -41,13 +40,13 @@ public class GlobalPanel extends JPanel implements IElementUpdater
         btnParticle.setIcon(Icons.texture);
         btnParticle.addActionListener(a ->
         {
-            String texture = TextureManager.display(manager);
+            /*String texture = TextureManager.display(manager);
             if(texture != null)
             {
                 manager.setParticle(texture);
                 btnParticle.setText(texture);
                 StateManager.pushState(manager);
-            }
+            }*/
         });
     }
 

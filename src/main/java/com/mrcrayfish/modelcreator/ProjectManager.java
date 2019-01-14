@@ -7,15 +7,15 @@ import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
 import javax.imageio.ImageIO;
-import javax.swing.plaf.nimbus.State;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -28,29 +28,42 @@ public class ProjectManager
         TextureManager.clear();
         manager.clearElements();
 
-        Project project = new Project(extractFiles(modelFile));
-        Importer importer = new Importer(manager, project.getModel().getAbsolutePath());
-        importer.importFromJSON();
-
-        for(ProjectTexture texture : project.getTextures())
+        File projectFolder = extractFiles(modelFile);
+        if(projectFolder != null)
         {
-            //manager.loadTexture(new PendingTexture(texture.getTexture(), texture.getMeta()));
+            Project project = new Project(projectFolder);
+            Importer importer = new Importer(manager, project.getModel().getPath());
+            importer.importFromJSON();
+        }
+        deleteFolder(projectFolder);
+    }
+
+    private static void deleteFolder(File file)
+    {
+        try
+        {
+            Files.walk(file.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
         }
     }
 
-    private static File[] extractFiles(String modelFile)
+    private static File extractFiles(String modelFile)
     {
-        List<File> files = new ArrayList<>();
         try
         {
-            ZipInputStream zis = new ZipInputStream(new FileInputStream(modelFile));
+            Path path = Files.createTempDirectory("ModelCreator");
+            File folder = path.toFile();
 
+            ZipInputStream zis = new ZipInputStream(new FileInputStream(modelFile));
             ZipEntry ze;
             while((ze = zis.getNextEntry()) != null)
             {
-                File file = File.createTempFile(ze.getName(), "");
-                file.mkdirs();
-                file.deleteOnExit();
+                File file = new File(folder, ze.getName());
+                file.getParentFile().mkdirs();
+                file.createNewFile();
 
                 byte[] buffer = new byte[1024];
                 FileOutputStream fos = new FileOutputStream(file);
@@ -61,19 +74,19 @@ public class ProjectManager
                     fos.write(buffer, 0, len);
                 }
 
+                fos.flush();
                 fos.close();
-
-                files.add(file);
+                zis.closeEntry();
             }
-
-            zis.closeEntry();
             zis.close();
+
+            return folder;
         }
         catch(IOException e)
         {
             e.printStackTrace();
         }
-        return files.toArray(new File[0]);
+        return null;
     }
 
     public static void saveProject(ElementManager manager, String name)
@@ -85,14 +98,14 @@ public class ProjectManager
 
             File file = getSaveFile(manager);
             addToZipFile(file, zos, "model.json");
-            file.deleteOnExit();
+            file.delete();
 
             for(TextureEntry entry : getAllTextures(manager))
             {
                 File temp = File.createTempFile(entry.getName(), "");
                 BufferedImage image = entry.getSource();
                 ImageIO.write(image, "PNG", temp);
-                addToZipFile(temp, zos, "textures/" + entry.getDirectory() + "/", entry.getName() + ".png");
+                addToZipFile(temp, zos, "assets/" + entry.getModId() + "/textures/" + entry.getDirectory() + "/", entry.getName() + ".png");
                 temp.delete();
             }
 
@@ -167,32 +180,24 @@ public class ProjectManager
     private static class Project
     {
         public File model;
-        private List<ProjectTexture> textures;
+        public File textures;
 
-        public Project(File[] files)
+        public Project(File folder)
         {
-            textures = new ArrayList<>();
-
-            for(File file : files)
+            File[] files = folder.listFiles();
+            if(files != null)
             {
-                if(file.getAbsolutePath().contains("model.json"))
+                for(File file : files)
                 {
-                    this.model = file;
-                }
-                else if(!file.getAbsolutePath().contains(".mcmeta"))
-                {
-                    File metaFile = null;
-                    for(File mfile : files)
+                    String name = file.getName();
+                    if(file.isFile() && name.equals("model.json"))
                     {
-                        if(mfile.getAbsolutePath().startsWith(file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("."))))
-                        {
-                            if(mfile.getAbsolutePath().contains(".mcmeta"))
-                            {
-                                metaFile = mfile;
-                            }
-                        }
+                        this.model = file;
                     }
-                    textures.add(new ProjectTexture(file, metaFile));
+                    else if(file.isDirectory() && name.equals("textures"))
+                    {
+                        this.textures = file;
+                    }
                 }
             }
         }
@@ -202,7 +207,7 @@ public class ProjectManager
             return model;
         }
 
-        public List<ProjectTexture> getTextures()
+        public File getTextures()
         {
             return textures;
         }

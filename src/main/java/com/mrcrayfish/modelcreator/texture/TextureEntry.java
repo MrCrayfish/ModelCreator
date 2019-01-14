@@ -64,6 +64,22 @@ public class TextureEntry
         }
     }
 
+    public TextureEntry(String id, String modId, String directory, String name, File texture) throws IOException
+    {
+        this.id = id;
+        this.modId = modId;
+        this.directory = directory;
+        this.name = name;
+        this.textureFile = texture;
+        this.source = ImageIO.read(texture);
+        this.icon = resize(this.source, 64);
+        File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
+        if(metaFile.exists())
+        {
+            this.metaFile = metaFile;
+        }
+    }
+
     public String getId()
     {
         return id;

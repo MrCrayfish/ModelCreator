@@ -83,6 +83,8 @@ public class Util
                     reader.setInput(stream);
                     int width = reader.getWidth(reader.getMinIndex());
                     int height = reader.getHeight(reader.getMinIndex());
+                    stream.flush();
+                    stream.close();
                     return new Dimension(width, height);
                 }
                 catch(IOException e)
@@ -120,7 +122,6 @@ public class Util
         {
             InputStream is = clazz.getClassLoader().getResourceAsStream(name + ".model");
             File file = File.createTempFile(name + ".model", "");
-            file.deleteOnExit();
             FileOutputStream fos = new FileOutputStream(file);
 
             byte[] buffer = new byte[1024];
@@ -135,6 +136,8 @@ public class Util
             is.close();
 
             ProjectManager.loadProject(manager, file.getAbsolutePath());
+
+            file.delete();
         }
         catch(IOException e)
         {

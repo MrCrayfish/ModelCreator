@@ -140,53 +140,87 @@ public class Importer
                 if(entry.getValue().isJsonPrimitive())
                 {
                     String texture = entry.getValue().getAsString();
-
-                    if(texture.startsWith("#"))
-                    {
-                        textureMap.put(entry.getKey(), textureMap.get(texture.replace("#", "")));
-                    }
-                    else
+                    if(!textureMap.containsKey(entry.getKey()))
                     {
                         if(entry.getKey().equals("particle"))
                         {
                             manager.setParticle(texture);
                         }
-                        else
+                        else if(!texture.startsWith("#"))
                         {
-                            textureMap.put(entry.getKey().replace("#", ""), texture);
+                            textureMap.put(entry.getKey(), texture);
                         }
+                        this.loadTexture(file, entry.getKey(), texture);
                     }
-                    loadTexture(file, texture);
                 }
             }
         }
     }
 
     //TODO fix loading textures
-    private void loadTexture(File dir, String texture)
+    private void loadTexture(File project, String id, String texture)
     {
-        File assets = dir.getParentFile().getParentFile();
-        if(assets != null)
+        TexturePath texturePath = new TexturePath(texture);
+
+        /* Try loading textures as project format */
+        if(project != null)
         {
-            File textureDir = new File(assets, "textures/");
-            if(textureDir.exists() && textureDir.isDirectory())
+            File path = new File(project, "textures");
+            if(path.exists() && path.isDirectory())
             {
-                File textureFile = new File(textureDir, texture + ".png");
+                File textureFile = new File(path, texturePath.getName() + ".png");
                 if(textureFile.exists() && textureFile.isFile())
                 {
-                    //manager.loadTexture(new PendingTexture(textureFile));
+                    TextureManager.addImage(id, texturePath, textureFile);
+                    return;
+                }
+            }
+
+            //V2 of project file format uses assets folder
+            File assets = new File(project, "assets");
+            if(assets.exists() && assets.isDirectory())
+            {
+                File textureFile = new File(assets, texturePath.toRelativePath());
+                if(textureFile.exists() && textureFile.isFile())
+                {
+                    TextureManager.addImage(id, texturePath, textureFile);
                     return;
                 }
             }
         }
 
+        /* Try loading textures as if it was from assets */
+        File parent = project;
+        while((parent = parent.getParentFile()) != null)
+        {
+            if(parent.getName().equals("assets"))
+            {
+                File textureFile = new File(parent, texturePath.toRelativePath());
+                if(textureFile.exists() && textureFile.isFile())
+                {
+                    TextureManager.addImage(id, texturePath, textureFile);
+                    return;
+                }
+            }
+            else if(parent.getName().equals(texturePath.getModId()))
+            {
+                File textureFile = new File(parent, "textures" + File.separator + texturePath.getDirectory() + File.separator + texturePath.getName() + ".png");
+                if(textureFile.exists() && textureFile.isFile())
+                {
+                    TextureManager.addImage(id, texturePath, textureFile);
+                    return;
+                }
+            }
+        }
+
+        /* Try loading textures from assets directory */
         if(Settings.getAssetsDir() != null)
         {
-            String path = Settings.getAssetsDir() + File.separator + "minecraft" + File.separator + "textures" + File.separator + "blocks" + texture + ".png";
-            File file = new File(path);
-            if(file.exists())
+            String path = Settings.getAssetsDir() + File.separator + texturePath.toRelativePath();
+            File textureFile = new File(path);
+            if(textureFile.exists())
             {
-                //manager.loadTexture(new PendingTexture(file));
+                TextureManager.addImage(id, texturePath, textureFile);
             }
         }
     }
@@ -383,35 +417,15 @@ public class Importer
                 {
                     face.setAutoUVEnabled(false);
                 }
-
             }
 
             if(obj.has("texture") && obj.get("texture").isJsonPrimitive())
             {
                 String id = obj.get("texture").getAsString().replace("#", "");
-                if(textureMap.containsKey(id))
+                TextureEntry entry = TextureManager.getTexture(id);
+                if(entry != null)
                 {
-                    String texture = textureMap.get(id);
-                    if(texture != null)
-                    {
-                        String modId = "minecraft";
-                        String[] split = texture.split(":");
-                        if(split.length == 2)
-                        {
-                            String s = split[0].trim();
-                            if(!s.isEmpty())
-                            {
-                                modId = s;
-                            }
-                        }
-                        String directory = split[split.length - 1].replace("/", File.separator);
-                        String path = Settings.getAssetsDir() + File.separator + modId + File.separator + "textures" + File.separator + directory + ".png";
-                        TextureEntry entry = TextureManager.addImage(manager, id, new File(path));
-                        if(entry != null)
-                        {
-                            face.setTexture(entry);
-                        }
-                    }
+                    face.setTexture(entry);
                 }
             }
 

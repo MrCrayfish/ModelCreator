@@ -46,7 +46,7 @@ public class GlobalPanel extends JPanel implements IElementUpdater
             if(entry != null)
             {
                 manager.setParticle(entry);
-                btnParticle.setText("#" + entry.getId());
+                btnParticle.setText("#" + entry.getKey());
                 StateManager.pushState(manager);
             }
         });
@@ -68,7 +68,7 @@ public class GlobalPanel extends JPanel implements IElementUpdater
         }
         else
         {
-            btnParticle.setText("#" + manager.getParticle().getId());
+            btnParticle.setText("#" + manager.getParticle().getKey());
         }
     }
 }

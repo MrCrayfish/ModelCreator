@@ -6,7 +6,6 @@ import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
 
-import javax.xml.soap.Text;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class ExporterModel extends Exporter
                 if(face.getTexture() != null && face.isEnabled() && (!optimize || face.isVisible(manager)))
                 {
                     TextureEntry entry = face.getTexture();
-                    textureMap.put(entry.getId(), entry.getModId() + ":" + entry.getDirectory() + "/" + entry.getName());
+                    textureMap.put(entry.getKey(), entry.getTexturePath().toString());
                 }
             }
         }
@@ -234,7 +233,7 @@ public class ExporterModel extends Exporter
         writer.write(space(4) + "\"" + Face.getFaceName(face.getSide()) + "\": { ");
         if(face.getTexture() != null)
         {
-            writer.write("\"texture\": \"#" + face.getTexture().getId() + "\"");
+            writer.write("\"texture\": \"#" + face.getTexture().getKey() + "\"");
             writer.write(", \"uv\": [ " + FORMAT.format(face.getStartU()) + ", " + FORMAT.format(face.getStartV()) + ", " + FORMAT.format(face.getEndU()) + ", " + FORMAT.format(face.getEndV()) + " ]");
             if(face.getRotation() > 0)
             {

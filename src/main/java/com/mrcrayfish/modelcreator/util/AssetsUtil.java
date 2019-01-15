@@ -7,22 +7,7 @@ import java.io.File;
  */
 public class AssetsUtil
 {
-    public static boolean isImageInAssetPath(File file)
-    {
-        File previous = null;
-        File parent = file;
-        while((parent = parent.getParentFile()) != null)
-        {
-            if(parent.getName().equals("textures"))
-            {
-                break;
-            }
-            previous = parent;
-        }
-        return false;
-    }
-
-    public static String getTexturePath(File file)
+    public static String getTextureDirectory(File file)
     {
         StringBuilder builder = new StringBuilder();
         File parent = file;
@@ -50,6 +35,6 @@ public class AssetsUtil
             }
             previous = parent;
         }
-        return previous != null ? previous.getName() : "minecraft";
+        return previous != null && Util.hasFolder(previous, "textures") ? previous.getName() : "minecraft";
     }
 }

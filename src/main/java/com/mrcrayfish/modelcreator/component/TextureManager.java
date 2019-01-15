@@ -102,6 +102,16 @@ public class TextureManager extends JDialog
         btnEdit.setPreferredSize(new Dimension(110, 26));
         btnEdit.setIcon(Icons.new_);
         btnEdit.setEnabled(false);
+        btnEdit.addActionListener(e ->
+        {
+            TextureEntry entry = textureEntryList.getSelectedValue();
+            if(entry != null)
+            {
+                TextureEntryEditor editor = new TextureEntryEditor(this.getOwner(), entry, ModalityType.APPLICATION_MODAL);
+                editor.setLocationRelativeTo(null);
+                editor.setVisible(true);
+            }
+        });
         content.add(btnEdit);
 
         btnRemove = new JButton("Remove");
@@ -259,7 +269,7 @@ public class TextureManager extends JDialog
     {
         for(TextureEntry entry : textureEntries)
         {
-            if(entry.getId().equals(id))
+            if(entry.getKey().equals(id))
             {
                 return entry;
             }
@@ -277,7 +287,7 @@ public class TextureManager extends JDialog
                         JOptionPane.showMessageDialog(null, "Image size must be multiple of 16", "Error", JOptionPane.ERROR_MESSAGE);
                         return null;
                     }
-                    TextureEntry entry = new TextureEntry(id, path.getModId(), path.getDirectory(), path.getName(), image);
+                    TextureEntry entry = new TextureEntry(id, path, image);
                     textureEntries.add(entry);
                     TextureManager.loadTexture(entry);
                     return entry;
@@ -295,7 +305,7 @@ public class TextureManager extends JDialog
     {
         for(TextureEntry entry : textureEntries)
         {
-            if(entry.getId().equals(id))
+            if(entry.getKey().equals(id))
             {
                 return entry;
             }
@@ -311,7 +321,7 @@ public class TextureManager extends JDialog
     public static class TextureCellRenderer implements ListCellRenderer<TextureEntry>
     {
         @Override
-        public Component getListCellRendererComponent(JList<? extends TextureEntry> list, TextureEntry value, int index, boolean isSelected, boolean cellHasFocus)
+        public Component getListCellRendererComponent(JList<? extends TextureEntry> list, TextureEntry entry, int index, boolean isSelected, boolean cellHasFocus)
         {
             JPanel panel = new JPanel();
             panel.setBackground(isSelected ? new Color(186, 193, 211) : new Color(234, 234, 242));
@@ -324,13 +334,13 @@ public class TextureManager extends JDialog
             SpringLayout layout = new SpringLayout();
             panel.setLayout(layout);
 
-            JLabel icon = new JLabel(value.getIcon());
+            JLabel icon = new JLabel(entry.getIcon());
             panel.add(icon);
 
-            JLabel id = new JLabel("<html><b>" + value.getId() + "</b></html>");
+            JLabel id = new JLabel("<html><b>" + entry.getKey() + "</b></html>");
             panel.add(id);
 
-            JLabel name = new JLabel("<html><span style=\"color:#555555\">" + value.getModId() + ":" + value.getDirectory() + "/" + value.getName() + "</span></html>");
+            JLabel name = new JLabel("<html><span style=\"color:#555555\">" + entry.getTexturePath().toString() + "</span></html>");
             panel.add(name);
 
             layout.putConstraint(SpringLayout.WEST, icon, 10, SpringLayout.WEST, panel);
@@ -378,18 +388,6 @@ public class TextureManager extends JDialog
 
     public static void processPendingTextures()
     {
-        if(pendingLoad.size() > 0)
-        {
-            synchronized(LOCK)
-            {
-                for(TextureEntry entry : pendingLoad)
-                {
-                    entry.loadTexture();
-                }
-                pendingLoad.clear();
-            }
-        }
-
         if(pendingRemove.size() > 0)
         {
             synchronized(LOCK)
@@ -399,6 +397,19 @@ public class TextureManager extends JDialog
                     entry.deleteTexture();
                 }
                 pendingRemove.clear();
+            }
+        }
+
+        if(pendingLoad.size() > 0)
+        {
+            synchronized(LOCK)
+            {
+                for(TextureEntry entry : pendingLoad)
+                {
+                    entry.deleteTexture();
+                    entry.loadTexture();
+                }
+                pendingLoad.clear();
             }
         }
     }

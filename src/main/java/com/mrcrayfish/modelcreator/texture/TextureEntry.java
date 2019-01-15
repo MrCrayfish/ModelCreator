@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.texture;
 
-import com.mrcrayfish.modelcreator.util.AssetsUtil;
+import com.mrcrayfish.modelcreator.TexturePath;
+import com.mrcrayfish.modelcreator.component.TextureManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -14,13 +15,14 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class TextureEntry
 {
-    private String id;
-    private String modId = "minecraft";
-    private String directory = "blocks";
-    private String name;
+    public static final Pattern KEY_PATTERN = Pattern.compile("[a-z_0-9]+");
+
+    private String key;
+    private TexturePath path;
 
     private BufferedImage source;
     private ImageIcon icon;
@@ -34,10 +36,8 @@ public class TextureEntry
 
     public TextureEntry(File texture) throws IOException
     {
-        this.id = texture.getName().substring(0, texture.getName().indexOf("."));
-        this.modId = AssetsUtil.getModId(texture);
-        this.directory = AssetsUtil.getTexturePath(texture);
-        this.name = this.id;
+        this.path = new TexturePath(texture);
+        this.key = path.getName();
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
         this.icon = resize(this.source, 64);
@@ -48,12 +48,10 @@ public class TextureEntry
         }
     }
 
-    public TextureEntry(String id, File texture) throws IOException
+    public TextureEntry(String key, File texture) throws IOException
     {
-        this.id = id;
-        this.modId = AssetsUtil.getModId(texture);
-        this.directory = AssetsUtil.getTexturePath(texture);
-        this.name = texture.getName().substring(0, texture.getName().indexOf("."));
+        this.key = key;
+        this.path = new TexturePath(texture);
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
         this.icon = resize(this.source, 64);
@@ -64,12 +62,10 @@ public class TextureEntry
         }
     }
 
-    public TextureEntry(String id, String modId, String directory, String name, File texture) throws IOException
+    public TextureEntry(String key, TexturePath path, File texture) throws IOException
     {
-        this.id = id;
-        this.modId = modId;
-        this.directory = directory;
-        this.name = name;
+        this.key = key;
+        this.path = path;
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
         this.icon = resize(this.source, 64);
@@ -80,24 +76,39 @@ public class TextureEntry
         }
     }
 
-    public String getId()
+    public void setTexturePath(TexturePath path)
     {
-        return id;
+        this.path = path;
+    }
+
+    public TexturePath getTexturePath()
+    {
+        return path;
+    }
+
+    public String getKey()
+    {
+        return key;
+    }
+
+    public void setKey(String key)
+    {
+        this.key = key;
     }
 
     public String getModId()
     {
-        return modId;
+        return path.getModId();
     }
 
     public String getDirectory()
     {
-        return directory;
+        return path.getDirectory();
     }
 
     public String getName()
     {
-        return name;
+        return path.getName();
     }
 
     public void bindTexture()
@@ -170,6 +181,21 @@ public class TextureEntry
         return textureFile;
     }
 
+    public void setTextureFile(File texture)
+    {
+        try
+        {
+            this.textureFile = texture;
+            this.source = ImageIO.read(texture);
+            this.icon = resize(this.source, 64);
+            TextureManager.loadTexture(this);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public boolean isLoaded()
     {
         return textures != null;
@@ -213,6 +239,7 @@ public class TextureEntry
             {
                 GL11.glDeleteTextures(i);
             }
+            textures = null;
         }
     }
 

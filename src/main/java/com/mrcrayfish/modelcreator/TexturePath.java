@@ -1,12 +1,17 @@
 package com.mrcrayfish.modelcreator;
 
+import com.mrcrayfish.modelcreator.util.AssetsUtil;
+
 import java.io.File;
+import java.util.regex.Pattern;
 
 /**
  * Author: MrCrayfish
  */
 public class TexturePath
 {
+    public static final Pattern PATTERN = Pattern.compile("([a-z_0-9]+:)?([a-z_0-9]+/)*[a-z_0-9]+");
+
     private String modId = "minecraft";
     private String directory;
     private String name;
@@ -23,6 +28,13 @@ public class TexturePath
         this.name = assetPath.replace(this.directory, "").substring(1);
     }
 
+    public TexturePath(File file)
+    {
+        this.modId = AssetsUtil.getModId(file);
+        this.directory = AssetsUtil.getTextureDirectory(file);
+        this.name = file.getName().substring(0, file.getName().indexOf("."));
+    }
+
     public String getModId()
     {
         return modId;
@@ -36,6 +48,12 @@ public class TexturePath
     public String getName()
     {
         return name;
+    }
+
+    @Override
+    public String toString()
+    {
+        return modId + ":" + directory + "/" + name;
     }
 
     public String toRelativePath()

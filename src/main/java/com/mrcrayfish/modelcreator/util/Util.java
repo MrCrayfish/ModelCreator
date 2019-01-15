@@ -324,7 +324,7 @@ public class Util
         return Arrays.stream(files).filter(file -> !file.isDirectory() && file.getName().equals(targetName)).findFirst().orElse(null);
     }
 
-    private static boolean hasFolder(File parent, String targetName)
+    public static boolean hasFolder(File parent, String targetName)
     {
         File[] files = parent.listFiles((dir, name) -> name.equals(targetName));
         return files != null && Arrays.stream(files).anyMatch(File::isDirectory);

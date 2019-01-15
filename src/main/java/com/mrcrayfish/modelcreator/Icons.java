@@ -53,7 +53,6 @@ public class Icons
     public static void init(Class<?> clazz)
     {
         ClassLoader loader = clazz.getClassLoader();
-
         cube = new ImageIcon(loader.getResource("icons/cube.png"));
         bin = new ImageIcon(loader.getResource("icons/bin.png"));
         add = new ImageIcon(loader.getResource("icons/add.png"));

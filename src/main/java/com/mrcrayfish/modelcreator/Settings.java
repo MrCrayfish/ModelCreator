@@ -9,7 +9,6 @@ public class Settings
     private static final String MODEL_DIR = "model_dir";
     private static final String JSON_DIR = "json_dir";
     private static final String EXPORT_JSON_DIR = "export_json_dir";
-    private static final String TRANSPARENCY_MODE = "transparency_mode";
     private static final String UNDO_LIMIT = "undo_limit";
     private static final String ASSESTS_DIR = "assets_dir";
     private static final String FACE_COLORS = "face_colors";
@@ -64,18 +63,6 @@ public class Settings
     {
         Preferences prefs = getPreferences();
         prefs.put(JSON_DIR, dir);
-    }
-
-    public static boolean getTransparencyMode()
-    {
-        Preferences prefs = getPreferences();
-        return prefs.get(TRANSPARENCY_MODE, "0").equals("1");
-    }
-
-    public static void setTransparencyMode(boolean value)
-    {
-        Preferences prefs = getPreferences();
-        prefs.put(TRANSPARENCY_MODE, value ? "1" : "0");
     }
 
     public static String getExportJSONDir()

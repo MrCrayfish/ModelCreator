@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ public class TextureEntry
         this.key = path.getName();
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
-        this.icon = resize(this.source, 64);
+        this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
         {
@@ -54,7 +55,7 @@ public class TextureEntry
         this.path = new TexturePath(texture);
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
-        this.icon = resize(this.source, 64);
+        this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
         {
@@ -68,7 +69,7 @@ public class TextureEntry
         this.path = path;
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
-        this.icon = resize(this.source, 64);
+        this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
         {
@@ -187,7 +188,7 @@ public class TextureEntry
         {
             this.textureFile = texture;
             this.source = ImageIO.read(texture);
-            this.icon = resize(this.source, 64);
+            this.icon = createIcon(this.source);
             TextureManager.loadTexture(this);
         }
         catch(IOException e)
@@ -243,9 +244,70 @@ public class TextureEntry
         }
     }
 
-    private static ImageIcon resize(BufferedImage source, int size)
+    private static ImageIcon createIcon(BufferedImage source)
     {
-        Image scaledImage = source.getScaledInstance(size, size, java.awt.Image.SCALE_FAST);
+        source = source.getSubimage(0, 0, source.getWidth(), source.getWidth());
+        Image scaledImage = source.getScaledInstance(64, 64, java.awt.Image.SCALE_FAST);
         return new ImageIcon(scaledImage);
     }
+
+    /*public static boolean loadExternalTexture(File file, File meta) throws IOException
+    {
+        TextureMeta textureMeta = TextureMeta.parse(meta);
+
+        if(textureMeta != null)
+        {
+            if(textureMeta.getAnimation() != null)
+            {
+                BufferedImage image = ImageIO.read(file);
+
+                int width = textureMeta.getAnimation().getWidth();
+                int height = textureMeta.getAnimation().getHeight();
+
+                ImageIcon icon = null;
+
+                List<Texture> textures = new ArrayList<>();
+
+                int x = 0;
+                while(x + width <= image.getWidth())
+                {
+                    int y = 0;
+                    while(y + height <= image.getHeight())
+                    {
+                        BufferedImage subImage = image.getSubimage(x, y, width, height);
+                        if(icon == null)
+                        {
+                            icon = TextureManager.upscale(new ImageIcon(subImage), 256);
+                        }
+                        Texture texture = BufferedImageUtil.getTexture("", subImage);
+                        textures.add(texture);
+                        y += height;
+                    }
+                    x += width;
+                }
+                String imageName = file.getName();
+                //textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
+                return true;
+            }
+            return loadTexture(file, textureMeta, meta.getAbsolutePath());
+        }
+        return loadTexture(file, null, null);
+    }
+
+    private static boolean loadTexture(File image, TextureMeta meta, String location) throws IOException
+    {
+        FileInputStream is = new FileInputStream(image);
+        Texture texture = TextureLoader.getTexture("PNG", is);
+        is.close();
+
+        if(texture.getImageHeight() % 16 != 0 || texture.getImageWidth() % 16 != 0)
+        {
+            texture.release();
+            return false;
+        }
+        ImageIcon icon = upscale(new ImageIcon(image.getAbsolutePath()), 256);
+        //textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
+        return true;
+    }
+     */
 }

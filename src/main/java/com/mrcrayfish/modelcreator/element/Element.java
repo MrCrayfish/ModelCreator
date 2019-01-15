@@ -122,14 +122,6 @@ public class Element
         return null;
     }
 
-    public void clearAllTextures()
-    {
-        for(Face face : faces)
-        {
-            face.setTexture(null);
-        }
-    }
-
     public void setAllTextures(TextureEntry entry)
     {
         for(Face face : faces)
@@ -185,11 +177,6 @@ public class Element
             }
         }
         GL11.glPopMatrix();
-    }
-
-    public boolean isSelected(ElementManager manager)
-    {
-        return manager.getSelectedElement() == this;
     }
 
     public void drawExtras(ElementManager manager)
@@ -529,10 +516,5 @@ public class Element
     public void setVisible(boolean visible)
     {
         this.visible = visible;
-    }
-
-    public Element copy()
-    {
-        return new Element(getWidth(), getHeight(), getDepth());
     }
 }

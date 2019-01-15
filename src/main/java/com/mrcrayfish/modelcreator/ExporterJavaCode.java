@@ -416,11 +416,6 @@ public class ExporterJavaCode extends Exporter
             this.label = label;
         }
 
-        public String getLabel()
-        {
-            return label;
-        }
-
         @Override
         public String toString()
         {

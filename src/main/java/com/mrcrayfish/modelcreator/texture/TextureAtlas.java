@@ -30,8 +30,11 @@ public class TextureAtlas
         try
         {
             URL url = TextureAtlas.class.getClassLoader().getResource("atlas.png");
-            BufferedImage bufferedImage = ImageIO.read(url);
-            ATLAS = BufferedImageUtil.getTexture("", bufferedImage);
+            if(url != null)
+            {
+                BufferedImage bufferedImage = ImageIO.read(url);
+                ATLAS = BufferedImageUtil.getTexture("", bufferedImage);
+            }
         }
         catch(Exception e)
         {

@@ -321,7 +321,11 @@ public class Util
     private static File getFile(File parent, String targetName)
     {
         File[] files = parent.listFiles((dir, name) -> name.equals(targetName));
-        return Arrays.stream(files).filter(file -> !file.isDirectory() && file.getName().equals(targetName)).findFirst().orElse(null);
+        if(files != null)
+        {
+            return Arrays.stream(files).filter(file -> !file.isDirectory() && file.getName().equals(targetName)).findFirst().orElse(null);
+        }
+        return null;
     }
 
     public static boolean hasFolder(File parent, String targetName)

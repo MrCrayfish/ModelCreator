@@ -56,7 +56,6 @@ public class ModelCreator extends JFrame
     private Element grabbed = null;
 
     // Texture Loading Cache
-    public List<TextureEntry> pendingTextures = new ArrayList<>();
     private PendingScreenshot screenshot = null;
 
     private int lastMouseX, lastMouseY;
@@ -154,18 +153,11 @@ public class ModelCreator extends JFrame
 
         createDisplay();
 
-        try
-        {
-            loop();
+        loop();
 
-            Display.destroy();
-            dispose();
-            System.exit(0);
-        }
-        catch(LWJGLException e1)
-        {
-            e1.printStackTrace();
-        }
+        Display.destroy();
+        dispose();
+        System.exit(0);
     }
 
     private void initComponents()
@@ -295,7 +287,7 @@ public class ModelCreator extends JFrame
         }
     }
 
-    private void loop() throws LWJGLException
+    private void loop()
     {
         TextureAtlas.load();
 

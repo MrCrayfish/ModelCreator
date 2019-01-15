@@ -844,7 +844,7 @@ public class Menu extends JMenuBar
                         JOptionPane.INFORMATION_MESSAGE, null, new String[] {"Clipboard", "Text File"}, "Clipboard");
         if (!includeFields.isSelected() && !includeMethods.isSelected())
         {
-            JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.OK_OPTION);
+            JOptionPane.showMessageDialog(creator, "Either AxisAlignedBBs or methods must be selected.", "None Selected", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         ExporterJavaCode exporter = new ExporterJavaCode(creator, includeFields.isSelected(), includeMethods.isSelected(), useBoundsHelper.isSelected(), generateRotatedBounds.isSelected());

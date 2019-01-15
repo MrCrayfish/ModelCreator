@@ -7,11 +7,14 @@ import com.mrcrayfish.modelcreator.TexturePath;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
+import com.mrcrayfish.modelcreator.texture.TextureMeta;
 import com.mrcrayfish.modelcreator.util.Util;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -318,11 +321,6 @@ public class TextureManager extends JDialog
         return null;
     }
 
-    public void showEditTextureDialog()
-    {
-
-    }
-
     public static class TextureCellRenderer implements ListCellRenderer<TextureEntry>
     {
         @Override
@@ -427,65 +425,4 @@ public class TextureManager extends JDialog
             textureEntries.clear();
         }
     }
-
-    /*
-    public static boolean loadExternalTexture(File file, File meta) throws IOException
-    {
-        TextureMeta textureMeta = TextureMeta.parse(meta);
-
-        if(textureMeta != null)
-        {
-            if(textureMeta.getAnimation() != null)
-            {
-                BufferedImage image = ImageIO.read(file);
-
-                int width = textureMeta.getAnimation().getWidth();
-                int height = textureMeta.getAnimation().getHeight();
-
-                ImageIcon icon = null;
-
-                List<Texture> textures = new ArrayList<>();
-
-                int x = 0;
-                while(x + width <= image.getWidth())
-                {
-                    int y = 0;
-                    while(y + height <= image.getHeight())
-                    {
-                        BufferedImage subImage = image.getSubimage(x, y, width, height);
-                        if(icon == null)
-                        {
-                            icon = TextureManager.upscale(new ImageIcon(subImage), 256);
-                        }
-                        Texture texture = BufferedImageUtil.getTexture("", subImage);
-                        textures.add(texture);
-                        y += height;
-                    }
-                    x += width;
-                }
-                String imageName = file.getName();
-                //textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
-                return true;
-            }
-            return loadTexture(file, textureMeta, meta.getAbsolutePath());
-        }
-        return loadTexture(file, null, null);
-    }
-
-    private static boolean loadTexture(File image, TextureMeta meta, String location) throws IOException
-    {
-        FileInputStream is = new FileInputStream(image);
-        Texture texture = TextureLoader.getTexture("PNG", is);
-        is.close();
-
-        if(texture.getImageHeight() % 16 != 0 || texture.getImageWidth() % 16 != 0)
-        {
-            texture.release();
-            return false;
-        }
-        ImageIcon icon = upscale(new ImageIcon(image.getAbsolutePath()), 256);
-        //textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
-        return true;
-    }
-     */
 }

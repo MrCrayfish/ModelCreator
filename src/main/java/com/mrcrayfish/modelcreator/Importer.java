@@ -189,22 +189,25 @@ public class Importer
 
         /* Try loading textures as if it was from assets */
         File parent = project;
-        while((parent = parent.getParentFile()) != null)
+        if(parent != null)
         {
-            if(parent.getName().equals("assets"))
+            while((parent = parent.getParentFile()) != null)
             {
-                File textureFile = new File(parent, texturePath.toRelativePath());
-                if(textureFile.exists() && textureFile.isFile())
+                if(parent.getName().equals("assets"))
                 {
-                    return TextureManager.addImage(id, texturePath, textureFile);
+                    File textureFile = new File(parent, texturePath.toRelativePath());
+                    if(textureFile.exists() && textureFile.isFile())
+                    {
+                        return TextureManager.addImage(id, texturePath, textureFile);
+                    }
                 }
-            }
-            else if(parent.getName().equals(texturePath.getModId()))
-            {
-                File textureFile = new File(parent, "textures" + File.separator + texturePath.getDirectory() + File.separator + texturePath.getName() + ".png");
-                if(textureFile.exists() && textureFile.isFile())
+                else if(parent.getName().equals(texturePath.getModId()))
                 {
-                    return TextureManager.addImage(id, texturePath, textureFile);
+                    File textureFile = new File(parent, "textures" + File.separator + texturePath.getDirectory() + File.separator + texturePath.getName() + ".png");
+                    if(textureFile.exists() && textureFile.isFile())
+                    {
+                        return TextureManager.addImage(id, texturePath, textureFile);
+                    }
                 }
             }
         }

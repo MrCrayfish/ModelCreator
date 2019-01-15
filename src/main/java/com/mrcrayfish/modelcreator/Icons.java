@@ -47,6 +47,7 @@ public class Icons
     public static Icon refresh;
     public static Icon gallery;
     public static Icon bin2;
+    public static Icon edit;
     public static Icon edit_image;
 
     public static void init(Class<?> clazz)
@@ -96,6 +97,7 @@ public class Icons
         refresh = new ImageIcon(loader.getResource("icons/refresh.png"));
         gallery = new ImageIcon(loader.getResource("icons/gallery.png"));
         bin2 = new ImageIcon(loader.getResource("icons/bin2.png"));
+        edit = new ImageIcon(loader.getResource("icons/edit.png"));
         edit_image = new ImageIcon(loader.getResource("icons/edit_image.png"));
     }
 }

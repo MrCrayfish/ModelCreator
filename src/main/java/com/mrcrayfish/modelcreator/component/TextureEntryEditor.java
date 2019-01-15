@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.component;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.TexturePath;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.util.ComponentUtil;
@@ -106,6 +107,41 @@ public class TextureEntryEditor extends JDialog
         btnRefresh.addActionListener(e -> this.setTexture(entry.getTextureFile()));
         panel.add(btnRefresh);
 
+        JButton btnEdit = new JButton("Edit");
+        btnEdit.setIcon(Icons.edit_image);
+        btnEdit.addActionListener(a ->
+        {
+            String program = Settings.getImageEditor();
+            if(!program.isEmpty())
+            {
+                try
+                {
+                    String command = program + " " + String.format(Settings.getImageEditorArgs(), entry.getTextureFile().getAbsolutePath());
+                    Runtime.getRuntime().exec(command);
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                int returnVal = JOptionPane.showConfirmDialog(this, "Image Editor has not been configured. Do you want to open with default editor?", "Message", JOptionPane.YES_NO_OPTION);
+                if(returnVal == JOptionPane.YES_OPTION)
+                {
+                    try
+                    {
+                        Desktop.getDesktop().edit(entry.getTextureFile());
+                    }
+                    catch(IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        panel.add(btnEdit);
+
         JButton btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(e -> this.dispose());
         panel.add(btnCancel);
@@ -182,6 +218,9 @@ public class TextureEntryEditor extends JDialog
 
         layout.putConstraint(SpringLayout.WEST, btnRefresh, 10, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.SOUTH, btnRefresh, -10, SpringLayout.SOUTH, panel);
+
+        layout.putConstraint(SpringLayout.WEST, btnEdit, 10, SpringLayout.EAST, btnRefresh);
+        layout.putConstraint(SpringLayout.SOUTH, btnEdit, -10, SpringLayout.SOUTH, panel);
 
         layout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.WEST, btnSave);
         layout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, panel);

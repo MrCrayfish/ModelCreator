@@ -14,6 +14,8 @@ public class Settings
     private static final String UNDO_LIMIT = "undo_limit";
     private static final String ASSESTS_DIR = "assets_dir";
     private static final String FACE_COLORS = "face_colors";
+    private static final String IMAGE_EDITOR = "image_editor";
+    private static final String IMAGE_EDITOR_ARGS = "image_editor_args";
 
     public static final int[] DEFAULT_FACE_COLORS = {16711680, 65280, 255, 16776960, 16711935, 65535};
 
@@ -150,6 +152,30 @@ public class Settings
         builder.setLength(builder.length() - 1);
         Preferences prefs = getPreferences();
         prefs.put(FACE_COLORS, builder.toString());
+    }
+
+    public static String getImageEditor()
+    {
+        Preferences prefs = getPreferences();
+        return prefs.get(IMAGE_EDITOR, null);
+    }
+
+    public static void setImageEditor(String file)
+    {
+        Preferences prefs = getPreferences();
+        prefs.put(IMAGE_EDITOR, file);
+    }
+
+    public static String getImageEditorArgs()
+    {
+        Preferences prefs = getPreferences();
+        return prefs.get(IMAGE_EDITOR_ARGS, "\"%s\"");
+    }
+
+    public static void setImageEditorArgs(String args)
+    {
+        Preferences prefs = getPreferences();
+        prefs.put(IMAGE_EDITOR_ARGS, args);
     }
 
     private static Preferences getPreferences()

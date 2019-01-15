@@ -110,7 +110,7 @@ public class ComponentUtil
         btnBrowserDir.addActionListener(e ->
         {
             JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Select a Folder");
+            chooser.setDialogTitle("Select a File");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             chooser.setApproveButtonText("Select");
             chooser.setCurrentDirectory(new File(defaultDir));

@@ -943,9 +943,24 @@ public class Menu extends JMenuBar
         JSeparator separator = new JSeparator();
         generalPanel.add(separator);
 
-        String path = Settings.getAssetsDir() != null ? Settings.getAssetsDir() : "";
-        JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, path);
+        String assetsPath = Settings.getAssetsDir() != null ? Settings.getAssetsDir() : "";
+        JPanel texturePathPanel = createDirectorySelector("Assets Path", dialog, assetsPath);
         generalPanel.add(texturePathPanel);
+
+        JSeparator separator2 = new JSeparator();
+        generalPanel.add(separator2);
+
+        String imageEditorPath = Settings.getImageEditor() != null ? Settings.getImageEditor() : "";
+        JPanel imageEditorPanel = ComponentUtil.createFileSelector("Image Editor", dialog, imageEditorPath, null, null);
+        generalPanel.add(imageEditorPanel);
+
+        JLabel labelArguments = new JLabel("Arguments");
+        generalPanel.add(labelArguments);
+
+        String imageEditorArgs = Settings.getImageEditorArgs() != null ? Settings.getImageEditorArgs() : "\"%s\"";
+        JTextField textFieldArguments = new JTextField(imageEditorArgs);
+        textFieldArguments.setPreferredSize(new Dimension(0, 24));
+        generalPanel.add(textFieldArguments);
 
         generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
@@ -957,6 +972,17 @@ public class Menu extends JMenuBar
         generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, separator2, 0, SpringLayout.EAST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, separator2, 0, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, separator2, 10, SpringLayout.SOUTH, texturePathPanel);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, imageEditorPanel, -10, SpringLayout.EAST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, imageEditorPanel, 10, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, imageEditorPanel, 10, SpringLayout.SOUTH, separator2);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, labelArguments, 10, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, labelArguments, 2, SpringLayout.NORTH, textFieldArguments);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, textFieldArguments, -10, SpringLayout.EAST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, textFieldArguments, 20, SpringLayout.EAST, labelArguments);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, textFieldArguments, 10, SpringLayout.SOUTH, imageEditorPanel);
 
         JPanel colorGrid = new JPanel();
         colorGrid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -989,6 +1015,8 @@ public class Menu extends JMenuBar
                 Settings.setAssetsDir(getDirectoryFromSelector(texturePathPanel));
                 Settings.setUndoLimit((int) undoLimitSpinner.getValue());
                 Settings.setFaceColors(Face.getFaceColors());
+                Settings.setImageEditor(getDirectoryFromSelector(imageEditorPanel));
+                Settings.setImageEditorArgs(textFieldArguments.getText());
             }
         });
 

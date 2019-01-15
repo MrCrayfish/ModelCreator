@@ -104,7 +104,7 @@ public class TextureManager extends JDialog
 
         btnEdit = new JButton("Edit");
         btnEdit.setPreferredSize(new Dimension(110, 26));
-        btnEdit.setIcon(Icons.edit_image);
+        btnEdit.setIcon(Icons.edit);
         btnEdit.setEnabled(false);
         btnEdit.addActionListener(e ->
         {

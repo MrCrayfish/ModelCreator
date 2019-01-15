@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.panels.*;
@@ -19,6 +20,7 @@ public class ElementPanel extends JPanel implements IElementUpdater
     public ElementPanel(ElementManager manager)
     {
         this.manager = manager;
+        setBackground(ModelCreator.BACKGROUND);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         initComponents();
         addComponents();

@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -17,8 +18,9 @@ public class ElementExtraPanel extends JPanel implements IElementUpdater
     public ElementExtraPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(1, 2));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Extras</b></html>"));
         this.setMaximumSize(new Dimension(186, 50));
         this.initComponents();
         this.addComponents();
@@ -27,6 +29,7 @@ public class ElementExtraPanel extends JPanel implements IElementUpdater
     private void initComponents()
     {
         btnShade = ComponentUtil.createRadioButton("Shade", "<html>Determines if shadows should be rendered<br>Default: On</html>");
+        btnShade.setBackground(ModelCreator.BACKGROUND);
         btnShade.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();

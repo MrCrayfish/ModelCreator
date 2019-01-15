@@ -25,7 +25,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.Color;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +42,8 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class ModelCreator extends JFrame
 {
+    public static final Color BACKGROUND = new Color(227, 227, 234);
+
     // Canvas Variables
     private final static AtomicReference<Dimension> newCanvasSize = new AtomicReference<>();
     private Canvas canvas;
@@ -481,7 +482,7 @@ public class ModelCreator extends JFrame
 
                     GL11.glEnable(GL11.GL_BLEND);
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                    FontManager.BEBAS_NEUE_20.drawString(10, 10 + i * 20, text, new Color(1, 1, 1));
+                    FontManager.BEBAS_NEUE_20.drawString(10, 10 + i * 20, text, new org.newdawn.slick.Color(1, 1, 1));
                     GL11.glDisable(GL11.GL_BLEND);
                 }
             }
@@ -503,7 +504,7 @@ public class ModelCreator extends JFrame
 
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                FontManager.BEBAS_NEUE_20.drawString(-5, -75, "N", new Color(1, 1, 1));
+                FontManager.BEBAS_NEUE_20.drawString(-5, -75, "N", new org.newdawn.slick.Color(1, 1, 1));
                 GL11.glDisable(GL11.GL_BLEND);
 
                 glColor3d(0.6, 0.6, 0.6);

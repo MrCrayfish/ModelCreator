@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.component.TextureManager;
 import com.mrcrayfish.modelcreator.element.Element;
@@ -21,8 +22,9 @@ public class GlobalPanel extends JPanel implements IElementUpdater
     public GlobalPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(2, 1, 0, 5));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Global Properties</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Global Properties</b></html>"));
         this.setMaximumSize(new Dimension(186, 80));
         this.initComponents();
         this.addComponents();
@@ -31,6 +33,7 @@ public class GlobalPanel extends JPanel implements IElementUpdater
     private void initComponents()
     {
         ambientOcc = ComponentUtil.createRadioButton("Ambient Occlusion", "Determine the light for each element");
+        ambientOcc.setBackground(ModelCreator.BACKGROUND);
         ambientOcc.setSelected(true);
         ambientOcc.addActionListener(a ->
         {

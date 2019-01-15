@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels.tabs;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -35,6 +36,7 @@ public class RotationPanel extends JPanel implements IElementUpdater
     public RotationPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.initMenu();
         this.initComponents();
@@ -52,9 +54,12 @@ public class RotationPanel extends JPanel implements IElementUpdater
     private void initComponents()
     {
         panelOrigin = new OriginPanel(manager);
+        panelOrigin.setBackground(ModelCreator.BACKGROUND);
 
         axisPanel = new JPanel(new GridLayout(1, 1));
-        axisPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Axis</b></html>"));
+        axisPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Axis</b></html>"));
+        axisPanel.setBackground(ModelCreator.BACKGROUND);
+
         axisList = new JComboBox<>();
         axisList.setModel(model);
         axisList.setToolTipText("The axis the element will rotate around");
@@ -82,8 +87,11 @@ public class RotationPanel extends JPanel implements IElementUpdater
         labelTable.put(2, new JLabel("45\u00b0"));
 
         sliderPanel = new JPanel(new GridLayout(1, 1));
-        sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));
+        sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Rotation</b></html>"));
+        sliderPanel.setBackground(ModelCreator.BACKGROUND);
+
         rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
+        rotation.setBackground(ModelCreator.BACKGROUND);
         rotation.setMajorTickSpacing(1);
         rotation.setPaintTicks(true);
         rotation.setPaintLabels(true);
@@ -109,9 +117,11 @@ public class RotationPanel extends JPanel implements IElementUpdater
         sliderPanel.add(rotation);
 
         extraPanel = new JPanel(new GridLayout(1, 2));
-        extraPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
+        extraPanel.setBackground(ModelCreator.BACKGROUND);
+        extraPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Extras</b></html>"));
 
         btnRescale = ComponentUtil.createRadioButton("Rescale", "<html>Should scale faces across whole block<br>Default: Off<html>");
+        btnRescale.setBackground(ModelCreator.BACKGROUND);
         btnRescale.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();

@@ -35,6 +35,7 @@ public class FacePanel extends JPanel implements IElementUpdater
     public FacePanel(ElementManager manager)
     {
         this.manager = manager;
+        setBackground(ModelCreator.BACKGROUND);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         initMenu();
         initComponents();
@@ -55,8 +56,10 @@ public class FacePanel extends JPanel implements IElementUpdater
     private void initComponents()
     {
         menuPanel = new JPanel(new GridLayout(1, 1));
-        menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Side</b></html>"));
+        menuPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Side</b></html>"));
         menuPanel.setMaximumSize(new Dimension(186, 56));
+        menuPanel.setBackground(ModelCreator.BACKGROUND);
+
         menuList = new JComboBox<>();
         menuList.setModel(model);
         menuList.setToolTipText("The face to edit.");
@@ -82,8 +85,10 @@ public class FacePanel extends JPanel implements IElementUpdater
         labelTable.put(3, new JLabel("270\u00b0"));
 
         sliderPanel = new JPanel(new GridLayout(1, 1));
-        sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Rotation</b></html>"));
+        sliderPanel.setBackground(ModelCreator.BACKGROUND);
+        sliderPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Rotation</b></html>"));
         rotation = new JSlider(JSlider.HORIZONTAL, ROTATION_MIN, ROTATION_MAX, ROTATION_INIT);
+        rotation.setBackground(ModelCreator.BACKGROUND);
         rotation.setMajorTickSpacing(4);
         rotation.setPaintTicks(true);
         rotation.setPaintLabels(true);

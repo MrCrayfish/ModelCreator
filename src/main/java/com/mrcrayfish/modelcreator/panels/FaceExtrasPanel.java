@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -21,8 +22,9 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
     public FaceExtrasPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new BorderLayout(0, 5));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Extras</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Extras</b></html>"));
         this.setMaximumSize(new Dimension(186, 100));
         this.initComponents();
         this.addComponents();
@@ -32,6 +34,7 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
     {
         horizontalBox = new JPanel(new GridLayout(2, 2));
         boxCullFace = ComponentUtil.createRadioButton("Cullface", "<html>Should render face is another block is adjacent<br>Default: Off</html>");
+        boxCullFace.setBackground(ModelCreator.BACKGROUND);
         boxCullFace.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -42,6 +45,7 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
             }
         });
         boxFill = ComponentUtil.createRadioButton("Fill", "<html>Makes the texture fill the face<br>Default: Off</html>");
+        boxFill.setBackground(ModelCreator.BACKGROUND);
         boxFill.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -52,6 +56,7 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
             }
         });
         boxEnabled = ComponentUtil.createRadioButton("Enable", "<html>Determines if face should be rendered<br>Default: On</html>");
+        boxEnabled.setBackground(ModelCreator.BACKGROUND);
         boxEnabled.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -62,6 +67,7 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
             }
         });
         boxAutoUV = ComponentUtil.createRadioButton("Auto UV", "<html>Determines if UV end coordinates should be set based on element size<br>Default: On</html>");
+        boxAutoUV.setBackground(ModelCreator.BACKGROUND);
         boxAutoUV.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();

@@ -1,9 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import com.mrcrayfish.modelcreator.Exporter;
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.PropertyIdentifiers;
-import com.mrcrayfish.modelcreator.StateManager;
+import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.Parser;
@@ -29,8 +26,9 @@ public class PositionPanel extends JPanel implements IElementUpdater
     public PositionPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(3, 3, 4, 4));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Position</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Position</b></html>"));
         this.setMaximumSize(new Dimension(186, 124));
         this.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         this.initComponents();

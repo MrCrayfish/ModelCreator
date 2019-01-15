@@ -26,8 +26,9 @@ public class TexturePanel extends JPanel
     public TexturePanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(2, 2, 4, 4));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>Texture</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Texture</b></html>"));
         this.setMaximumSize(new Dimension(186, 90));
         this.initComponents();
         this.addComponents();

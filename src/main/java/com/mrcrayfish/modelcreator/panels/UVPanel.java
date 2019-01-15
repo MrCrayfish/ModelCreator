@@ -1,9 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
-import com.mrcrayfish.modelcreator.Exporter;
-import com.mrcrayfish.modelcreator.Icons;
-import com.mrcrayfish.modelcreator.PropertyIdentifiers;
-import com.mrcrayfish.modelcreator.StateManager;
+import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -33,8 +30,9 @@ public class UVPanel extends JPanel implements IElementUpdater
     public UVPanel(ElementManager manager)
     {
         this.manager = manager;
+        this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(3, 4, 4, 4));
-        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(new Color(221, 221, 228), 5), "<html><b>UV</b></html>"));
+        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>UV</b></html>"));
         this.setMaximumSize(new Dimension(186, 124));
         this.initComponents();
         this.initProperties();

@@ -4,9 +4,6 @@ import com.mrcrayfish.modelcreator.*;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
 import com.mrcrayfish.modelcreator.element.Face;
-import com.mrcrayfish.modelcreator.ExporterJavaCode;
-import com.mrcrayfish.modelcreator.ExporterModel;
-import com.mrcrayfish.modelcreator.Importer;
 import com.mrcrayfish.modelcreator.panels.DisplayEntryPanel;
 import com.mrcrayfish.modelcreator.screenshot.PendingScreenshot;
 import com.mrcrayfish.modelcreator.screenshot.Screenshot;
@@ -24,9 +21,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.concurrent.FutureTask;
-import java.util.stream.Collectors;
 
 public class Menu extends JMenuBar
 {

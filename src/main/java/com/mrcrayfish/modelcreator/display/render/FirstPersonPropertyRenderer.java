@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator.display.render;
 
-import com.mrcrayfish.modelcreator.Animation;
 import com.mrcrayfish.modelcreator.Camera;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
@@ -9,7 +8,6 @@ import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.util.AtlasRenderUtil;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.glu.Project;
 
 import static org.lwjgl.opengl.GL11.*;
 

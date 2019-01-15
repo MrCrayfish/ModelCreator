@@ -16,12 +16,7 @@ package com.mrcrayfish.modelcreator.util;
  * limitations under the License.
  ******************************************************************************/
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.zip.CRC32;

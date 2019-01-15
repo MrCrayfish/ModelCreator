@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator;
 
-import java.awt.*;
 import java.util.prefs.Preferences;
 
 public class Settings

@@ -1,6 +1,5 @@
 package com.mrcrayfish.modelcreator.display.render;
 
-import com.mrcrayfish.modelcreator.Animation;
 import com.mrcrayfish.modelcreator.Camera;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.display.DisplayProperties;
@@ -8,8 +7,6 @@ import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_LIGHTING;
-import static org.lwjgl.opengl.GL11.glDisable;
 
 /**
  * Author: MrCrayfish

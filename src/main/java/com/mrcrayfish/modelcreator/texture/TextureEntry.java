@@ -33,7 +33,6 @@ public class TextureEntry
     private File metaFile;
 
     private TextureAnimation anim;
-    private TextureProperties props;
 
     public TextureEntry(File texture) throws IOException
     {
@@ -41,6 +40,7 @@ public class TextureEntry
         this.key = path.getName();
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
+        this.anim = TextureAnimation.getAnimationForTexture(texture, this.source.getWidth(), this.source.getHeight());
         this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
@@ -55,6 +55,7 @@ public class TextureEntry
         this.path = new TexturePath(texture);
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
+        this.anim = TextureAnimation.getAnimationForTexture(texture, this.source.getWidth(), this.source.getHeight());
         this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
@@ -69,6 +70,7 @@ public class TextureEntry
         this.path = path;
         this.textureFile = texture;
         this.source = ImageIO.read(texture);
+        this.anim = TextureAnimation.getAnimationForTexture(texture, this.source.getWidth(), this.source.getHeight());
         this.icon = createIcon(this.source);
         File metaFile = new File(texture.getAbsolutePath() + ".mcmeta");
         if(metaFile.exists())
@@ -138,11 +140,6 @@ public class TextureEntry
         return icon;
     }
 
-    public String getTextureLocation()
-    {
-        return textureFile.getAbsolutePath();
-    }
-
     public TextureAnimation getAnimation()
     {
         return anim;
@@ -151,21 +148,6 @@ public class TextureEntry
     public boolean isAnimated()
     {
         return anim != null;
-    }
-
-    public TextureProperties getProperties()
-    {
-        return props;
-    }
-
-    public boolean hasProperties()
-    {
-        return props != null;
-    }
-
-    public String getMetaLocation()
-    {
-        return metaFile.getAbsolutePath();
     }
 
     public int getPasses()
@@ -189,46 +171,12 @@ public class TextureEntry
             this.textureFile = texture;
             this.source = ImageIO.read(texture);
             this.icon = createIcon(this.source);
+            this.anim = TextureAnimation.getAnimationForTexture(texture, source.getWidth(), source.getHeight());
             TextureManager.loadTexture(this);
         }
         catch(IOException e)
         {
             e.printStackTrace();
-        }
-    }
-
-    public boolean isLoaded()
-    {
-        return textures != null;
-    }
-
-    public void loadTexture()
-    {
-        if(textures == null)
-        {
-            int[] pixels = new int[source.getWidth() * source.getHeight()];
-            source.getRGB(0, 0, source.getWidth(), source.getHeight(), pixels, 0, source.getWidth());
-            ByteBuffer buffer = BufferUtils.createByteBuffer(pixels.length * 4);
-            for(int y = 0; y < source.getHeight(); y++)
-            {
-                for(int x = 0; x < source.getWidth(); x++)
-                {
-                    int pixel = pixels[y * source.getWidth() + x];
-                    buffer.put((byte) ((pixel >> 16) & 0xFF));
-                    buffer.put((byte) ((pixel >> 8) & 0xFF));
-                    buffer.put((byte) (pixel & 0xFF));
-                    buffer.put((byte) ((pixel >> 24) & 0xFF));
-                }
-            }
-            buffer.flip();
-            int textureId = GL11.glGenTextures();
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, source.getWidth(), source.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
-            this.textures = Collections.singletonList(textureId);
         }
     }
 
@@ -251,63 +199,60 @@ public class TextureEntry
         return new ImageIcon(scaledImage);
     }
 
-    /*public static boolean loadExternalTexture(File file, File meta) throws IOException
+    public void loadTexture()
     {
-        TextureMeta textureMeta = TextureMeta.parse(meta);
-
-        if(textureMeta != null)
+        if(textures == null)
         {
-            if(textureMeta.getAnimation() != null)
+            if(anim == null)
             {
-                BufferedImage image = ImageIO.read(file);
-
-                int width = textureMeta.getAnimation().getWidth();
-                int height = textureMeta.getAnimation().getHeight();
-
-                ImageIcon icon = null;
-
-                List<Texture> textures = new ArrayList<>();
-
+                this.textures = Collections.singletonList(loadTexture(source));
+            }
+            else
+            {
+                List<Integer> textures = new ArrayList<>();
+                int width = anim.getWidth();
+                int height = anim.getHeight();
                 int x = 0;
-                while(x + width <= image.getWidth())
+                while(x + width <= source.getWidth())
                 {
                     int y = 0;
-                    while(y + height <= image.getHeight())
+                    while(y + height <= source.getHeight())
                     {
-                        BufferedImage subImage = image.getSubimage(x, y, width, height);
-                        if(icon == null)
-                        {
-                            icon = TextureManager.upscale(new ImageIcon(subImage), 256);
-                        }
-                        Texture texture = BufferedImageUtil.getTexture("", subImage);
-                        textures.add(texture);
+                        BufferedImage subImage = source.getSubimage(x, y, width, height);
+                        textures.add(loadTexture(subImage));
                         y += height;
                     }
                     x += width;
                 }
-                String imageName = file.getName();
-                //textureCache.add(new TextureEntry(file.getName().substring(0, imageName.indexOf(".png")), textures, icon, file.getAbsolutePath(), textureMeta, meta.getAbsolutePath()));
-                return true;
+                this.textures = textures;
             }
-            return loadTexture(file, textureMeta, meta.getAbsolutePath());
         }
-        return loadTexture(file, null, null);
     }
 
-    private static boolean loadTexture(File image, TextureMeta meta, String location) throws IOException
+    private int loadTexture(BufferedImage image)
     {
-        FileInputStream is = new FileInputStream(image);
-        Texture texture = TextureLoader.getTexture("PNG", is);
-        is.close();
-
-        if(texture.getImageHeight() % 16 != 0 || texture.getImageWidth() % 16 != 0)
+        int[] pixels = new int[image.getWidth() * image.getHeight()];
+        image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
+        ByteBuffer buffer = BufferUtils.createByteBuffer(pixels.length * 4);
+        for(int y = 0; y < image.getHeight(); y++)
         {
-            texture.release();
-            return false;
+            for(int x = 0; x < image.getWidth(); x++)
+            {
+                int pixel = pixels[y * image.getWidth() + x];
+                buffer.put((byte) ((pixel >> 16) & 0xFF));
+                buffer.put((byte) ((pixel >> 8) & 0xFF));
+                buffer.put((byte) (pixel & 0xFF));
+                buffer.put((byte) ((pixel >> 24) & 0xFF));
+            }
         }
-        ImageIcon icon = upscale(new ImageIcon(image.getAbsolutePath()), 256);
-        //textureCache.add(new TextureEntry(image.getName().replace(".png", "").replaceAll("\\d*$", ""), texture, icon, image.getAbsolutePath(), meta, location));
-        return true;
+        buffer.flip();
+        int textureId = GL11.glGenTextures();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, image.getWidth(), image.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+        return textureId;
     }
-     */
 }

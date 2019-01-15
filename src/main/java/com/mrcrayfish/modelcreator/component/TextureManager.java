@@ -7,14 +7,11 @@ import com.mrcrayfish.modelcreator.TexturePath;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import com.mrcrayfish.modelcreator.texture.TextureMeta;
 import com.mrcrayfish.modelcreator.util.Util;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

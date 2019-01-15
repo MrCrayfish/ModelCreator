@@ -422,6 +422,7 @@ public class Face
         {
             if(pass == 0)
             {
+                GL11.glEnable(GL_BLEND);
                 GL11.glEnable(GL_TEXTURE_2D);
                 GL11.glColor3f(1.0F, 1.0F, 1.0F);
                 texture.bindTexture();
@@ -438,12 +439,6 @@ public class Face
                     texture.bindNextTexture();
                     GL11.glColor4d(1.0D, 1.0D, 1.0D, texture.getAnimation().getFrameInterpolation());
                 }
-            }
-
-            if(texture.hasProperties() && texture.getProperties().isBlurred())
-            {
-                GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                GL11.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             }
 
             binded = true;

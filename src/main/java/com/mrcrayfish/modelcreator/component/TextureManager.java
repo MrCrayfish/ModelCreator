@@ -1,6 +1,7 @@
 package com.mrcrayfish.modelcreator.component;
 
 import com.mrcrayfish.modelcreator.Icons;
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.TexturePath;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -40,10 +41,12 @@ public class TextureManager extends JDialog
     private JButton btnEdit;
     private JButton btnRemove;
     private int result;
+    private boolean canApply = true;
 
-    public TextureManager(Frame owner, ElementManager manager, ModalityType type)
+    public TextureManager(Frame owner, ElementManager manager, ModalityType type, boolean canApply)
     {
         super(owner, "Texture Manager", type);
+        this.canApply = canApply;
         this.manager = manager;
         this.setPreferredSize(new Dimension(500, 400));
         this.setResizable(false);
@@ -72,9 +75,10 @@ public class TextureManager extends JDialog
         });
 
         JScrollPane scrollPane = new JScrollPane(textureEntryList);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         content.add(scrollPane);
 
-        if(this.getModalityType() != ModalityType.MODELESS)
+        if(canApply)
         {
             btnApply = new JButton("Apply");
             btnApply.setPreferredSize(new Dimension(110, 26));
@@ -85,12 +89,12 @@ public class TextureManager extends JDialog
                 this.dispose();
             });
             content.add(btnApply);
-
-            btnCancel = new JButton("Cancel");
-            btnCancel.setPreferredSize(new Dimension(110, 26));
-            btnCancel.addActionListener(e -> this.dispose());
-            content.add(btnCancel);
         }
+
+        btnCancel = new JButton(canApply ? "Cancel" : "Close");
+        btnCancel.setPreferredSize(new Dimension(110, 26));
+        btnCancel.addActionListener(e -> this.dispose());
+        content.add(btnCancel);
 
         btnNew = new JButton("New Texture");
         btnNew.addActionListener(e -> showFileChooser());
@@ -100,7 +104,7 @@ public class TextureManager extends JDialog
 
         btnEdit = new JButton("Edit");
         btnEdit.setPreferredSize(new Dimension(110, 26));
-        btnEdit.setIcon(Icons.new_);
+        btnEdit.setIcon(Icons.edit_image);
         btnEdit.setEnabled(false);
         btnEdit.addActionListener(e ->
         {
@@ -116,7 +120,7 @@ public class TextureManager extends JDialog
 
         btnRemove = new JButton("Remove");
         btnRemove.setPreferredSize(new Dimension(110, 26));
-        btnRemove.setIcon(Icons.bin);
+        btnRemove.setIcon(Icons.bin2);
         btnRemove.setEnabled(false);
         btnRemove.addActionListener(e ->
         {
@@ -158,13 +162,14 @@ public class TextureManager extends JDialog
         layout.putConstraint(SpringLayout.EAST, scrollPane, -10, SpringLayout.WEST, btnNew);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -10, SpringLayout.SOUTH, content);
 
-        if(this.getModalityType() != ModalityType.MODELESS)
+        if(canApply)
         {
             layout.putConstraint(SpringLayout.SOUTH, btnApply, -10, SpringLayout.NORTH, btnCancel);
             layout.putConstraint(SpringLayout.EAST, btnApply, -10, SpringLayout.EAST, content);
-            layout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, content);
-            layout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.EAST, content);
         }
+
+        layout.putConstraint(SpringLayout.SOUTH, btnCancel, -10, SpringLayout.SOUTH, content);
+        layout.putConstraint(SpringLayout.EAST, btnCancel, -10, SpringLayout.EAST, content);
 
         layout.putConstraint(SpringLayout.NORTH, btnNew, 10, SpringLayout.NORTH, content);
         layout.putConstraint(SpringLayout.EAST, btnNew, -10, SpringLayout.EAST, content);
@@ -324,7 +329,7 @@ public class TextureManager extends JDialog
         public Component getListCellRendererComponent(JList<? extends TextureEntry> list, TextureEntry entry, int index, boolean isSelected, boolean cellHasFocus)
         {
             JPanel panel = new JPanel();
-            panel.setBackground(isSelected ? new Color(186, 193, 211) : new Color(234, 234, 242));
+            panel.setBackground(isSelected ? new Color(186, 193, 211) : ModelCreator.BACKGROUND);
             panel.setPreferredSize(new Dimension(200, 85));
             if(isSelected)
             {
@@ -360,7 +365,7 @@ public class TextureManager extends JDialog
 
     public static TextureEntry display(Frame owner, ElementManager manager, ModalityType modalityType)
     {
-        TextureManager textureManager = new TextureManager(owner, manager, modalityType);
+        TextureManager textureManager = new TextureManager(owner, manager, modalityType, true);
         textureManager.setLocationRelativeTo(null);
         textureManager.setVisible(true);
         if(textureManager.getResult() == APPLIED)

@@ -49,6 +49,7 @@ public class Menu extends JMenuBar
 
     /* Model */
     private JMenu menuModel;
+    private JMenuItem itemTextureManager;
     private JMenuItem itemDisplayProps;
     private JMenuItem itemOptimise;
     private JMenu menuRotate;
@@ -104,6 +105,7 @@ public class Menu extends JMenuBar
 
         menuModel = new JMenu("Model");
         {
+            itemTextureManager = createMenuItem("Texture Manager", "Manage the textures entries for the model", KeyEvent.VK_T, Icons.texture, KeyEvent.VK_T, Keyboard.KEY_T, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             itemDisplayProps = createMenuItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.gallery, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
             itemOptimise = createMenuItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             menuRotate = new JMenu("Rotate");
@@ -179,6 +181,7 @@ public class Menu extends JMenuBar
         menuRotate.add(itemRotateCounterClockwise);
 
         /* Menu Model */
+        menuModel.add(itemTextureManager);
         menuModel.add(itemDisplayProps);
         menuModel.add(itemOptimise);
         menuModel.addSeparator();
@@ -226,6 +229,13 @@ public class Menu extends JMenuBar
         itemSettings.addActionListener(a -> showSettings(creator));
 
         itemExit.addActionListener(a -> creator.close());
+
+        itemTextureManager.addActionListener(a ->
+        {
+            TextureManager manager = new TextureManager(creator, creator.getElementManager(), Dialog.ModalityType.APPLICATION_MODAL, false);
+            manager.setLocationRelativeTo(null);
+            manager.setVisible(true);
+        });
 
         itemDisplayProps.addActionListener(a -> showDisplayProperties(creator));
 

@@ -17,12 +17,16 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ProjectManager
 {
+    private static final Pattern TEXTURE_FIX = Pattern.compile("\\d+$"); //Matches numbers at the end of line
+
     public static void loadProject(ElementManager manager, String modelFile)
     {
         TextureManager.clear();
@@ -40,14 +44,17 @@ public class ProjectManager
 
     private static void deleteFolder(File file)
     {
-        try
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
         {
-            Files.walk(file.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
+            try
+            {
+                Files.walk(file.toPath()).sorted(Comparator.reverseOrder()).map(Path::toFile).forEach(File::delete);
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+        }));
     }
 
     private static File extractFiles(String modelFile)
@@ -61,7 +68,17 @@ public class ProjectManager
             ZipEntry ze;
             while((ze = zis.getNextEntry()) != null)
             {
-                File file = new File(folder, ze.getName());
+                String fileName = ze.getName();
+
+                /* Fixes old project texture files extracting with numbers on the file name */
+                Matcher matcher = TEXTURE_FIX.matcher(ze.getName());
+                if(matcher.find())
+                {
+                    String numbers = matcher.group(0);
+                    fileName = fileName.replace(numbers, "");
+                }
+
+                File file = new File(folder, fileName);
                 file.getParentFile().mkdirs();
                 file.createNewFile();
 

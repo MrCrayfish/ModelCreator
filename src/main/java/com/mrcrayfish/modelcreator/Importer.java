@@ -175,7 +175,7 @@ public class Importer
                 }
             }
 
-            //V2 of project file format uses assets folder
+            /* V2 of project file format uses assets folder */
             File assets = new File(project, "assets");
             if(assets.exists() && assets.isDirectory())
             {

@@ -25,6 +25,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.FutureTask;
 import java.util.stream.Collectors;
 
 public class Menu extends JMenuBar
@@ -103,7 +104,7 @@ public class Menu extends JMenuBar
 
         menuModel = new JMenu("Model");
         {
-            itemDisplayProps = createMenuItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.texture, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
+            itemDisplayProps = createMenuItem("Display Properties", "Change the display properties of the model", KeyEvent.VK_D, Icons.gallery, KeyEvent.VK_D, Keyboard.KEY_D, InputEvent.CTRL_MASK + InputEvent.ALT_MASK);
             itemOptimise = createMenuItem("Optimize", "Performs basic optimizion by disabling faces that aren't visible", KeyEvent.VK_O, Icons.optimize, KeyEvent.VK_N, Keyboard.KEY_N, InputEvent.CTRL_MASK + InputEvent.SHIFT_MASK);
             menuRotate = new JMenu("Rotate");
             menuRotate.setMnemonic(KeyEvent.VK_R);
@@ -539,7 +540,6 @@ public class Menu extends JMenuBar
         chooser.setFileFilter(filter);
 
         String dir = Settings.getJSONDir();
-
         if(dir != null)
         {
             chooser.setCurrentDirectory(new File(dir));

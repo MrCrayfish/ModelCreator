@@ -45,6 +45,7 @@ public class Icons
     public static Icon rotate_clockwise;
     public static Icon rotate_counter_clockwise;
     public static Icon refresh;
+    public static Icon gallery;
 
     public static void init(Class<?> clazz)
     {
@@ -91,5 +92,6 @@ public class Icons
         rotate_clockwise = new ImageIcon(loader.getResource("icons/rotate_clockwise.png"));
         rotate_counter_clockwise = new ImageIcon(loader.getResource("icons/rotate_anticlockwise.png"));
         refresh = new ImageIcon(loader.getResource("icons/refresh.png"));
+        gallery = new ImageIcon(loader.getResource("icons/gallery.png"));
     }
 }

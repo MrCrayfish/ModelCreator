@@ -18,9 +18,9 @@ public class AssetsUtil
                 builder.insert(0, parent.getName()).insert(0, "/");
                 continue;
             }
-            break;
+            return builder.length() > 0 ? builder.substring(1, builder.length()) : "";
         }
-        return builder.length() > 0 ? builder.substring(1, builder.length()) : "";
+        return "blocks";
     }
 
     public static String getModId(File file)

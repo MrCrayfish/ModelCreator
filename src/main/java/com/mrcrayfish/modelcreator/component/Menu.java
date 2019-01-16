@@ -274,7 +274,7 @@ public class Menu extends JMenuBar
                     {
                         chooser.setSelectedFile(new File(filePath + ".png"));
                     }
-                    creator.activeSidebar = null;
+                    creator.setSidebar(null);
                     creator.startScreenshot(new PendingScreenshot(chooser.getSelectedFile(), null));
                 }
             }
@@ -282,7 +282,7 @@ public class Menu extends JMenuBar
 
         itemShareFacebook.addActionListener(a ->
         {
-            creator.activeSidebar = null;
+            creator.setSidebar(null);
             creator.startScreenshot(new PendingScreenshot(null, file ->
             {
                 try
@@ -299,7 +299,7 @@ public class Menu extends JMenuBar
 
         itemShareTwitter.addActionListener(a ->
         {
-            creator.activeSidebar = null;
+            creator.setSidebar(null);
             creator.startScreenshot(new PendingScreenshot(null, file ->
             {
                 try
@@ -316,7 +316,7 @@ public class Menu extends JMenuBar
 
         itemShareReddit.addActionListener(a ->
         {
-            creator.activeSidebar = null;
+            creator.setSidebar(null);
             creator.startScreenshot(new PendingScreenshot(null, file ->
             {
                 try
@@ -333,7 +333,7 @@ public class Menu extends JMenuBar
 
         itemImgurLink.addActionListener(a ->
         {
-            creator.activeSidebar = null;
+            creator.setSidebar(null);
             creator.startScreenshot(new PendingScreenshot(null, file -> SwingUtilities.invokeLater(() ->
             {
                 try

@@ -230,6 +230,10 @@ public class Element
 
             boolean grabbing = ((UVSidebar)ModelCreator.uvSidebar).isGrabbing();
             int hoveredFace = ((UVSidebar)ModelCreator.uvSidebar).getHoveredFace();
+            if(hoveredFace == -1 && ModelCreator.isUVSidebarOpen)
+            {
+                hoveredFace = this.getSelectedFace().getSide();
+            }
 
             /* Bottom */
             if(hoveredFace != Face.DOWN)

@@ -66,8 +66,9 @@ public class ModelCreator extends JFrame
 
     /* Sidebar Variables */
     private final int SIDEBAR_WIDTH = 130;
-    public Sidebar activeSidebar = null;
+    private Sidebar activeSidebar = null;
     public static Sidebar uvSidebar;
+    public static boolean isUVSidebarOpen = false;
 
     /* Key Events */
     private Set<Integer> keyDown = new HashSet<>();
@@ -837,6 +838,15 @@ public class ModelCreator extends JFrame
     public void setSidebar(Sidebar s)
     {
         activeSidebar = s;
+        if(s == null)
+        {
+            isUVSidebarOpen = false;
+        }
+    }
+
+    public Sidebar getActiveSidebar()
+    {
+        return activeSidebar;
     }
 
     public ElementManager getElementManager()

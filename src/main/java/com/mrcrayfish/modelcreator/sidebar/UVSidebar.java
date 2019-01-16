@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.sidebar;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.element.Face;
@@ -17,9 +18,13 @@ public class UVSidebar extends Sidebar
     private final int LENGTH = 110;
 
     private final Color BLACK_ALPHA = new Color(0, 0, 0, 0.75F);
+    public static final java.awt.Color BACKGROUND = new java.awt.Color(230, 230, 240);
 
     private int[] startX = {0, 0, 0, 0, 0, 0};
     private int[] startY = {0, 0, 0, 0, 0, 0};
+
+    private int hoveredFace = -1;
+    private int canvasHeight;
 
     public UVSidebar(String title, ElementManager manager)
     {
@@ -31,6 +36,12 @@ public class UVSidebar extends Sidebar
     public void draw(int sidebarWidth, int canvasWidth, int canvasHeight, int frameHeight)
     {
         super.draw(sidebarWidth, canvasWidth, canvasHeight, frameHeight);
+
+        this.canvasHeight = frameHeight;
+        if(!grabbing)
+        {
+            hoveredFace = getFace(frameHeight, Mouse.getX(), Mouse.getY());
+        }
 
         glPushMatrix();
         {
@@ -56,12 +67,6 @@ public class UVSidebar extends Sidebar
                         startY[i] = i * (LENGTH + 10) + 40;
                     }
 
-                    int color = Face.getFaceColour(i);
-                    float b = (float) (color & 0xFF) / 0xFF;
-                    float g = (float) ((color >>> 8) & 0xFF) / 0xFF;
-                    float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
-                    glColor3f(r, g, b);
-
                     Face[] faces = null;
                     Element selectedElement = manager.getSelectedElement();
                     if(selectedElement != null)
@@ -71,6 +76,22 @@ public class UVSidebar extends Sidebar
 
                     if(faces != null)
                     {
+                        glDisable(GL_TEXTURE_2D);
+                        int color = ModelCreator.BACKGROUND.getRGB();
+                        float b = (float) (color & 0xFF) / 0xFF;
+                        float g = (float) ((color >>> 8) & 0xFF) / 0xFF;
+                        float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
+                        glColor3f(r, g, b);
+
+                        glBegin(GL_QUADS);
+                        {
+                            glVertex2i(0, LENGTH);
+                            glVertex2i(LENGTH, LENGTH);
+                            glVertex2i(LENGTH, 0);
+                            glVertex2i(0, 0);
+                        }
+                        glEnd();
+
                         faces[i].bindTexture(0);
 
                         glBegin(GL_QUADS);
@@ -139,36 +160,38 @@ public class UVSidebar extends Sidebar
     private boolean grabbing = false;
 
     @Override
-    public void handleInput(int canvasHeight)
+    public void handleMouseInput(int button, int mouseX, int mouseY, boolean pressed)
     {
-        super.handleInput(canvasHeight);
-
-        if(Mouse.isButtonDown(0) | Mouse.isButtonDown(1))
+        if(pressed && (Mouse.isButtonDown(0) || Mouse.isButtonDown(1)))
         {
-            if(!grabbing)
+            if(!grabbing && hoveredFace != -1)
             {
-                this.lastMouseX = Mouse.getX();
-                this.lastMouseY = Mouse.getY();
-                grabbing = true;
+                this.lastMouseX = mouseX;
+                this.lastMouseY = mouseY;
+                this.grabbing = true;
+                this.hoveredFace = getFace(canvasHeight, Mouse.getX(), Mouse.getY());
             }
         }
         else
         {
-            grabbing = false;
+            this.grabbing = false;
         }
+    }
+
+    @Override
+    public void handleInput(int canvasHeight)
+    {
+        int newMouseX = Mouse.getX();
+        int newMouseY = Mouse.getY();
 
         if(grabbing)
         {
-            int newMouseX = Mouse.getX();
-            int newMouseY = Mouse.getY();
-
-            int side = getFace(canvasHeight, newMouseX, newMouseY);
-            if(side != -1 | selected != -1)
+            if(hoveredFace != -1 || selected != -1)
             {
                 Element selectedElement = manager.getSelectedElement();
                 if(selectedElement != null)
                 {
-                    Face face = selectedElement.getAllFaces()[(selected != -1 ? selected : side)];
+                    Face face = selectedElement.getAllFaces()[(selected != -1 ? selected : hoveredFace)];
 
                     int xMovement = (newMouseX - this.lastMouseX) / 6;
                     int yMovement = (newMouseY - this.lastMouseY) / 6;
@@ -190,11 +213,13 @@ public class UVSidebar extends Sidebar
                         {
                             face.setAutoUVEnabled(false);
 
-                            if((face.getEndU() + xMovement) <= 16.0)
+                            double uMovement = (face.getEndU() + xMovement);
+                            if(uMovement >= 0 && uMovement <= 16.0)
                             {
                                 face.addTextureXEnd(xMovement);
                             }
-                            if((face.getEndV() - yMovement) <= 16.0)
+                            double vMovement = (face.getEndV() - yMovement);
+                            if(vMovement >= 0 && vMovement <= 16.0)
                             {
                                 face.addTextureYEnd(-yMovement);
                             }
@@ -235,5 +260,15 @@ public class UVSidebar extends Sidebar
             }
         }
         return -1;
+    }
+
+    public int getHoveredFace()
+    {
+        return hoveredFace;
+    }
+
+    public boolean isGrabbing()
+    {
+        return grabbing;
     }
 }

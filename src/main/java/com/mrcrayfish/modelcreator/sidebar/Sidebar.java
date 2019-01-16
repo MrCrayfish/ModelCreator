@@ -5,7 +5,7 @@ import org.newdawn.slick.Color;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Sidebar
+public abstract class Sidebar
 {
     private String title;
 
@@ -33,12 +33,11 @@ public class Sidebar
     {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        FontManager.BEBAS_NEUE_20.drawString(5, 5, title, new Color(0.5F, 0.5F, 0.6F));
+        FontManager.BEBAS_NEUE_20.drawString(10, 5, title, new Color(0.5F, 0.5F, 0.6F));
         glDisable(GL_BLEND);
     }
 
-    public void handleInput(int canvasHeight)
-    {
+    public abstract void handleMouseInput(int button, int mouseX, int mouseY, boolean pressed);
 
-    }
+    public abstract void handleInput(int canvasHeight);
 }

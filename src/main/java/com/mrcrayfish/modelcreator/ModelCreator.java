@@ -62,6 +62,7 @@ public class ModelCreator extends JFrame
     private boolean grabbing = false;
     private boolean closeRequested = false;
     private boolean performedChange = false;
+    private boolean grabbingInSidebar = false;
 
     /* Sidebar Variables */
     private final int SIDEBAR_WIDTH = 130;
@@ -555,11 +556,19 @@ public class ModelCreator extends JFrame
 
         if(Mouse.isButtonDown(0) || Mouse.isButtonDown(1))
         {
-            if(!grabbing)
+            if(!grabbingInSidebar)
             {
-                lastMouseX = Mouse.getX();
-                lastMouseY = Mouse.getY();
-                grabbing = true;
+                if(!grabbing && Mouse.getX() < offset)
+                {
+                    grabbingInSidebar = true;
+                }
+                if(!grabbing)
+                {
+                    lastMouseX = Mouse.getX();
+                    lastMouseY = Mouse.getY();
+                    grabbing = true;
+                    uvSidebar.handleMouseInput(0, Mouse.getX(), Mouse.getY(), true);
+                }
             }
         }
         else if(grabbing)
@@ -572,8 +581,13 @@ public class ModelCreator extends JFrame
             grabbing = false;
             grabbed = null;
         }
+        else if(grabbingInSidebar)
+        {
+            uvSidebar.handleMouseInput(0, Mouse.getX(), Mouse.getY(), false);
+            grabbingInSidebar = false;
+        }
 
-        if(Mouse.getX() < offset)
+        if(grabbingInSidebar)
         {
             activeSidebar.handleInput(getHeight());
         }

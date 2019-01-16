@@ -1,7 +1,10 @@
 package com.mrcrayfish.modelcreator.element;
 
+import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.object.FaceDimension;
+import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
@@ -224,34 +227,182 @@ public class Element
 
             GL11.glColor3f(1.0F, 1.0F, 1.0F);
             GL11.glLineWidth(3F);
-            GL11.glBegin(GL_LINE_LOOP);
+
+            boolean grabbing = ((UVSidebar)ModelCreator.uvSidebar).isGrabbing();
+            int hoveredFace = ((UVSidebar)ModelCreator.uvSidebar).getHoveredFace();
+
+            /* Bottom */
+            if(hoveredFace != Face.DOWN)
             {
-                GL11.glVertex3d(0, 0, 0);
-                GL11.glVertex3d(width, 0, 0);
-                GL11.glVertex3d(width, 0, depth);
-                GL11.glVertex3d(0, 0, depth);
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                    GL11.glVertex3d(width, 0, depth);
+                    GL11.glVertex3d(0, 0, depth);
+                }
+                GL11.glEnd();
             }
-            GL11.glEnd();
-            GL11.glBegin(GL_LINE_LOOP);
+
+            /* Top */
+            if(hoveredFace != Face.UP)
             {
-                GL11.glVertex3d(0, height, 0);
-                GL11.glVertex3d(width, height, 0);
-                GL11.glVertex3d(width, height, depth);
-                GL11.glVertex3d(0, height, depth);
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, height, 0);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(0, height, depth);
+                }
+                GL11.glEnd();
             }
-            GL11.glEnd();
-            GL11.glBegin(GL_LINES);
+
+            /* North */
+            if(hoveredFace != Face.NORTH)
             {
-                GL11.glVertex3d(width, 0, 0);
-                GL11.glVertex3d(width, height, 0);
-                GL11.glVertex3d(0, 0, 0);
-                GL11.glVertex3d(0, height, 0);
-                GL11.glVertex3d(width, 0, depth);
-                GL11.glVertex3d(width, height, depth);
-                GL11.glVertex3d(0, 0, depth);
-                GL11.glVertex3d(0, height, depth);
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, height, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                }
+                GL11.glEnd();
             }
-            GL11.glEnd();
+
+            /* South */
+            if(hoveredFace != Face.SOUTH)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(width, 0, depth);
+                }
+                GL11.glEnd();
+            }
+
+            /* West */
+            if(hoveredFace != Face.WEST)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(0, height, 0);
+                }
+                GL11.glEnd();
+            }
+
+            /* West */
+            if(hoveredFace != Face.EAST)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(0, height, 0);
+                }
+                GL11.glEnd();
+            }
+
+            if(!grabbing)
+            {
+                GL11.glColor3f(1.0F, 0.0F, 0.0F);
+            }
+            else
+            {
+                if(Mouse.isButtonDown(0))
+                {
+                    GL11.glColor3f(0.0F, 1.0F, 1.0F);
+                }
+                else if(Mouse.isButtonDown(1))
+                {
+                    GL11.glColor3f(0.0F, 1.0F, 0.0F);
+                }
+            }
+            GL11.glLineWidth(3F);
+
+            /* Bottom */
+            if(hoveredFace == Face.DOWN)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                    GL11.glVertex3d(width, 0, depth);
+                    GL11.glVertex3d(0, 0, depth);
+                }
+                GL11.glEnd();
+            }
+
+            /* Top */
+            if(hoveredFace == Face.UP)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, height, 0);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(0, height, depth);
+                }
+                GL11.glEnd();
+            }
+
+            /* North */
+            if(hoveredFace == Face.NORTH)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, height, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                }
+                GL11.glEnd();
+            }
+
+            /* South */
+            if(hoveredFace == Face.SOUTH)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(width, 0, depth);
+                }
+                GL11.glEnd();
+            }
+
+            /* West */
+            if(hoveredFace == Face.WEST)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(0, height, 0);
+                }
+                GL11.glEnd();
+            }
+
+            /* West */
+            if(hoveredFace == Face.EAST)
+            {
+                GL11.glBegin(GL_LINE_LOOP);
+                {
+                    GL11.glVertex3d(0, 0, 0);
+                    GL11.glVertex3d(0, 0, depth);
+                    GL11.glVertex3d(0, height, depth);
+                    GL11.glVertex3d(0, height, 0);
+                }
+                GL11.glEnd();
+            }
         }
         GL11.glPopMatrix();
         GL11.glDepthMask(true);

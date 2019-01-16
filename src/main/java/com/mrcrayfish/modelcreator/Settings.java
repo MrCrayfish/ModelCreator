@@ -10,6 +10,7 @@ public class Settings
     private static final String JSON_DIR = "json_dir";
     private static final String EXPORT_JSON_DIR = "export_json_dir";
     private static final String UNDO_LIMIT = "undo_limit";
+    private static final String RENDER_CARDINAL_POINTS = "cardinal_points";
     private static final String ASSESTS_DIR = "assets_dir";
     private static final String FACE_COLORS = "face_colors";
     private static final String IMAGE_EDITOR = "image_editor";
@@ -107,6 +108,19 @@ public class Settings
     {
         Preferences prefs = getPreferences();
         prefs.put(UNDO_LIMIT, Integer.toString(Math.max(1, limit)));
+    }
+
+    public static boolean getCardinalPoints()
+    {
+        Preferences prefs = getPreferences();
+        String s = prefs.get(RENDER_CARDINAL_POINTS, "true");
+        return Boolean.parseBoolean(s);
+    }
+
+    public static void setCardinalPoints(boolean renderCardinalPoints)
+    {
+        Preferences prefs = getPreferences();
+        prefs.put(RENDER_CARDINAL_POINTS, Boolean.toString(renderCardinalPoints));
     }
 
     public static int[] getFaceColors()

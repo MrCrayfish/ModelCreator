@@ -2,6 +2,7 @@ package com.mrcrayfish.modelcreator.display.render;
 
 import com.mrcrayfish.modelcreator.Camera;
 import com.mrcrayfish.modelcreator.ModelCreator;
+import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.component.Menu;
 import com.mrcrayfish.modelcreator.display.CanvasRenderer;
 import com.mrcrayfish.modelcreator.element.Element;
@@ -37,7 +38,7 @@ public class StandardRenderer extends CanvasRenderer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         camera.useView();
 
-        this.drawGrid(camera, true); //TODO make this an option
+        this.drawGrid(camera, Settings.getCardinalPoints()); //TODO make this an option
         this.drawElements(manager);
 
         glDisable(GL_DEPTH_TEST);

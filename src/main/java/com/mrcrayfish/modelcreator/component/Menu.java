@@ -21,6 +21,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 public class Menu extends JMenuBar
 {
@@ -915,8 +916,14 @@ public class Menu extends JMenuBar
         JPanel generalPanel = new JPanel(generalSpringLayout);
         tabbedPane.addTab("General", generalPanel);
 
+        JPanel optionsPanel = new JPanel(new GridLayout(1, 2));
+        generalPanel.add(optionsPanel);
+
+        JPanel undoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        optionsPanel.add(undoPanel);
+
         JLabel labelUndoLimit = new JLabel("Undo / Redo Limit");
-        generalPanel.add(labelUndoLimit);
+        undoPanel.add(labelUndoLimit);
 
         final Boolean[] changed = {false};
         SpinnerNumberModel undoSpinnerNumberModel = new SpinnerNumberModel();
@@ -932,7 +939,10 @@ public class Menu extends JMenuBar
                 changed[0] = true;
             }
         });
-        generalPanel.add(undoLimitSpinner);
+        undoPanel.add(undoLimitSpinner);
+
+        JCheckBox checkBoxCardinalPoints = ComponentUtil.createCheckBox("Show Cardinal Points", "", Settings.getCardinalPoints());
+        optionsPanel.add(checkBoxCardinalPoints);
 
         JSeparator separator = new JSeparator();
         generalPanel.add(separator);
@@ -956,13 +966,12 @@ public class Menu extends JMenuBar
         textFieldArguments.setPreferredSize(new Dimension(0, 24));
         generalPanel.add(textFieldArguments);
 
-        generalSpringLayout.putConstraint(SpringLayout.WEST, labelUndoLimit, 10, SpringLayout.WEST, generalPanel);
-        generalSpringLayout.putConstraint(SpringLayout.NORTH, labelUndoLimit, 2, SpringLayout.NORTH, undoLimitSpinner);
-        generalSpringLayout.putConstraint(SpringLayout.NORTH, undoLimitSpinner, 10, SpringLayout.NORTH, generalPanel);
-        generalSpringLayout.putConstraint(SpringLayout.WEST, undoLimitSpinner, 5, SpringLayout.EAST, labelUndoLimit);
+        generalSpringLayout.putConstraint(SpringLayout.WEST, optionsPanel, 5, SpringLayout.WEST, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, optionsPanel, 5, SpringLayout.NORTH, generalPanel);
+        generalSpringLayout.putConstraint(SpringLayout.EAST, optionsPanel, 5, SpringLayout.EAST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.WEST, separator, 0, SpringLayout.WEST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.EAST, separator, 0, SpringLayout.EAST, generalPanel);
-        generalSpringLayout.putConstraint(SpringLayout.NORTH, separator, 10, SpringLayout.SOUTH, undoLimitSpinner);
+        generalSpringLayout.putConstraint(SpringLayout.NORTH, separator, 5, SpringLayout.SOUTH, optionsPanel);
         generalSpringLayout.putConstraint(SpringLayout.EAST, texturePathPanel, -10, SpringLayout.EAST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.WEST, texturePathPanel, 10, SpringLayout.WEST, generalPanel);
         generalSpringLayout.putConstraint(SpringLayout.NORTH, texturePathPanel, 10, SpringLayout.SOUTH, separator);
@@ -1011,6 +1020,7 @@ public class Menu extends JMenuBar
                 Settings.setFaceColors(Face.getFaceColors());
                 Settings.setImageEditor(getDirectoryFromSelector(imageEditorPanel));
                 Settings.setImageEditorArgs(textFieldArguments.getText());
+                Settings.setCardinalPoints(checkBoxCardinalPoints.isSelected());
             }
         });
 

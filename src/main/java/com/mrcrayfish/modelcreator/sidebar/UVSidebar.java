@@ -18,6 +18,7 @@ public class UVSidebar extends Sidebar
     private final int LENGTH = 110;
 
     private final Color BLACK_ALPHA = new Color(0, 0, 0, 0.75F);
+    private final Color BLACK_ALPHA_HOVER = new Color(0, 0, 0, 0.25F);
     public static final java.awt.Color BACKGROUND = new java.awt.Color(230, 230, 240);
 
     private int[] startX = {0, 0, 0, 0, 0, 0};
@@ -77,10 +78,25 @@ public class UVSidebar extends Sidebar
                     if(faces != null)
                     {
                         glDisable(GL_TEXTURE_2D);
+
                         int color = ModelCreator.BACKGROUND.getRGB();
                         float b = (float) (color & 0xFF) / 0xFF;
                         float g = (float) ((color >>> 8) & 0xFF) / 0xFF;
                         float r = (float) ((color >>> 16) & 0xFF) / 0xFF;
+                        glColor3f(r * 0.85F, g * 0.85F, b * 0.85F);
+
+                        glBegin(GL_QUADS);
+                        {
+                            glVertex2i(-1, LENGTH + 1);
+                            glVertex2i(LENGTH + 1, LENGTH + 1);
+                            glVertex2i(LENGTH + 1, -1);
+                            glVertex2i(-1, -1);
+                        }
+                        glEnd();
+
+                        b = (float) (color & 0xFF) / 0xFF;
+                        g = (float) ((color >>> 8) & 0xFF) / 0xFF;
+                        r = (float) ((color >>> 16) & 0xFF) / 0xFF;
                         glColor3f(r, g, b);
 
                         glBegin(GL_QUADS);
@@ -125,6 +141,7 @@ public class UVSidebar extends Sidebar
                         TextureImpl.bindNone();
 
                         glColor3f(1, 1, 1);
+                        glLineWidth(1.25F);
 
                         glBegin(GL_LINES);
                         {
@@ -143,9 +160,14 @@ public class UVSidebar extends Sidebar
                         }
                         glEnd();
 
+                        Color colorText = BLACK_ALPHA;
+                        if(hoveredFace == faces[i].getSide())
+                        {
+                            colorText = BLACK_ALPHA_HOVER;
+                        }
                         glEnable(GL_BLEND);
                         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-                        FontManager.BEBAS_NEUE_20.drawString(5, 5, Face.getFaceName(i), BLACK_ALPHA);
+                        FontManager.BEBAS_NEUE_20.drawString(5, 5, Face.getFaceName(i), colorText);
                         glDisable(GL_BLEND);
                     }
                 }
@@ -170,6 +192,13 @@ public class UVSidebar extends Sidebar
                 this.lastMouseY = mouseY;
                 this.grabbing = true;
                 this.hoveredFace = getFace(canvasHeight, Mouse.getX(), Mouse.getY());
+
+                Element selectedElement = manager.getSelectedElement();
+                if(selectedElement != null)
+                {
+                    selectedElement.setSelectedFace(this.hoveredFace);
+                    manager.updateValues();
+                }
             }
         }
         else
@@ -196,7 +225,7 @@ public class UVSidebar extends Sidebar
                     int xMovement = (newMouseX - this.lastMouseX) / 6;
                     int yMovement = (newMouseY - this.lastMouseY) / 6;
 
-                    if(xMovement != 0 | yMovement != 0)
+                    if(xMovement != 0 || yMovement != 0)
                     {
                         if(Mouse.isButtonDown(0))
                         {

@@ -4,6 +4,7 @@ import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
+import com.mrcrayfish.modelcreator.element.Face;
 import com.mrcrayfish.modelcreator.panels.FaceExtrasPanel;
 import com.mrcrayfish.modelcreator.panels.IElementUpdater;
 import com.mrcrayfish.modelcreator.panels.TexturePanel;
@@ -130,7 +131,8 @@ public class FacePanel extends JPanel implements IElementUpdater
     {
         if(cube != null)
         {
-            menuList.setSelectedIndex(cube.getSelectedFaceIndex());
+            menuList.setSelectedItem(model.getElementAt(cube.getSelectedFaceIndex()));
+            menuList.repaint();
             rotation.setEnabled(true);
             rotation.setValue(cube.getSelectedFace().getRotation());
         }

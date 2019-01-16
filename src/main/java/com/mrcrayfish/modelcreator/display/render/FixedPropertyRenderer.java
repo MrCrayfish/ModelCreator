@@ -98,7 +98,7 @@ public class FixedPropertyRenderer extends DisplayPropertyRenderer
 
             glPushMatrix();
             {
-                this.drawGrid();
+                this.drawGrid(camera, false);
                 this.drawElements(manager);
             }
             glPopMatrix();

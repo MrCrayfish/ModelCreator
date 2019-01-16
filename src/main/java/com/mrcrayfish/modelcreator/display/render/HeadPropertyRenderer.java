@@ -124,7 +124,7 @@ public class HeadPropertyRenderer extends DisplayPropertyRenderer
 
             glPushMatrix();
             {
-                this.drawGrid();
+                this.drawGrid(camera, false);
                 this.drawElements(manager);
             }
             glPopMatrix();

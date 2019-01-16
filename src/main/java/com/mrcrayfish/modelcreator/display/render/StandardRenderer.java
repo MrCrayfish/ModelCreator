@@ -8,6 +8,7 @@ import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
 import com.mrcrayfish.modelcreator.util.FontManager;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.opengl.TextureImpl;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -36,7 +37,7 @@ public class StandardRenderer extends CanvasRenderer
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         camera.useView();
 
-        this.drawGrid();
+        this.drawGrid(camera, true); //TODO make this an option
         this.drawElements(manager);
 
         glDisable(GL_DEPTH_TEST);
@@ -67,7 +68,7 @@ public class StandardRenderer extends CanvasRenderer
         }
     }
 
-    protected void drawGrid()
+    protected void drawGrid(Camera camera, boolean renderCardinalPoints)
     {
         if(Menu.isDisplayPropsShowing && !Menu.shouldRenderGrid)
         {
@@ -116,20 +117,61 @@ public class StandardRenderer extends CanvasRenderer
 
         glPushMatrix();
         {
+            TextureImpl.bindNone();
+
             glTranslatef(-8, 0, -8);
             glEnable(GL_TEXTURE_2D);
-            glShadeModel(GL_SMOOTH);
             glEnable(GL_BLEND);
-            glEnable(GL_CULL_FACE);
+            glShadeModel(GL_SMOOTH);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+            glPushMatrix();
             glTranslated(0, 0, 16);
-            glScaled(0.018, 0.018, 0.018);
+            glScaled(0.015, 0.015, 0.015);
             glRotated(90, 1, 0, 0);
-            FontManager.BEBAS_NEUE_50.drawString(8, 0, "Model Creator by MrCrayfish", new Color(0.5F, 0.5F, 0.6F));
+            FontManager.BEBAS_NEUE_50.drawString(0, 0, "MrCrayfish's Model Creator", new Color(0.5F, 0.5F, 0.6F));
+            glPopMatrix();
+
+            if(renderCardinalPoints)
+            {
+                glPushMatrix();
+                glTranslated(8, 0, 17);
+                glScaled(0.025, 0.025, 0.025);
+                glRotated(-camera.getRY(), 0, 1, 0);
+                glTranslated(-(FontManager.BEBAS_NEUE_50.getWidth("S") / 2), 0, -(FontManager.BEBAS_NEUE_50.getHeight() / 2));
+                glRotated(90, 1, 0, 0);
+                FontManager.BEBAS_NEUE_50.drawString(0, 0, "S", new Color(0.5F, 0.5F, 0.6F));
+                glPopMatrix();
+
+                glPushMatrix();
+                glTranslated(8, 0, -1);
+                glScaled(0.025, 0.025, 0.025);
+                glRotated(-camera.getRY(), 0, 1, 0);
+                glTranslated(-(FontManager.BEBAS_NEUE_50.getWidth("N") / 2), 0, -(FontManager.BEBAS_NEUE_50.getHeight() / 2));
+                glRotated(90, 1, 0, 0);
+                FontManager.BEBAS_NEUE_50.drawString(0, 0, "N", new Color(0.5F, 0.5F, 0.6F));
+                glPopMatrix();
+
+                glPushMatrix();
+                glTranslated(-1, 0, 8);
+                glScaled(0.025, 0.025, 0.025);
+                glRotated(-camera.getRY(), 0, 1, 0);
+                glTranslated(-(FontManager.BEBAS_NEUE_50.getWidth("W") / 2), 0, -(FontManager.BEBAS_NEUE_50.getHeight() / 2));
+                glRotated(90, 1, 0, 0);
+                FontManager.BEBAS_NEUE_50.drawString(0, 0, "W", new Color(0.5F, 0.5F, 0.6F));
+                glPopMatrix();
+
+                glPushMatrix();
+                glTranslated(17, 0, 8);
+                glScaled(0.025, 0.025, 0.025);
+                glRotated(-camera.getRY(), 0, 1, 0);
+                glTranslated(-(FontManager.BEBAS_NEUE_50.getWidth("E") / 2), 0, -(FontManager.BEBAS_NEUE_50.getHeight() / 2));
+                glRotated(90, 1, 0, 0);
+                FontManager.BEBAS_NEUE_50.drawString(0, 0, "E", new Color(0.5F, 0.5F, 0.6F));
+                glPopMatrix();
+            }
 
             glDisable(GL_TEXTURE_2D);
-            glShadeModel(GL_SMOOTH);
             glDisable(GL_BLEND);
         }
         glPopMatrix();

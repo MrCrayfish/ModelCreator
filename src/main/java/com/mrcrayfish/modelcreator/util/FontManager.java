@@ -38,4 +38,14 @@ public enum FontManager
     {
         font.drawString(x, y, text, color);
     }
+
+    public int getWidth(String s)
+    {
+        return font.getWidth(s);
+    }
+
+    public int getHeight()
+    {
+        return font.getHeight();
+    }
 }

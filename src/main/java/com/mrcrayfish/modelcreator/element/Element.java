@@ -300,34 +300,20 @@ public class Element
                 GL11.glEnd();
             }
 
-            /* West */
+            /* EAST */
             if(hoveredFace != Face.EAST)
             {
                 GL11.glBegin(GL_LINE_LOOP);
                 {
-                    GL11.glVertex3d(0, 0, 0);
-                    GL11.glVertex3d(0, 0, depth);
-                    GL11.glVertex3d(0, height, depth);
-                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                    GL11.glVertex3d(width, 0, depth);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(width, height, 0);
                 }
                 GL11.glEnd();
             }
 
-            if(!grabbing)
-            {
-                GL11.glColor3f(1.0F, 0.0F, 0.0F);
-            }
-            else
-            {
-                if(Mouse.isButtonDown(0))
-                {
-                    GL11.glColor3f(0.0F, 1.0F, 1.0F);
-                }
-                else if(Mouse.isButtonDown(1))
-                {
-                    GL11.glColor3f(0.0F, 1.0F, 0.0F);
-                }
-            }
+            GL11.glColor3f(1.0F, 0.0F, 0.0F);
             GL11.glLineWidth(3F);
 
             /* Bottom */
@@ -395,15 +381,15 @@ public class Element
                 GL11.glEnd();
             }
 
-            /* West */
+            /* East */
             if(hoveredFace == Face.EAST)
             {
                 GL11.glBegin(GL_LINE_LOOP);
                 {
-                    GL11.glVertex3d(0, 0, 0);
-                    GL11.glVertex3d(0, 0, depth);
-                    GL11.glVertex3d(0, height, depth);
-                    GL11.glVertex3d(0, height, 0);
+                    GL11.glVertex3d(width, 0, 0);
+                    GL11.glVertex3d(width, 0, depth);
+                    GL11.glVertex3d(width, height, depth);
+                    GL11.glVertex3d(width, height, 0);
                 }
                 GL11.glEnd();
             }

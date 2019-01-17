@@ -59,9 +59,7 @@ public class UVPanel extends JPanel implements IElementUpdater
     private void initProperties()
     {
         Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
-        xStartField.setSize(new Dimension(62, 30));
-        xStartField.setFont(defaultFont);
-        xStartField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(xStartField, defaultFont);
         xStartField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -98,9 +96,7 @@ public class UVPanel extends JPanel implements IElementUpdater
             }
         });
 
-        yStartField.setSize(new Dimension(62, 30));
-        yStartField.setFont(defaultFont);
-        yStartField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(yStartField, defaultFont);
         yStartField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -136,9 +132,7 @@ public class UVPanel extends JPanel implements IElementUpdater
             }
         });
 
-        xEndField.setSize(new Dimension(62, 30));
-        xEndField.setFont(defaultFont);
-        xEndField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(xEndField, defaultFont);
         xEndField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -174,9 +168,7 @@ public class UVPanel extends JPanel implements IElementUpdater
             }
         });
 
-        yEndField.setSize(new Dimension(62, 30));
-        yEndField.setFont(defaultFont);
-        yEndField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(yEndField, defaultFont);
         yEndField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -214,19 +206,17 @@ public class UVPanel extends JPanel implements IElementUpdater
             }
         });
 
+        SidebarPanel.initIncrementButton(btnPlusX, defaultFont, "start U", true);
         btnPlusX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureX(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureX(0.01);
+                    face.addTextureX(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -238,23 +228,17 @@ public class UVPanel extends JPanel implements IElementUpdater
             }
         });
 
-        btnPlusX.setSize(new Dimension(62, 30));
-        btnPlusX.setFont(defaultFont);
-        btnPlusX.setToolTipText("<html>Increases the start U.<br><b>Hold shift for decimals</b></html>");
-
+        SidebarPanel.initIncrementButton(btnPlusY, defaultFont, "start V", true);
         btnPlusY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureY(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureY(0.01);
+                    face.addTextureY(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -265,23 +249,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_V);
             }
         });
-        btnPlusY.setPreferredSize(new Dimension(62, 30));
-        btnPlusY.setFont(defaultFont);
-        btnPlusY.setToolTipText("<html>Increases the start V.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegX, defaultFont, "start U", false);
         btnNegX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureX(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureX(-0.01);
+                    face.addTextureX(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -292,23 +271,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_U);
             }
         });
-        btnNegX.setSize(new Dimension(62, 30));
-        btnNegX.setFont(defaultFont);
-        btnNegX.setToolTipText("<html>Decreases the start U.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegY, defaultFont, "start V", false);
         btnNegY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureY(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureY(-0.01);
+                    face.addTextureY(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -319,23 +293,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.START_V);
             }
         });
-        btnNegY.setSize(new Dimension(62, 30));
-        btnNegY.setFont(defaultFont);
-        btnNegY.setToolTipText("<html>Decreases the start V.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusXEnd, defaultFont, "end U", true);
         btnPlusXEnd.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureXEnd(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureXEnd(0.01);
+                    face.addTextureXEnd(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -346,23 +315,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_U);
             }
         });
-        btnPlusXEnd.setSize(new Dimension(62, 30));
-        btnPlusXEnd.setFont(defaultFont);
-        btnPlusXEnd.setToolTipText("<html>Increases the end U.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusYEnd, defaultFont, "end V", true);
         btnPlusYEnd.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureYEnd(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureYEnd(0.01);
+                    face.addTextureYEnd(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -373,23 +337,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_V);
             }
         });
-        btnPlusYEnd.setPreferredSize(new Dimension(62, 30));
-        btnPlusYEnd.setFont(defaultFont);
-        btnPlusYEnd.setToolTipText("<html>Increases the end V.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegXEnd, defaultFont, "end U", false);
         btnNegXEnd.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureXEnd(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureXEnd(-0.01);
+                    face.addTextureXEnd(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -400,23 +359,18 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_U);
             }
         });
-        btnNegXEnd.setSize(new Dimension(62, 30));
-        btnNegXEnd.setFont(defaultFont);
-        btnNegXEnd.setToolTipText("<html>Decreases the end U.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegYEnd, defaultFont, "end V", false);
         btnNegYEnd.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureYEnd(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureYEnd(-0.01);
+                    face.addTextureYEnd(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -427,9 +381,6 @@ public class UVPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.END_V);
             }
         });
-        btnNegYEnd.setSize(new Dimension(62, 30));
-        btnNegYEnd.setFont(defaultFont);
-        btnNegYEnd.setToolTipText("<html>Decreases the end V.<br><b>Hold shift for decimals</b></html>");
     }
 
     private void addComponents()

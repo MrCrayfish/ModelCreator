@@ -124,6 +124,21 @@ public class SidebarPanel extends JPanel implements ElementManager
                 list.ensureIndexIsVisible(list.getSelectedIndex());
             }
         });
+        list.addKeyListener(new KeyAdapter()
+        {
+            @Override
+            public void keyPressed(KeyEvent e)
+            {
+                if (e.getKeyCode() == KeyEvent.VK_DELETE)
+                {
+                    deleteElement();
+                    return;
+                }
+                boolean home = e.getKeyCode() == KeyEvent.VK_HOME;
+                if (home || e.getKeyCode() == KeyEvent.VK_END)
+                    setSelectedElement(home ? 0 : model.getSize() - 1);
+            }
+        });
         list.setCellRenderer(new ElementCellRenderer());
 
         scrollPane = new JScrollPane(list);
@@ -151,6 +166,20 @@ public class SidebarPanel extends JPanel implements ElementManager
             }
         });
         add(tabbedPane);
+    }
+
+    public static void initIncrementButton(JButton button, Font defaultFont, String subject, boolean increase)
+    {
+        button.setPreferredSize(new Dimension(62, 30));
+        button.setFont(defaultFont);
+        button.setToolTipText(String.format("<html>%screases the %s.<br><b>Hold shift for decimals</b></html>", increase ? "In" : "De", subject));
+    }
+
+    public static void initIncrementableField(JTextField field, Font defaultFont)
+    {
+        field.setSize(new Dimension(62, 30));
+        field.setFont(defaultFont);
+        field.setHorizontalAlignment(JTextField.CENTER);
     }
 
     private void setLayoutConstaints()

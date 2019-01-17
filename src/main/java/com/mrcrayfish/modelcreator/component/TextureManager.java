@@ -48,7 +48,7 @@ public class TextureManager extends JDialog
         super(owner, "Texture Manager", type);
         this.canApply = canApply;
         this.manager = manager;
-        this.setPreferredSize(new Dimension(500, 400));
+        this.setPreferredSize(new Dimension(500, 392));
         this.setResizable(false);
         this.initComponents();
         this.pack();

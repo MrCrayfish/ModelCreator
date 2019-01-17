@@ -51,9 +51,7 @@ public class SizePanel extends JPanel implements IElementUpdater
     private void initProperties()
     {
         Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
-        xSizeField.setSize(new Dimension(62, 30));
-        xSizeField.setFont(defaultFont);
-        xSizeField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(xSizeField, defaultFont);
         xSizeField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -88,9 +86,7 @@ public class SizePanel extends JPanel implements IElementUpdater
             }
         });
 
-        ySizeField.setSize(new Dimension(62, 30));
-        ySizeField.setFont(defaultFont);
-        ySizeField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(ySizeField, defaultFont);
         ySizeField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -125,9 +121,7 @@ public class SizePanel extends JPanel implements IElementUpdater
             }
         });
 
-        zSizeField.setSize(new Dimension(62, 30));
-        zSizeField.setFont(defaultFont);
-        zSizeField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(zSizeField, defaultFont);
         zSizeField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -162,18 +156,16 @@ public class SizePanel extends JPanel implements IElementUpdater
             }
         });
 
+        SidebarPanel.initIncrementButton(btnPlusX, defaultFont, "width", true);
         btnPlusX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addWidth(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addWidth(0.01);
+                    selectedElement.addWidth(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -184,22 +176,17 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_X);
             }
         });
-        btnPlusX.setPreferredSize(new Dimension(62, 30));
-        btnPlusX.setFont(defaultFont);
-        btnPlusX.setToolTipText("<html>Increases the width.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusY, defaultFont, "height", true);
         btnPlusY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addHeight(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addHeight(0.01);
+                    selectedElement.addHeight(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -210,22 +197,17 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_Y);
             }
         });
-        btnPlusY.setPreferredSize(new Dimension(62, 30));
-        btnPlusY.setFont(defaultFont);
-        btnPlusY.setToolTipText("<html>Increases the height.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusZ, defaultFont, "depth", true);
         btnPlusZ.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addDepth(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addDepth(0.01);
+                    selectedElement.addDepth(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -236,22 +218,17 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_Z);
             }
         });
-        btnPlusZ.setPreferredSize(new Dimension(62, 30));
-        btnPlusZ.setFont(defaultFont);
-        btnPlusZ.setToolTipText("<html>Increases the depth.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegX, defaultFont, "width", false);
         btnNegX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.01));
+                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {
@@ -262,22 +239,17 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_X);
             }
         });
-        btnNegX.setPreferredSize(new Dimension(62, 30));
-        btnNegX.setFont(defaultFont);
-        btnNegX.setToolTipText("<html>Decreases the width.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegY, defaultFont, "height", false);
         btnNegY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.01));
+                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {
@@ -288,22 +260,17 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_Y);
             }
         });
-        btnNegY.setPreferredSize(new Dimension(62, 30));
-        btnNegY.setFont(defaultFont);
-        btnNegY.setToolTipText("<html>Decreases the height.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegZ, defaultFont, "depth", false);
         btnNegZ.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.01));
+                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {
@@ -314,9 +281,6 @@ public class SizePanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.SIZE_Z);
             }
         });
-        btnNegZ.setPreferredSize(new Dimension(62, 30));
-        btnNegZ.setFont(defaultFont);
-        btnNegZ.setToolTipText("<html>Decreases the depth.<br><b>Hold shift for decimals</b></html>");
     }
 
     private void addComponents()

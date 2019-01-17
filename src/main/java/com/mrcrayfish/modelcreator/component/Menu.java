@@ -919,7 +919,7 @@ public class Menu extends JMenuBar
         JPanel optionsPanel = new JPanel(new GridLayout(1, 2));
         generalPanel.add(optionsPanel);
 
-        JPanel undoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JPanel undoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         optionsPanel.add(undoPanel);
 
         JLabel labelUndoLimit = new JLabel("Undo / Redo Limit");

@@ -220,13 +220,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureX(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureX(0.01);
+                    face.addTextureX(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -248,13 +245,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureY(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureY(0.01);
+                    face.addTextureY(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -275,13 +269,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureX(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureX(-0.01);
+                    face.addTextureX(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -302,13 +293,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureY(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureY(-0.01);
+                    face.addTextureY(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -329,13 +317,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureXEnd(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureXEnd(0.01);
+                    face.addTextureXEnd(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -356,13 +341,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureYEnd(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureYEnd(0.01);
+                    face.addTextureYEnd(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -383,13 +365,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureXEnd(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureXEnd(-0.01);
+                    face.addTextureXEnd(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
@@ -410,13 +389,10 @@ public class UVPanel extends JPanel implements IElementUpdater
             if(selectedElement != null)
             {
                 Face face = selectedElement.getSelectedFace();
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    face.addTextureYEnd(-0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    face.addTextureYEnd(-0.01);
+                    face.addTextureYEnd(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {

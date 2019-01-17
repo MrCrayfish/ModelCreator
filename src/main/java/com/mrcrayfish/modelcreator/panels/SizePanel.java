@@ -167,13 +167,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addWidth(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addWidth(0.01);
+                    selectedElement.addWidth(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -193,13 +190,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addHeight(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addHeight(0.01);
+                    selectedElement.addHeight(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -219,13 +213,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addDepth(0.1);
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.addDepth(0.01);
+                    selectedElement.addDepth(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
@@ -245,13 +236,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - 0.01));
+                    selectedElement.setWidth(Math.max(0.0, selectedElement.getWidth() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {
@@ -271,13 +259,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - 0.01));
+                    selectedElement.setHeight(Math.max(0.0, selectedElement.getHeight() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {
@@ -297,13 +282,10 @@ public class SizePanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) == 0)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.1));
-                }
-                else if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && (e.getModifiers() & InputEvent.CTRL_MASK) > 0)
-                {
-                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - 0.01));
+                    selectedElement.setDepth(Math.max(0.0, selectedElement.getDepth() - (ctrl == 0 ? 0.1 : 0.01)));
                 }
                 else
                 {

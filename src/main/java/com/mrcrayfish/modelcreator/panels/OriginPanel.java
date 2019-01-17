@@ -158,13 +158,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginX(0.1F);
+                    selectedElement.addOriginX(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginX(1.0F);
+                    selectedElement.addOriginX(1.0);
                 }
                 xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_X);
@@ -179,13 +180,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginY(0.1F);
+                    selectedElement.addOriginY(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginY(1.0F);
+                    selectedElement.addOriginY(1.0);
                 }
                 yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Y);
@@ -200,13 +202,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginZ(0.1F);
+                    selectedElement.addOriginZ(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginZ(1.0F);
+                    selectedElement.addOriginZ(1.0);
                 }
                 zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);
@@ -221,13 +224,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginX(-0.1F);
+                    selectedElement.addOriginX(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginX(-1.0F);
+                    selectedElement.addOriginX(-1.0);
                 }
                 xOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);
@@ -242,13 +246,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginY(-0.1F);
+                    selectedElement.addOriginY(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginY(-1.0F);
+                    selectedElement.addOriginY(-1.0);
                 }
                 yOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Y);
@@ -263,13 +268,14 @@ public class OriginPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addOriginZ(-0.1F);
+                    selectedElement.addOriginZ(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
-                    selectedElement.addOriginZ(-1.0F);
+                    selectedElement.addOriginZ(-1.0);
                 }
                 zOriginField.setText(Exporter.FORMAT.format(selectedElement.getOriginZ()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.ORIGIN_Z);

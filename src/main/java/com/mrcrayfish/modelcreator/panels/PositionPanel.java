@@ -170,13 +170,14 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartX(0.1F);
+                    selectedElement.addStartX(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addStartX(1.0F);
+                    selectedElement.addStartX(1.0);
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
@@ -191,13 +192,14 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartY(0.1F);
+                    selectedElement.addStartY(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addStartY(1.0F);
+                    selectedElement.addStartY(1.0);
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
@@ -212,13 +214,14 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartZ(0.1F);
+                    selectedElement.addStartZ(ctrl == 0 ? 0.1 : 0.01);
                 }
                 else
                 {
-                    selectedElement.addStartZ(1.0F);
+                    selectedElement.addStartZ(1.0);
                 }
                 zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
@@ -233,13 +236,14 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartX(-0.1F);
+                    selectedElement.addStartX(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
-                    selectedElement.addStartX(-1.0F);
+                    selectedElement.addStartX(-1.0);
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
@@ -254,13 +258,14 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartY(-0.1F);
+                    selectedElement.addStartY(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {
-                    selectedElement.addStartY(-1.0F);
+                    selectedElement.addStartY(-1.0);
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
@@ -275,9 +280,10 @@ public class PositionPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                if((e.getModifiers() & ActionEvent.SHIFT_MASK) == 1)
+                int ctrl = e.getModifiers() & InputEvent.CTRL_MASK;
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) > 0 && ctrl >= 0)
                 {
-                    selectedElement.addStartZ(-0.1F);
+                    selectedElement.addStartZ(ctrl == 0 ? -0.1 : -0.01);
                 }
                 else
                 {

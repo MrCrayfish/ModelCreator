@@ -168,6 +168,20 @@ public class SidebarPanel extends JPanel implements ElementManager
         add(tabbedPane);
     }
 
+    public static void initIncrementButton(JButton button, Font defaultFont, String subject, boolean increase)
+    {
+        button.setPreferredSize(new Dimension(62, 30));
+        button.setFont(defaultFont);
+        button.setToolTipText(String.format("<html>%screases the %s.<br><b>Hold shift for decimals</b></html>", increase ? "In" : "De", subject));
+    }
+
+    public static void initIncrementableField(JTextField field, Font defaultFont)
+    {
+        field.setSize(new Dimension(62, 30));
+        field.setFont(defaultFont);
+        field.setHorizontalAlignment(JTextField.CENTER);
+    }
+
     private void setLayoutConstaints()
     {
         layout.putConstraint(SpringLayout.NORTH, name, 212, SpringLayout.NORTH, this);

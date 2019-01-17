@@ -52,9 +52,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
     private void initProperties()
     {
         Font defaultFont = new Font("SansSerif", Font.BOLD, 20);
-        xPositionField.setSize(new Dimension(62, 30));
-        xPositionField.setFont(defaultFont);
-        xPositionField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(xPositionField, defaultFont);
         xPositionField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -89,9 +87,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
             }
         });
 
-        yPositionField.setSize(new Dimension(62, 30));
-        yPositionField.setFont(defaultFont);
-        yPositionField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(yPositionField, defaultFont);
         yPositionField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -127,9 +123,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
             }
         });
 
-        zPositionField.setSize(new Dimension(62, 30));
-        zPositionField.setFont(defaultFont);
-        zPositionField.setHorizontalAlignment(JTextField.CENTER);
+        SidebarPanel.initIncrementableField(zPositionField, defaultFont);
         zPositionField.addKeyListener(new KeyAdapter()
         {
             @Override
@@ -165,6 +159,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
             }
         });
 
+        SidebarPanel.initIncrementButton(btnPlusX, defaultFont, "X position", true);
         btnPlusX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -183,10 +178,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
             }
         });
-        btnPlusX.setPreferredSize(new Dimension(62, 30));
-        btnPlusX.setFont(defaultFont);
-        btnPlusX.setToolTipText("<html>Increases the X position.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusY, defaultFont, "Y position", true);
         btnPlusY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -205,10 +198,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
             }
         });
-        btnPlusY.setPreferredSize(new Dimension(62, 30));
-        btnPlusY.setFont(defaultFont);
-        btnPlusY.setToolTipText("<html>Increases the Y position.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnPlusZ, defaultFont, "Z position", true);
         btnPlusZ.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -227,10 +218,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
             }
         });
-        btnPlusZ.setPreferredSize(new Dimension(62, 30));
-        btnPlusZ.setFont(defaultFont);
-        btnPlusZ.setToolTipText("<html>Increases the Z position.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegX, defaultFont, "X position", false);
         btnNegX.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -249,10 +238,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
             }
         });
-        btnNegX.setPreferredSize(new Dimension(62, 30));
-        btnNegX.setFont(defaultFont);
-        btnNegX.setToolTipText("<html>Decreases the X position.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegY, defaultFont, "Y position", false);
         btnNegY.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -271,10 +258,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
             }
         });
-        btnNegY.setPreferredSize(new Dimension(62, 30));
-        btnNegY.setFont(defaultFont);
-        btnNegY.setToolTipText("<html>Decreases the Y position.<br><b>Hold shift for decimals</b></html>");
 
+        SidebarPanel.initIncrementButton(btnNegZ, defaultFont, "Z position", false);
         btnNegZ.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -293,9 +278,6 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
             }
         });
-        btnNegZ.setPreferredSize(new Dimension(62, 30));
-        btnNegZ.setFont(defaultFont);
-        btnNegZ.setToolTipText("<html>Decreases the Z position.<br><b>Hold shift for decimals</b></html>");
     }
 
     private void addComponents()

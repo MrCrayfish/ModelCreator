@@ -90,12 +90,20 @@ public class ExporterModel extends Exporter
 
         for(int i = 0; i < manager.getElementCount() - 1; i++)
         {
-            writeElement(writer, manager.getElement(i));
-            writer.write(",");
+            Element element = manager.getElement(i);
+            if(canWriteElement(element))
+            {
+                writeElement(writer, manager.getElement(i));
+                writer.write(",");
+            }
         }
         if(manager.getElementCount() > 0)
         {
-            writeElement(writer, manager.getElement(manager.getElementCount() - 1));
+            Element element = manager.getElement(manager.getElementCount() - 1);
+            if(canWriteElement(element))
+            {
+                writeElement(writer, manager.getElement(manager.getElementCount() - 1));
+            }
         }
 
         writer.newLine();
@@ -205,7 +213,7 @@ public class ExporterModel extends Exporter
         List<Face> validFaces = new ArrayList<>();
         for(Face face : cuboid.getAllFaces())
         {
-            if(face.isEnabled() && (includeNonTexturedFaces || face.getTexture() != null) && !optimize || face.isVisible(manager))
+            if(face.isEnabled() && (includeNonTexturedFaces || face.getTexture() != null) && (!optimize || face.isVisible(manager)))
             {
                 validFaces.add(face);
             }
@@ -292,5 +300,17 @@ public class ExporterModel extends Exporter
         writer.write(space(3) + String.format("\"scale\": [ %s, %s, %s ]", FORMAT.format(entry.getScaleX()), FORMAT.format(entry.getScaleY()), FORMAT.format(entry.getScaleZ())));
         writer.newLine();
         writer.write(space(2) + "}");
+    }
+
+    private boolean canWriteElement(Element element)
+    {
+        for(Face face : element.getAllFaces())
+        {
+            if(face.isEnabled() && (includeNonTexturedFaces || face.getTexture() != null) && (!optimize || face.isVisible(manager)))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

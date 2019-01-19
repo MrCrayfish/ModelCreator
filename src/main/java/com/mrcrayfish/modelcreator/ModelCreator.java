@@ -866,6 +866,9 @@ public class ModelCreator extends JFrame
 
     private void handleKeyAction(int code, int modifiers, boolean awt, boolean pressed)
     {
+        if(!this.isActive())
+            return;
+
         keyActions.forEach(keyAction ->
         {
             if(awt)

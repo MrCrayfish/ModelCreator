@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class ExporterModel extends Exporter
 {
+    private static final String[] DISPLAY_PROPERTY_ORDER = {"gui", "ground", "fixed", "head", "firstperson_righthand", "thirdperson_righthand"};
+
     private Map<String, String> textureMap = new HashMap<>();
     private boolean optimize = true;
     private boolean includeNames = true;
@@ -259,18 +261,17 @@ public class ExporterModel extends Exporter
     {
         Map<String, DisplayProperties.Entry> entries = manager.getDisplayProperties().getEntries();
         List<String> ids = new ArrayList<>();
-        entries.forEach((s, entry) ->
+        for(String id : DISPLAY_PROPERTY_ORDER)
         {
-            if(entry.isEnabled())
+            DisplayProperties.Entry entry = entries.get(id);
+            if(entry != null && entry.isEnabled())
             {
-                ids.add(s);
+                ids.add(id);
             }
-        });
+        }
 
         writer.write(space(1) + "\"display\": {");
         writer.newLine();
-
-        //TODO manually order
 
         for(int i = 0; i < ids.size() - 1; i++)
         {

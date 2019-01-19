@@ -157,7 +157,6 @@ public class Importer
         }
     }
 
-    //TODO fix loading textures
     private TextureEntry loadTexture(File project, String id, String texture)
     {
         TexturePath texturePath = new TexturePath(texture);

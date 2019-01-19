@@ -37,6 +37,8 @@ public class Face
     private boolean autoUV = true;
     private int rotation;
 
+    //TODO add tintindex
+
     private Element cuboid;
     private int side;
 

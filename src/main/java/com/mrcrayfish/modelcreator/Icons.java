@@ -4,16 +4,16 @@ import javax.swing.*;
 
 public class Icons
 {
-    public static Icon add;
-    public static Icon add_rollover;
     public static Icon bin;
     public static Icon new_;
     public static Icon import_;
     public static Icon export;
     public static Icon texture;
-    public static Icon clear;
+    public static Icon clear_texture;
     public static Icon copy;
+    public static Icon copy_small;
     public static Icon clipboard;
+    public static Icon clipboard_texture;
     public static Icon transparent;
     public static Icon coin;
     public static Icon load;
@@ -55,15 +55,15 @@ public class Icons
         ClassLoader loader = clazz.getClassLoader();
         cube = new ImageIcon(loader.getResource("icons/cube.png"));
         bin = new ImageIcon(loader.getResource("icons/bin.png"));
-        add = new ImageIcon(loader.getResource("icons/add.png"));
-        add_rollover = new ImageIcon(loader.getResource("icons/add_rollover.png"));
         new_ = new ImageIcon(loader.getResource("icons/new.png"));
         import_ = new ImageIcon(loader.getResource("icons/import.png"));
         export = new ImageIcon(loader.getResource("icons/export.png"));
         texture = new ImageIcon(loader.getResource("icons/texture.png"));
-        clear = new ImageIcon(loader.getResource("icons/clear.png"));
+        clear_texture = new ImageIcon(loader.getResource("icons/clear_texture.png"));
         copy = new ImageIcon(loader.getResource("icons/copy.png"));
+        copy_small = new ImageIcon(loader.getResource("icons/copy_small.png"));
         clipboard = new ImageIcon(loader.getResource("icons/clipboard.png"));
+        clipboard_texture = new ImageIcon(loader.getResource("icons/paste_texture.png"));
         transparent = new ImageIcon(loader.getResource("icons/transparent.png"));
         coin = new ImageIcon(loader.getResource("icons/coin.png"));
         load = new ImageIcon(loader.getResource("icons/load.png"));

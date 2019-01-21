@@ -29,16 +29,14 @@ public class TexturePanel extends JPanel
         this.setBackground(ModelCreator.BACKGROUND);
         this.setLayout(new GridLayout(2, 2, 4, 4));
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Texture</b></html>"));
-        this.setMaximumSize(new Dimension(186, 90));
+        this.setMaximumSize(new Dimension(186, 80));
         this.initComponents();
         this.addComponents();
     }
 
     private void initComponents()
     {
-        Font defaultFont = new Font("SansSerif", Font.BOLD, 14);
-
-        btnSelect = new JButton("Image");
+        btnSelect = new JButton("Select...");
         btnSelect.setIcon(Icons.texture);
         btnSelect.addActionListener(e ->
         {
@@ -53,11 +51,10 @@ public class TexturePanel extends JPanel
                 }
             }
         });
-        btnSelect.setFont(defaultFont);
         btnSelect.setToolTipText("Opens the Texture Manager");
 
         btnClear = new JButton("Clear");
-        btnClear.setIcon(Icons.clear);
+        btnClear.setIcon(Icons.clear_texture);
         btnClear.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -74,11 +71,10 @@ public class TexturePanel extends JPanel
                 StateManager.pushState(manager);
             }
         });
-        btnClear.setFont(defaultFont);
         btnClear.setToolTipText("<html>Clears the texture from this face.<br><b>Hold shift to clear all faces</b></html>");
 
         btnCopy = new JButton("Copy");
-        btnCopy.setIcon(Icons.copy);
+        btnCopy.setIcon(Icons.copy_small);
         btnCopy.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -88,11 +84,10 @@ public class TexturePanel extends JPanel
                 Clipboard.copyTexture(face);
             }
         });
-        btnCopy.setFont(defaultFont);
         btnCopy.setToolTipText("Copies the texture on this face to clipboard");
 
         btnPaste = new JButton("Paste");
-        btnPaste.setIcon(Icons.clipboard);
+        btnPaste.setIcon(Icons.clipboard_texture);
         btnPaste.addActionListener(e ->
         {
             Element selectedElement = manager.getSelectedElement();
@@ -114,7 +109,6 @@ public class TexturePanel extends JPanel
                 }
             }
         });
-        btnPaste.setFont(defaultFont);
         btnPaste.setToolTipText("<html>Pastes the clipboard texture to this face.<br><b>Hold shift to paste to all faces</b></html>");
     }
 

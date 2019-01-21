@@ -1,7 +1,7 @@
 apply plugin: "java"
 apply plugin: "application"
 
-version = "0.5.0"
+version = "0.6.0"
 mainClassName = "com.mrcrayfish.modelcreator.Start"
 sourceCompatibility = targetCompatibility = 1.8
 

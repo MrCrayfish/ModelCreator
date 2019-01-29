@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 public class Importer
 {
@@ -139,17 +141,18 @@ public class Importer
             {
                 if(entry.getValue().isJsonPrimitive())
                 {
-                    String texture = entry.getValue().getAsString();
-                    if(!textureMap.containsKey(entry.getKey()))
+                    String key = entry.getKey().trim().toLowerCase(Locale.ENGLISH);
+                    String value = entry.getValue().getAsString().trim().toLowerCase(Locale.ENGLISH);
+                    if(!textureMap.containsKey(key))
                     {
-                        if(entry.getKey().equals("particle"))
+                        if(key.equals("particle"))
                         {
-                            manager.setParticle(this.loadTexture(file, entry.getKey(), texture));
+                            manager.setParticle(this.loadTexture(file, key, value));
                         }
-                        else if(!texture.startsWith("#"))
+                        else if(!value.startsWith("#"))
                         {
-                            textureMap.put(entry.getKey(), texture);
-                            this.loadTexture(file, entry.getKey(), texture);
+                            textureMap.put(key, value);
+                            this.loadTexture(file, key, value);
                         }
                     }
                 }

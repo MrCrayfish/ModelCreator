@@ -16,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Author: MrCrayfish
@@ -148,13 +149,28 @@ public class TextureEntryEditor extends JDialog
         btnSave.setIcon(Icons.disk);
         btnSave.addActionListener(e ->
         {
-            if(!TextureEntry.KEY_PATTERN.matcher(textFieldKey.getText()).matches())
+            String key = textFieldKey.getText().trim().toLowerCase(Locale.ENGLISH);
+            String value = textFieldValue.getText().trim().toLowerCase(Locale.ENGLISH);
+
+            if(!TextureEntry.KEY_PATTERN.matcher(key).matches())
             {
-                JOptionPane.showMessageDialog(this, "Invalid value format", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid key format. It may only contain lowercase letters, numbers, and underscore.", "Key Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            if(!TexturePath.PATTERN.matcher(textFieldValue.getText()).matches())
+            if(TextureManager.getTexture(key) != null)
+            {
+                JOptionPane.showMessageDialog(this, "The key entered is already in use by another texture. Please choose a different key", "Key Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if("particle".equals(key))
+            {
+                JOptionPane.showMessageDialog(this, "The key 'particle' is reserved. Please choose a different key", "Key Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if(!TexturePath.PATTERN.matcher(value).matches())
             {
                 JOptionPane.showMessageDialog(this, "Invalid value format", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -178,8 +194,8 @@ public class TextureEntryEditor extends JDialog
                 }
                 entry.setTextureFile(texture);
             }
-            entry.setTexturePath(new TexturePath(textFieldValue.getText()));
-            entry.setKey(textFieldKey.getText());
+            entry.setTexturePath(new TexturePath(value));
+            entry.setKey(key);
             this.dispose();
         });
         panel.add(btnSave);

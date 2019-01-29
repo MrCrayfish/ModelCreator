@@ -310,7 +310,7 @@ public class TextureManager extends JDialog
     {
         for(TextureEntry entry : textureEntries)
         {
-            if(entry.getKey().equals(id))
+            if(entry.getKey().equalsIgnoreCase(id))
             {
                 return entry;
             }

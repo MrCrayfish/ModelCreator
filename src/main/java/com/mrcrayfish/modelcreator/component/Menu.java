@@ -70,7 +70,7 @@ public class Menu extends JMenuBar
     private JMenuItem itemDonate;
     private JMenuItem itemGitHub;
 
-    public static boolean isDisplayPropsShowing = false;
+    public static DisplayPropertiesDialog displayPropertiesDialog = null;
     public static boolean shouldRenderGrid = false;
 
     public Menu(ModelCreator creator)
@@ -445,6 +445,7 @@ public class Menu extends JMenuBar
             StateManager.clear();
             creator.getElementManager().reset();
             creator.getElementManager().updateValues();
+            DisplayPropertiesDialog.update(creator);
             StateManager.pushState(creator.getElementManager());
         }
     }
@@ -481,6 +482,7 @@ public class Menu extends JMenuBar
                 TextureManager.clear();
                 StateManager.clear();
                 ProjectManager.loadProject(creator.getElementManager(), chooser.getSelectedFile().getAbsolutePath());
+                DisplayPropertiesDialog.update(creator);
                 StateManager.pushState(creator.getElementManager());
             }
         }
@@ -1226,104 +1228,23 @@ public class Menu extends JMenuBar
 
     private static void showDisplayProperties(ModelCreator creator)
     {
-        JDialog dialog = new JDialog(creator, "Display Properties", Dialog.ModalityType.MODELESS);
+        DisplayPropertiesDialog dialog = new DisplayPropertiesDialog(creator);
         dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         dialog.addWindowListener(new WindowAdapter()
         {
             @Override
             public void windowClosed(WindowEvent e)
             {
-                isDisplayPropsShowing = false;
+                Menu.displayPropertiesDialog = null;
                 ModelCreator.restoreStandardRenderer();
             }
         });
-
-        SpringLayout layout = new SpringLayout();
-        JPanel panel = new JPanel(layout);
-        panel.setPreferredSize(new Dimension(400, 475));
-        dialog.add(panel);
-
-        JLabel labelProperties = new JLabel("Presets");
-        panel.add(labelProperties);
-
-        JComboBox<DisplayProperties> comboBoxProperties = new JComboBox<>();
-        comboBoxProperties.addItem(DisplayProperties.MODEL_CREATOR_BLOCK);
-        comboBoxProperties.addItem(DisplayProperties.DEFAULT_BLOCK);
-        comboBoxProperties.addItem(DisplayProperties.DEFAULT_ITEM);
-        comboBoxProperties.setPreferredSize(new Dimension(0, 24));
-        panel.add(comboBoxProperties);
-
-        DisplayProperties properties = creator.getElementManager().getDisplayProperties();
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("GUI", new DisplayEntryPanel(properties.getEntry("gui")));
-        tabbedPane.addTab("Ground", new DisplayEntryPanel(properties.getEntry("ground")));
-        tabbedPane.addTab("Fixed", new DisplayEntryPanel(properties.getEntry("fixed")));
-        tabbedPane.addTab("Head", new DisplayEntryPanel(properties.getEntry("head")));
-        tabbedPane.addTab("First Person", new DisplayEntryPanel(properties.getEntry("firstperson_righthand")));
-        tabbedPane.addTab("Third Person", new DisplayEntryPanel(properties.getEntry("thirdperson_righthand")));
-        tabbedPane.addChangeListener(e ->
-        {
-            Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-            if(c instanceof DisplayEntryPanel)
-            {
-                DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
-                CanvasRenderer render = DisplayProperties.RENDER_MAP.get(entryPanel.getEntry().getId());
-                if(render != null)
-                {
-                    ModelCreator.setCanvasRenderer(render);
-                }
-                else
-                {
-                    ModelCreator.restoreStandardRenderer();
-                }
-            }
-        });
-        panel.add(tabbedPane);
-
-        JButton btnApplyProperties = new JButton("Apply");
-        btnApplyProperties.setPreferredSize(new Dimension(80, 24));
-        btnApplyProperties.addActionListener(e ->
-        {
-            creator.getElementManager().setDisplayProperties((DisplayProperties) comboBoxProperties.getSelectedItem());
-            DisplayProperties displayProperties = creator.getElementManager().getDisplayProperties();
-            Component[] components = tabbedPane.getComponents();
-            for(Component c : components)
-            {
-                if(c instanceof DisplayEntryPanel)
-                {
-                    DisplayEntryPanel entryPanel = (DisplayEntryPanel) c;
-                    DisplayProperties.Entry oldEntry = entryPanel.getEntry();
-                    entryPanel.updateValues(displayProperties.getEntry(oldEntry.getId()));
-                }
-            }
-        });
-        panel.add(btnApplyProperties);
-
-        JCheckBox checkBoxShowGrid = ComponentUtil.createCheckBox("Show Grid", "Determines whether the grid should render", shouldRenderGrid);
-        checkBoxShowGrid.addActionListener(e -> shouldRenderGrid = checkBoxShowGrid.isSelected());
-        panel.add(checkBoxShowGrid);
-
-        layout.putConstraint(SpringLayout.WEST, labelProperties, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, labelProperties, 2, SpringLayout.NORTH, comboBoxProperties);
-        layout.putConstraint(SpringLayout.EAST, comboBoxProperties, -10, SpringLayout.WEST, btnApplyProperties);
-        layout.putConstraint(SpringLayout.NORTH, comboBoxProperties, 10, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.WEST, comboBoxProperties, 10, SpringLayout.EAST, labelProperties);
-        layout.putConstraint(SpringLayout.NORTH, btnApplyProperties, 10, SpringLayout.NORTH, panel);
-        layout.putConstraint(SpringLayout.EAST, btnApplyProperties, -10, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.WEST, checkBoxShowGrid, 10, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, checkBoxShowGrid, 5, SpringLayout.SOUTH, comboBoxProperties);
-        layout.putConstraint(SpringLayout.EAST, tabbedPane, -10, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, tabbedPane, 5, SpringLayout.SOUTH, checkBoxShowGrid);
-        layout.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, panel);
-
-        dialog.pack();
-        dialog.setResizable(false);
         dialog.setLocationRelativeTo(null);
         dialog.setLocation(dialog.getLocation().x - 500, dialog.getLocation().y);
-        dialog.requestFocus();
         dialog.setVisible(true);
+        dialog.requestFocus();
 
-        isDisplayPropsShowing = true;
+        Menu.displayPropertiesDialog = dialog;
         ModelCreator.setCanvasRenderer(DisplayProperties.RENDER_MAP.get("gui"));
     }
 }

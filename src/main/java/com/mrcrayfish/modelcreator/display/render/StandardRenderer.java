@@ -73,7 +73,7 @@ public class StandardRenderer extends CanvasRenderer
 
     protected void drawGrid(Camera camera, boolean renderCardinalPoints)
     {
-        if(Menu.isDisplayPropsShowing && !Menu.shouldRenderGrid)
+        if(Menu.displayPropertiesDialog != null && !Menu.shouldRenderGrid)
         {
             return;
         }

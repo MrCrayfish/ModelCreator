@@ -36,8 +36,8 @@ public class Face
     private boolean enabled = true;
     private boolean autoUV = true;
     private int rotation;
-
-    //TODO add tintindex
+    private boolean tintIndexEnabled = false;
+    private int tintIndex = -1;
 
     private Element cuboid;
     private int side;
@@ -65,6 +65,7 @@ public class Face
         this.cullface = face.cullface;
         this.enabled = face.enabled;
         this.autoUV = face.autoUV;
+        this.tintIndex = face.tintIndex;
     }
 
     public void renderNorth()
@@ -721,6 +722,26 @@ public class Face
     public void setRotation(int rotation)
     {
         this.rotation = rotation;
+    }
+
+    public void setTintIndexEnabled(boolean enabled)
+    {
+        this.tintIndexEnabled = enabled;
+    }
+
+    public boolean isTintIndexEnabled()
+    {
+        return tintIndexEnabled;
+    }
+
+    public int getTintIndex()
+    {
+        return tintIndex;
+    }
+
+    public void setTintIndex(int tintIndex)
+    {
+        this.tintIndex = tintIndex;
     }
 
     public boolean isVisible(ElementManager manager)

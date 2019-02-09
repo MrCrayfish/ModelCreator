@@ -75,6 +75,8 @@ public class Element
             faces[i].setCullface(oldFace.isCullfaced());
             faces[i].setEnabled(oldFace.isEnabled());
             faces[i].setAutoUVEnabled(oldFace.isAutoUVEnabled());
+            faces[i].setTintIndexEnabled(oldFace.isTintIndexEnabled());
+            faces[i].setTintIndex(oldFace.getTintIndex());
         }
         updateEndUVs();
     }

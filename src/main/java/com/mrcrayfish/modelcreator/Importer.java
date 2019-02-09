@@ -447,6 +447,16 @@ public class Importer
                     face.setCullface(true);
                 }
             }
+
+            if(obj.has("tintindex") && obj.get("tintindex").isJsonPrimitive())
+            {
+                int tintIndex = obj.get("tintindex").getAsInt();
+                if(tintIndex >= 0)
+                {
+                    face.setTintIndexEnabled(true);
+                    face.setTintIndex(tintIndex);
+                }
+            }
         }
     }
 }

@@ -158,7 +158,8 @@ public class TextureEntryEditor extends JDialog
                 return;
             }
 
-            if(TextureManager.getTexture(key) != null)
+            TextureEntry foundEntry = TextureManager.getTexture(key);
+            if(foundEntry != null && foundEntry != entry)
             {
                 JOptionPane.showMessageDialog(this, "The key entered is already in use by another texture. Please choose a different key", "Key Error", JOptionPane.ERROR_MESSAGE);
                 return;

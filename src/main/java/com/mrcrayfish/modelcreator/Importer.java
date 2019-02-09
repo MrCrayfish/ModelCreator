@@ -65,6 +65,7 @@ public class Importer
     private void readComponents(BufferedReader reader, ElementManager manager, File dir) throws IOException
     {
         manager.clearElements();
+        manager.setParticle(null);
         manager.setDisplayProperties(DisplayProperties.MODEL_CREATOR_BLOCK);
 
         JsonParser parser = new JsonParser();

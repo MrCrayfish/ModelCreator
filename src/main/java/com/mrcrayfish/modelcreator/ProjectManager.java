@@ -31,6 +31,7 @@ public class ProjectManager
     {
         TextureManager.clear();
         manager.clearElements();
+        manager.setParticle(null);
 
         File projectFolder = extractFiles(modelFile);
         if(projectFolder != null)

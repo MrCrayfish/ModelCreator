@@ -255,7 +255,7 @@ public class ExporterModel extends Exporter
             }
             if(face.isTintIndexEnabled() && face.getTintIndex() >= 0)
             {
-                writer.write(", \"tintindex\": \"" + face.getTintIndex() + "\"");
+                writer.write(", \"tintindex\": " + face.getTintIndex());
             }
         }
         writer.write(" }");

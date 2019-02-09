@@ -196,7 +196,7 @@ public class ExporterModel extends Exporter
     private void writeRotation(BufferedWriter writer, Element cuboid) throws IOException
     {
         writer.write(space(3) + "\"rotation\": { ");
-        writer.write("\"origin\": [ " + cuboid.getOriginX() + ", " + cuboid.getOriginY() + ", " + cuboid.getOriginZ() + " ], ");
+        writer.write("\"origin\": [ " + FORMAT.format(cuboid.getOriginX()) + ", " + FORMAT.format(cuboid.getOriginY()) + ", " + FORMAT.format(cuboid.getOriginZ()) + " ], ");
         writer.write("\"axis\": \"" + Element.parseAxis(cuboid.getRotationAxis()) + "\", ");
         writer.write("\"angle\": " + cuboid.getRotation());
         if(cuboid.shouldRescale())

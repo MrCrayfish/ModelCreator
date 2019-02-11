@@ -17,6 +17,13 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class FirstPersonPropertyRenderer extends DisplayPropertyRenderer
 {
+    private boolean leftHanded;
+
+    public FirstPersonPropertyRenderer(boolean leftHanded)
+    {
+        this.leftHanded = leftHanded;
+    }
+
     @Override
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera) {}
 
@@ -25,7 +32,7 @@ public class FirstPersonPropertyRenderer extends DisplayPropertyRenderer
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("firstperson_righthand");
+        DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry(!leftHanded ? "firstperson_righthand" : "firstperson_lefthand");
         if(entry != null)
         {
             int canvasOffset = creator.getCanvasOffset();
@@ -71,6 +78,11 @@ public class FirstPersonPropertyRenderer extends DisplayPropertyRenderer
                 glLoadIdentity();
                 glEnable(GL_DEPTH_TEST);
 
+                if(leftHanded)
+                {
+                    glScaled(-1, 1, 1);
+                }
+
                 glTranslated(-9, 8.35, -11.5);
                 glTranslated(-entry.getTranslationX(), -entry.getTranslationY(), entry.getTranslationZ());
                 glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
@@ -85,6 +97,11 @@ public class FirstPersonPropertyRenderer extends DisplayPropertyRenderer
                 glEnable(GL_DEPTH_TEST);
                 glEnable(GL_CULL_FACE);
 
+                if(leftHanded)
+                {
+                    glScaled(-1, 1, 1);
+                    glRotatef(180F, 0, 1, 0);
+                }
                 this.drawElements(manager);
 
                 glDisable(GL_DEPTH_TEST);

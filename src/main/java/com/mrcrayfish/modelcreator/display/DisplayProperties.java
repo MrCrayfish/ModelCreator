@@ -51,9 +51,10 @@ public class DisplayProperties
         RENDER_MAP.put("gui", new GuiPropertyRenderer());
         RENDER_MAP.put("ground", new GroundPropertyRenderer());
         RENDER_MAP.put("fixed", new FixedPropertyRenderer());
-        RENDER_MAP.put("firstperson_righthand", new FirstPersonPropertyRenderer());
-        RENDER_MAP.put("thirdperson_righthand", new ThirdPersonPropertyRenderer());
-
+        RENDER_MAP.put("firstperson_righthand", new FirstPersonPropertyRenderer(false));
+        RENDER_MAP.put("thirdperson_righthand", new ThirdPersonPropertyRenderer(false));
+        RENDER_MAP.put("firstperson_lefthand", new FirstPersonPropertyRenderer(true));
+        RENDER_MAP.put("thirdperson_lefthand", new ThirdPersonPropertyRenderer(true));
     }
 
     private Map<String, Entry> entries = new HashMap<>();

@@ -33,7 +33,7 @@ public class DisplayPropertiesDialog extends JDialog
     {
         SpringLayout layout = new SpringLayout();
         JPanel panel = new JPanel(layout);
-        panel.setPreferredSize(new Dimension(400, 475));
+        panel.setPreferredSize(new Dimension(400, 490));
         this.add(panel);
 
         JLabel labelProperties = new JLabel("Presets");
@@ -55,6 +55,8 @@ public class DisplayPropertiesDialog extends JDialog
         tabbedPane.addTab("Head", new DisplayEntryPanel(properties.getEntry("head")));
         tabbedPane.addTab("First Person", new DisplayEntryPanel(properties.getEntry("firstperson_righthand")));
         tabbedPane.addTab("Third Person", new DisplayEntryPanel(properties.getEntry("thirdperson_righthand")));
+        tabbedPane.addTab("First Person (Left)", new DisplayEntryPanel(properties.getEntry("firstperson_lefthand")));
+        tabbedPane.addTab("Third Person (Left)", new DisplayEntryPanel(properties.getEntry("thirdperson_lefthand")));
         tabbedPane.addChangeListener(e ->
         {
             Component c = tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());

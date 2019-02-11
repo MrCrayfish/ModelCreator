@@ -13,8 +13,11 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class ThirdPersonPropertyRenderer extends DisplayPropertyRenderer
 {
-    public ThirdPersonPropertyRenderer()
+    private boolean leftHanded;
+
+    public ThirdPersonPropertyRenderer(boolean leftHanded)
     {
+        this.leftHanded = leftHanded;
         this.addElements();
     }
 
@@ -82,18 +85,18 @@ public class ThirdPersonPropertyRenderer extends DisplayPropertyRenderer
     @Override
     public void onInit(Camera camera)
     {
-        camera.setX(13);
+        camera.setX(leftHanded ? -13 : 13);
         camera.setY(-5);
         camera.setZ(-45);
         camera.setRX(10);
-        camera.setRY(90);
+        camera.setRY(leftHanded ? -90 : 90);
         camera.setRZ(0);
     }
 
     @Override
     public void onRenderPerspective(ModelCreator creator, ElementManager manager, Camera camera)
     {
-        DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry("thirdperson_righthand");
+        DisplayProperties.Entry entry = creator.getElementManager().getDisplayProperties().getEntry(!leftHanded ? "thirdperson_righthand" : "thirdperson_lefthand");
         if(entry != null)
         {
             glMatrixMode(GL_MODELVIEW);
@@ -103,33 +106,58 @@ public class ThirdPersonPropertyRenderer extends DisplayPropertyRenderer
             glLoadIdentity();
             camera.useView();
 
-            glScaled(2.5, 2.5, 2.5);
-
-            for(Element element : elements)
-            {
-                element.drawExtras(manager);
-                element.draw();
-            }
-
-            glTranslated(-entry.getTranslationX(), entry.getTranslationY(), -entry.getTranslationZ());
-            glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
-            glRotatef(180F, 0, 1, 0);
-            glRotatef((float) entry.getRotationX(), 1, 0, 0);
-            glRotatef((float) entry.getRotationY(), 0, 1, 0);
-            glRotatef((float) entry.getRotationZ(), 0, 0, 1);
-            glTranslatef(0, -8, 0);
-
             glPushMatrix();
+            glPushAttrib(0);
             {
-                this.drawGrid(camera, false);
-                this.drawElements(manager);
-            }
-            glPopMatrix();
+                if(leftHanded)
+                {
+                    glScaled(-1, 1, 1);
+                    glEnable(GL_CULL_FACE);
+                    glCullFace(GL_FRONT);
+                }
 
-            glDisable(GL_DEPTH_TEST);
-            glDisable(GL_CULL_FACE);
-            glDisable(GL_TEXTURE_2D);
-            glDisable(GL_LIGHTING);
+                glScaled(2.5, 2.5, 2.5);
+
+                for(Element element : elements)
+                {
+                    element.drawExtras(manager);
+                    element.draw();
+                }
+
+                if(leftHanded)
+                {
+                    glCullFace(GL_BACK);
+                    glDisable(GL_CULL_FACE);
+                }
+
+                glTranslated(-entry.getTranslationX(), entry.getTranslationY(), -entry.getTranslationZ());
+                glScaled(entry.getScaleX(), entry.getScaleY(), entry.getScaleZ());
+                glRotatef(180F, 0, 1, 0);
+                glRotatef((float) entry.getRotationX(), 1, 0, 0);
+                glRotatef((float) entry.getRotationY(), 0, 1, 0);
+                glRotatef((float) entry.getRotationZ(), 0, 0, 1);
+                glTranslatef(0, -8, 0);
+
+                if(leftHanded)
+                {
+                    glScaled(-1, 1, 1);
+                    glRotatef(180F, 0, 1, 0);
+                }
+
+                glPushMatrix();
+                {
+                    this.drawGrid(camera, false);
+                    this.drawElements(manager);
+                }
+                glPopMatrix();
+
+                glDisable(GL_DEPTH_TEST);
+                glDisable(GL_CULL_FACE);
+                glDisable(GL_TEXTURE_2D);
+                glDisable(GL_LIGHTING);
+            }
+            glPopAttrib();
+            glPopMatrix();
         }
     }
 }

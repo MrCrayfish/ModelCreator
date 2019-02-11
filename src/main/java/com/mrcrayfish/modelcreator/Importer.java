@@ -232,6 +232,7 @@ public class Importer
     private void readDisplayProperties(JsonObject obj, ElementManager manager)
     {
         DisplayProperties properties = manager.getDisplayProperties();
+        properties.getEntries().forEach((s, entry) -> entry.setEnabled(false));
         for(String displayName : displayNames)
         {
             if(obj.has(displayName) && obj.get(displayName).isJsonObject())
@@ -243,40 +244,38 @@ public class Importer
 
     private void readEntry(JsonObject obj, String id, DisplayProperties properties)
     {
-        DisplayProperties.Entry entry = properties.getEntry(id);
-        if(entry != null)
+        DisplayProperties.Entry entry = new DisplayProperties.Entry(id, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+        if(obj.has("rotation") && obj.get("rotation").isJsonArray())
         {
-            if(obj.has("rotation") && obj.get("rotation").isJsonArray())
+            JsonArray array = obj.get("rotation").getAsJsonArray();
+            if(array.size() == 3)
             {
-                JsonArray array = obj.get("rotation").getAsJsonArray();
-                if(array.size() == 3)
-                {
-                    entry.setRotationX(array.get(0).getAsDouble());
-                    entry.setRotationY(array.get(1).getAsDouble());
-                    entry.setRotationZ(array.get(2).getAsDouble());
-                }
-            }
-            if(obj.has("translation") && obj.get("translation").isJsonArray())
-            {
-                JsonArray array = obj.get("translation").getAsJsonArray();
-                if(array.size() == 3)
-                {
-                    entry.setTranslationX(array.get(0).getAsDouble());
-                    entry.setTranslationY(array.get(1).getAsDouble());
-                    entry.setTranslationZ(array.get(2).getAsDouble());
-                }
-            }
-            if(obj.has("scale") && obj.get("scale").isJsonArray())
-            {
-                JsonArray array = obj.get("scale").getAsJsonArray();
-                if(array.size() == 3)
-                {
-                    entry.setScaleX(array.get(0).getAsDouble());
-                    entry.setScaleY(array.get(1).getAsDouble());
-                    entry.setScaleZ(array.get(2).getAsDouble());
-                }
+                entry.setRotationX(array.get(0).getAsDouble());
+                entry.setRotationY(array.get(1).getAsDouble());
+                entry.setRotationZ(array.get(2).getAsDouble());
             }
         }
+        if(obj.has("translation") && obj.get("translation").isJsonArray())
+        {
+            JsonArray array = obj.get("translation").getAsJsonArray();
+            if(array.size() == 3)
+            {
+                entry.setTranslationX(array.get(0).getAsDouble());
+                entry.setTranslationY(array.get(1).getAsDouble());
+                entry.setTranslationZ(array.get(2).getAsDouble());
+            }
+        }
+        if(obj.has("scale") && obj.get("scale").isJsonArray())
+        {
+            JsonArray array = obj.get("scale").getAsJsonArray();
+            if(array.size() == 3)
+            {
+                entry.setScaleX(array.get(0).getAsDouble());
+                entry.setScaleY(array.get(1).getAsDouble());
+                entry.setScaleZ(array.get(2).getAsDouble());
+            }
+        }
+        properties.getEntries().put(id, entry);
     }
 
     private void readElement(JsonObject obj, ElementManager manager)

@@ -18,34 +18,34 @@ public class DisplayProperties
     static
     {
         MODEL_CREATOR_BLOCK = new DisplayProperties("Model Creator Block", true);
-        MODEL_CREATOR_BLOCK.add("gui", 30, 45, 0, 0, 0, 0, 0.625, 0.625, 0.625);
-        MODEL_CREATOR_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25);
-        MODEL_CREATOR_BLOCK.add("fixed", 0, 180, 0, 0, 0, 0, 1, 1, 1);
-        MODEL_CREATOR_BLOCK.add("head", 0, 180, 0, 0, 0, 0, 1, 1, 1);
-        MODEL_CREATOR_BLOCK.add("firstperson_righthand", 0, 315, 0, 0, 2.5, 0, 0.4, 0.4, 0.4);
-        MODEL_CREATOR_BLOCK.add("firstperson_lefthand", 0, 0, 45, 0, 2.5, 0, 0.4, 0.4, 0.4);
-        MODEL_CREATOR_BLOCK.add("thirdperson_righthand", 75, 315, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
-        MODEL_CREATOR_BLOCK.add("thirdperson_lefthand", 75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
+        MODEL_CREATOR_BLOCK.add("gui", 30, 45, 0, 0, 0, 0, 0.625, 0.625, 0.625, true);
+        MODEL_CREATOR_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25, true);
+        MODEL_CREATOR_BLOCK.add("fixed", 0, 180, 0, 0, 0, 0, 1, 1, 1, true);
+        MODEL_CREATOR_BLOCK.add("head", 0, 180, 0, 0, 0, 0, 1, 1, 1, true);
+        MODEL_CREATOR_BLOCK.add("firstperson_righthand", 0, 315, 0, 0, 2.5, 0, 0.4, 0.4, 0.4, true);
+        MODEL_CREATOR_BLOCK.add("firstperson_lefthand", 0, 0, 45, 0, 2.5, 0, 0.4, 0.4, 0.4, false);
+        MODEL_CREATOR_BLOCK.add("thirdperson_righthand", 75, 315, 0, 0, 2.5, 0, 0.375, 0.375, 0.375, true);
+        MODEL_CREATOR_BLOCK.add("thirdperson_lefthand", 75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375, false);
 
         DEFAULT_BLOCK = new DisplayProperties("Default Block", true);
-        DEFAULT_BLOCK.add("gui", 30, 225, 0, 0, 0, 0, 0.625, 0.625, 0.625);
-        DEFAULT_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25);
-        DEFAULT_BLOCK.add("fixed", 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5);
-        DEFAULT_BLOCK.add("head", 0, 0, 0, 0, 0, 0, 1, 1, 1);
-        DEFAULT_BLOCK.add("firstperson_righthand", 0, 45, 0, 0, 2.5, 0, 0.4, 0.4, 0.4);
-        DEFAULT_BLOCK.add("firstperson_lefthand", 0, 0, 225, 0, 2.5, 0, 0.4, 0.4, 0.4);
-        DEFAULT_BLOCK.add("thirdperson_righthand", 75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
-        DEFAULT_BLOCK.add("thirdperson_lefthand", 75, 225, 0, 0, 2.5, 0, 0.375, 0.375, 0.375);
+        DEFAULT_BLOCK.add("gui", 30, 225, 0, 0, 0, 0, 0.625, 0.625, 0.625, true);
+        DEFAULT_BLOCK.add("ground", 0, 0, 0, 0, 3, 0, 0.25, 0.25, 0.25, true);
+        DEFAULT_BLOCK.add("fixed", 0, 0, 0, 0, 0, 0, 0.5, 0.5, 0.5, true);
+        DEFAULT_BLOCK.add("head", 0, 0, 0, 0, 0, 0, 1, 1, 1, false);
+        DEFAULT_BLOCK.add("firstperson_righthand", 0, 45, 0, 0, 2.5, 0, 0.4, 0.4, 0.4, true);
+        DEFAULT_BLOCK.add("firstperson_lefthand", 0, 0, 225, 0, 2.5, 0, 0.4, 0.4, 0.4, true);
+        DEFAULT_BLOCK.add("thirdperson_righthand", 75, 45, 0, 0, 2.5, 0, 0.375, 0.375, 0.375, true);
+        DEFAULT_BLOCK.add("thirdperson_lefthand", 75, 225, 0, 0, 2.5, 0, 0.375, 0.375, 0.375, true);
 
         DEFAULT_ITEM = new DisplayProperties("Default Item", true);
-        DEFAULT_ITEM.add("gui", 0, 0, 0, 0, 0, 0, 1, 1, 1);
-        DEFAULT_ITEM.add("ground", 0, 0, 0, 0, 2, 0, 0.5, 0.5, 0.5);
-        DEFAULT_ITEM.add("fixed", 0, 180, 0, 0, 0, 0, 1, 1, 1);
-        DEFAULT_ITEM.add("head", 0, 180, 0, 0, 13, 7, 1, 1, 1);
-        DEFAULT_ITEM.add("firstperson_righthand", 0, -90, 25, 1.13, 3.2, 1.13, 0.68, 0.68, 0.68);
-        DEFAULT_ITEM.add("firstperson_lefthand", 0, -90, 25, 1.13, 3.2, 1.13, 0.68, 0.68, 0.68);
-        DEFAULT_ITEM.add("thirdperson_righthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
-        DEFAULT_ITEM.add("thirdperson_lefthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55);
+        DEFAULT_ITEM.add("gui", 0, 0, 0, 0, 0, 0, 1, 1, 1, true);
+        DEFAULT_ITEM.add("ground", 0, 0, 0, 0, 2, 0, 0.5, 0.5, 0.5, true);
+        DEFAULT_ITEM.add("fixed", 0, 180, 0, 0, 0, 0, 1, 1, 1, true);
+        DEFAULT_ITEM.add("head", 0, 180, 0, 0, 13, 7, 1, 1, 1, true);
+        DEFAULT_ITEM.add("firstperson_righthand", 0, -90, 25, 1.13, 3.2, 1.13, 0.68, 0.68, 0.68, true);
+        DEFAULT_ITEM.add("firstperson_lefthand", 0, -90, 25, 1.13, 3.2, 1.13, 0.68, 0.68, 0.68, true);
+        DEFAULT_ITEM.add("thirdperson_righthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55, true);
+        DEFAULT_ITEM.add("thirdperson_lefthand", 0, 0, 0, 0, 3, 1, 0.55, 0.55, 0.55, true);
 
         RENDER_MAP.put("head", new HeadPropertyRenderer());
         RENDER_MAP.put("gui", new GuiPropertyRenderer());
@@ -78,9 +78,11 @@ public class DisplayProperties
         properties.entries.forEach((id, entry) -> entries.put(id, new Entry(entry)));
     }
 
-    public void add(String id, double rotationX, double rotationY, double rotationZ, double translationX, double translationY, double translationZ, double scaleX, double scaleY, double scaleZ)
+    public void add(String id, double rotationX, double rotationY, double rotationZ, double translationX, double translationY, double translationZ, double scaleX, double scaleY, double scaleZ, boolean enabled)
     {
-        entries.put(id, new Entry(id, rotationX, rotationY, rotationZ, translationX, translationY, translationZ, scaleX, scaleY, scaleZ));
+        Entry entry = new Entry(id, rotationX, rotationY, rotationZ, translationX, translationY, translationZ, scaleX, scaleY, scaleZ);
+        entry.setEnabled(enabled);
+        entries.put(id, entry);
     }
 
     public String getName()
@@ -133,6 +135,7 @@ public class DisplayProperties
 
         public Entry(Entry entry)
         {
+            this.enabled = entry.enabled;
             this.id = entry.id;
             this.rotationX = entry.rotationX;
             this.rotationY = entry.rotationY;

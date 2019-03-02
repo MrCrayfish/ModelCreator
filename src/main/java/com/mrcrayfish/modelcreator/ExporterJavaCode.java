@@ -94,7 +94,7 @@ public class ExporterJavaCode extends Exporter
                         double y = element.getStartY();
                         double z = element.getStartZ();
                         writer.write("    ");
-                        writeField(writer, null, name, x, y, z, x + element.getWidth(), y + element.getHeight(), z + element.getDepth());
+                        writeField(writer, null, name, x * 16.0, y * 16.0, z * 16.0, (x + element.getWidth()) * 16.0, (y + element.getHeight()) * 16.0, (z + element.getDepth()) * 16.0);
                     }
                     else
                     {
@@ -139,7 +139,7 @@ public class ExporterJavaCode extends Exporter
                         double y = element.getStartY();
                         double z = element.getStartZ();
                         writer.write("    ");
-                        writeField(writer, null, name, x, y, z, x + element.getWidth(), y + element.getHeight(), z + element.getDepth());
+                        writeField(writer, null, name, x * 16.0, y * 16.0, z * 16.0, (x + element.getWidth()) * 16.0, (y + element.getHeight()) * 16.0, (z + element.getDepth()) * 16.0);
                     }
                     else
                     {

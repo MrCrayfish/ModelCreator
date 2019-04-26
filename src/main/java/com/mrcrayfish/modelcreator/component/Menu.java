@@ -619,6 +619,7 @@ public class Menu extends JMenuBar
         {
             JFileChooser chooser = new JFileChooser();
             chooser.setDialogTitle("Export Destination");
+            chooser.setCurrentDirectory(new File(textFieldDestination.getText()));
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setApproveButtonText("Select");
             int returnVal = chooser.showOpenDialog(dialog);

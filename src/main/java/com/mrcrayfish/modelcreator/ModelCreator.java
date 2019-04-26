@@ -164,7 +164,7 @@ public class ModelCreator extends JFrame
 
     private void initComponents()
     {
-        Icons.init(getClass());
+        Icons.init(this.getClass());
         setupMenuBar();
 
         canvas.setFocusable(true);
@@ -263,7 +263,7 @@ public class ModelCreator extends JFrame
 
         try
         {
-            Display.create((new PixelFormat()).withDepthBits(24));
+            Display.create((new PixelFormat(8, 0, 0, 4)).withDepthBits(24));
             return;
         }
         catch(LWJGLException e)

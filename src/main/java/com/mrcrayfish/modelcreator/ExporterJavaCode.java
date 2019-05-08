@@ -139,7 +139,7 @@ public class ExporterJavaCode extends Exporter
                         double y = element.getStartY();
                         double z = element.getStartZ();
                         writer.write("    ");
-                        writeField(writer, null, name, x, y, z, x + element.getWidth(), y + element.getHeight(), z + element.getDepth());
+                        writeField(writer, null, name, x * 16.0, y * 16.0, z * 16.0, (x + element.getWidth()) * 16.0, (y + element.getHeight()) * 16.0, (z + element.getDepth()) * 16.0);
                     }
                     else
                     {
@@ -155,10 +155,10 @@ public class ExporterJavaCode extends Exporter
                 else
                 {
                     writer.newLine();
-                    writeNewLine(writer, "    VoxelShape result = ShapeUtils.empty();");
+                    writeNewLine(writer, "    VoxelShape result = VoxelShapes.empty();");
                     writeNewLine(writer, "    for(VoxelShape shape : shapes)");
                     writeNewLine(writer, "    {");
-                    writeNewLine(writer, "        result = ShapeUtils.combine(result, shape, IBooleanFunction.OR);");
+                    writeNewLine(writer, "        result = VoxelShapes.combine(result, shape, IBooleanFunction.OR);");
                     writeNewLine(writer, "    }");
                     writeNewLine(writer, "    return result.simplify();");
                 }

@@ -379,7 +379,14 @@ public class ExporterJavaCode extends Exporter
         {
             if(generateRotatedBounds)
             {
-                writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedShapes(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                if(version == Version.V_1_13)
+                {
+                    writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedShapes(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                }
+                else
+                {
+                    writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedShapes(VoxelShapeHelper.rotate(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s), Direction.SOUTH));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                }
             }
             else
             {

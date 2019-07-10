@@ -172,10 +172,10 @@ public class ExporterJavaCode extends Exporter
                 else
                 {
                     writer.newLine();
-                    writeNewLine(writer, "    VoxelShape result = ShapeUtils.empty();");
+                    writeNewLine(writer, "    VoxelShape result = VoxelShapes.empty();");
                     writeNewLine(writer, "    for(VoxelShape shape : shapes)");
                     writeNewLine(writer, "    {");
-                    writeNewLine(writer, "        result = ShapeUtils.combine(result, shape, IBooleanFunction.OR);");
+                    writeNewLine(writer, "        result = VoxelShapes.combine(result, shape, IBooleanFunction.OR);");
                     writeNewLine(writer, "    }");
                     writeNewLine(writer, "    return result.simplify();");
                 }

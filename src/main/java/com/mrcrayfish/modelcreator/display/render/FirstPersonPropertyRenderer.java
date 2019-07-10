@@ -8,7 +8,6 @@ import com.mrcrayfish.modelcreator.texture.TextureAtlas;
 import com.mrcrayfish.modelcreator.util.AtlasRenderUtil;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
-import org.newdawn.slick.opengl.TextureImpl;
 
 import static org.lwjgl.opengl.GL11.*;
 

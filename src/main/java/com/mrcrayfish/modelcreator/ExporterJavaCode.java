@@ -44,15 +44,18 @@ public class ExporterJavaCode extends Exporter
     @Override
     protected void write(BufferedWriter writer) throws IOException
     {
-        if(version == Version.V_1_13)
+        boolean V_1_13 = version == Version.V_1_13;
+        boolean V_1_14 = version == Version.V_1_14;
+        if(V_1_13 || V_1_14)
         {
+            String state =  V_1_13 ? "I" : "";
             if(includeFields)
             {
                 /* Generates member fields */
                 writeNewLine(writer, "/* Member variables */");
                 if(generateRotatedBounds)
                 {
-                    writeNewLine(writer, "public final ImmutableMap<IBlockState, VoxelShape> SHAPES;");
+                    writeNewLine(writer, "public final ImmutableMap<" + state + "BlockState, VoxelShape> SHAPES;");
                 }
                 else
                 {
@@ -83,7 +86,7 @@ public class ExporterJavaCode extends Exporter
             /* Creates method for generating voxel shapes for rotatable blocks */
             if(generateRotatedBounds)
             {
-                writeNewLine(writer, "private ImmutableMap<IBlockState, VoxelShape> generateShapes(ImmutableList<IBlockState> states)");
+                writeNewLine(writer, "private ImmutableMap<" + state + "BlockState, VoxelShape> generateShapes(ImmutableList<" + state + "BlockState> states)");
                 writeNewLine(writer, "{");
                 for(Element element : manager.getAllElements())
                 {
@@ -104,10 +107,17 @@ public class ExporterJavaCode extends Exporter
                 }
 
                 writer.newLine();
-                writeNewLine(writer, "    ImmutableMap.Builder<IBlockState, VoxelShape> builder = new ImmutableMap.Builder<>();");
-                writeNewLine(writer, "    for(IBlockState state : states)");
+                writeNewLine(writer, "    ImmutableMap.Builder<" + state + "BlockState, VoxelShape> builder = new ImmutableMap.Builder<>();");
+                writeNewLine(writer, "    for(" + state + "BlockState state : states)");
                 writeNewLine(writer, "    {");
-                writeNewLine(writer, "        EnumFacing facing = state.getValue(HORIZONTAL_FACING);");
+                if(V_1_13)
+                {
+                    writeNewLine(writer, "        EnumFacing facing = state.getValue(HORIZONTAL_FACING);");
+                }
+                else
+                {
+                    writeNewLine(writer, "        Direction direction = state.get(DIRECTION);");
+                }
                 writeNewLine(writer, "        List<VoxelShape> shapes = new ArrayList<>();");
 
                 for(Element element : manager.getAllElements())
@@ -115,7 +125,14 @@ public class ExporterJavaCode extends Exporter
                     if(element.getRotation() == 0)
                     {
                         String name = element.getName().toUpperCase().replaceAll(" ", "_");
-                        writeNewLine(writer, String.format("        shapes.add(%s[facing.getHorizontalIndex()]);", name));
+                        if(V_1_13)
+                        {
+                            writeNewLine(writer, String.format("        shapes.add(%s[facing.getHorizontalIndex()]);", name));
+                        }
+                        else
+                        {
+                            writeNewLine(writer, String.format("        shapes.add(%s[direction.getHorizontalIndex()]);", name));
+                        }
                     }
                 }
 
@@ -155,10 +172,10 @@ public class ExporterJavaCode extends Exporter
                 else
                 {
                     writer.newLine();
-                    writeNewLine(writer, "    VoxelShape result = ShapeUtils.empty();");
+                    writeNewLine(writer, "    VoxelShape result = VoxelShapes.empty();");
                     writeNewLine(writer, "    for(VoxelShape shape : shapes)");
                     writeNewLine(writer, "    {");
-                    writeNewLine(writer, "        result = ShapeUtils.combine(result, shape, IBooleanFunction.OR);");
+                    writeNewLine(writer, "        result = VoxelShapes.combine(result, shape, IBooleanFunction.OR);");
                     writeNewLine(writer, "    }");
                     writeNewLine(writer, "    return result.simplify();");
                 }
@@ -168,7 +185,14 @@ public class ExporterJavaCode extends Exporter
 
             /* Produces the method for selection box */
             writeNewLine(writer, "@Override");
-            writeNewLine(writer, "public VoxelShape getShape(IBlockState state, IBlockReader reader, BlockPos pos)");
+            if(V_1_13)
+            {
+                writeNewLine(writer, "public VoxelShape getShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            }
+            else
+            {
+                writeNewLine(writer, "public VoxelShape getShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)");
+            }
             writeNewLine(writer, "{");
             if(generateRotatedBounds)
             {
@@ -183,7 +207,14 @@ public class ExporterJavaCode extends Exporter
 
             /* Produces the method for collisions */
             writeNewLine(writer, "@Override");
-            writeNewLine(writer, "public VoxelShape getCollisionShape(IBlockState state, IBlockReader reader, BlockPos pos)");
+            if(V_1_13)
+            {
+                writeNewLine(writer, "public VoxelShape getCollisionShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            }
+            else
+            {
+                writeNewLine(writer, "public VoxelShape getCollisionShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)");
+            }
             writeNewLine(writer, "{");
             if(generateRotatedBounds)
             {
@@ -332,16 +363,30 @@ public class ExporterJavaCode extends Exporter
 
     private String format(double value)
     {
-        return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
+        if(version == Version.V_1_12 || version == Version.V_1_13)
+        {
+            return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
+        }
+        else
+        {
+            return FORMAT.format(useBoundsHelper ? value : value);
+        }
     }
 
     private void writeField(BufferedWriter writer, ModelBounds bounds, String name, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) throws IOException
     {
-        if(version == Version.V_1_13)
+        if(version == Version.V_1_13 || version == Version.V_1_14)
         {
             if(generateRotatedBounds)
             {
-                writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedVoxelShapes(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                if(version == Version.V_1_13)
+                {
+                    writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedShapes(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                }
+                else
+                {
+                    writer.write(String.format("final VoxelShape[] %s = VoxelShapeHelper.getRotatedShapes(VoxelShapeHelper.rotate(Block.makeCuboidShape(%s, %s, %s, %s, %s, %s), Direction.SOUTH));", name, format(minX), format(minY), format(minZ), format(maxX), format(maxY), format(maxZ)));
+                }
             }
             else
             {
@@ -407,7 +452,7 @@ public class ExporterJavaCode extends Exporter
 
     public enum Version
     {
-        V_1_12("1.12"), V_1_13("1.13");
+        V_1_12("1.12"), V_1_13("1.13"), V_1_14("1.14");
 
         private String label;
 

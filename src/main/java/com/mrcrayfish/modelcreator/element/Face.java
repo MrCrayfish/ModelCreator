@@ -7,7 +7,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_BLEND;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class Face
 {

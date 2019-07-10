@@ -86,7 +86,7 @@ public class ExporterJavaCode extends Exporter
             /* Creates method for generating voxel shapes for rotatable blocks */
             if(generateRotatedBounds)
             {
-                writeNewLine(writer, "private ImmutableMap<" + state + "BlockState, VoxelShape> generateShapes(ImmutableList" + state + "BlockState> states)");
+                writeNewLine(writer, "private ImmutableMap<" + state + "BlockState, VoxelShape> generateShapes(ImmutableList<" + state + "BlockState> states)");
                 writeNewLine(writer, "{");
                 for(Element element : manager.getAllElements())
                 {
@@ -108,7 +108,7 @@ public class ExporterJavaCode extends Exporter
 
                 writer.newLine();
                 writeNewLine(writer, "    ImmutableMap.Builder<" + state + "BlockState, VoxelShape> builder = new ImmutableMap.Builder<>();");
-                writeNewLine(writer, "    for(IBlockState state : states)");
+                writeNewLine(writer, "    for(" + state + "BlockState state : states)");
                 writeNewLine(writer, "    {");
                 if(V_1_13)
                 {
@@ -185,7 +185,14 @@ public class ExporterJavaCode extends Exporter
 
             /* Produces the method for selection box */
             writeNewLine(writer, "@Override");
-            writeNewLine(writer, "public VoxelShape getShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            if(V_1_13)
+            {
+                writeNewLine(writer, "public VoxelShape getShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            }
+            else
+            {
+                writeNewLine(writer, "public VoxelShape getShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)");
+            }
             writeNewLine(writer, "{");
             if(generateRotatedBounds)
             {
@@ -200,7 +207,14 @@ public class ExporterJavaCode extends Exporter
 
             /* Produces the method for collisions */
             writeNewLine(writer, "@Override");
-            writeNewLine(writer, "public VoxelShape getCollisionShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            if(V_1_13)
+            {
+                writeNewLine(writer, "public VoxelShape getCollisionShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            }
+            else
+            {
+                writeNewLine(writer, "public VoxelShape getRenderShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+            }
             writeNewLine(writer, "{");
             if(generateRotatedBounds)
             {

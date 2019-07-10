@@ -213,7 +213,7 @@ public class ExporterJavaCode extends Exporter
             }
             else
             {
-                writeNewLine(writer, "public VoxelShape getRenderShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos)");
+                writeNewLine(writer, "public VoxelShape getCollisionShape(" + state + "BlockState state, IBlockReader reader, BlockPos pos, ISelectionContext context)");
             }
             writeNewLine(writer, "{");
             if(generateRotatedBounds)

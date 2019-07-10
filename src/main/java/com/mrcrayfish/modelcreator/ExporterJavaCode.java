@@ -49,7 +49,6 @@ public class ExporterJavaCode extends Exporter
         if(V_1_13 || V_1_14)
         {
             String state =  V_1_13 ? "I" : "";
-            String direction = V_1_13 ? "EnumFacing" : "Direction";
             if(includeFields)
             {
                 /* Generates member fields */
@@ -111,7 +110,14 @@ public class ExporterJavaCode extends Exporter
                 writeNewLine(writer, "    ImmutableMap.Builder<" + state + "BlockState, VoxelShape> builder = new ImmutableMap.Builder<>();");
                 writeNewLine(writer, "    for(IBlockState state : states)");
                 writeNewLine(writer, "    {");
-                writeNewLine(writer, "        " + direction + " facing = state.getValue(HORIZONTAL_FACING);");
+                if(V_1_13)
+                {
+                    writeNewLine(writer, "        EnumFacing facing = state.getValue(HORIZONTAL_FACING);");
+                }
+                else
+                {
+                    writeNewLine(writer, "        Direction direction = state.get(DIRECTION);");
+                }
                 writeNewLine(writer, "        List<VoxelShape> shapes = new ArrayList<>();");
 
                 for(Element element : manager.getAllElements())
@@ -119,7 +125,14 @@ public class ExporterJavaCode extends Exporter
                     if(element.getRotation() == 0)
                     {
                         String name = element.getName().toUpperCase().replaceAll(" ", "_");
-                        writeNewLine(writer, String.format("        shapes.add(%s[facing.getHorizontalIndex()]);", name));
+                        if(V_1_13)
+                        {
+                            writeNewLine(writer, String.format("        shapes.add(%s[facing.getHorizontalIndex()]);", name));
+                        }
+                        else
+                        {
+                            writeNewLine(writer, String.format("        shapes.add(%s[direction.getHorizontalIndex()]);", name));
+                        }
                     }
                 }
 

@@ -14,7 +14,6 @@ import com.mrcrayfish.modelcreator.screenshot.Screenshot;
 import com.mrcrayfish.modelcreator.sidebar.Sidebar;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.TextureAtlas;
-import com.mrcrayfish.modelcreator.texture.TextureEntry;
 import com.mrcrayfish.modelcreator.util.FontManager;
 import com.mrcrayfish.modelcreator.util.KeyboardUtil;
 import org.lwjgl.LWJGLException;

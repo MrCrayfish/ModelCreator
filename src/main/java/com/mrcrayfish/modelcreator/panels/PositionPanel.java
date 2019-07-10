@@ -65,6 +65,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     {
                         selectedElement.setStartX(Parser.parseDouble(xPositionField.getText(), selectedElement.getStartX()));
                         selectedElement.updateEndUVs();
+                        selectedElement.updateOrigin();
                         manager.updateValues();
                         StateManager.pushState(manager);
                     }
@@ -82,6 +83,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 {
                     selectedElement.setStartX(Parser.parseDouble(xPositionField.getText(), selectedElement.getStartX()));
                     selectedElement.updateEndUVs();
+                    selectedElement.updateOrigin();
                     manager.updateValues();
                 }
             }
@@ -101,6 +103,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                         StateManager.pushState(manager);
                         selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
                         selectedElement.updateEndUVs();
+                        selectedElement.updateOrigin();
                         manager.updateValues();
                     }
 
@@ -118,6 +121,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     StateManager.pushState(manager);
                     selectedElement.setStartY(Parser.parseDouble(yPositionField.getText(), selectedElement.getStartY()));
                     selectedElement.updateEndUVs();
+                    selectedElement.updateOrigin();
                     manager.updateValues();
                 }
             }
@@ -137,6 +141,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                         StateManager.pushState(manager);
                         selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
                         selectedElement.updateEndUVs();
+                        selectedElement.updateOrigin();
                         manager.updateValues();
                     }
 
@@ -154,6 +159,7 @@ public class PositionPanel extends JPanel implements IElementUpdater
                     StateManager.pushState(manager);
                     selectedElement.setStartZ(Parser.parseDouble(zPositionField.getText(), selectedElement.getStartZ()));
                     selectedElement.updateEndUVs();
+                    selectedElement.updateOrigin();
                     manager.updateValues();
                 }
             }
@@ -176,6 +182,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
 
@@ -196,6 +204,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
 
@@ -216,6 +226,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
 
@@ -236,6 +248,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 xPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartX()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_X);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
 
@@ -256,6 +270,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 yPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartY()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Y);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
 
@@ -276,6 +292,8 @@ public class PositionPanel extends JPanel implements IElementUpdater
                 }
                 zPositionField.setText(Exporter.FORMAT.format(selectedElement.getStartZ()));
                 StateManager.pushStateDelayed(manager, PropertyIdentifiers.POS_Z);
+                selectedElement.updateOrigin();
+                manager.updateValues();
             }
         });
     }

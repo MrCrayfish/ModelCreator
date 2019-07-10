@@ -3,8 +3,6 @@ package com.mrcrayfish.modelcreator.texture;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.util.BufferedImageUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

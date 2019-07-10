@@ -4,7 +4,6 @@ import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.object.FaceDimension;
 import com.mrcrayfish.modelcreator.sidebar.UVSidebar;
 import com.mrcrayfish.modelcreator.texture.TextureEntry;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Sphere;
 
@@ -28,6 +27,7 @@ public class Element
     private double rotation;
     private int axis = 0;
     private boolean rescale = false;
+    private boolean snapOrigin = false;
 
     // Extra Variables
     private boolean shade = true;
@@ -59,6 +59,7 @@ public class Element
         this.rotation = cuboid.getRotation();
         this.axis = cuboid.getRotationAxis();
         this.rescale = cuboid.shouldRescale();
+        this.snapOrigin = cuboid.shouldSnapOrigin();
         this.shade = cuboid.isShaded();
         this.selectedFace = cuboid.getSelectedFaceIndex();
         initFaces();
@@ -132,6 +133,14 @@ public class Element
         for(Face face : faces)
         {
             face.setTexture(entry);
+        }
+    }
+    
+    public void setAllAutoUV(boolean uv)
+    {
+        for(Face face : faces)
+        {
+            face.setAutoUVEnabled(uv);
         }
     }
 
@@ -559,10 +568,20 @@ public class Element
     {
         this.rescale = rescale;
     }
+    
+    public void setSnapOrigin(boolean snapOrigin)
+    {
+        this.snapOrigin = snapOrigin;
+    }
 
     public boolean shouldRescale()
     {
         return rescale;
+    }
+    
+    public boolean shouldSnapOrigin()
+    {
+        return snapOrigin;
     }
 
     public boolean isShaded()
@@ -605,6 +624,23 @@ public class Element
         {
             face.updateEndUV();
         }
+    }
+    
+    public void updateOrigin()
+    {
+        if(snapOrigin)
+        {
+            originX = startX;
+            originY = startY;
+            originZ = startZ;
+        }
+    }
+    
+    public void setOrigin()
+    {
+        originX = startX;
+        originY = startY;
+        originZ = startZ;
     }
 
     private void rotateAxis()

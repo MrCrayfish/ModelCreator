@@ -44,7 +44,7 @@ public class ExporterJavaCode extends Exporter
     @Override
     protected void write(BufferedWriter writer) throws IOException
     {
-        if(version == Version.V_1_13)
+        if(version == Version.V_1_13 || version == Version.V_1_14)
         {
             if(includeFields)
             {
@@ -332,12 +332,19 @@ public class ExporterJavaCode extends Exporter
 
     private String format(double value)
     {
-        return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
+        if(version == Version.V_1_12 || version == Version.V_1_13)
+        {
+            return FORMAT.format(useBoundsHelper ? value : value * 0.0625);
+        }
+        else
+        {
+            return FORMAT.format(useBoundsHelper ? value : value);
+        }
     }
 
     private void writeField(BufferedWriter writer, ModelBounds bounds, String name, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) throws IOException
     {
-        if(version == Version.V_1_13)
+        if(version == Version.V_1_13 || version == Version.V_1_14)
         {
             if(generateRotatedBounds)
             {
@@ -407,7 +414,7 @@ public class ExporterJavaCode extends Exporter
 
     public enum Version
     {
-        V_1_12("1.12"), V_1_13("1.13");
+        V_1_12("1.12"), V_1_13("1.13"), V_1_14("1.14");
 
         private String label;
 

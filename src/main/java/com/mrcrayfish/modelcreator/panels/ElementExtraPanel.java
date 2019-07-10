@@ -1,5 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
+import com.mrcrayfish.modelcreator.Icons;
 import com.mrcrayfish.modelcreator.ModelCreator;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
@@ -14,6 +15,7 @@ public class ElementExtraPanel extends JPanel implements IElementUpdater
     private ElementManager manager;
 
     private JRadioButton btnShade;
+    private JButton btnSetOrigin;
 
     public ElementExtraPanel(ElementManager manager)
     {
@@ -23,11 +25,14 @@ public class ElementExtraPanel extends JPanel implements IElementUpdater
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Extras</b></html>"));
         this.setMaximumSize(new Dimension(186, 50));
         this.initComponents();
+        this.initProperties();
         this.addComponents();
     }
 
     private void initComponents()
     {
+        btnSetOrigin = new JButton("Origin", Icons.clipboard);
+        
         btnShade = ComponentUtil.createRadioButton("Shade", "<html>Determines if shadows should be rendered<br>Default: On</html>");
         btnShade.setBackground(ModelCreator.BACKGROUND);
         btnShade.addActionListener(e ->
@@ -40,10 +45,28 @@ public class ElementExtraPanel extends JPanel implements IElementUpdater
             }
         });
     }
+    
+    private void initProperties()
+    {
+        btnSetOrigin.setToolTipText("Set the origin to the position");
+        btnSetOrigin.addActionListener(e ->
+        {
+            Element selectedElement = manager.getSelectedElement();
+            if(selectedElement != null)
+            {
+                selectedElement.setOriginX(selectedElement.getStartX());
+                selectedElement.setOriginY(selectedElement.getStartY());
+                selectedElement.setOriginZ(selectedElement.getStartZ());
+                selectedElement.setOrigin();
+                manager.updateValues();
+            }
+        });
+    }
 
     private void addComponents()
     {
         add(btnShade);
+        add(btnSetOrigin);
     }
 
     @Override

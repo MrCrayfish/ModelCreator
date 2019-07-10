@@ -26,6 +26,9 @@ public class RotationPanel extends JPanel implements IElementUpdater
     private JSlider rotation;
     private JPanel extraPanel;
     private JRadioButton btnRescale;
+    private JRadioButton btnSnapOrigin;
+    
+    //private JButton btnSetOrigin;
 
     private DefaultComboBoxModel<String> model;
 
@@ -116,7 +119,7 @@ public class RotationPanel extends JPanel implements IElementUpdater
         sliderPanel.setMaximumSize(new Dimension(190, 80));
         sliderPanel.add(rotation);
 
-        extraPanel = new JPanel(new GridLayout(1, 2));
+        extraPanel = new JPanel(new GridLayout(2, 1));
         extraPanel.setBackground(ModelCreator.BACKGROUND);
         extraPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(ModelCreator.BACKGROUND, 5), "<html><b>Extras</b></html>"));
 
@@ -131,8 +134,21 @@ public class RotationPanel extends JPanel implements IElementUpdater
                 StateManager.pushState(manager);
             }
         });
-        extraPanel.setMaximumSize(new Dimension(186, 50));
+    
+        btnSnapOrigin = ComponentUtil.createRadioButton("Snap Origin", "<html>Should snap origin to position<br>Default: Off<html>");
+        btnSnapOrigin.setBackground(ModelCreator.BACKGROUND);
+        btnSnapOrigin.addActionListener(e ->
+        {
+            Element selectedElement = manager.getSelectedElement();
+            if(selectedElement != null)
+            {
+                selectedElement.setSnapOrigin(btnSnapOrigin.isSelected());
+                StateManager.pushState(manager);
+            }
+        });
+        extraPanel.setMaximumSize(new Dimension(186, 75));
         extraPanel.add(btnRescale);
+        extraPanel.add(btnSnapOrigin);
     }
 
     private void addComponents()
@@ -155,6 +171,8 @@ public class RotationPanel extends JPanel implements IElementUpdater
             rotation.setValue((int) (cube.getRotation() / 22.5));
             btnRescale.setEnabled(true);
             btnRescale.setSelected(cube.shouldRescale());
+            btnSnapOrigin.setEnabled(true);
+            btnSnapOrigin.setSelected(cube.shouldSnapOrigin());
         }
         else
         {
@@ -162,6 +180,8 @@ public class RotationPanel extends JPanel implements IElementUpdater
             rotation.setEnabled(false);
             btnRescale.setSelected(false);
             btnRescale.setEnabled(false);
+            btnSnapOrigin.setSelected(false);
+            btnSnapOrigin.setEnabled(false);
         }
     }
 }

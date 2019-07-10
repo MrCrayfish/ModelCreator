@@ -1,7 +1,6 @@
 package com.mrcrayfish.modelcreator.panels;
 
 import com.mrcrayfish.modelcreator.ModelCreator;
-import com.mrcrayfish.modelcreator.Settings;
 import com.mrcrayfish.modelcreator.StateManager;
 import com.mrcrayfish.modelcreator.element.Element;
 import com.mrcrayfish.modelcreator.element.ElementManager;
@@ -9,6 +8,7 @@ import com.mrcrayfish.modelcreator.util.ComponentUtil;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputEvent;
 
 public class FaceExtrasPanel extends JPanel implements IElementUpdater
 {
@@ -77,7 +77,14 @@ public class FaceExtrasPanel extends JPanel implements IElementUpdater
             Element selectedElement = manager.getSelectedElement();
             if(selectedElement != null)
             {
-                selectedElement.getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
+                if((e.getModifiers() & InputEvent.SHIFT_MASK) == 1)
+                {
+                    selectedElement.setAllAutoUV(boxAutoUV.isSelected());
+                }
+                else
+                {
+                    selectedElement.getSelectedFace().setAutoUVEnabled(boxAutoUV.isSelected());
+                }
                 selectedElement.getSelectedFace().updateEndUV();
                 manager.updateValues();
                 StateManager.pushState(manager);
